@@ -1,0 +1,47 @@
+{
+  "configs": {
+    "aai": {
+      "aaiClientConfiguration": {
+        "aaiHost": "localhost",
+        "aaiPort": 8080,
+        "aaiIgnoreSSLCertificateErrors": true,
+        "aaiProtocol": "https",
+        "aaiUserName": "AAI",
+        "aaiUserPassword": "AAI",
+        "aaiBasePath": "/aai/v11",
+        "aaiPnfPath": "/network/pnfs/pnf",
+        "aaiHeaders": {
+          "X-FromAppId": "datafile",
+          "X-TransactionId": "9999",
+          "Accept": "application/json",
+          "Real-Time": "true",
+          "Content-Type":"application/merge-patch+json"
+        }
+      }
+    },
+    "dmaap": {
+      "dmaapConsumerConfiguration": {
+        "consumerGroup": "other",
+        "consumerId": "1",
+        "dmaapContentType": "application/json",
+        "dmaapHostName": "localhost",
+        "dmaapPortNumber": 2222,
+        "dmaapProtocol": "http",
+        "dmaapTopicName": "/events/pnfReady",
+        "dmaapUserName": "admin",
+        "dmaapUserPassword": "admin",
+        "messageLimit": 1000,
+        "timeoutMS": 1000
+      },
+      "dmaapProducerConfiguration": {
+        "dmaapContentType": "application/json",
+        "dmaapHostName": "localhost",
+        "dmaapPortNumber": 2223,
+        "dmaapProtocol": "http",
+        "dmaapTopicName": "/events/pnfReady",
+        "dmaapUserName": "admin",
+        "dmaapUserPassword": "admin"
+      }
+    }
+  }
+}
