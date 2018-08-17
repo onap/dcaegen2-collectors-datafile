@@ -1,0 +1,47 @@
+{
+  "configs": {
+    "dmaap": {
+      "dmaapConsumerConfiguration": {
+        "dmaapHostName": "localhost",
+        "dmaapPortNumber": 2222,
+        "dmaapTopicName": "/events/unauthenticated.SEC_OTHER_OUTPUT",
+        "dmaapProtocol": "http",
+        "dmaapUserName": "admin",
+        "dmaapUserPassword": "admin",
+        "dmaapContentType": "application/json",
+        "consumerId": "c12",
+        "consumerGroup": "OpenDcae-c12",
+        "timeoutMS": -1,
+        "messageLimit": 1
+      },
+      "dmaapProducerConfiguration": {
+        "dmaapHostName": "localhost",
+        "dmaapPortNumber": 2223,
+        "dmaapTopicName": "/events/unauthenticated.PNF_READY",
+        "dmaapProtocol": "http",
+        "dmaapUserName": "admin",
+        "dmaapUserPassword": "admin",
+        "dmaapContentType": "application/json"
+      }
+    },
+    "aai": {
+      "aaiClientConfiguration": {
+        "aaiHost": "localhost",
+        "aaiPort": 8080,
+        "aaiProtocol": "https",
+        "aaiUserName": "AAI",
+        "aaiUserPassword": "AAI",
+        "aaiIgnoreSSLCertificateErrors": true,
+        "aaiBasePath": "/aai/v12",
+        "aaiPnfPath": "/network/pnfs/pnf",
+        "aaiHeaders": {
+          "X-FromAppId": "prh",
+          "X-TransactionId": "9999",
+          "Accept": "application/json",
+          "Real-Time": "true",
+          "Content-Type":"application/merge-patch+json"
+        }
+      }
+    }
+  }
+}
