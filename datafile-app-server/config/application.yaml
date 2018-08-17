@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    active: prod
+  main:
+    web-application-type: none
+server:
+  port: 8433
+  ssl:
+    key-store-type: PKCS12
+    key-store-password: nokiapnf
+    key-store: classpath:keystore.jks
+    key-password: nokiapnf
+    keyAlias: tomcat-localhost
+logging:
+  level:
+    ROOT: ERROR
+    org.springframework: ERROR
+    org.springframework.data: ERROR
+    org.onap.dcaegen2.collectors.datafile: INFO
+  file: opt/log/application.log
+app:
+  filepath: config/datafile_endpoints.json
