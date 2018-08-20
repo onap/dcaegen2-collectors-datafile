@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_d8750499",
+        "filename": ".gitreview",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 2813
+      },
+      "writtenOn": "2018-08-20T08:30:20Z",
+      "side": 1,
+      "message": "please change this according to git project repository path",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 33
+      },
+      "revId": "6a3e79fbcd2304ae693802d51586c356bf55ae1c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_f8780091",
+        "filename": "datafile-aai-client/pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 2813
+      },
+      "writtenOn": "2018-08-20T08:30:20Z",
+      "side": 1,
+      "message": "please change headers in all files",
+      "range": {
+        "startLine": 4,
+        "startChar": 4,
+        "endLine": 4,
+        "endChar": 28
+      },
+      "revId": "6a3e79fbcd2304ae693802d51586c356bf55ae1c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
