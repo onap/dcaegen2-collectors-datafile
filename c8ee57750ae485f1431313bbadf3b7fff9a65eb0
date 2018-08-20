@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_7db142e0",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 2813
+      },
+      "writtenOn": "2018-08-20T06:00:29Z",
+      "side": 1,
+      "message": "If u change the names of sub-modules according to datafile collector, the build will be success :)",
+      "range": {
+        "startLine": 678,
+        "startChar": 0,
+        "endLine": 681,
+        "endChar": 32
+      },
+      "revId": "c8ee57750ae485f1431313bbadf3b7fff9a65eb0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
