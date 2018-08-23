@@ -587,6 +587,23 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_b3d7f4ec",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/CommonFunctions.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T15:47:33Z",
+      "side": 1,
+      "message": "Should logger be final?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_c8b0bf45",
         "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/ConsumerDmaapModel.java",
         "patchSetId": 2
@@ -615,6 +632,23 @@
       "writtenOn": "2018-08-23T13:19:03Z",
       "side": 1,
       "message": "trailing spaces, mixed tabs and spaces",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_934af8c3",
+        "filename": "datafile-commons/src/test/java/org/onap/dcaegen2/collectors/datafile/model/ConsumerDmaapModelTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T15:47:33Z",
+      "side": 1,
+      "message": "Builder line is very long, can you break it once or more?",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -740,6 +774,23 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_5306a087",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapHttpClientImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T15:47:33Z",
+      "side": 1,
+      "message": "Should logger be final?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_65d51642",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/HttpUtils.java",
         "patchSetId": 2
@@ -751,6 +802,40 @@
       "writtenOn": "2018-08-23T10:22:56Z",
       "side": 1,
       "message": "Why did you removed Nokia copyright info?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_3303e474",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T15:47:33Z",
+      "side": 1,
+      "message": "Should logger be final?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_b3ee14b3",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/ExtendedDmaapProducerHttpClientImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T15:47:33Z",
+      "side": 1,
+      "message": "should logger be final?",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
