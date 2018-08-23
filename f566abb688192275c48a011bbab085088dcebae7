@@ -87,6 +87,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_e5c60649",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/exceptions/DatafileTaskException.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 2813
+      },
+      "writtenOn": "2018-08-23T11:38:37Z",
+      "side": 1,
+      "message": "This is from first commit :)  Henrik didn\u0027t change license information when he was pushing his first code.",
+      "parentUuid": "1a76adc5_c53bcacf",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_0570e2a3",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
         "patchSetId": 2
