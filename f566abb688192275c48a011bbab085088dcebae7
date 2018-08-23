@@ -53,6 +53,23 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_d38ab0be",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T16:21:00Z",
+      "side": 1,
+      "message": "Which date format convention is used? US, UK, ISO-8601? Maybe there is guidance on this within ONAP already",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_a519ee7a",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/TomcatHttpConfig.java",
         "patchSetId": 2
@@ -445,6 +462,23 @@
       "writtenOn": "2018-08-23T13:54:34Z",
       "side": 1,
       "message": "\"jsonString\" and \"incorrectJsonString should be in upper snake case to match the style used for \"DATAFILE_ENDPOINTS\"?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_d3b15090",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/DatafileAppConfigTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T16:21:00Z",
+      "side": 1,
+      "message": "These string literals are very long, maven checkstyle complains about this as it exceeds 120 column width. They could be broken using the \u0027+\u0027 concatenation operator?",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
