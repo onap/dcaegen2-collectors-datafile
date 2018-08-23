@@ -1,8 +1,6 @@
 /*
  * ============LICENSE_START=======================================================
- * Datafile Collector Service
- * ================================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,31 +15,19 @@
  * limitations under the License.
  * ============LICENSE_END=========================================================
  */
-
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
-import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapNotFoundException;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
-import org.onap.dcaegen2.collectors.datafile.service.DMaaPReactiveWebClient;
-import org.onap.dcaegen2.collectors.datafile.service.producer.DMaaPProducerReactiveHttpClient;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import org.onap.dcaegen2.collectors.datafile.service.producer.ExtendedDmaapProducerHttpClientImpl;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 3/23/18
+ * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
-abstract class DmaapPublisherTask {
+abstract class DmaapPublisherTask<R, S, C> extends Task<R, S, C> {
 
-    abstract Mono<String> publish(Mono<ConsumerDmaapModel> consumerDmaapModel) throws DatafileTaskException;
+    abstract Integer publish(ConsumerDmaapModel consumerDmaapModel) throws DmaapNotFoundException;
 
-    abstract DMaaPProducerReactiveHttpClient resolveClient();
-
-    protected abstract DmaapPublisherConfiguration resolveConfiguration();
-
-    protected abstract Mono<String> execute(Mono<ConsumerDmaapModel> consumerDmaapModel) throws DatafileTaskException;
-
-    WebClient buildWebClient() {
-        return new DMaaPReactiveWebClient().fromConfiguration(resolveConfiguration()).build();
-    }
+    abstract ExtendedDmaapProducerHttpClientImpl resolveClient();
 }

@@ -1,8 +1,6 @@
 /*
  * ============LICENSE_START=======================================================
- * Datafile Collector Service
- * ================================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +15,6 @@
  * limitations under the License.
  * ============LICENSE_END=========================================================
  */
-
 package org.onap.dcaegen2.collectors.datafile.model;
 
 import org.junit.jupiter.api.Assertions;
@@ -25,26 +22,26 @@ import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
 
-class ConsumerDmaapModelTest {
+public class ConsumerDmaapModelTest {
+
+    // Given
+    private ConsumerDmaapModel consumerDmaapModel;
+    private String location="target/A20161224.1030-1045.bin.gz";
+    private String compression = "gzip";
+    private String fileFormatType = "org.3GPP.32.435#measCollec";
+    private String fileFormatVersion = "V10";
 
     @Test
-    void consumerDmaapModelBuilder_shouldBuildAnObject() {
+    public void consumerDmaapModelBuilder_shouldBuildAnObject() {
 
         // When
-        // Given
-        String pnfName = "NOKnhfsadhff";
-        String ipv4 = "11.22.33.155";
-        String ipv6 = "2001:0db8:85a3:0000:0000:8a2e:0370:7334";
-        ConsumerDmaapModel consumerDmaapModel = ImmutableConsumerDmaapModel.builder()
-            .pnfName(pnfName)
-            .ipv4(ipv4)
-            .ipv6(ipv6)
-            .build();
+        consumerDmaapModel = ImmutableConsumerDmaapModel.builder().location(location).compression(compression).fileFormatType(fileFormatType).fileFormatVersion(fileFormatVersion).build();
 
         // Then
         Assertions.assertNotNull(consumerDmaapModel);
-        Assertions.assertEquals(pnfName, consumerDmaapModel.getPnfName());
-        Assertions.assertEquals(ipv4, consumerDmaapModel.getIpv4());
-        Assertions.assertEquals(ipv6, consumerDmaapModel.getIpv6());
+        Assertions.assertEquals(location, consumerDmaapModel.getLocation());
+        Assertions.assertEquals(compression, consumerDmaapModel.getCompression());
+        Assertions.assertEquals(fileFormatType, consumerDmaapModel.getFileFormatType());
+        Assertions.assertEquals(fileFormatVersion, consumerDmaapModel.getFileFormatVersion());
     }
 }

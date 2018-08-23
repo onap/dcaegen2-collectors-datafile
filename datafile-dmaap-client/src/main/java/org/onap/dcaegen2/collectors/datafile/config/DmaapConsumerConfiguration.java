@@ -1,7 +1,5 @@
 /*
  * ============LICENSE_START=======================================================
- * Datafile Collector Service
- * ================================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +15,12 @@
  * limitations under the License.
  * ============LICENSE_END=========================================================
  */
-
 package org.onap.dcaegen2.collectors.datafile.config;
 
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
+import org.onap.dcaegen2.collectors.datafile.config.DmaapConsumerConfiguration;
+import org.onap.dcaegen2.collectors.datafile.config.DmaapCustomConfig;
 import org.onap.dcaegen2.collectors.datafile.config.ImmutableDmaapConsumerConfiguration;
 import org.springframework.stereotype.Component;
 
@@ -43,20 +42,20 @@ public abstract class DmaapConsumerConfiguration implements DmaapCustomConfig {
     public abstract String consumerGroup();
 
     @Value.Parameter
-    public abstract Integer timeoutMs();
+    public abstract Integer timeoutMS();
 
     @Value.Parameter
     public abstract Integer messageLimit();
 
 
-    public interface Builder extends
-        DmaapCustomConfig.Builder<DmaapConsumerConfiguration, DmaapConsumerConfiguration.Builder> {
+    public interface Builder
+            extends DmaapCustomConfig.Builder<DmaapConsumerConfiguration, DmaapConsumerConfiguration.Builder> {
 
         Builder consumerId(String consumerId);
 
         Builder consumerGroup(String consumerGroup);
 
-        Builder timeoutMs(Integer timeoutMs);
+        Builder timeoutMS(Integer timeoutMS);
 
         Builder messageLimit(Integer messageLimit);
     }

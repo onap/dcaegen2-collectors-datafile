@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ ============LICENSE_START=======================================================
-  ~ Datafile Collector Service
-  ~ ================================================================================
-  ~ Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
+  ~ Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
   ~ ================================================================================
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -29,11 +27,11 @@
     <version>0.1.1</version>
     <relativePath/>
   </parent>
-  <groupId>org.onap.dcaegen2.collectors</groupId>
+  <groupId>org.onap.dcaegen2.services</groupId>
   <artifactId>datafile</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <name>dcaegen2-collectors-datafile</name>
-  <description>Datafile Collector Service</description>
+  <name>dcaegen2-collectors.datafile</name>
+  <description>datafile collector</description>
   <packaging>pom</packaging>
 
   <licenses>
@@ -73,26 +71,11 @@
     <snapshots.path>content/repositories/snapshots/</snapshots.path>
     <releases.path>content/repositories/releases/</releases.path>
     <site.path>
-      content/sites/site/org/onap/dcaegen2/collectors/datafile/${project.artifactId}/${project.version}
+      content/sites/site/org/onap/dcaegen2/collectors.datafile/${project.artifactId}/${project.version}
     </site.path>
   </properties>
 
   <pluginRepositories>
-
-
-    <pluginRepository>
-      <id>40_openecomp-release</id>
-      <name>40_openecomp-release</name>
-      <url>https://nexus.onap.org/content/repositories/releases/</url>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-
     <!-- Black Duck plugin dependencies -->
     <pluginRepository>
       <id>JCenter</id>
@@ -106,23 +89,10 @@
     </pluginRepository>
   </pluginRepositories>
 
-
   <repositories>
     <repository>
       <id>external-repository</id>
       <url>https://oss.sonatype.org/content/repositories</url>
-    </repository>
-    <repository>
-      <id>40_openecomp-release</id>
-      <name>40_openecomp-release</name>
-      <url>https://nexus.onap.org/content/repositories/releases/</url>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
     </repository>
   </repositories>
 
@@ -214,7 +184,7 @@
           </configuration>
           <executions>
             <execution>
-              <id>Bundling Datafile Jar</id>
+              <id>Bundling DATAFILE Jar</id>
               <phase>package</phase>
               <goals>
                 <goal>bundle</goal>
@@ -383,7 +353,6 @@
                   <exclude>**/Immutable*</exclude>
                   <exclude>**/GsonAdapters*</exclude>
                   <exclude>**/*ForUnitTest*</exclude>
-                  <exclude>**/AAIConsumer*</exclude>
                 </excludes>
                 <rules>
                   <rule>
@@ -404,13 +373,6 @@
               </configuration>
             </execution>
           </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <configuration>
-            <skip>true</skip>
-          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -662,7 +624,14 @@
         <artifactId>springfox-swagger-ui</artifactId>
         <version>2.8.0</version>
       </dependency>
-
+      
+            <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
+		<dependency>
+		    <groupId>commons-net</groupId>
+		    <artifactId>commons-net</artifactId>
+		    <version>3.3</version>
+		</dependency>
+		            
       <!-- ONLY REQUIRED TO RUN TESTS IN AN IDE THAT BUNDLES AN OLDER VERSION -->
       <dependency>
         <groupId>org.junit.platform</groupId>
@@ -675,10 +644,10 @@
   </dependencyManagement>
 
   <modules>
-    <module>datafile-app-server</module>
-    <module>datafile-aai-client</module>
-    <module>datafile-dmaap-client</module>
-    <module>datafile-commons</module>
+  	
+  	<module>datafile-app-server</module>
+  	<module>datafile-dmaap-client</module>
+  	<module>datafile-commons</module>
   </modules>
 </project>
 

@@ -1,8 +1,6 @@
 /*
  * ============LICENSE_START=======================================================
- * Datafile Collector Service
- * ================================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,257 +15,164 @@
  * limitations under the License.
  * ============LICENSE_END=========================================================
  */
-
 package org.onap.dcaegen2.collectors.datafile.service;
 
 import static org.mockito.Mockito.spy;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import java.util.ArrayList;
 import java.util.Optional;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapNotFoundException;
-import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
-import org.onap.dcaegen2.collectors.datafile.service.DmaapConsumerJsonParser;
-import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
+import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
+import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 5/8/18
+ * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 class DmaapConsumerJsonParserTest {
 
     @Test
-    void whenPassingCorrectJson_validationNotThrowingAnException() {
-        //given
-        String message =
-            "[{\"event\":{\"commonEventHeader\":{\"domain\":\"other\",\"eventId\":\"<<SerialNumber>>-reg\","
-                + "\"eventName\":\"pnfRegistration_5GDU\",\"eventType\":\"pnfRegistration\",\"internalHeaderFields\""
-                + ":{},\"lastEpochMicrosec\":1519837825682,\"nfNamingCode\":\"5GRAN\",\"nfcNamingCode\":\"5DU\","
-                + "\"priority\":\"Normal\",\"reportingEntityName\":\"5GRAN_DU\",\"sequence\":0,\"sourceId\":"
-                + "\"<<SerialNumber>>\",\"sourceName\":\"5GRAN_DU\",\"startEpochMicrosec\":1519837825682,\"version\":"
-                + "3},\"otherFields\":{\"otherFieldsVersion\":1,\"pnfFamily\":\"BBU\",\"pnfLastServiceDate\":1517206400"
-                + ",\"pnfManufactureDate\":1516406400,\"pnfModelNumber\":\"AJ02\",\"pnfOamIpv4Address\":"
-                + "\"10.16.123.234\",\"pnfOamIpv6Address\":\"0:0:0:0:0:FFFF:0A10:7BEA\",\"pnfSerialNumber\":"
-                + "\"QTFCOC540002E\",\"pnfSoftwareVersion\":\"v4.5.0.1\",\"pnfType\":\"AirScale\",\"pnfVendorName\":"
-                + "\"Nokia\"}}}]";
+    void whenPassingCorrectJson_validationNotThrowingAnException() throws DmaapNotFoundException {
+        // given
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
+                .location("ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz").compression("gzip")
+                .fileFormatType("org.3GPP.32.435#measCollec").fileFormatVersion("V10").build();
+        JsonMessage message = new JsonMessage.JsonMessageBuilder().changeIdentifier("PM_MEAS_FILES")
+                .changeType("FileReady").notificationFieldsVersion("1.0").addAdditionalField(additionalField).build();
 
-        String parsed =
-            "{\"event\":{\"commonEventHeader\":{\"domain\":\"other\",\"eventId\":\"<<SerialNumber>>-reg\",\"eventName\""
-                + ":\"pnfRegistration_5GDU\",\"eventType\":\"pnfRegistration\",\"internalHeaderFields\":{},"
-                + "\"lastEpochMicrosec\":1519837825682,\"nfNamingCode\":\"5GRAN\",\"nfcNamingCode\":\"5DU\","
-                + "\"priority\":\"Normal\",\"reportingEntityName\":\"5GRAN_DU\",\"sequence\":0,\"sourceId\":"
-                + "\"<<SerialNumber>>\",\"sourceName\":\"5GRAN_DU\",\"startEpochMicrosec\":1519837825682,\"version\":"
-                + "3},\"otherFields\":{\"otherFieldsVersion\":1,\"pnfFamily\":\"BBU\",\"pnfLastServiceDate\":"
-                + "1517206400,\"pnfManufactureDate\":1516406400,\"pnfModelNumber\":\"AJ02\",\"pnfOamIpv4Address\":"
-                + "\"10.16.123.234\",\"pnfOamIpv6Address\":\"0:0:0:0:0:FFFF:0A10:7BEA\",\"pnfSerialNumber\":"
-                + "\"QTFCOC540002E\",\"pnfSoftwareVersion\":\"v4.5.0.1\",\"pnfType\":\"AirScale\",\"pnfVendorName\":"
-                + "\"Nokia\"}}}";
-        ConsumerDmaapModel expectedObject = ImmutableConsumerDmaapModel.builder().ipv4("10.16.123.234")
-            .ipv6("0:0:0:0:0:FFFF:0A10:7BEA")
-            .pnfName("NOKQTFCOC540002E").build();
-        //when
+        String messageString = message.toString();
+
+        String parsedString = message.getParsed();
+
+        FileData expectedFileData = new FileData("PM_MEAS_FILES", "FileReady",
+                "ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz", "gzip", "org.3GPP.32.435#measCollec",
+                "V10");
+        // when
         DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
-        JsonElement jsonElement = new JsonParser().parse(parsed);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject()))
-            .when(dmaapConsumerJsonParser).getJsonObjectFromAnArray(jsonElement);
-        ConsumerDmaapModel consumerDmaapModel = dmaapConsumerJsonParser
-            .getJsonObject(Mono.just((message))).block();
-        //then
-        Assertions.assertNotNull(consumerDmaapModel);
-        Assertions.assertEquals(expectedObject, consumerDmaapModel);
+        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+                .getJsonObjectFromAnArray(jsonElement);
+        ArrayList<FileData> listOfFileData = dmaapConsumerJsonParser.getJsonObject(messageString);
+        // then
+        Assertions.assertNotNull(listOfFileData);
+        Assertions.assertEquals(expectedFileData, listOfFileData.get(0));
     }
 
     @Test
-    void whenPassingCorrectJsonWithoutIpv4_validationNotThrowingAnException() {
-        //given
-        String message =
-            "[{\"event\":{\"commonEventHeader\":{\"domain\":\"other\",\"eventId\":\"<<SerialNumber>>-reg\","
-                + "\"eventName\":\"pnfRegistration_5GDU\",\"eventType\":\"pnfRegistration\",\"internalHeaderFields\":"
-                + "{},\"lastEpochMicrosec\":1519837825682,\"nfNamingCode\":\"5GRAN\",\"nfcNamingCode\":\"5DU\","
-                + "\"priority\":\"Normal\",\"reportingEntityName\":\"5GRAN_DU\",\"sequence\":0,\"sourceId\":"
-                + "\"<<SerialNumber>>\",\"sourceName\":\"5GRAN_DU\",\"startEpochMicrosec\":1519837825682,\"version\":3}"
-                + ",\"otherFields\":{\"otherFieldsVersion\":1,\"pnfFamily\":\"BBU\",\"pnfLastServiceDate\":1517206400,"
-                + "\"pnfManufactureDate\":1516406400,\"pnfModelNumber\":\"AJ02\",\"pnfOamIpv6Address\":"
-                + "\"0:0:0:0:0:FFFF:0A10:7BEA\",\"pnfSerialNumber\":\"QTFCOC540002E\",\"pnfSoftwareVersion\""
-                + ":\"v4.5.0.1\",\"pnfType\":\"AirScale\",\"pnfVendorName\":\"Nokia\"}}}]";
+    void whenPassingCorrectJsonWihoutLocation_validationThrowingAnException() {
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder().compression("gzip")
+                .fileFormatType("org.3GPP.32.435#measCollec").fileFormatVersion("V10").build();
+        JsonMessage message = new JsonMessage.JsonMessageBuilder().changeIdentifier("PM_MEAS_FILES")
+                .changeType("FileReady").notificationFieldsVersion("1.0").addAdditionalField(additionalField).build();
 
-        String parsed =
-            "{\"event\":{\"commonEventHeader\":{\"domain\":\"other\",\"eventId\":\"<<SerialNumber>>-reg\",\"eventName\""
-                + ":\"pnfRegistration_5GDU\",\"eventType\":\"pnfRegistration\",\"internalHeaderFields\":{},"
-                + "\"lastEpochMicrosec\":1519837825682,\"nfNamingCode\":\"5GRAN\",\"nfcNamingCode\":\"5DU\","
-                + "\"priority\":\"Normal\",\"reportingEntityName\":\"5GRAN_DU\",\"sequence\":0,\"sourceId\":"
-                + "\"<<SerialNumber>>\",\"sourceName\":\"5GRAN_DU\",\"startEpochMicrosec\":1519837825682,\"version\":3}"
-                + ",\"otherFields\":{\"otherFieldsVersion\":1,\"pnfFamily\":\"BBU\",\"pnfLastServiceDate\":1517206400,"
-                + "\"pnfManufactureDate\":1516406400,\"pnfModelNumber\":\"AJ02\",\"pnfOamIpv6Address\":"
-                + "\"0:0:0:0:0:FFFF:0A10:7BEA\",\"pnfSerialNumber\":\"QTFCOC540002E\",\"pnfSoftwareVersion\""
-                + ":\"v4.5.0.1\",\"pnfType\":\"AirScale\",\"pnfVendorName\":\"Nokia\"}}}";
+        String messageString = message.toString();
 
-        //when
+        String parsedString = message.getParsed();
+
         DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
-        JsonElement jsonElement = new JsonParser().parse(parsed);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject()))
-            .when(dmaapConsumerJsonParser).getJsonObjectFromAnArray(jsonElement);
-        dmaapConsumerJsonParser.getJsonObject(Mono.just((message)));
-        ConsumerDmaapModel consumerDmaapModel = dmaapConsumerJsonParser.getJsonObject(Mono.just((message)))
-            .block();
-        //then
-        ConsumerDmaapModel expectedObject = ImmutableConsumerDmaapModel.builder().ipv4("")
-            .ipv6("0:0:0:0:0:FFFF:0A10:7BEA")
-            .pnfName("NOKQTFCOC540002E").build();
-        Assertions.assertNotNull(consumerDmaapModel);
-        Assertions.assertEquals(expectedObject, consumerDmaapModel);
+        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+                .getJsonObjectFromAnArray(jsonElement);
+        Assertions.assertThrows(DmaapNotFoundException.class,
+                () -> dmaapConsumerJsonParser.getJsonObject(messageString));
     }
 
     @Test
-    void whenPassingCorrectJsonWihoutIpv6_validationNotThrowingAnException() {
-        //given
-        String message =
-            "[{\"event\":{\"commonEventHeader\":{\"domain\":\"other\",\"eventId\":\"<<SerialNumber>>-reg\","
-                + "\"eventName\":\"pnfRegistration_5GDU\",\"eventType\":\"pnfRegistration\",\"internalHeaderFields\":"
-                + "{},\"lastEpochMicrosec\":1519837825682,\"nfNamingCode\":\"5GRAN\",\"nfcNamingCode\":\"5DU\","
-                + "\"priority\":\"Normal\",\"reportingEntityName\":\"5GRAN_DU\",\"sequence\":0,\"sourceId\":"
-                + "\"<<SerialNumber>>\",\"sourceName\":\"5GRAN_DU\",\"startEpochMicrosec\":1519837825682,"
-                + "\"version\":3},\"otherFields\":{\"otherFieldsVersion\":1,\"pnfFamily\":\"BBU\",\"pnfLastServiceDate"
-                + "\":1517206400,\"pnfManufactureDate\":1516406400,\"pnfModelNumber\":\"AJ02\",\"pnfOamIpv4Address"
-                + "\":\"10.16.123.234\",\"pnfSerialNumber\":\"QTFCOC540002E\",\"pnfSoftwareVersion\":\"v4.5.0.1\","
-                + "\"pnfType\":\"AirScale\",\"pnfVendorName\":\"Nokia\"}}}]";
-        String parsed =
-            "{\"event\":{\"commonEventHeader\":{\"domain\":\"other\",\"eventId\":\"<<SerialNumber>>-reg\",\"eventName\""
-                + ":\"pnfRegistration_5GDU\",\"eventType\":\"pnfRegistration\",\"internalHeaderFields\":{},"
-                + "\"lastEpochMicrosec\":1519837825682,\"nfNamingCode\":\"5GRAN\",\"nfcNamingCode\":\"5DU\","
-                + "\"priority\":\"Normal\",\"reportingEntityName\":\"5GRAN_DU\",\"sequence\":0,\"sourceId\":"
-                + "\"<<SerialNumber>>\",\"sourceName\":\"5GRAN_DU\",\"startEpochMicrosec\":1519837825682,"
-                + "\"version\":3},\"otherFields\":{\"otherFieldsVersion\":1,\"pnfFamily\":\"BBU\",\"pnfLastServiceDate"
-                + "\":1517206400,\"pnfManufactureDate\":1516406400,\"pnfModelNumber\":\"AJ02\",\"pnfOamIpv4Address"
-                + "\":\"10.16.123.234\",\"pnfSerialNumber\":\"QTFCOC540002E\",\"pnfSoftwareVersion\":\"v4.5.0.1\","
-                + "\"pnfType\":\"AirScale\",\"pnfVendorName\":\"Nokia\"}}}";
+    void whenPassingCorrectJsonWihoutCompression_validationThrowingAnException() {
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
+                .location("ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz")
+                .fileFormatType("org.3GPP.32.435#measCollec").fileFormatVersion("V10").build();
+        JsonMessage message = new JsonMessage.JsonMessageBuilder().changeIdentifier("PM_MEAS_FILES")
+                .changeType("FileReady").notificationFieldsVersion("1.0").addAdditionalField(additionalField).build();
 
-        ConsumerDmaapModel expectedObject = ImmutableConsumerDmaapModel.builder().ipv4("10.16.123.234").ipv6("")
-            .pnfName("NOKQTFCOC540002E").build();
-        //when
+        String messageString = message.toString();
+
+        String parsedString = message.getParsed();
+
         DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
-        JsonElement jsonElement = new JsonParser().parse(parsed);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject()))
-            .when(dmaapConsumerJsonParser).getJsonObjectFromAnArray(jsonElement);
-        ConsumerDmaapModel consumerDmaapModel = dmaapConsumerJsonParser.getJsonObject(Mono.just((message)))
-            .block();
-        //then
-        Assertions.assertNotNull(consumerDmaapModel);
-        Assertions.assertEquals(expectedObject, consumerDmaapModel);
+        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+                .getJsonObjectFromAnArray(jsonElement);
+        Assertions.assertThrows(DmaapNotFoundException.class,
+                () -> dmaapConsumerJsonParser.getJsonObject(messageString));
     }
 
     @Test
-    void whenPassingCorrectJsonWihoutIpv4andIpv6_validationThrowingAnException() {
-        String message =
-            "[{\"event\":{\"commonEventHeader\":{\"domain\":\"other\",\"eventId\":\"<<SerialNumber>>-reg\","
-                + "\"eventName\":\"pnfRegistration_5GDU\",\"eventType\":\"pnfRegistration\",\"internalHeaderFields\":"
-                + "{},\"lastEpochMicrosec\":1519837825682,\"nfNamingCode\":\"5GRAN\",\"nfcNamingCode\":\"5DU\","
-                + "\"priority\":\"Normal\",\"reportingEntityName\":\"5GRAN_DU\",\"sequence\":0,\"sourceId\":"
-                + "\"<<SerialNumber>>\",\"sourceName\":\"5GRAN_DU\",\"startEpochMicrosec\":1519837825682,\"version\""
-                + ":3},\"otherFields\":{\"otherFieldsVersion\":1,\"pnfFamily\":\"BBU\",\"pnfLastServiceDate\""
-                + ":1517206400,\"pnfManufactureDate\":1516406400,\"pnfModelNumber\":\"AJ02\",\"pnfSoftwareVersion\":"
-                + "\"v4.5.0.1\",\"pnfType\":\"AirScale\",\"pnfVendorName\":\"Nokia\"}}}]";
-        String parsed =
-            "{\"event\":{\"commonEventHeader\":{\"domain\":\"other\",\"eventId\":\"<<SerialNumber>>-reg\",\"eventName\""
-                + ":\"pnfRegistration_5GDU\",\"eventType\":\"pnfRegistration\",\"internalHeaderFields\":{},"
-                + "\"lastEpochMicrosec\":1519837825682,\"nfNamingCode\":\"5GRAN\",\"nfcNamingCode\":\"5DU\","
-                + "\"priority\":\"Normal\",\"reportingEntityName\":\"5GRAN_DU\",\"sequence\":0,\"sourceId\":"
-                + "\"<<SerialNumber>>\",\"sourceName\":\"5GRAN_DU\",\"startEpochMicrosec\":1519837825682,\"version\""
-                + ":3},\"otherFields\":{\"otherFieldsVersion\":1,\"pnfFamily\":\"BBU\",\"pnfLastServiceDate\""
-                + ":1517206400,\"pnfManufactureDate\":1516406400,\"pnfModelNumber\":\"AJ02\",\"pnfSoftwareVersion\":"
-                + "\"v4.5.0.1\",\"pnfType\":\"AirScale\",\"pnfVendorName\":\"Nokia\"}}}";
-        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
-        JsonElement jsonElement = new JsonParser().parse(parsed);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject()))
-            .when(dmaapConsumerJsonParser).getJsonObjectFromAnArray(jsonElement);
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(message)))
-            .expectSubscription().expectError(DmaapNotFoundException.class).verify();
+    void whenPassingCorrectJsonWihoutFileFormatType_validationThrowingAnException() {
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
+                .location("ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz").compression("gzip")
+                .fileFormatVersion("V10").build();
+        JsonMessage message = new JsonMessage.JsonMessageBuilder().changeIdentifier("PM_MEAS_FILES")
+                .changeType("FileReady").notificationFieldsVersion("1.0").addAdditionalField(additionalField).build();
 
+        String messageString = message.toString();
+
+        String parsedString = message.getParsed();
+
+        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+                .getJsonObjectFromAnArray(jsonElement);
+        Assertions.assertThrows(DmaapNotFoundException.class,
+                () -> dmaapConsumerJsonParser.getJsonObject(messageString));
     }
 
+    @Test
+    void whenPassingCorrectJsonWihoutFileFormatVersion_validationThrowingAnException() {
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
+                .location("ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz").compression("gzip")
+                .fileFormatType("org.3GPP.32.435#measCollec").build();
+        JsonMessage message = new JsonMessage.JsonMessageBuilder().changeIdentifier("PM_MEAS_FILES")
+                .changeType("FileReady").notificationFieldsVersion("1.0").addAdditionalField(additionalField).build();
+
+        String messageString = message.toString();
+
+        String parsedString = message.getParsed();
+
+        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+                .getJsonObjectFromAnArray(jsonElement);
+        Assertions.assertThrows(DmaapNotFoundException.class,
+                () -> dmaapConsumerJsonParser.getJsonObject(messageString));
+    }
+
+    // Fixed temprarily
     @Test
     void whenPassingJsonWithoutMandatoryHeaderInformation_validationThrowingAnException() {
-        String parsed = "{\"event\":{\"commonEventHeader\":{\"domain\":\"other\",\"eventId\":\"<<SerialNumber>>-reg\""
-            + ",\"eventName\":\"pnfRegistration_5GDU\",\"eventType\":\"pnfRegistration\",\"internalHeaderFields\":{},"
-            + "\"lastEpochMicrosec\":1519837825682,\"nfNamingCode\":\"5GRAN\",\"nfcNamingCode\":\"5DU\",\"priority\""
-            + ":\"Normal\",\"reportingEntityName\":\"5GRAN_DU\",\"sequence\":0,\"sourceId\":\"<<SerialNumber>>\","
-            + "\"sourceName\":\"5GRAN_DU\",\"startEpochMicrosec\":1519837825682,\"version\":3}}}";
+        JsonMessage message = new JsonMessage.JsonMessageBuilder().changeIdentifier("PM_MEAS_FILES_INVALID")
+                .changeType("FileReady_INVALID").notificationFieldsVersion("1.0_INVALID").build();
+        String incorrectMessageString = message.toString();
+
+        String parsedString = message.getParsed();
         DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
-        JsonElement jsonElement = new JsonParser().parse(parsed);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject()))
-            .when(dmaapConsumerJsonParser).getJsonObjectFromAnArray(jsonElement);
-        String incorrectMessage =
-            "[{\"event\":{\"commonEventHeader\":{\"domain\":\"other\",\"eventId\":\"<<SerialNumber>>-reg\""
-                + ",\"eventName\":\"pnfRegistration_5GDU\",\"eventType\":\"pnfRegistration\",\"internalHeaderFields\":"
-                + "{},\"lastEpochMicrosec\":1519837825682,\"nfNamingCode\":\"5GRAN\",\"nfcNamingCode\":\"5DU\","
-                + "\"priority\":\"Normal\",\"reportingEntityName\":\"5GRAN_DU\",\"sequence\":0,\"sourceId\":"
-                + "\"<<SerialNumber>>\",\"sourceName\":\"5GRAN_DU\",\"startEpochMicrosec\":1519837825682,\"version\":3"
-                + "}}}]";
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(incorrectMessage)))
-            .expectSubscription().expectError(DmaapNotFoundException.class).verify();
+        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+                .getJsonObjectFromAnArray(jsonElement);
+        Assertions.assertThrows(DmaapNotFoundException.class,
+                () -> dmaapConsumerJsonParser.getJsonObject(incorrectMessageString));
     }
 
     @Test
-    void whenPassingJsonWithoutPnfSerialNumberOrPnfVendorName_validationThrowingAnException() {
-        String parsed = "{\"event\":{\"commonEventHeader\":{\"domain\":\"other\",\"eventId\":"
-            + "\"<<SerialNumber>>-reg\",\"eventName\":\"pnfRegistration_5GDU\",\"eventType\":\"pnfRegistration\",\""
-            + "internalHeaderFields\":{},\"lastEpochMicrosec\":1519837825682,\"nfNamingCode\":\"5GRAN\","
-            + "\"nfcNamingCode\":\"5DU\",\"priority\":\"Normal\",reportingEntityName\":\"5GRAN_DU\",\"sequence\":0,"
-            + "\"sourceId\":\"<<SerialNumber>>\",\"sourceName\":\"5GRAN_DU\",startEpochMicrosec\":1519837825682,\""
-            + "version\":3},\"otherFields\":{\"otherFieldsVersion\":1,\"pnfFamily\":\"BBU\",\"pnfLastServiceDate\""
-            + ":1517206400,\"pnfManufactureDate\":1516406400,\"pnfModelNumber\":\"AJ02\",\"pnfOamIpv4Address\":"
-            + "\"10.16.123.234\",\"pnfOamIpv6Address\":\"0:0:0:0:0:FFFF:0A10:7BEA\",\"pnfSoftwareVersion\":"
-            + "\"v4.5.0.1\",\"pnfType\":\"AirScale\"}}}";
-        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
-        JsonElement jsonElement = new JsonParser().parse(parsed);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject()))
-            .when(dmaapConsumerJsonParser).getJsonObjectFromAnArray(jsonElement);
-        String jsonWithoutPnfVendorAndSerialNumber =
-            "[{\"event\":{\"commonEventHeader\":{\"domain\":\"other\",\"eventId\":"
-                + "\"<<SerialNumber>>-reg\",\"eventName\":\"pnfRegistration_5GDU\",\"eventType\":\"pnfRegistration\",\""
-                + "internalHeaderFields\":{},\"lastEpochMicrosec\":1519837825682,\"nfNamingCode\":\"5GRAN\","
-                + "\"nfcNamingCode\":\"5DU\",\"priority\":\"Normal\",reportingEntityName\":\"5GRAN_DU\",\"sequence\":0,"
-                + "\"sourceId\":\"<<SerialNumber>>\",\"sourceName\":\"5GRAN_DU\",startEpochMicrosec\":1519837825682,"
-                + "\"version\":3},\"otherFields\":{\"otherFieldsVersion\":1,\"pnfFamily\":\"BBU\","
-                + "\"pnfLastServiceDate\":1517206400,\"pnfManufactureDate\":1516406400,\"pnfModelNumber\":\"AJ02\","
-                + "\"pnfOamIpv4Address\":\"10.16.123.234\",\"pnfOamIpv6Address\":\"0:0:0:0:0:FFFF:0A10:7BEA\","
-                + "\"pnfSoftwareVersion\":\"v4.5.0.1\",\"pnfType\":\"AirScale\"}}}]";
-        StepVerifier
-            .create(dmaapConsumerJsonParser.getJsonObject(Mono.just(jsonWithoutPnfVendorAndSerialNumber)))
-            .expectSubscription().expectError(DmaapNotFoundException.class).verify();
-    }
+    void whenPassingJsonWithNullJsonElement_validationThrowingAnException() {
+        JsonMessage message = new JsonMessage.JsonMessageBuilder().build();
+        String incorrectMessageString = message.toString();
 
-    @Test
-    void whenPassingJsonWithoutIpInformation_validationThrowingAnException() {
-        String parsed =
-            "{\"event\":{\"commonEventHeader\":{\"domain\":\"other\",\"eventId\":\"<<SerialNumber>>-reg\","
-                + "\"eventName\":\"pnfRegistration_5GDU\",\"eventType\":\"pnfRegistration\",\"internalHeaderFields\""
-                + ":{},\"lastEpochMicrosec\":1519837825682,\"nfNamingCode\":\"5GRAN\",\"nfcNamingCode\":\"5DU\","
-                + "\"priority\":\"Normal\",\"reportingEntityName\":\"5GRAN_DU\",\"sequence\":0,\"sourceId\":"
-                + "\"<<SerialNumber>>\",\"sourceName\":\"5GRAN_DU\",\"startEpochMicrosec\":1519837825682,\"version\""
-                + ":3},\"otherFields\":{\"otherFieldsVersion\":1,\"pnfFamily\":\"BBU\",\"pnfLastServiceDate\":"
-                + "1517206400,\"pnfManufactureDate\":1516406400,\"pnfModelNumber\":"
-                + "\"AJ02\",\"pnfSerialNumber\":\"QTFCOC540002E\",\"pnfSoftwareVersion\":\"v4.5.0.1\",\"pnfType\":"
-                + "\"AirScale\"," + "\"pnfVendorName\":\"Nokia\"}}}";
+        String parsedString = message.getParsed();
+        // System.out.println(parsedString);
         DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
-        JsonElement jsonElement = new JsonParser().parse(parsed);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject()))
-            .when(dmaapConsumerJsonParser).getJsonObjectFromAnArray(jsonElement);
-        String jsonWithoutIpInformation =
-            "[{\"event\":{\"commonEventHeader\":{\"domain\":\"other\",\"eventId\":\"<<SerialNumber>>-reg\","
-                + "\"eventName\":\"pnfRegistration_5GDU\",\"eventType\":\"pnfRegistration\",\"internalHeaderFields\""
-                + ":{},\"lastEpochMicrosec\":1519837825682,\"nfNamingCode\":\"5GRAN\",\"nfcNamingCode\":\"5DU\","
-                + "\"priority\":\"Normal\",\"reportingEntityName\":\"5GRAN_DU\",\"sequence\":0,\"sourceId\":"
-                + "\"<<SerialNumber>>\",\"sourceName\":\"5GRAN_DU\",\"startEpochMicrosec\":1519837825682,\"version\""
-                + ":3},\"otherFields\":{\"otherFieldsVersion\":1,\"pnfFamily\":\"BBU\",\"pnfLastServiceDate\""
-                + ":1517206400,\"pnfManufactureDate\":1516406400,\"pnfModelNumber\":\"AJ02\",\"pnfSerialNumber\""
-                + ":\"QTFCOC540002E\",\"pnfSoftwareVersion\":\"v4.5.0.1\",\"pnfType\":\"AirScale\","
-                + "\"pnfVendorName\":\"Nokia\"}}}]";
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(jsonWithoutIpInformation)))
-            .expectSubscription().expectError(DmaapNotFoundException.class).verify();
+        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        // System.out.println(jsonElement);
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+                .getJsonObjectFromAnArray(jsonElement);
+        Assertions.assertThrows(DmaapNotFoundException.class,
+                () -> dmaapConsumerJsonParser.getJsonObject(incorrectMessageString));
     }
 }

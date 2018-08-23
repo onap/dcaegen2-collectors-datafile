@@ -1,8 +1,6 @@
 /*
  * ============LICENSE_START=======================================================
- * Datafile Collector Service
- * ================================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +15,10 @@
  * limitations under the License.
  * ============LICENSE_END=========================================================
  */
-
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import static org.mockito.Mockito.spy;
 
-import org.onap.dcaegen2.collectors.datafile.tasks.AaiProducerTask;
 import org.onap.dcaegen2.collectors.datafile.tasks.DmaapConsumerTask;
 import org.onap.dcaegen2.collectors.datafile.tasks.DmaapPublisherTask;
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
@@ -33,6 +29,7 @@ import org.springframework.context.annotation.Primary;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/5/18
+ * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 @Configuration
 public class ScheduleControllerSpy {
@@ -43,12 +40,10 @@ public class ScheduleControllerSpy {
     @Autowired
     private DmaapPublisherTask dmaapPublisherTaskImplSpy;
 
-    @Autowired
-    private AaiProducerTask aaiPublisherTaskImplSpy;
 
     @Bean
     @Primary
     public ScheduledTasks registerSimpleScheduledTask() {
-        return spy(new ScheduledTasks(dmaapConsumerTaskImplSpy, dmaapPublisherTaskImplSpy, aaiPublisherTaskImplSpy));
+        return spy(new ScheduledTasks(dmaapConsumerTaskImplSpy, dmaapPublisherTaskImplSpy));
     }
 }

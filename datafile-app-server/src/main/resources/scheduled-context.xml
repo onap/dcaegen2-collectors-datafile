@@ -8,7 +8,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
   <context:component-scan
-    base-package="org.onap.dcaegen2.collectors.datafile"/>
+    base-package="org.onap.dcaegen2.collectors.datafile"/>    
   <task:scheduled-tasks>
     <task:scheduled ref="scheduleController" method="startTasks"
       fixed-rate="1000"/>
