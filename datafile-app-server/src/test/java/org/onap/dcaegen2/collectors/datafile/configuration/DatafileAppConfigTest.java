@@ -1,8 +1,6 @@
 /*
  * ============LICENSE_START=======================================================
- * Datafile Collector Service
- * ================================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +15,6 @@
  * limitations under the License.
  * ============LICENSE_END=========================================================
  */
-
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -29,54 +26,31 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
-import org.onap.dcaegen2.collectors.datafile.configuration.DatafileAppConfig;
-import org.onap.dcaegen2.collectors.datafile.integration.junit5.mockito.MockitoExtension;
+import org.onap.dcaegen2.collectors.datafile.IT.junit5.mockito.MockitoExtension;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/9/18
+ * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 @ExtendWith({MockitoExtension.class})
 class DatafileAppConfigTest {
 
     private static final String DATAFILE_ENDPOINTS = "datafile_endpoints.json";
-    private static final String jsonString = "{\"configs\":{\"aai\":{\"aaiClientConfiguration\":{\"aaiHost\":"
-        + "\"localhost\",\"aaiPort\":8080,\"aaiIgnoreSslCertificateErrors\":true,\"aaiProtocol\":"
-        + "\"https\",\"aaiUserName\":\"admin\",\"aaiUserPassword\":\"admin\",\"aaiBasePath\":\"/aai/v11\","
-        + "\"aaiPnfPath\":\"/network/pnfs/pnf\",\"aaiHeaders\":{\"X-FromAppId\":\"datafile\",\"X-TransactionId\":\"9999\","
-        + "\"Accept\":\"application/json\",\"Real-Time\":\"true\",\"Content-Type\":\"application/merge-patch+json\","
-        + "\"Authorization\":\"Basic QUFJOkFBSQ==\"}}},"
-        + "\"dmaap\":{\"dmaapConsumerConfiguration\":{\"consumerGroup\":\"other\",\"consumerId\":\"1\","
-        + "\"dmaapContentType\":\"application/json\",\"dmaapHostName\":\"localhost\",\"dmaapPortNumber\":2222,"
-        + "\"dmaapProtocol\":\"http\",\"dmaapTopicName\":\"temp\",\"dmaapUserName\":\"admin\",\"dmaapUserPassword\""
-        + ":\"admin\",\"messageLimit\":1000,\"timeoutMs\":1000},\"dmaapProducerConfiguration\":{\"dmaapContentType\":"
-        + "\"application/json\",\"dmaapHostName\":\"localhost\",\"dmaapPortNumber\":2223,\"dmaapProtocol\":\"http\","
-        + "\"dmaapTopicName\":\"temp\",\"dmaapUserName\":\"admin\",\"dmaapUserPassword\":\"admin\"}}}}";
-
-    private static final String incorrectJsonString = "{\"configs\":{\"aai\":{\"aaiClientConfiguration\":{\"aaiHost\":"
-        + "\"localhost\",\"aaiPort\":8080,\"aaiIgnoreSslCertificateErrors\":true,\"aaiProtocol\":\"https\","
-        + "\"aaiUserName\":\"admin\",\"aaiUserPassword\":\"admin\",\"aaiBasePath\":\"/aai/v11\",\"aaiPnfPath\":"
-        + "\"/network/pnfs/pnf\",\"aaiHeaders\":{\"X-FromAppId\":\"datafile\",\"X-TransactionId\":\"9999\",\"Accept\":"
-        + "\"application/json\",\"Real-Time\":\"true\",\"Content-Type\":\"application/merge-patch+json\","
-        + "\"Authorization\":\"Basic QUFJOkFBSQ==\"}}},\"dmaap\""
-        + ":{\"dmaapConsumerConfiguration\":{\"consumerGroup\":\"other\",\"consumerId\":\"1\",\"dmaapContentType\""
-        + ":\"application/json\",\"dmaapHostName\":\"localhost\",\"dmaapPortNumber\":2222,\"dmaapProtocol\":\"http\""
-        + ",\"dmaapTopicName\":\"temp\",\"dmaapUserName\":\"admin\",\"dmaapUserPassword\":\"admin\",\"messageLimit\""
-        + ":1000,\"timeoutMs\":1000},\"dmaapProducerConfiguration\":{\"dmaapContentType\":\"application/json\","
-        + "\"dmaapHostName\":\"localhost\",\"dmaapPortNumber\":2223,\"dmaapProtocol\":\"http\",\"dmaaptopicName\""
-        + ":\"temp\",\"dmaapuserName\":\"admin\",\"dmaapuserPassword\":\"admin\"}}}}";
-
+    private static final String jsonString = "{\"configs\":{\"dmaap\":{\"dmaapConsumerConfiguration\":{\"consumerGroup\":\"other\",\"consumerId\":\"1\",\"dmaapContentType\":\"application/json\",\"dmaapHostName\":\"localhost\",\"dmaapPortNumber\":2222,\"dmaapProtocol\":\"http\",\"dmaapTopicName\":\"temp\",\"dmaapUserName\":\"admin\",\"dmaapUserPassword\":\"admin\",\"messageLimit\":1000,\"timeoutMS\":1000},\"dmaapProducerConfiguration\":{\"dmaapContentType\":\"application/json\",\"dmaapHostName\":\"localhost\",\"dmaapPortNumber\":2223,\"dmaapProtocol\":\"http\",\"dmaapTopicName\":\"temp\",\"dmaapUserName\":\"admin\",\"dmaapUserPassword\":\"admin\"}}}}";
+    private static final String incorrectJsonString = "{\"configs\":{\"dmaap\":{\"dmaapConsumerConfiguration\":{\"consumerGroup\":\"other\",\"consumerId\":\"1\",\"dmaapContentType\":\"application/json\",\"dmaapHostName\":\"localhost\",\"dmaapPortNumber\":2222,\"dmaapProtocol\":\"http\",\"dmaapTopicName\":\"temp\",\"dmaapUserName\":\"admin\",\"dmaapUserPassword\":\"admin\",\"messageLimit\":1000,\"timeoutMS\":1000},\"dmaapProducerConfiguration\":{\"dmaapContentType\":\"application/json\",\"dmaapHostName\":\"localhost\",\"dmaapPortNumber\":2223,\"dmaapProtocol\":\"http\",\"dmaaptopicName\":\"temp\",\"dmaapuserName\":\"admin\",\"dmaapuserPassword\":\"admin\"}}}}";
     private static DatafileAppConfig datafileAppConfig;
     private static AppConfig appConfig;
 
@@ -84,13 +58,13 @@ class DatafileAppConfigTest {
         .requireNonNull(DatafileAppConfigTest.class.getClassLoader().getResource(DATAFILE_ENDPOINTS)).getFile();
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         datafileAppConfig = spy(DatafileAppConfig.class);
         appConfig = spy(new AppConfig());
     }
 
     @Test
-    void whenApplicationWasStarted_FilePathIsSet() {
+    public void whenApplicationWasStarted_FilePathIsSet() {
         //
         // When
         //
@@ -104,7 +78,7 @@ class DatafileAppConfigTest {
     }
 
     @Test
-    void whenTheConfigurationFits_GetAaiAndDmaapObjectRepresentationConfiguration()
+    public void whenTheConfigurationFits_GetAaiAndDmaapObjectRepresentationConfiguration()
         throws IOException {
         //
         // Given
@@ -119,26 +93,22 @@ class DatafileAppConfigTest {
         datafileAppConfig.initFileStreamReader();
         appConfig.dmaapConsumerConfiguration = datafileAppConfig.getDmaapConsumerConfiguration();
         appConfig.dmaapPublisherConfiguration = datafileAppConfig.getDmaapPublisherConfiguration();
-        appConfig.aaiClientConfiguration = datafileAppConfig.getAaiClientConfiguration();
         //
         // Then
         //
         verify(datafileAppConfig, times(1)).setFilepath(anyString());
         verify(datafileAppConfig, times(1)).initFileStreamReader();
-        Assertions.assertNotNull(datafileAppConfig.getAaiClientConfiguration());
         Assertions.assertNotNull(datafileAppConfig.getDmaapConsumerConfiguration());
         Assertions.assertNotNull(datafileAppConfig.getDmaapPublisherConfiguration());
         Assertions
             .assertEquals(appConfig.getDmaapPublisherConfiguration(), datafileAppConfig.getDmaapPublisherConfiguration());
         Assertions
             .assertEquals(appConfig.getDmaapConsumerConfiguration(), datafileAppConfig.getDmaapConsumerConfiguration());
-        Assertions
-            .assertEquals(appConfig.getAaiClientConfiguration(), datafileAppConfig.getAaiClientConfiguration());
 
     }
 
     @Test
-    void whenFileIsNotExist_ThrowIoException() {
+    public void whenFileIsNotExist_ThrowIOException() {
         //
         // Given
         //
@@ -153,14 +123,13 @@ class DatafileAppConfigTest {
         //
         verify(datafileAppConfig, times(1)).setFilepath(anyString());
         verify(datafileAppConfig, times(1)).initFileStreamReader();
-        Assertions.assertNull(datafileAppConfig.getAaiClientConfiguration());
         Assertions.assertNull(datafileAppConfig.getDmaapConsumerConfiguration());
         Assertions.assertNull(datafileAppConfig.getDmaapPublisherConfiguration());
 
     }
 
     @Test
-    void whenFileIsExistsButJsonIsIncorrect() throws IOException {
+    public void whenFileIsExistsButJsonIsIncorrect() throws IOException {
         //
         // Given
         //
@@ -178,7 +147,6 @@ class DatafileAppConfigTest {
         //
         verify(datafileAppConfig, times(1)).setFilepath(anyString());
         verify(datafileAppConfig, times(1)).initFileStreamReader();
-        Assertions.assertNotNull(datafileAppConfig.getAaiClientConfiguration());
         Assertions.assertNotNull(datafileAppConfig.getDmaapConsumerConfiguration());
         Assertions.assertNull(datafileAppConfig.getDmaapPublisherConfiguration());
 
@@ -186,7 +154,7 @@ class DatafileAppConfigTest {
 
 
     @Test
-    void whenTheConfigurationFits_ButRootElementIsNotAJsonObject()
+    public void whenTheConfigurationFits_ButRootElementIsNotAJsonObject()
         throws IOException {
         // Given
         InputStream inputStream = new ByteArrayInputStream((jsonString.getBytes(
@@ -200,12 +168,10 @@ class DatafileAppConfigTest {
         datafileAppConfig.initFileStreamReader();
         appConfig.dmaapConsumerConfiguration = datafileAppConfig.getDmaapConsumerConfiguration();
         appConfig.dmaapPublisherConfiguration = datafileAppConfig.getDmaapPublisherConfiguration();
-        appConfig.aaiClientConfiguration = datafileAppConfig.getAaiClientConfiguration();
 
         // Then
         verify(datafileAppConfig, times(1)).setFilepath(anyString());
         verify(datafileAppConfig, times(1)).initFileStreamReader();
-        Assertions.assertNull(datafileAppConfig.getAaiClientConfiguration());
         Assertions.assertNull(datafileAppConfig.getDmaapConsumerConfiguration());
         Assertions.assertNull(datafileAppConfig.getDmaapPublisherConfiguration());
     }

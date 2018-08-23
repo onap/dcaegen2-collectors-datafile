@@ -1,8 +1,6 @@
 /*
  * ============LICENSE_START=======================================================
- * Datafile Collector Service
- * ================================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,37 +15,40 @@
  * limitations under the License.
  * ============LICENSE_END=========================================================
  */
-
 package org.onap.dcaegen2.collectors.datafile.model;
 
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 
 public class ConsumerDmaapModelForUnitTest implements ConsumerDmaapModel {
-
-    private final String pnfName;
-    private final String ipv4;
-    private final String ipv6;
-
-    /**
-     * Class for testing serialization of ConsumerDmaapModel.
-     */
+    private final String location;
+    private final String compression;
+    private final String fileFormatType;
+    private final String fileFormatVersion;
+    
     public ConsumerDmaapModelForUnitTest() {
-        this.pnfName = "NOKnhfsadhff";
-        this.ipv4 = "256.22.33.155";
-        this.ipv6 = "2001:0db8:85a3:0000:0000:8a2e:0370:7334";
-
+    	this.location="target/A20161224.1030-1045.bin.gz";
+        this.compression = "gzip";
+        this.fileFormatType = "org.3GPP.32.435#measCollec";
+        this.fileFormatVersion = "V10";
     }
+    
+    @Override
+    public String getLocation() {
+		return location;
+	}
 
-    public String getPnfName() {
-        return pnfName;
-    }
-
-    public String getIpv4() {
-        return ipv4;
-    }
-
-    public String getIpv6() {
-        return ipv6;
-    }
-
+	@Override
+    public String getCompression() {
+		return compression;
+	}
+    
+    @Override
+	public String getFileFormatType() {
+		return fileFormatType;
+	}
+    
+    @Override
+	public String getFileFormatVersion() {
+		return fileFormatVersion;
+	}
 }
