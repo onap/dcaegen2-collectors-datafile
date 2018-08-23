@@ -1,0 +1,28 @@
+{
+  "configs": {
+    "dmaap": {
+      "dmaapConsumerConfiguration": {
+        "dmaapHostName": "localhost",
+        "dmaapPortNumber": 2222,
+        "dmaapTopicName": "/events/unauthenticated.SEC_OTHER_OUTPUT",
+        "dmaapProtocol": "http",
+        "dmaapUserName": "admin",
+        "dmaapUserPassword": "admin",
+        "dmaapContentType": "application/json",
+        "consumerId": "c12",
+        "consumerGroup": "OpenDcae-c12",
+        "timeoutMS": -1,
+        "messageLimit": 1
+      },
+      "dmaapProducerConfiguration": {
+        "dmaapHostName": "localhost",
+        "dmaapPortNumber": 2223,
+        "dmaapTopicName": "/events/unauthenticated.FILE_READY",
+        "dmaapProtocol": "http",
+        "dmaapUserName": "admin",
+        "dmaapUserPassword": "admin",
+        "dmaapContentType": "application/octet-stream"
+      }
+    }
+  }
+}

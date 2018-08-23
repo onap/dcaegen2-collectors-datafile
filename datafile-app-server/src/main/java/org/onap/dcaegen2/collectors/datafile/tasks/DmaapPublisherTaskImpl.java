@@ -1,8 +1,6 @@
 /*
  * ============LICENSE_START=======================================================
- * PROJECT
- * ================================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,30 +15,34 @@
  * limitations under the License.
  * ============LICENSE_END=========================================================
  */
-
 package org.onap.dcaegen2.collectors.datafile.tasks;
+
+import java.util.ArrayList;
+import java.util.Optional;
 
 import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.Config;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapNotFoundException;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
-import org.onap.dcaegen2.collectors.datafile.service.producer.DMaaPProducerReactiveHttpClient;
+import org.onap.dcaegen2.collectors.datafile.service.producer.ExtendedDmaapProducerHttpClientImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/13/18
+ * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 @Component
-public class DmaapPublisherTaskImpl extends DmaapPublisherTask {
+public class DmaapPublisherTaskImpl extends
+    DmaapPublisherTask<ArrayList<ConsumerDmaapModel>, ArrayList<Integer>, DmaapPublisherConfiguration> {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(DmaapPublisherTaskImpl.class);
     private final Config datafileAppConfig;
-    private DMaaPProducerReactiveHttpClient dmaapProducerReactiveHttpClient;
+    private ExtendedDmaapProducerHttpClientImpl extendedDmaapProducerHttpClient;
 
     @Autowired
     public DmaapPublisherTaskImpl(AppConfig datafileAppConfig) {
@@ -48,31 +50,34 @@ public class DmaapPublisherTaskImpl extends DmaapPublisherTask {
     }
 
     @Override
-    Mono<String> publish(Mono<ConsumerDmaapModel> consumerDmaapModel) {
-        logger.info("Publishing on DMaaP topic {} object {}", resolveConfiguration().dmaapTopicName(),
-            consumerDmaapModel);
-        return dmaapProducerReactiveHttpClient.getDMaaPProducerResponse(consumerDmaapModel);
-    }
-
-    @Override
-    public Mono<String> execute(Mono<ConsumerDmaapModel> consumerDmaapModel) throws DmaapNotFoundException {
-        if (consumerDmaapModel == null) {
-            throw new DmaapNotFoundException("Invoked null object to DMaaP task");
-        }
-        dmaapProducerReactiveHttpClient = resolveClient();
+    Integer publish(ConsumerDmaapModel consumerDmaapModel) throws DmaapNotFoundException {
         logger.trace("Method called with arg {}", consumerDmaapModel);
-        return publish(consumerDmaapModel);
+        return extendedDmaapProducerHttpClient.getHttpProducerResponse(consumerDmaapModel)
+            .filter(response -> response == HttpStatus.OK.value() || response== HttpStatus.NO_CONTENT.value())
+            .orElseThrow(() -> new DmaapNotFoundException("Incorrect response from Dmaap"));
     }
 
     @Override
-    protected DmaapPublisherConfiguration resolveConfiguration() {
+    public ArrayList<Integer> execute(ArrayList<ConsumerDmaapModel> listOfonsumerDmaapModel) throws DmaapNotFoundException {
+    	ArrayList<Integer> res= new ArrayList<Integer>();
+    	listOfonsumerDmaapModel = Optional.ofNullable(listOfonsumerDmaapModel)
+            .orElseThrow(() -> new DmaapNotFoundException("Invoked null object to Dmaap task"));
+        extendedDmaapProducerHttpClient = resolveClient();
+        logger.trace("Method called with arg {}", listOfonsumerDmaapModel);
+        for(int i=0;i<listOfonsumerDmaapModel.size();i++) {
+        	res.add(publish(listOfonsumerDmaapModel.get(i)));
+        }
+        return res;
+    }
+
+    @Override
+    DmaapPublisherConfiguration resolveConfiguration() {
         return datafileAppConfig.getDmaapPublisherConfiguration();
     }
 
     @Override
-    DMaaPProducerReactiveHttpClient resolveClient() {
-        return dmaapProducerReactiveHttpClient == null
-            ? new DMaaPProducerReactiveHttpClient(resolveConfiguration()).createDMaaPWebClient(buildWebClient())
-            : dmaapProducerReactiveHttpClient;
+    ExtendedDmaapProducerHttpClientImpl resolveClient() {
+        return Optional.ofNullable(extendedDmaapProducerHttpClient)
+            .orElseGet(() -> new ExtendedDmaapProducerHttpClientImpl(resolveConfiguration()));
     }
 }

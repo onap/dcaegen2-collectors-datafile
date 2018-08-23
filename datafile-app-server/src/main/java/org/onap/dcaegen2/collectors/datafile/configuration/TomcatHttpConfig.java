@@ -1,7 +1,5 @@
 /*
  * ============LICENSE_START=======================================================
- * Datafile Collector Service
- * ================================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +15,6 @@
  * limitations under the License.
  * ============LICENSE_END=========================================================
  */
-
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import org.apache.catalina.connector.Connector;
@@ -32,11 +29,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TomcatHttpConfig {
 
-    /**
-     * Class for setting up hosting Datafile on http/https.
-     *
-     * @return ServletWebServerFactory
-     */
     @Bean
     public ServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
@@ -47,7 +39,7 @@ public class TomcatHttpConfig {
     private Connector getHttpConnector() {
         Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
         connector.setScheme("http");
-        connector.setPort(8100);
+        connector.setPort(8200);
         connector.setSecure(false);
         return connector;
     }
