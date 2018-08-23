@@ -105,6 +105,23 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_e53b6636",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "Are the trailing spaces here inline with ONAP guidance?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_0570e2a3",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
         "patchSetId": 2
@@ -184,6 +201,23 @@
       "writtenOn": "2018-08-23T10:22:53Z",
       "side": 1,
       "message": "OK. Lets assume that at line 65 exception  is being thrown. It is being caught in catch block, and what then? Does it mean that file has been collected?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_05ea2275",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "Same question on the trailing spaces here",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -332,6 +366,74 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_85fdd23c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapPublisherTaskImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "Think these markers are for tab chars, should probably be spaces.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_2572bee5",
+        "filename": "datafile-app-server/src/main/resources/scheduled-context.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "Tabs here again",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_c578aac6",
+        "filename": "datafile-app-server/src/main/resources/scheduled-context.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "And trailing space",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_280e1335",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/DatafileAppConfigTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "Commenting blank lines is done in only this file. Contrast with (for eg) /datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapPublisherTaskImplTest.java",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_a5e32e32",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpClientTest.java",
         "patchSetId": 2
@@ -383,6 +485,23 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_c842ff3d",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParserTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "Commented out code should be removed.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_25815e4a",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapProducerTaskSpy.java",
         "patchSetId": 2
@@ -394,6 +513,125 @@
       "writtenOn": "2018-08-23T10:22:56Z",
       "side": 1,
       "message": "Copyright info missing",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_8863a7db",
+        "filename": "datafile-app-server/src/test/resources/datafile_endpoints.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "More tab characters here",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_68a08bf4",
+        "filename": "datafile-commons/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "Why \"-SNAPSHOT\"? Is there no released version? Will this cause issues later?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_c8b0bf45",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/ConsumerDmaapModel.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "trailing spaces, mixed tabs and spaces.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_e8ab3bd4",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/ConsumerDmaapModelForUnitTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "trailing spaces, mixed tabs and spaces",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_4884af5d",
+        "filename": "datafile-commons/src/test/java/org/onap/dcaegen2/collectors/datafile/model/utils/HttpUtilsTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "Copyright information",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_2881334a",
+        "filename": "datafile-dmaap-client/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "why \"-SNAPSHOT\", see earlier comment",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_68872b62",
+        "filename": "datafile-dmaap-client/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "trailing spaces, mixed tabs and spaces.",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -417,6 +655,23 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_c8975f8f",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/config/DmaapCustomConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "Copyright missing if import statement is correctly added per Maciej\u0027s comment",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_c5de6a6d",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/config/DmaapCustomConfig.java",
         "patchSetId": 2
@@ -434,6 +689,23 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_48eb4f13",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/response/DMaaPConsumerResponse.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "Previous names were \"Dmaap\", but response files and classes all use \"DMaaP\"?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_65d51642",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/HttpUtils.java",
         "patchSetId": 2
@@ -445,6 +717,23 @@
       "writtenOn": "2018-08-23T10:22:56Z",
       "side": 1,
       "message": "Why did you removed Nokia copyright info?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_08cc77bb",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/ExtendedDmaapProducerHttpClientImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "tabs and trailing spaces",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -479,6 +768,23 @@
       "writtenOn": "2018-08-23T10:22:56Z",
       "side": 1,
       "message": "Copyright info missing",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_e8c01b7e",
+        "filename": "pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-08-23T13:19:03Z",
+      "side": 1,
+      "message": "trailing spaces and tabs",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
