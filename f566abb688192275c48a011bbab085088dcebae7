@@ -1,0 +1,208 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_0570e2a3",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-08-23T10:22:53Z",
+      "side": 1,
+      "message": "class can be final?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_65799692",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-08-23T10:22:53Z",
+      "side": 1,
+      "message": "print stack trace?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_856392db",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-08-23T10:22:53Z",
+      "side": 1,
+      "message": "remove system outs, introduce logging",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_25aabed4",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-08-23T10:22:53Z",
+      "side": 1,
+      "message": "OK. Lets assume that at line 65 exception  is being thrown. It is being caught in catch block, and what then? Does it mean that file has been collected?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_e592869e",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-08-23T10:22:53Z",
+      "side": 1,
+      "message": "Spring has support for SFTP. As this project is based on SpringBoot, which has dependency to Spring, why 3rd party library has been used?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_057ea26b",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-08-23T10:22:53Z",
+      "side": 1,
+      "message": "system out, introduec logging",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_45849a5d",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-08-23T10:22:53Z",
+      "side": 1,
+      "message": "Why not used catching Multiple Exception Types?\n\nHere is example:\nhttps://docs.oracle.com/javase/8/docs/technotes/guides/language/catch-multiple.html",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_25f87ee4",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/FileData.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-08-23T10:22:53Z",
+      "side": 1,
+      "message": "Can this class be final?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_85e87211",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/FileData.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-08-23T10:22:53Z",
+      "side": 1,
+      "message": "Can all attributes be final?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_65ee7624",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/FileData.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-08-23T10:22:53Z",
+      "side": 1,
+      "message": "Why getter \u0026 setter for location as location is being passed in constructor? Can this value be overriden?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_a5e32e32",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpClientTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-08-23T10:22:53Z",
+      "side": 1,
+      "message": "remove commented code",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_45d25a5d",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpClientTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-08-23T10:22:53Z",
+      "side": 1,
+      "message": "remove commented out code",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
