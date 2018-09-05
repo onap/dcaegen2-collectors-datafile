@@ -191,6 +191,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_48beb4b5",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T08:45:29Z",
+      "side": 1,
+      "message": "Static might be appropriate if that method was pure, and even then it would be questionable.\nIf it is static, then you won\u0027t able to unit test the place where it is used.",
+      "parentUuid": "1a76adc5_28bd78d8",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_65799692",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
         "patchSetId": 2
