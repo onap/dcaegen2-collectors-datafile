@@ -294,6 +294,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_c3ae27e6",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-09-05T10:36:11Z",
+      "side": 1,
+      "message": "Surely a method that collects a given file *should* be pure? The only side-effect currently is the writing of said file; is that considered non-pure for this type of use? i.e. given the same parameters it should always write the same file in the same way. With respect to unit testing concerns, production implementation should not be dictated by testing (FYI PowerMock allows mocking of static methods).",
+      "parentUuid": "1a76adc5_48beb4b5",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_65799692",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
         "patchSetId": 2
