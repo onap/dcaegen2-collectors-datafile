@@ -19,6 +19,74 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_a8dd08e2",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:14:35Z",
+      "side": 1,
+      "message": "I personally think that there are too many dependencies here, some of them clash, some of them are provided by spring\u0027s starters already, some of them I think are unneeded.\n\nCan you please check whether this could be sanitized?\nI\u0027d advice to use spring\u0027s starters as much as possible.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_e8cf8027",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:14:35Z",
+      "side": 1,
+      "message": "Why 2 loggings dependencies?\nEither use logback or log4j, there are 2 different slf4j providers I believe and there is no reason to include both.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_085e7c76",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:14:35Z",
+      "side": 1,
+      "message": "do we use testng specific things here anywhere?\nJUnit is already available.\n\nAlso, scope test",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_4868f41c",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:14:35Z",
+      "side": 1,
+      "message": "2.0.4 is out I think. I guess there is nothing that stops us from upgrading at that point.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_c5142a46",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/MainApp.java",
         "patchSetId": 2
@@ -47,6 +115,23 @@
       "writtenOn": "2018-08-23T10:22:56Z",
       "side": 1,
       "message": "Same as above",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_c8dac4e7",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/MainApp.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:14:35Z",
+      "side": 1,
+      "message": "@SpringBootApplication already contains all those 3 annotations below.\nYou could do\n@SpringBootApplication(exclude \u003d {JacksonAutoConfiguration.class})",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -1102,6 +1187,24 @@
       "writtenOn": "2018-09-05T09:05:45Z",
       "side": 1,
       "message": "Overall, testing http clients through unit test is pointless.\nHttp clients care about the interaction that goes through the network and are about IO.\nYou can\u0027t test it in isolation through unit tests properly. You could at most test the internal response transformations if there are any.\n\nThis is a perfect place for an integration test suite.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_88728c0f",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:14:35Z",
+      "side": 1,
+      "message": "You could get away with that using something like Wiremock, \nbut you would need a Contract tests through consumer driven contract design to verify your stubs are correct but that is too much for current ONAP desgin I guess.\nProper integration/inter-component tests would still be superior.",
+      "parentUuid": "1a76adc5_08875cd8",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
