@@ -362,6 +362,23 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_0802fc6e",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:05:45Z",
+      "side": 1,
+      "message": "Are there any requirements specified in case that collecting a file fails?\nThere are 8 Fallacies of distributed computing, one of them says \u0027Network is reliable\u0027.\nWhat if this fails? Should data collection be ignored? Except for error message there will be no indication that file did not collected. \n\nMaybe we should retry the request? I\u0027m not sure about that though. Anyone?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_85f2b2d0",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/FileData.java",
         "patchSetId": 2
@@ -373,6 +390,30 @@
       "writtenOn": "2018-08-23T11:26:24Z",
       "side": 1,
       "message": "Against writing class manually I think that better solution is with usage Immutable library. This has been done in prh/datafile collector for dmaap. Take a look in DmaapCustomConfig/DmaapConsumerConfiguration/DmaapPublisherConfiguration class.",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 23
+      },
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_282ed8fb",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/FileData.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:05:45Z",
+      "side": 1,
+      "message": "Either this, or Lombok.",
+      "parentUuid": "1a76adc5_85f2b2d0",
       "range": {
         "startLine": 28,
         "startChar": 0,
@@ -413,6 +454,23 @@
       "writtenOn": "2018-08-23T10:22:53Z",
       "side": 1,
       "message": "Can all attributes be final?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_68f05091",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/FileData.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:05:45Z",
+      "side": 1,
+      "message": "This javadoc gives no value, please remove it.",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -583,6 +641,24 @@
       "writtenOn": "2018-08-23T10:22:56Z",
       "side": 1,
       "message": "Reomve commented out code.\nPlease do not commint code which youre are not using currently and which you might try to use latter.\nIn fact this class does not test anything as all test are commented.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_a84188aa",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpClientTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:05:45Z",
+      "side": 1,
+      "message": "Also, please consider using either\n1) a fake, in memory file system\n2) Java.io.File.createTempFile() or equivalent so we do not leave and pollute the repository nor require any particular file system structure to run tests.",
+      "parentUuid": "1a76adc5_c5b0aa45",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -861,6 +937,23 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_c83e4428",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/response/DMaaPConsumerResponseImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:05:45Z",
+      "side": 1,
+      "message": "Lombok\u0027s @Value would generate all of this.\nWorth to consider.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_5306a087",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapHttpClientImpl.java",
         "patchSetId": 2
@@ -872,6 +965,24 @@
       "writtenOn": "2018-08-23T15:47:33Z",
       "side": 1,
       "message": "Should logger be final?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_6847f0bc",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapHttpClientImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:05:45Z",
+      "side": 1,
+      "message": "yes",
+      "parentUuid": "1a76adc5_5306a087",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -974,6 +1085,108 @@
       "writtenOn": "2018-08-23T10:22:56Z",
       "side": 1,
       "message": "Copyright info missing",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_08875cd8",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:05:45Z",
+      "side": 1,
+      "message": "Overall, testing http clients through unit test is pointless.\nHttp clients care about the interaction that goes through the network and are about IO.\nYou can\u0027t test it in isolation through unit tests properly. You could at most test the internal response transformations if there are any.\n\nThis is a perfect place for an integration test suite.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_a828a8e2",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:05:45Z",
+      "side": 1,
+      "message": "This test is equivalent to assert 1 \u003d\u003d 1.\n\nYou mock things to return X and then you check that it returned X.\n\nI see no value in such tests.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_0810bca6",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:05:45Z",
+      "side": 1,
+      "message": "please do not write prints in tests",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_481a34cd",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:05:45Z",
+      "side": 1,
+      "message": "This test is equivalent to assert 1 \u003d\u003d 1.\n\nYou mock things to return X and then you check that it returned X.\n\nI see no value in such tests.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_e80a2078",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:05:45Z",
+      "side": 1,
+      "message": "If you need to use reflection to test something then you you need to fix your public interface of the class, rather than use reflection.\n\nPlease redesign this.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_a86f482a",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/producer/ExtendedDmaapProducerHttpClientImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T09:05:45Z",
+      "side": 1,
+      "message": "same as in https://gerrit.onap.org/r/#/c/62009/2/datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.java",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
