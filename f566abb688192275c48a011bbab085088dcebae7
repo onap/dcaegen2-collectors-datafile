@@ -768,6 +768,23 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_43c2175a",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpClientTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 3625
+      },
+      "writtenOn": "2018-09-05T11:33:59Z",
+      "side": 1,
+      "message": "I don\u0027t get it.\nComment says that we should use any free port, which is reasonable, but then you set it here to a hardcoded value of PORT \u003d 8021.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_45d25a5d",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpClientTest.java",
         "patchSetId": 2
