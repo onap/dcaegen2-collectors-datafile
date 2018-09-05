@@ -173,6 +173,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_28bd78d8",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-09-05T08:23:17Z",
+      "side": 1,
+      "message": "As a utility class with no state, should this methods be static? Then there is no need for the getFtpsClient() method in the DmaapConsumerTaskImpl class",
+      "parentUuid": "1a76adc5_0570e2a3",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_65799692",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
         "patchSetId": 2
@@ -252,6 +270,23 @@
       "writtenOn": "2018-08-23T13:19:03Z",
       "side": 1,
       "message": "Same question on the trailing spaces here",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_48c2345a",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-09-05T08:23:17Z",
+      "side": 1,
+      "message": "As a utility class with no state, should this method be static? Then there is no need for the getSftpClient() method in the DmaapConsumerTaskImpl class",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
