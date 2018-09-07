@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "1a76adc5_c9263cce",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 2831
+      },
+      "writtenOn": "2018-09-07T09:47:46Z",
+      "side": 1,
+      "message": "dependency versions should be declared in dependencyManagement section in parent pom",
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_691fe86c",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FileCollector.java",
         "patchSetId": 4
@@ -30,6 +47,40 @@
       "writtenOn": "2018-09-07T09:37:03Z",
       "side": 1,
       "message": "Why e.toString()? maybe just log whole exception or e.getMessage() ?",
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_a900a002",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpClientTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 2831
+      },
+      "writtenOn": "2018-09-07T09:47:46Z",
+      "side": 1,
+      "message": "commented out code",
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_64014f04",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapPublisherTaskImplTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 2831
+      },
+      "writtenOn": "2018-09-07T09:47:46Z",
+      "side": 1,
+      "message": "commented out code",
       "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
