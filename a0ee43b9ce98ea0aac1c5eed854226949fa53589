@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_691fe86c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FileCollector.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-09-07T09:37:03Z",
+      "side": 1,
+      "message": "Do not use PowerMock. Look at Mockito 2.x",
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_491a2c7e",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-09-07T09:37:03Z",
+      "side": 1,
+      "message": "Why e.toString()? maybe just log whole exception or e.getMessage() ?",
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
