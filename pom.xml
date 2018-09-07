@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ ============LICENSE_START=======================================================
-  ~ Datafile Collector Service
-  ~ ================================================================================
-  ~ Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
-  ~ ================================================================================
+  ~ ============LICENSE_START=====================================================================
+  ~ Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
+  ~ ==============================================================================================
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~ http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
-  ~ ============LICENSE_END=========================================================
+  ~ ============LICENSE_END=======================================================================
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -27,13 +25,13 @@
     <groupId>org.onap.oparent</groupId>
     <artifactId>oparent</artifactId>
     <version>0.1.1</version>
-    <relativePath/>
+    <relativePath />
   </parent>
-  <groupId>org.onap.dcaegen2.collectors</groupId>
+  <groupId>org.onap.dcaegen2.services</groupId>
   <artifactId>datafile</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <name>dcaegen2-collectors-datafile</name>
-  <description>Datafile Collector Service</description>
+  <name>dcaegen2-collectors.datafile</name>
+  <description>datafile collector</description>
   <packaging>pom</packaging>
 
   <licenses>
@@ -48,7 +46,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <!-- JAVA VERSION-->
+    <!-- JAVA VERSION -->
     <java.version>8</java.version>
     <compiler.plugin.version>3.7.0</compiler.plugin.version>
     <tomcat.version>8.5.28</tomcat.version>
@@ -73,26 +71,11 @@
     <snapshots.path>content/repositories/snapshots/</snapshots.path>
     <releases.path>content/repositories/releases/</releases.path>
     <site.path>
-      content/sites/site/org/onap/dcaegen2/collectors/datafile/${project.artifactId}/${project.version}
+      content/sites/site/org/onap/dcaegen2/collectors.datafile/${project.artifactId}/${project.version}
     </site.path>
   </properties>
 
   <pluginRepositories>
-
-
-    <pluginRepository>
-      <id>40_openecomp-release</id>
-      <name>40_openecomp-release</name>
-      <url>https://nexus.onap.org/content/repositories/releases/</url>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-
     <!-- Black Duck plugin dependencies -->
     <pluginRepository>
       <id>JCenter</id>
@@ -106,23 +89,10 @@
     </pluginRepository>
   </pluginRepositories>
 
-
   <repositories>
     <repository>
       <id>external-repository</id>
       <url>https://oss.sonatype.org/content/repositories</url>
-    </repository>
-    <repository>
-      <id>40_openecomp-release</id>
-      <name>40_openecomp-release</name>
-      <url>https://nexus.onap.org/content/repositories/releases/</url>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
     </repository>
   </repositories>
 
@@ -214,7 +184,7 @@
           </configuration>
           <executions>
             <execution>
-              <id>Bundling Datafile Jar</id>
+              <id>Bundling DATAFILE Jar</id>
               <phase>package</phase>
               <goals>
                 <goal>bundle</goal>
@@ -223,14 +193,17 @@
           </executions>
         </plugin>
 
-        <!--  maven-surefire-plugin which is used during the test phase of build lifecycle -->
+        <!-- maven-surefire-plugin which is used during the test phase of
+          build lifecycle -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.19.1</version>
           <configuration>
-            <argLine>-Xmx2048m -Djava.awt.headless=true -XX:+UseConcMarkSweepGC
-              -XX:OnOutOfMemoryError="kill -9 %p" -XX:+HeapDumpOnOutOfMemoryError
+            <argLine>-Xmx2048m -Djava.awt.headless=true
+              -XX:+UseConcMarkSweepGC
+              -XX:OnOutOfMemoryError="kill -9 %p"
+              -XX:+HeapDumpOnOutOfMemoryError
             </argLine>
             <redirectTestOutputToFile>${surefire.redirectTestOutputToFile}
             </redirectTestOutputToFile>
@@ -383,7 +356,6 @@
                   <exclude>**/Immutable*</exclude>
                   <exclude>**/GsonAdapters*</exclude>
                   <exclude>**/*ForUnitTest*</exclude>
-                  <exclude>**/AAIConsumer*</exclude>
                 </excludes>
                 <rules>
                   <rule>
@@ -391,12 +363,12 @@
                     <limits>
                       <limit>
                         <value>COVEREDRATIO</value>
-                        <!--<minimum>0.70</minimum>-->
+                        <!--<minimum>0.70</minimum> -->
                       </limit>
                       <limit>
                         <counter>BRANCH</counter>
                         <value>COVEREDRATIO</value>
-                        <!--<minimum>0.70</minimum>-->
+                        <!--<minimum>0.70</minimum> -->
                       </limit>
                     </limits>
                   </rule>
@@ -404,13 +376,6 @@
               </configuration>
             </execution>
           </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <configuration>
-            <skip>true</skip>
-          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -663,6 +628,13 @@
         <version>2.8.0</version>
       </dependency>
 
+      <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
+      <dependency>
+        <groupId>commons-net</groupId>
+        <artifactId>commons-net</artifactId>
+        <version>3.3</version>
+      </dependency>
+
       <!-- ONLY REQUIRED TO RUN TESTS IN AN IDE THAT BUNDLES AN OLDER VERSION -->
       <dependency>
         <groupId>org.junit.platform</groupId>
@@ -675,8 +647,8 @@
   </dependencyManagement>
 
   <modules>
+
     <module>datafile-app-server</module>
-    <module>datafile-aai-client</module>
     <module>datafile-dmaap-client</module>
     <module>datafile-commons</module>
   </modules>

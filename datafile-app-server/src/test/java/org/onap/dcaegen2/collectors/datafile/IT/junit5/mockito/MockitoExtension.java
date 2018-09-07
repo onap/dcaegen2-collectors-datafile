@@ -1,9 +1,7 @@
 /*
- * ============LICENSE_START=======================================================
- * PROJECT
- * ================================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
- * ================================================================================
+ * ============LICENSE_START======================================================================
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
+ * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,10 +13,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * ============LICENSE_END=========================================================
+ * ============LICENSE_END========================================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.integration.junit5.mockito;
+package org.onap.dcaegen2.collectors.datafile.IT.junit5.mockito;
 
 import static org.mockito.Mockito.mock;
 
@@ -36,9 +34,10 @@ import org.mockito.MockitoAnnotations;
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 3/27/18
  *
- *  {@code MockitoExtension } showcases the {@link TestInstancePostProcessor} and {@link ParameterResolver} extension
- *      APIs of JUnit 5 by providing dependency injection support at the field level and at the method parameter level
- *      viaMockito 2.x's {@link Mock @Mock} annotation.
+ *         {@code MockitoExtension} showcases the {@link TestInstancePostProcessor} and
+ *         {@link ParameterResolver} extension APIs of JUnit 5 by providing dependency injection
+ *         support at the field level and at the method parameter level via Mockito 2.x's
+ *         {@link Mock @Mock} annotation.
  */
 public class MockitoExtension implements TestInstancePostProcessor, ParameterResolver {
 
