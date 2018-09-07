@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * PROJECT
  * ================================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import org.springframework.context.annotation.Configuration;
 class ServiceMockProvider {
 
     @Bean
-    public DatafileAppConfig getDatafileAppConfig() {
+    public DatafileAppConfig getPrhAppConfig() {
         return mock(DatafileAppConfig.class);
     }
 

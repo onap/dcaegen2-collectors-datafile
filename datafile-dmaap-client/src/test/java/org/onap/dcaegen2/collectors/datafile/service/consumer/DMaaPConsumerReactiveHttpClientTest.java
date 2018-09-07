@@ -1,9 +1,7 @@
 /*
- * ============LICENSE_START=======================================================
- * Datafile Collector Service
- * ================================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
- * ================================================================================
+ * ============LICENSE_START======================================================================
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
+ * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +13,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * ============LICENSE_END=========================================================
+ * ============LICENSE_END========================================================================
  */
 
 package org.onap.dcaegen2.collectors.datafile.service.consumer;
@@ -29,15 +27,16 @@ import static org.springframework.web.reactive.function.client.ExchangeFilterFun
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import org.apache.http.HttpHeaders;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.config.DmaapConsumerConfiguration;
-import org.onap.dcaegen2.collectors.datafile.service.consumer.DMaaPConsumerReactiveHttpClient;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.RequestHeadersUriSpec;
 import org.springframework.web.reactive.function.client.WebClient.ResponseSpec;
+
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -61,10 +60,10 @@ class DMaaPConsumerReactiveHttpClientTest {
         when(consumerConfigurationMock.dmaapHostName()).thenReturn("54.45.33.2");
         when(consumerConfigurationMock.dmaapProtocol()).thenReturn("https");
         when(consumerConfigurationMock.dmaapPortNumber()).thenReturn(1234);
-        when(consumerConfigurationMock.dmaapUserName()).thenReturn("Datafile");
-        when(consumerConfigurationMock.dmaapUserPassword()).thenReturn("Datafile");
+        when(consumerConfigurationMock.dmaapUserName()).thenReturn("DATAFILE");
+        when(consumerConfigurationMock.dmaapUserPassword()).thenReturn("DATFILE");
         when(consumerConfigurationMock.dmaapContentType()).thenReturn("application/json");
-        when(consumerConfigurationMock.dmaapTopicName()).thenReturn("unauthenticated.SEC_OTHER_OUTPUT");
+        when(consumerConfigurationMock.dmaapTopicName()).thenReturn("unauthenticated.NOTIFICATIONS");
         when(consumerConfigurationMock.consumerGroup()).thenReturn("OpenDCAE-c12");
         when(consumerConfigurationMock.consumerId()).thenReturn("c12");
 

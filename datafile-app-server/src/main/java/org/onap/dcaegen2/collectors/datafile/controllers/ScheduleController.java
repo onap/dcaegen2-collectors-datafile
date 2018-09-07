@@ -1,9 +1,7 @@
 /*
- * ============LICENSE_START=======================================================
- * Datafile Collector Service
- * ================================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
- * ================================================================================
+ * ============LICENSE_START======================================================================
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
+ * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,13 +13,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * ============LICENSE_END=========================================================
+ * ============LICENSE_END========================================================================
  */
 
 package org.onap.dcaegen2.collectors.datafile.controllers;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
 import org.onap.dcaegen2.collectors.datafile.configuration.SchedulerConfig;
 import org.slf4j.Logger;
@@ -32,16 +27,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Mono;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/5/18
+ * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
+
 @RestController
 @Api(value = "ScheduleController", description = "Schedule Controller")
 public class ScheduleController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(ScheduleController.class);
 
     private final SchedulerConfig schedulerConfig;
 

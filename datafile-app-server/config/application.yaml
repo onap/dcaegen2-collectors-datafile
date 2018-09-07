@@ -1,15 +1,13 @@
 spring:
   profiles:
     active: prod
-  main:
-    web-application-type: none
 server:
   port: 8433
   ssl:
     key-store-type: PKCS12
-    key-store-password: nokiapnf
+    key-store-password: ericssondfc
     key-store: classpath:keystore.jks
-    key-password: nokiapnf
+    key-password: ericssondfc
     keyAlias: tomcat-localhost
 logging:
   level:

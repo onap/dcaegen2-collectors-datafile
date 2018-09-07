@@ -1,29 +1,25 @@
 /*
- * ============LICENSE_START=======================================================
- * Datafile Collector Service
- * ================================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
- * ================================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * ============LICENSE_START======================================================================
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
+ * ===============================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * ============LICENSE_END=========================================================
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ * ============LICENSE_END========================================================================
  */
 
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
-import io.swagger.annotations.ApiOperation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
+
 import javax.annotation.PostConstruct;
 
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
@@ -33,6 +29,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
+import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Mono;
 
 /**
@@ -43,7 +41,7 @@ import reactor.core.publisher.Mono;
 public class SchedulerConfig extends DatafileAppConfig {
 
     private static final int SCHEDULING_DELAY = 2000;
-    private static volatile List<ScheduledFuture> scheduledFutureList = new ArrayList<>();
+    private static volatile List<ScheduledFuture> scheduledFutureList = new ArrayList<ScheduledFuture>();
 
     private final TaskScheduler taskScheduler;
     private final ScheduledTasks scheduledTask;
@@ -63,9 +61,8 @@ public class SchedulerConfig extends DatafileAppConfig {
     public synchronized Mono<ResponseEntity<String>> getResponseFromCancellationOfTasks() {
         scheduledFutureList.forEach(x -> x.cancel(false));
         scheduledFutureList.clear();
-        return Mono.defer(() ->
-            Mono.just(new ResponseEntity<>("Datafile Service has already been stopped!", HttpStatus.CREATED))
-        );
+        return Mono.defer(
+                () -> Mono.just(new ResponseEntity<>("PRH Service has already been stopped!", HttpStatus.CREATED)));
     }
 
     /**
@@ -77,8 +74,8 @@ public class SchedulerConfig extends DatafileAppConfig {
     @ApiOperation(value = "Start task if possible")
     public synchronized boolean tryToStartTask() {
         if (scheduledFutureList.isEmpty()) {
-            scheduledFutureList.add(taskScheduler
-                .scheduleWithFixedDelay(scheduledTask::scheduleMainDatafileEventTask, SCHEDULING_DELAY));
+            scheduledFutureList.add(taskScheduler.scheduleWithFixedDelay(scheduledTask::scheduleMainDatafileEventTask,
+                    SCHEDULING_DELAY));
             return true;
         } else {
             return false;
