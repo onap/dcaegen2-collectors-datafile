@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_fbdf2cd4",
+        "filename": "datafile-app-server/opt/log/application.log.2018-08-17.0.gz",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_880407c1",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_a8dd08e2",
         "filename": "datafile-app-server/pom.xml",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2018-09-05T09:14:35Z",
       "side": 1,
       "message": "I personally think that there are too many dependencies here, some of them clash, some of them are provided by spring\u0027s starters already, some of them I think are unneeded.\n\nCan you please check whether this could be sanitized?\nI\u0027d advice to use spring\u0027s starters as much as possible.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_85ea5baa",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_a8dd08e2",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_45d0c3f5",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_e8cf8027",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_085e7c76",
         "filename": "datafile-app-server/pom.xml",
         "patchSetId": 2
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_c3f867c5",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Yes, it is used in ScheduledXmlContextITest.java",
+      "parentUuid": "1a76adc5_085e7c76",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_4868f41c",
         "filename": "datafile-app-server/pom.xml",
         "patchSetId": 2
@@ -81,6 +153,24 @@
       "writtenOn": "2018-09-05T09:14:35Z",
       "side": 1,
       "message": "2.0.4 is out I think. I guess there is nothing that stops us from upgrading at that point.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_3bda84e8",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_4868f41c",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -591,6 +681,24 @@
       "writtenOn": "2018-08-23T10:22:53Z",
       "side": 1,
       "message": "Why getter \u0026 setter for location as location is being passed in constructor? Can this value be overriden?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_83710f46",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/FileData.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Yes, in the current solution it can. Will look in to better solution as an improvement after first version is committed.",
+      "parentUuid": "1a76adc5_65ee7624",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
