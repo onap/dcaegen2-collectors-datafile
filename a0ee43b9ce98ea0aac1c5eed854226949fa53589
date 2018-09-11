@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_82c816a9",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_c9263cce",
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_691fe86c",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FileCollector.java",
         "patchSetId": 4
@@ -59,6 +77,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_42c67e9b",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FileCollector.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_c42e238c",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 5
+      },
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_644f0f6c",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FileCollector.java",
         "patchSetId": 4
@@ -70,6 +112,30 @@
       "writtenOn": "2018-09-07T11:40:07Z",
       "side": 1,
       "message": "I think that the better solution would be return Flux\u003cConsumerDmaapModel\u003e. One of difference between mono and flux is that Mono returns 0..1 \"objects\", Flux 0...N\nThen you might pass them outside for next processing (I mean outside of FileCollector). For this purpose argument for this function can be Flux\u003cFileData\u003e and then you can process them by using flux api methods",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 5
+      },
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_02bc0605",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FileCollector.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "We will be looking in to this when taking care of the error handling properly. At the moment it has not been properly specified in the use case, so this will have to wait until after this patch set has been commited.",
+      "parentUuid": "1a76adc5_644f0f6c",
       "range": {
         "startLine": 61,
         "startChar": 0,
@@ -105,6 +171,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_4d3eaf29",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FileCollector.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_445a132b",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 40
+      },
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_e4423f3d",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FileCollector.java",
         "patchSetId": 4
@@ -116,6 +206,30 @@
       "writtenOn": "2018-09-07T11:40:07Z",
       "side": 1,
       "message": "factory method ? scheme.equals(...) against sampleProtocol.equals(scheme) ?",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 25
+      },
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_c2392ea5",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FileCollector.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Do not understand what you mean. Can you please give a clearer example?",
+      "parentUuid": "1a76adc5_e4423f3d",
       "range": {
         "startLine": 90,
         "startChar": 0,
@@ -151,6 +265,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_424d1e3d",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_04409b32",
+      "range": {
+        "startLine": 44,
+        "startChar": 16,
+        "endLine": 44,
+        "endChar": 27
+      },
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_64762fa6",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
         "patchSetId": 4
@@ -162,6 +300,30 @@
       "writtenOn": "2018-09-07T11:40:07Z",
       "side": 1,
       "message": "if you have got logger I can not understand why are you using java sysout. Everything can be redirected to console or file :)",
+      "range": {
+        "startLine": 61,
+        "startChar": 12,
+        "endLine": 61,
+        "endChar": 101
+      },
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_02e5e636",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_64762fa6",
       "range": {
         "startLine": 61,
         "startChar": 12,
@@ -191,6 +353,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_22e2622f",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_491a2c7e",
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_a45f670e",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParser.java",
         "patchSetId": 4
@@ -202,6 +382,30 @@
       "writtenOn": "2018-09-07T11:40:07Z",
       "side": 1,
       "message": "For this you can change return type object from \u003cMono\u003cArrayList\u003cFileData\u003e\u003e [0 or 1 object inside Mono] to Flux\u003cFileData\u003e. This can be the right way for reactive workflow. It means that workflow of this class have to be refactored",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 78
+      },
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_624a9a27",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "We will be looking in to this when taking care of the error handling properly. At the moment it has not been properly specified in the use case, so this will have to wait until after this patch set has been commited.",
+      "parentUuid": "1a76adc5_a45f670e",
       "range": {
         "startLine": 62,
         "startChar": 4,
@@ -237,6 +441,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_1b046848",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/FileData.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_c45ce31b",
+      "range": {
+        "startLine": 26,
+        "startChar": 3,
+        "endLine": 26,
+        "endChar": 88
+      },
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_649dcfbb",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapConsumerTaskImpl.java",
         "patchSetId": 4
@@ -248,6 +476,24 @@
       "writtenOn": "2018-09-07T11:40:07Z",
       "side": 1,
       "message": "Mono\u003cArrayList\u003cT\u003e\u003e should be changed to Flux\u003cT\u003e (reactive processing)",
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_0253a6e2",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapConsumerTaskImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "We will be looking in to this when taking care of the error handling properly. At the moment it has not been properly specified in the use case, so this will have to wait until after this patch set has been commited.",
+      "parentUuid": "1a76adc5_649dcfbb",
       "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -271,6 +517,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_e2d78a49",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpClientTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_a900a002",
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_64014f04",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapPublisherTaskImplTest.java",
         "patchSetId": 4
@@ -288,6 +552,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_a2cd12b9",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapPublisherTaskImplTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_64014f04",
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_e4b0ff44",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/config/DmaapPublisherConfiguration.java",
         "patchSetId": 4
@@ -299,6 +581,30 @@
       "writtenOn": "2018-09-07T11:40:07Z",
       "side": 1,
       "message": "Do you need this spring annotation?",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 10
+      },
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_225022d3",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/config/DmaapPublisherConfiguration.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_e4b0ff44",
       "range": {
         "startLine": 28,
         "startChar": 0,
@@ -334,6 +640,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_c2604ea7",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapHttpClientImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Is not used, have been removed.",
+      "parentUuid": "1a76adc5_04ae5be6",
+      "range": {
+        "startLine": 33,
+        "startChar": 13,
+        "endLine": 33,
+        "endChar": 32
+      },
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_84890b77",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DMaaPProducerReactiveHttpClient.java",
         "patchSetId": 4
@@ -345,6 +675,30 @@
       "writtenOn": "2018-09-07T11:40:07Z",
       "side": 1,
       "message": "Don\u0027t block, process them as Mono\u003cType\u003e Flux\u003cType\u003e using lambda expression",
+      "range": {
+        "startLine": 82,
+        "startChar": 70,
+        "endLine": 82,
+        "endChar": 75
+      },
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_e2654ab5",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DMaaPProducerReactiveHttpClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_84890b77",
       "range": {
         "startLine": 82,
         "startChar": 70,
@@ -380,6 +734,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_8256d6cc",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DMaaPProducerReactiveHttpClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "We will be looking in to this when taking care of the error handling properly. At the moment it has not been properly specified in the use case, so this will have to wait until after this patch set has been commited.",
+      "parentUuid": "1a76adc5_c4b3834b",
+      "range": {
+        "startLine": 86,
+        "startChar": 8,
+        "endLine": 86,
+        "endChar": 32
+      },
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_247a7777",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DMaaPProducerReactiveHttpClient.java",
         "patchSetId": 4
@@ -391,6 +769,30 @@
       "writtenOn": "2018-09-07T11:40:07Z",
       "side": 1,
       "message": "Mono\u003cString\u003e",
+      "range": {
+        "startLine": 108,
+        "startChar": 12,
+        "endLine": 108,
+        "endChar": 18
+      },
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_a25bd2f4",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DMaaPProducerReactiveHttpClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "We will be looking in to this when taking care of the error handling properly. At the moment it has not been properly specified in the use case, so this will have to wait until after this patch set has been commited.",
+      "parentUuid": "1a76adc5_247a7777",
       "range": {
         "startLine": 108,
         "startChar": 12,
@@ -420,6 +822,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_42743e67",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DMaaPProducerReactiveHttpClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "We will be looking in to this when taking care of the error handling properly. At the moment it has not been properly specified in the use case, so this will have to wait until after this patch set has been commited.",
+      "parentUuid": "1a76adc5_e4979f8e",
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_c48aa363",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DMaaPProducerReactiveHttpClient.java",
         "patchSetId": 4
@@ -431,6 +851,30 @@
       "writtenOn": "2018-09-07T11:40:07Z",
       "side": 1,
       "message": "return Mono.error(e)",
+      "range": {
+        "startLine": 118,
+        "startChar": 12,
+        "endLine": 119,
+        "endChar": 32
+      },
+      "revId": "a0ee43b9ce98ea0aac1c5eed854226949fa53589",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_62713a75",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DMaaPProducerReactiveHttpClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-11T11:30:57Z",
+      "side": 1,
+      "message": "We will be looking in to this when taking care of the error handling properly. At the moment it has not been properly specified in the use case, so this will have to wait until after this patch set has been commited.",
+      "parentUuid": "1a76adc5_c48aa363",
       "range": {
         "startLine": 118,
         "startChar": 12,
