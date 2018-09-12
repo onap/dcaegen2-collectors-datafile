@@ -16,18 +16,15 @@
  * ============LICENSE_END========================================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.exceptions;
+package org.onap.dcaegen2.collectors.datafile.service;
 
-/**
- * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
- */
-public class DatafileTaskException extends Exception {
+import org.apache.http.HttpStatus;
 
-    public DatafileTaskException() {
-        super();
-    }
+public final class HttpUtils implements HttpStatus {
 
-    public DatafileTaskException(String message) {
-        super(message);
+    private HttpUtils() {}
+
+    public static boolean isSuccessfulResponseCode(Integer statusCode) {
+        return statusCode >= 200 && statusCode < 300;
     }
 }

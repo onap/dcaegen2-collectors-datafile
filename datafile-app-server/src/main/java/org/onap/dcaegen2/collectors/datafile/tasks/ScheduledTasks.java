@@ -1,9 +1,7 @@
 /*
- * ============LICENSE_START=======================================================
- * Datafile Collector Service
- * ================================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
- * ================================================================================
+ * ============LICENSE_START======================================================================
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
+ * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,59 +13,57 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * ============LICENSE_END=========================================================
+ * ============LICENSE_END========================================================================
  */
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
-import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapEmptyResponseException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapEmptyResponseException;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 3/23/18
+ * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 @Component
 public class ScheduledTasks {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);
 
     private final DmaapConsumerTask dmaapConsumerTask;
     private final DmaapPublisherTask dmaapProducerTask;
-    private final AaiProducerTask aaiProducerTask;
 
     /**
-     * Constructor for tasks registration in DatafileWorkflow.
+     * Constructor for task registration in Datafile Workflow.
      *
      * @param dmaapConsumerTask - fist task
-     * @param dmaapPublisherTask - third task
-     * @param aaiPublisherTask - second task
+     * @param dmaapPublisherTask - second task
      */
     @Autowired
-    public ScheduledTasks(DmaapConsumerTask dmaapConsumerTask, DmaapPublisherTask dmaapPublisherTask,
-        AaiProducerTask aaiPublisherTask) {
+    public ScheduledTasks(DmaapConsumerTask dmaapConsumerTask, DmaapPublisherTask dmaapPublisherTask) {
         this.dmaapConsumerTask = dmaapConsumerTask;
         this.dmaapProducerTask = dmaapPublisherTask;
-        this.aaiProducerTask = aaiPublisherTask;
     }
 
     /**
-     * Main function for scheduling datafileWorkflow.
+     * Main function for scheduling Datafile Workflow.
      */
     public void scheduleMainDatafileEventTask() {
         logger.trace("Execution of tasks was registered");
 
-        Mono<String> dmaapProducerResponse = Mono.fromCallable(consumeFromDMaaPMessage())
+        Mono<String> dmaapProducerResponse = Mono.fromCallable(consumeFromDmaapMessage())
             .doOnError(DmaapEmptyResponseException.class, error -> logger.warn("Nothing to consume from DMaaP"))
-            .map(this::publishToAaiConfiguration)
             .flatMap(this::publishToDmaapConfiguration)
             .subscribeOn(Schedulers.elastic());
 
@@ -88,24 +84,16 @@ public class ScheduledTasks {
         }
     }
 
-    private Callable<Mono<ConsumerDmaapModel>> consumeFromDMaaPMessage() {
+    private Callable<Mono<ArrayList<ConsumerDmaapModel>>> consumeFromDmaapMessage() {
         return () -> {
             dmaapConsumerTask.initConfigs();
             return dmaapConsumerTask.execute("");
         };
     }
 
-    private Mono<ConsumerDmaapModel> publishToAaiConfiguration(Mono<ConsumerDmaapModel> monoDMaaPModel) {
+    private Mono<String> publishToDmaapConfiguration(Mono<ArrayList<ConsumerDmaapModel>> monoModel) {
         try {
-            return aaiProducerTask.execute(monoDMaaPModel);
-        } catch (DatafileTaskException e) {
-            return Mono.error(e);
-        }
-    }
-
-    private Mono<String> publishToDmaapConfiguration(Mono<ConsumerDmaapModel> monoAaiModel) {
-        try {
-            return dmaapProducerTask.execute(monoAaiModel);
+            return dmaapProducerTask.execute(monoModel);
         } catch (DatafileTaskException e) {
             return Mono.error(e);
         }

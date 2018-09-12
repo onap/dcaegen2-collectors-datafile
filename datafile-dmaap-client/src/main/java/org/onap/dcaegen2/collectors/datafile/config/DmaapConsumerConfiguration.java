@@ -1,9 +1,7 @@
 /*
- * ============LICENSE_START=======================================================
- * Datafile Collector Service
- * ================================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
- * ================================================================================
+ * ============LICENSE_START======================================================================
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
+ * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,14 +13,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * ============LICENSE_END=========================================================
+ * ============LICENSE_END========================================================================
  */
 
 package org.onap.dcaegen2.collectors.datafile.config;
 
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
-import org.onap.dcaegen2.collectors.datafile.config.ImmutableDmaapConsumerConfiguration;
 import org.springframework.stereotype.Component;
 
 /**
@@ -43,20 +40,20 @@ public abstract class DmaapConsumerConfiguration implements DmaapCustomConfig {
     public abstract String consumerGroup();
 
     @Value.Parameter
-    public abstract Integer timeoutMs();
+    public abstract Integer timeoutMS();
 
     @Value.Parameter
     public abstract Integer messageLimit();
 
 
-    public interface Builder extends
-        DmaapCustomConfig.Builder<DmaapConsumerConfiguration, DmaapConsumerConfiguration.Builder> {
+    public interface Builder
+            extends DmaapCustomConfig.Builder<DmaapConsumerConfiguration, DmaapConsumerConfiguration.Builder> {
 
         Builder consumerId(String consumerId);
 
         Builder consumerGroup(String consumerGroup);
 
-        Builder timeoutMs(Integer timeoutMs);
+        Builder timeoutMS(Integer timeoutMS);
 
         Builder messageLimit(Integer messageLimit);
     }
