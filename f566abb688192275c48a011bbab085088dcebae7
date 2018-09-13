@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_ed6c440a",
+        "filename": "datafile-app-server/opt/log/application.log.2018-08-17.0.gz",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_fbdf2cd4",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_a8dd08e2",
         "filename": "datafile-app-server/pom.xml",
         "patchSetId": 2
@@ -194,6 +212,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_2da55cb5",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/MainApp.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_c5142a46",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_e50fe62c",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/MainApp.java",
         "patchSetId": 2
@@ -228,6 +264,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_edaa0484",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/MainApp.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_c8dac4e7",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_d38ab0be",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
         "patchSetId": 2
@@ -239,6 +293,24 @@
       "writtenOn": "2018-08-23T16:21:00Z",
       "side": 1,
       "message": "Which date format convention is used? US, UK, ISO-8601? Maybe there is guidance on this within ONAP already",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_0dae6098",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_d38ab0be",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -262,6 +334,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_ad7f2c14",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/TomcatHttpConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "File no longer exist",
+      "parentUuid": "1a76adc5_a519ee7a",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_652bd682",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/TomcatHttpConfig.java",
         "patchSetId": 2
@@ -273,6 +363,24 @@
       "writtenOn": "2018-08-23T10:22:56Z",
       "side": 1,
       "message": "as above",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_cd7aa823",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/TomcatHttpConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "File no longer exist",
+      "parentUuid": "1a76adc5_652bd682",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -325,6 +433,24 @@
       "writtenOn": "2018-08-23T13:19:03Z",
       "side": 1,
       "message": "Are the trailing spaces here inline with ONAP guidance?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_4d969840",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_e53b6636",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -419,6 +545,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_6dacb48c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_65799692",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_856392db",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
         "patchSetId": 2
@@ -453,6 +597,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_2dba3cc1",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_8535d2db",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_25aabed4",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
         "patchSetId": 2
@@ -481,6 +643,24 @@
       "writtenOn": "2018-08-23T13:19:03Z",
       "side": 1,
       "message": "Same question on the trailing spaces here",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_8d7b50bd",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_05ea2275",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -532,6 +712,24 @@
       "writtenOn": "2018-08-23T10:22:53Z",
       "side": 1,
       "message": "system out, introduec logging",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_ad616c06",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_057ea26b",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -619,6 +817,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_edaf647b",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/FileData.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_85f2b2d0",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 23
+      },
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_25f87ee4",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/FileData.java",
         "patchSetId": 2
@@ -630,6 +852,24 @@
       "writtenOn": "2018-08-23T10:22:53Z",
       "side": 1,
       "message": "Can this class be final?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_0db3c0e9",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/FileData.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_25f87ee4",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -653,6 +893,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_adcdec67",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/FileData.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_85e87211",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_68f05091",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/FileData.java",
         "patchSetId": 2
@@ -664,6 +922,24 @@
       "writtenOn": "2018-09-05T09:05:45Z",
       "side": 1,
       "message": "This javadoc gives no value, please remove it.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_cdc86857",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/FileData.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_68f05091",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -722,6 +998,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_6dc35438",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapConsumerTaskImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_c542ea3d",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_85fdd23c",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapPublisherTaskImpl.java",
         "patchSetId": 2
@@ -733,6 +1027,24 @@
       "writtenOn": "2018-08-23T13:19:03Z",
       "side": 1,
       "message": "Think these markers are for tab chars, should probably be spaces.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_8dbef0ac",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapPublisherTaskImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_85fdd23c",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -756,6 +1068,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_ede684e7",
+        "filename": "datafile-app-server/src/main/resources/scheduled-context.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_2572bee5",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_c578aac6",
         "filename": "datafile-app-server/src/main/resources/scheduled-context.xml",
         "patchSetId": 2
@@ -767,6 +1097,24 @@
       "writtenOn": "2018-08-23T13:19:03Z",
       "side": 1,
       "message": "And trailing space",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_0deae0ab",
+        "filename": "datafile-app-server/src/main/resources/scheduled-context.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_c578aac6",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -790,6 +1138,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_0db740f6",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/DatafileAppConfigTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_e8781b2d",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_d3b15090",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/DatafileAppConfigTest.java",
         "patchSetId": 2
@@ -807,6 +1173,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_add16c24",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/DatafileAppConfigTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_d3b15090",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_280e1335",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/DatafileAppConfigTest.java",
         "patchSetId": 2
@@ -818,6 +1202,24 @@
       "writtenOn": "2018-08-23T13:19:03Z",
       "side": 1,
       "message": "Commenting blank lines is done in only this file. Contrast with (for eg) /datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapPublisherTaskImplTest.java",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_cdcce88b",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/DatafileAppConfigTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_280e1335",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -876,6 +1278,60 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_4dc1b852",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpClientTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_a5e32e32",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_cdf6288f",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpClientTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Should be refactored to use wrappers to make it possible to mock file system and ftp server.",
+      "parentUuid": "1a76adc5_a84188aa",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_ad288c9a",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpClientTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_c5b0aa45",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_43c2175a",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpClientTest.java",
         "patchSetId": 2
@@ -887,6 +1343,24 @@
       "writtenOn": "2018-09-05T11:33:59Z",
       "side": 1,
       "message": "I don\u0027t get it.\nComment says that we should use any free port, which is reasonable, but then you set it here to a hardcoded value of PORT \u003d 8021.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_8dd590e6",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpClientTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Should remove comment",
+      "parentUuid": "1a76adc5_43c2175a",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -910,6 +1384,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_edb3e407",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpClientTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_45d25a5d",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_c842ff3d",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParserTest.java",
         "patchSetId": 2
@@ -921,6 +1413,24 @@
       "writtenOn": "2018-08-23T13:19:03Z",
       "side": 1,
       "message": "Commented out code should be removed.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_8decb0bc",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParserTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Should be removed",
+      "parentUuid": "1a76adc5_c842ff3d",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -944,6 +1454,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_4d321860",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapProducerTaskSpy.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "File no longer exist",
+      "parentUuid": "1a76adc5_25815e4a",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_8863a7db",
         "filename": "datafile-app-server/src/test/resources/datafile_endpoints.json",
         "patchSetId": 2
@@ -955,6 +1483,24 @@
       "writtenOn": "2018-08-23T13:19:03Z",
       "side": 1,
       "message": "More tab characters here",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_0d38a03b",
+        "filename": "datafile-app-server/src/test/resources/datafile_endpoints.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_8863a7db",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -978,6 +1524,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_2d16bca8",
+        "filename": "datafile-commons/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "This is the way it is in the original file",
+      "parentUuid": "1a76adc5_68a08bf4",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_b3d7f4ec",
         "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/CommonFunctions.java",
         "patchSetId": 2
@@ -989,6 +1553,24 @@
       "writtenOn": "2018-08-23T15:47:33Z",
       "side": 1,
       "message": "Should logger be final?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_4d19b8d5",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/CommonFunctions.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_b3d7f4ec",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -1012,6 +1594,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_ed0be47a",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/ConsumerDmaapModel.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_c8b0bf45",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_e8ab3bd4",
         "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/ConsumerDmaapModelForUnitTest.java",
         "patchSetId": 2
@@ -1023,6 +1623,24 @@
       "writtenOn": "2018-08-23T13:19:03Z",
       "side": 1,
       "message": "trailing spaces, mixed tabs and spaces",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_0d0f4089",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/ConsumerDmaapModelForUnitTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_e8ab3bd4",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -1046,6 +1664,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_ad296ce7",
+        "filename": "datafile-commons/src/test/java/org/onap/dcaegen2/collectors/datafile/model/ConsumerDmaapModelTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_934af8c3",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_4884af5d",
         "filename": "datafile-commons/src/test/java/org/onap/dcaegen2/collectors/datafile/model/utils/HttpUtilsTest.java",
         "patchSetId": 2
@@ -1057,6 +1693,24 @@
       "writtenOn": "2018-08-23T13:19:03Z",
       "side": 1,
       "message": "Copyright information",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_0d8660db",
+        "filename": "datafile-commons/src/test/java/org/onap/dcaegen2/collectors/datafile/model/utils/HttpUtilsTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_4884af5d",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -1080,6 +1734,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_6d76f407",
+        "filename": "datafile-dmaap-client/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Same in original file",
+      "parentUuid": "1a76adc5_2881334a",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_68872b62",
         "filename": "datafile-dmaap-client/pom.xml",
         "patchSetId": 2
@@ -1091,6 +1763,24 @@
       "writtenOn": "2018-08-23T13:19:03Z",
       "side": 1,
       "message": "trailing spaces, mixed tabs and spaces.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_2d647c48",
+        "filename": "datafile-dmaap-client/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_68872b62",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -1114,6 +1804,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_0d5d0079",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/config/DmaapConsumerConfiguration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_05f542ed",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_c8975f8f",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/config/DmaapCustomConfig.java",
         "patchSetId": 2
@@ -1125,6 +1833,24 @@
       "writtenOn": "2018-08-23T13:19:03Z",
       "side": 1,
       "message": "Copyright missing if import statement is correctly added per Maciej\u0027s comment",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_6d4d94c3",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/config/DmaapCustomConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_c8975f8f",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -1148,6 +1874,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_8d4830b4",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/config/DmaapCustomConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_c5de6a6d",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_48eb4f13",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/response/DMaaPConsumerResponse.java",
         "patchSetId": 2
@@ -1165,6 +1909,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_2dcb1c20",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/response/DMaaPConsumerResponse.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_48eb4f13",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_c83e4428",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/response/DMaaPConsumerResponseImpl.java",
         "patchSetId": 2
@@ -1176,6 +1938,24 @@
       "writtenOn": "2018-09-05T09:05:45Z",
       "side": 1,
       "message": "Lombok\u0027s @Value would generate all of this.\nWorth to consider.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_0dd420bb",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/response/DMaaPConsumerResponseImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "File no longer exist",
+      "parentUuid": "1a76adc5_c83e4428",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -1217,6 +1997,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_adde4cdb",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapHttpClientImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_6847f0bc",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_65d51642",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/HttpUtils.java",
         "patchSetId": 2
@@ -1228,6 +2026,24 @@
       "writtenOn": "2018-08-23T10:22:56Z",
       "side": 1,
       "message": "Why did you removed Nokia copyright info?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_4d9c580f",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/HttpUtils.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_65d51642",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -1251,6 +2067,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_ed9e8406",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "File no longer exist",
+      "parentUuid": "1a76adc5_3303e474",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_b3ee14b3",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/ExtendedDmaapProducerHttpClientImpl.java",
         "patchSetId": 2
@@ -1262,6 +2096,24 @@
       "writtenOn": "2018-08-23T15:47:33Z",
       "side": 1,
       "message": "should logger be final?",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_ad8c0cdb",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/ExtendedDmaapProducerHttpClientImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "File no longer exist",
+      "parentUuid": "1a76adc5_b3ee14b3",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -1285,6 +2137,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_cd8708b4",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/ExtendedDmaapProducerHttpClientImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "File no longer exist",
+      "parentUuid": "1a76adc5_08cc77bb",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_25cf1eb2",
         "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/config/DmaapConsumerConfigurationTest.java",
         "patchSetId": 2
@@ -1302,6 +2172,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_8d8d90d5",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/config/DmaapConsumerConfigurationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_25cf1eb2",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_e5c0467e",
         "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/config/DmaapPublisherConfigurationTest.java",
         "patchSetId": 2
@@ -1313,6 +2201,24 @@
       "writtenOn": "2018-08-23T10:22:56Z",
       "side": 1,
       "message": "Copyright info missing",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_4dc3f8ec",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/config/DmaapPublisherConfigurationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_e5c0467e",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -1354,6 +2260,42 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_6d2ef4a6",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "File no longer exist",
+      "parentUuid": "1a76adc5_08875cd8",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_edb5247e",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "File no longer exist",
+      "parentUuid": "1a76adc5_88728c0f",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_a828a8e2",
         "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.java",
         "patchSetId": 2
@@ -1365,6 +2307,24 @@
       "writtenOn": "2018-09-05T09:05:45Z",
       "side": 1,
       "message": "This test is equivalent to assert 1 \u003d\u003d 1.\n\nYou mock things to return X and then you check that it returned X.\n\nI see no value in such tests.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_8da4b04b",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "File no longer exist",
+      "parentUuid": "1a76adc5_a828a8e2",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -1388,6 +2348,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_6da91423",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "File no longer exist",
+      "parentUuid": "1a76adc5_0810bca6",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_481a34cd",
         "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.java",
         "patchSetId": 2
@@ -1399,6 +2377,24 @@
       "writtenOn": "2018-09-05T09:05:45Z",
       "side": 1,
       "message": "This test is equivalent to assert 1 \u003d\u003d 1.\n\nYou mock things to return X and then you check that it returned X.\n\nI see no value in such tests.",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_cdae282e",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "File no longer exist",
+      "parentUuid": "1a76adc5_481a34cd",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -1422,6 +2418,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_adb3ac96",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "File no longer exist",
+      "parentUuid": "1a76adc5_e80a2078",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_a86f482a",
         "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/producer/ExtendedDmaapProducerHttpClientImplTest.java",
         "patchSetId": 2
@@ -1439,6 +2453,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_2d679c27",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/producer/ExtendedDmaapProducerHttpClientImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "File no longer exist",
+      "parentUuid": "1a76adc5_a86f482a",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_e8c01b7e",
         "filename": "pom.xml",
         "patchSetId": 2
@@ -1450,6 +2482,24 @@
       "writtenOn": "2018-08-23T13:19:03Z",
       "side": 1,
       "message": "trailing spaces and tabs",
+      "revId": "f566abb688192275c48a011bbab085088dcebae7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_4d6a18ef",
+        "filename": "pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_e8c01b7e",
       "revId": "f566abb688192275c48a011bbab085088dcebae7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false

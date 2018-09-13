@@ -16,6 +16,24 @@
       "revId": "d661dbcf431f0f02ecf98f748e3516ba0ab23dff",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_2de1dcd0",
+        "filename": "datafile-app-server/src/main/resources/keystore.jks.old",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-13T13:15:29Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "1a76adc5_6568b6f5",
+      "revId": "d661dbcf431f0f02ecf98f748e3516ba0ab23dff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
