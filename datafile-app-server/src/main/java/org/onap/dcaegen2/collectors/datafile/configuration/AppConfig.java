@@ -1,9 +1,7 @@
 /*
- * ============LICENSE_START=======================================================
- * Datafile Collector Service
- * ================================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
- * ================================================================================
+ * ============LICENSE_START======================================================================
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
+ * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,35 +13,30 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * ============LICENSE_END=========================================================
+ * ============LICENSE_END========================================================================
  */
 
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import java.util.Optional;
 
-import java.util.function.Predicate;
-
-import org.onap.dcaegen2.collectors.datafile.config.AaiClientConfiguration;
 import org.onap.dcaegen2.collectors.datafile.config.DmaapConsumerConfiguration;
 import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
-import org.onap.dcaegen2.collectors.datafile.config.ImmutableAaiClientConfiguration;
 import org.onap.dcaegen2.collectors.datafile.config.ImmutableDmaapConsumerConfiguration;
 import org.onap.dcaegen2.collectors.datafile.config.ImmutableDmaapPublisherConfiguration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-
 /**
- * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/9/18
+ * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 3/23/18
+ * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 
 @Component
 @Configuration
 public class AppConfig extends DatafileAppConfig {
 
-    private static Predicate<String> isEmpty = String::isEmpty;
     @Value("${dmaap.dmaapConsumerConfiguration.dmaapHostName:}")
     public String consumerDmaapHostName;
 
@@ -71,8 +64,8 @@ public class AppConfig extends DatafileAppConfig {
     @Value("${dmaap.dmaapConsumerConfiguration.consumerGroup:}")
     public String consumerGroup;
 
-    @Value("${dmaap.dmaapConsumerConfiguration.timeoutMs:}")
-    public Integer consumerTimeoutMs;
+    @Value("${dmaap.dmaapConsumerConfiguration.timeoutMS:}")
+    public Integer consumerTimeoutMS;
 
     @Value("${dmaap.dmaapConsumerConfiguration.message-limit:}")
     public Integer consumerMessageLimit;
@@ -98,87 +91,39 @@ public class AppConfig extends DatafileAppConfig {
     @Value("${dmaap.dmaapProducerConfiguration.dmaapContentType:}")
     public String producerDmaapContentType;
 
-    @Value("${aai.aaiClientConfiguration.aaiHost:}")
-    public String aaiHost;
-
-    @Value("${aai.aaiClientConfiguration.aaiHostPortNumber:}")
-    public Integer aaiPort;
-
-    @Value("${aai.aaiClientConfiguration.aaiProtocol:}")
-    public String aaiProtocol;
-
-    @Value("${aai.aaiClientConfiguration.aaiUserName:}")
-    public String aaiUserName;
-
-    @Value("${aai.aaiClientConfiguration.aaiUserPassword:}")
-    public String aaiUserPassword;
-
-    @Value("${aai.aaiClientConfiguration.aaiIgnoreSslCertificateErrors:}")
-    public Boolean aaiIgnoreSslCertificateErrors;
-
-    @Value("${aai.aaiClientConfiguration.aaiBasePath:}")
-    public String aaiBasePath;
-
-    @Value("${aai.aaiClientConfiguration.aaiPnfPath:}")
-    public String aaiPnfPath;
-
     @Override
     public DmaapConsumerConfiguration getDmaapConsumerConfiguration() {
         return new ImmutableDmaapConsumerConfiguration.Builder()
             .dmaapUserPassword(
-                Optional.ofNullable(consumerDmaapUserPassword).filter(isEmpty.negate())
+                Optional.ofNullable(consumerDmaapUserPassword).filter(p -> !p.isEmpty())
                     .orElse(dmaapConsumerConfiguration.dmaapUserPassword()))
             .dmaapUserName(
-                Optional.ofNullable(consumerDmaapUserName).filter(isEmpty.negate())
+                Optional.ofNullable(consumerDmaapUserName).filter(p -> !p.isEmpty())
                     .orElse(dmaapConsumerConfiguration.dmaapUserName()))
             .dmaapHostName(
-                Optional.ofNullable(consumerDmaapHostName).filter(isEmpty.negate())
+                Optional.ofNullable(consumerDmaapHostName).filter(p -> !p.isEmpty())
                     .orElse(dmaapConsumerConfiguration.dmaapHostName()))
             .dmaapPortNumber(
                 Optional.ofNullable(consumerDmaapPortNumber).filter(p -> !p.toString().isEmpty())
                     .orElse(dmaapConsumerConfiguration.dmaapPortNumber()))
             .dmaapProtocol(
-                Optional.ofNullable(consumerDmaapProtocol).filter(isEmpty.negate())
+                Optional.ofNullable(consumerDmaapProtocol).filter(p -> !p.isEmpty())
                     .orElse(dmaapConsumerConfiguration.dmaapProtocol()))
             .dmaapContentType(
-                Optional.ofNullable(consumerDmaapContentType).filter(isEmpty.negate())
+                Optional.ofNullable(consumerDmaapContentType).filter(p -> !p.isEmpty())
                     .orElse(dmaapConsumerConfiguration.dmaapContentType()))
             .dmaapTopicName(
-                Optional.ofNullable(consumerDmaapTopicName).filter(isEmpty.negate())
+                Optional.ofNullable(consumerDmaapTopicName).filter(p -> !p.isEmpty())
                     .orElse(dmaapConsumerConfiguration.dmaapTopicName()))
             .messageLimit(
                 Optional.ofNullable(consumerMessageLimit).filter(p -> !p.toString().isEmpty())
                     .orElse(dmaapConsumerConfiguration.messageLimit()))
-            .timeoutMs(Optional.ofNullable(consumerTimeoutMs).filter(p -> !p.toString().isEmpty())
-                .orElse(dmaapConsumerConfiguration.timeoutMs()))
-            .consumerGroup(Optional.ofNullable(consumerGroup).filter(isEmpty.negate())
+            .timeoutMS(Optional.ofNullable(consumerTimeoutMS).filter(p -> !p.toString().isEmpty())
+                .orElse(dmaapConsumerConfiguration.timeoutMS()))
+            .consumerGroup(Optional.ofNullable(consumerGroup).filter(p -> !p.isEmpty())
                 .orElse(dmaapConsumerConfiguration.consumerGroup()))
-            .consumerId(Optional.ofNullable(consumerId).filter(isEmpty.negate())
+            .consumerId(Optional.ofNullable(consumerId).filter(p -> !p.isEmpty())
                 .orElse(dmaapConsumerConfiguration.consumerId()))
-            .build();
-    }
-
-    @Override
-    public AaiClientConfiguration getAaiClientConfiguration() {
-        return new ImmutableAaiClientConfiguration.Builder()
-            .aaiHost(Optional.ofNullable(aaiHost).filter(isEmpty.negate()).orElse(aaiClientConfiguration.aaiHost()))
-            .aaiPort(
-                Optional.ofNullable(aaiPort).filter(p -> !p.toString().isEmpty())
-                    .orElse(aaiClientConfiguration.aaiPort()))
-            .aaiIgnoreSslCertificateErrors(
-                Optional.ofNullable(aaiIgnoreSslCertificateErrors).filter(p -> !p.toString().isEmpty())
-                    .orElse(aaiClientConfiguration.aaiIgnoreSslCertificateErrors()))
-            .aaiProtocol(
-                Optional.ofNullable(aaiProtocol).filter(isEmpty.negate()).orElse(aaiClientConfiguration.aaiProtocol()))
-            .aaiUserName(
-                Optional.ofNullable(aaiUserName).filter(isEmpty.negate()).orElse(aaiClientConfiguration.aaiUserName()))
-            .aaiUserPassword(Optional.ofNullable(aaiUserPassword).filter(isEmpty.negate())
-                .orElse(aaiClientConfiguration.aaiUserPassword()))
-            .aaiBasePath(Optional.ofNullable(aaiBasePath).filter(isEmpty.negate())
-                .orElse(aaiClientConfiguration.aaiBasePath()))
-            .aaiPnfPath(
-                Optional.ofNullable(aaiPnfPath).filter(isEmpty.negate()).orElse(aaiClientConfiguration.aaiPnfPath()))
-            .aaiHeaders(aaiClientConfiguration.aaiHeaders())
             .build();
     }
 
@@ -186,25 +131,25 @@ public class AppConfig extends DatafileAppConfig {
     public DmaapPublisherConfiguration getDmaapPublisherConfiguration() {
         return new ImmutableDmaapPublisherConfiguration.Builder()
             .dmaapContentType(
-                Optional.ofNullable(producerDmaapContentType).filter(isEmpty.negate())
+                Optional.ofNullable(producerDmaapContentType).filter(p -> !p.isEmpty())
                     .orElse(dmaapPublisherConfiguration.dmaapContentType()))
             .dmaapHostName(
-                Optional.ofNullable(producerDmaapHostName).filter(isEmpty.negate())
+                Optional.ofNullable(producerDmaapHostName).filter(p -> !p.isEmpty())
                     .orElse(dmaapPublisherConfiguration.dmaapHostName()))
             .dmaapPortNumber(
                 Optional.ofNullable(producerDmaapPortNumber).filter(p -> !p.toString().isEmpty())
                     .orElse(dmaapPublisherConfiguration.dmaapPortNumber()))
             .dmaapProtocol(
-                Optional.ofNullable(producerDmaapProtocol).filter(isEmpty.negate())
+                Optional.ofNullable(producerDmaapProtocol).filter(p -> !p.isEmpty())
                     .orElse(dmaapPublisherConfiguration.dmaapProtocol()))
             .dmaapTopicName(
-                Optional.ofNullable(producerDmaapTopicName).filter(isEmpty.negate())
+                Optional.ofNullable(producerDmaapTopicName).filter(p -> !p.isEmpty())
                     .orElse(dmaapPublisherConfiguration.dmaapTopicName()))
             .dmaapUserName(
-                Optional.ofNullable(producerDmaapUserName).filter(isEmpty.negate())
+                Optional.ofNullable(producerDmaapUserName).filter(p -> !p.isEmpty())
                     .orElse(dmaapPublisherConfiguration.dmaapUserName()))
             .dmaapUserPassword(
-                Optional.ofNullable(producerDmaapUserPassword).filter(isEmpty.negate())
+                Optional.ofNullable(producerDmaapUserPassword).filter(p -> !p.isEmpty())
                     .orElse(dmaapPublisherConfiguration.dmaapUserPassword()))
             .build();
     }

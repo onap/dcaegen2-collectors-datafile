@@ -1,6 +1,6 @@
 /*
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,22 @@
  * ============LICENSE_END========================================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.exceptions;
+package org.onap.dcaegen2.collectors.datafile.service;
+
+import org.immutables.value.Value;
 
 /**
+ * Contains data, from the fileReady event, about the file to collect from the xNF.
+ *
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
+ *
  */
-public class DatafileTaskException extends Exception {
-
-    public DatafileTaskException() {
-        super();
-    }
-
-    public DatafileTaskException(String message) {
-        super(message);
-    }
+@Value.Immutable
+public interface FileData {
+    public String changeIdentifier();
+    public String changeType();
+    public String location();
+    public String compression();
+    public String fileFormatType();
+    public String fileFormatVersion();
 }
