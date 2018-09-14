@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_a3d098c9",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-14T13:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_606b56b7",
+      "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_a06deecd",
         "filename": "datafile-app-server/pom.xml",
         "patchSetId": 6
@@ -30,6 +48,24 @@
       "writtenOn": "2018-09-14T08:40:29Z",
       "side": 1,
       "message": "I think scope test will work here",
+      "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_c3d354d3",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-14T13:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_a06deecd",
       "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_83d9dcf4",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-14T13:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_204a3e55",
+      "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_4045fa40",
         "filename": "datafile-app-server/pom.xml",
         "patchSetId": 6
@@ -64,6 +118,24 @@
       "writtenOn": "2018-09-14T08:40:29Z",
       "side": 1,
       "message": "Please move it out of \u003c!--TESTS DEPENDENCIES --\u003e section :)",
+      "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_23e488aa",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-14T13:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_4045fa40",
       "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_e398d01d",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-14T13:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_e061a6a9",
+      "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_a0572ec9",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
         "patchSetId": 6
@@ -98,6 +188,24 @@
       "writtenOn": "2018-09-14T08:40:29Z",
       "side": 1,
       "message": "logger.error() would be more appropriate, we dont want to hide errors",
+      "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_039cec0d",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-14T13:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_a0572ec9",
       "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_a39e5805",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-14T13:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_c05a6af1",
+      "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_60759662",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
         "patchSetId": 6
@@ -132,6 +258,24 @@
       "writtenOn": "2018-09-14T08:40:29Z",
       "side": 1,
       "message": "logger.error() would be more appropriate, we dont want to hide errors",
+      "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_c3a11447",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-14T13:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_60759662",
       "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_638cc0da",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-14T13:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_40665abc",
+      "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_e008c6db",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapPublisherTaskImpl.java",
         "patchSetId": 6
@@ -166,6 +328,24 @@
       "writtenOn": "2018-09-14T08:40:29Z",
       "side": 1,
       "message": "typo, also variable name should rather be something like consumerDMaaPModels. We usually try not to embed information about the type in variable name since the type is known here anyway",
+      "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_c3b83477",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapPublisherTaskImpl.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-14T13:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_e008c6db",
       "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -189,6 +369,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_83aebc2c",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpClientTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-14T13:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_a00e4ee3",
+      "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_e02f663d",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapConsumerTaskImplTest.java",
         "patchSetId": 6
@@ -200,6 +398,24 @@
       "writtenOn": "2018-09-14T08:40:29Z",
       "side": 1,
       "message": "\"Program to interfaces, not implementations.\"\n\nprivate static List\u003cFileData\u003e ftpesFileDataAfterConsume \u003d new ArrayList\u003cFileData\u003e();\n\nThere are dozen of places where it applies in this merge request. Would be good fix them.",
+      "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_23a9e823",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapConsumerTaskImplTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-14T13:51:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_e02f663d",
       "revId": "ad435d2b83ca4ed29f488693fe5b402a14bf91d5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
