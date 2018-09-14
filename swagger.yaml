@@ -1,14 +1,14 @@
 ---
 swagger: '2.0'
 info:
-  description: This page lists all the rest apis for Datafile app server.
+  description: This page lists all the rest apis for DATAFILE app server.
   version: '1.0'
-  title: Datafile app server
+  title: DATAFILE app server
 host: localhost:8100
 basePath: "/"
 tags:
 - name: heartbeat-controller
-  description: Check liveness of Datafile service
+  description: Check liveness of DATAFILE service
 - name: schedule-controller
   description: Schedule Controller
 paths:
@@ -16,13 +16,13 @@ paths:
     get:
       tags:
       - heartbeat-controller
-      summary: Returns liveness of Datafile service
+      summary: Returns liveness of DATAFILE service
       operationId: heartbeatUsingGET
       produces:
       - "*/*"
       responses:
         '200':
-          description: Datafile sevice is living
+          description: DATAFILE service is living
           schema:
             "$ref": "#/definitions/Mono«ResponseEntity«string»»"
         '401':
