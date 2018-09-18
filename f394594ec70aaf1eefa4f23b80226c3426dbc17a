@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_187f6016",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2018-09-18T18:36:59Z",
+      "side": 0,
+      "message": "/config should be kept, otherwise we cannot configure DFC container, all of our configuration files are in /config",
+      "range": {
+        "startLine": 78,
+        "startChar": 42,
+        "endLine": 78,
+        "endChar": 44
+      },
+      "revId": "f394594ec70aaf1eefa4f23b80226c3426dbc17a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
