@@ -17,31 +17,15 @@
 package org.onap.dcaegen2.collectors.datafile.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class CommonFunctionsTest {
     // Given
     private ConsumerDmaapModel model = new ConsumerDmaapModelForUnitTest();
     private static final String EXPECTED_RESULT =
-            "{\"location\":\"target/A20161224.1030-1045.bin.gz\",\"compression\":\"gzip\","
-                    + "\"fileFormatType\":\"org.3GPP.32.435#measCollec\",\"fileFormatVersion\":\"V10\"}";
-
-    private static final HttpResponse httpResponseMock = mock(HttpResponse.class);
-    private static final HttpEntity httpEntityMock = mock(HttpEntity.class);
-    private static final StatusLine statusLineMock = mock(StatusLine.class);
-
-    @BeforeAll
-    static void setup() {
-        when(httpResponseMock.getEntity()).thenReturn(httpEntityMock);
-        when(httpResponseMock.getStatusLine()).thenReturn(statusLineMock);
-    }
+        "{\"location\":\"target/A20161224.1030-1045.bin.gz\",\"compression\":\"gzip\","
+            + "\"fileFormatType\":\"org.3GPP.32.435#measCollec\",\"fileFormatVersion\":\"V10\"}";
 
     @Test
     void createJsonBody_shouldReturnJsonInString() {

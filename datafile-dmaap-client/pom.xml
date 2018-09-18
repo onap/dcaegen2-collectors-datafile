@@ -49,11 +49,10 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webflux</artifactId>
-      <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-reactor-netty</artifactId>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -64,8 +63,10 @@
       <artifactId>datafile-commons</artifactId>
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
-
-    <!-- TEST DEPENDENCIES -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-reactor-netty</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -85,10 +86,6 @@
       <groupId>org.junit.vintage</groupId>
       <artifactId>junit-vintage-engine</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>

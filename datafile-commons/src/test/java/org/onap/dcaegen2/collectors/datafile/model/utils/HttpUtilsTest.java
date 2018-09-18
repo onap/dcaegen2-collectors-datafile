@@ -21,7 +21,6 @@ package org.onap.dcaegen2.collectors.datafile.model.utils;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
 
@@ -29,11 +28,11 @@ public class HttpUtilsTest {
 
     @Test
     public void isSuccessfulResponseCode_shouldReturnTrue() {
-        assertTrue(HttpUtils.isSuccessfulResponseCode(HttpUtils.SC_ACCEPTED));
+        assertTrue(HttpUtils.isSuccessfulResponseCode(202));
     }
 
     @Test
     public void isSuccessfulResponseCode_shouldReturnFalse() {
-        assertFalse(HttpUtils.isSuccessfulResponseCode(HttpStatus.SC_BAD_GATEWAY));
+        assertFalse(HttpUtils.isSuccessfulResponseCode(502));
     }
 }

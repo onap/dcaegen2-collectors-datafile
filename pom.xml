@@ -29,6 +29,7 @@
   <groupId>org.onap.dcaegen2.collectors</groupId>
   <artifactId>datafile</artifactId>
   <version>1.0.0-SNAPSHOT</version>
+
   <name>dcaegen2-collectors.datafile</name>
   <description>datafile collector</description>
   <packaging>pom</packaging>
@@ -40,20 +41,14 @@
     </license>
   </licenses>
 
-
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-    <!-- JAVA VERSION -->
     <java.version>8</java.version>
-    <compiler.plugin.version>3.7.0</compiler.plugin.version>
-    <tomcat.version>8.5.28</tomcat.version>
+    <immutable.version>2.7.1</immutable.version>
+    <spring.version>5.0.5.RELEASE</spring.version>
     <spring-boot.version>2.0.4.RELEASE</spring-boot.version>
+    <tomcat.version>8.5.32</tomcat.version>
     <docker.maven.version>1.0.0</docker.maven.version>
     <resource.maven.plugin.version>3.1.0</resource.maven.plugin.version>
-    <!-- DEVELOPMENT SETTINGS -->
-    <immutable.version>2.7.1</immutable.version>
 
     <!-- LOGGING SETTINGS -->
     <slf4j.version>1.7.25</slf4j.version>
@@ -138,8 +133,20 @@
 
  <dependencyManagement>
     <dependencies>
-
-      <!-- DEVELOPMENT TOOLS DEPENDENCIES -->
+      <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-bom</artifactId>
+        <version>Bismuth-SR10</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>org.immutables</groupId>
         <artifactId>value</artifactId>
@@ -152,31 +159,24 @@
         <version>${immutable.version}</version>
       </dependency>
       <dependency>
-        <groupId>io.projectreactor</groupId>
-        <artifactId>reactor-bom</artifactId>
-        <version>Bismuth-RELEASE</version>
-        <type>pom</type>
-        <scope>import</scope>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-beans</artifactId>
+        <version>${spring.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.spotify</groupId>
-        <artifactId>docker-maven-plugin</artifactId>
-        <version>${docker.maven.version}</version>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webflux</artifactId>
+        <version>${spring.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <version>${resource.maven.plugin.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.bouncycastle</groupId>
-        <artifactId>bcprov-jdk15on</artifactId>
-        <version>1.59</version>
-      </dependency>
-      <dependency>
-        <groupId>org.bouncycastle</groupId>
-        <artifactId>bcpkix-jdk15on</artifactId>
-        <version>1.59</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
@@ -204,27 +204,6 @@
         <version>1.3.2</version>
       </dependency>
       <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-beans</artifactId>
-        <version>5.0.5.RELEASE</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>5.0.5.RELEASE</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webflux</artifactId>
-        <version>5.0.5.RELEASE</version>
-        <scope>compile</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-reactor-netty</artifactId>
-        <version>2.0.4.RELEASE</version>
-      </dependency>
-      <dependency>
         <groupId>org.apache.tomcat.embed</groupId>
         <artifactId>tomcat-embed-core</artifactId>
         <version>${tomcat.version}</version>
@@ -240,7 +219,6 @@
         <version>${tomcat.version}</version>
       </dependency>
 
-      <!-- LOGGING dependencies> -->
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
@@ -258,7 +236,6 @@
         <version>1.7.25</version>
       </dependency>
 
-      <!-- TESTING TOOLS DEPENDENCIES -->
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
@@ -286,7 +263,7 @@
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-test</artifactId>
-        <version>5.0.4.RELEASE</version>
+        <version>${spring.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>

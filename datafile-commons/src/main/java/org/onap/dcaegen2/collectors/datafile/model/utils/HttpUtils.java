@@ -18,13 +18,13 @@
 
 package org.onap.dcaegen2.collectors.datafile.model.utils;
 
-import org.apache.http.HttpStatus;
+import org.springframework.http.HttpStatus;
 
-public final class HttpUtils implements HttpStatus {
+public final class HttpUtils {
 
     private HttpUtils() {}
 
     public static boolean isSuccessfulResponseCode(Integer statusCode) {
-        return statusCode >= 200 && statusCode < 300;
+        return statusCode >= HttpStatus.OK.value() && statusCode < HttpStatus.MULTIPLE_CHOICES.value();
     }
 }
