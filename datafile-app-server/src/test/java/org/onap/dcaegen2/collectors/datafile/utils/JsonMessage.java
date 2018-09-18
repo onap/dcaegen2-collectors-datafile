@@ -2,17 +2,15 @@
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 Nordix Foundation. All rights reserved.
  * ===============================================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  * ============LICENSE_END========================================================================
  */
 
@@ -42,12 +40,13 @@ public class JsonMessage {
 
     /**
      * Gets the message in parsed format.
+     *
      * @return the massage in parsed format.
      */
     public String getParsed() {
         StringBuffer additionalFieldsString = new StringBuffer();
         if (arrayOfAdditionalFields.size() > 0) {
-            additionalFieldsString.append("\"arrayOfAdditionalFields\": [");
+            additionalFieldsString.append("\"arrayOfNamedHashMap\": [");
             for (Iterator<AdditionalField> iterator = arrayOfAdditionalFields.iterator(); iterator.hasNext();) {
                 AdditionalField additionalField = iterator.next();
                 additionalFieldsString.append(additionalField.toString());
@@ -82,6 +81,7 @@ public class JsonMessage {
     }
 
     public static class AdditionalField {
+        private String name;
         private String location;
         private String compression;
         private String fileFormatType;
@@ -89,17 +89,19 @@ public class JsonMessage {
 
         @Override
         public String toString() {
-            return "{"
+            return "{" + getAsStringIfParameterIsSet("name", name, true)
+                    + "\"hashMap\":{"
                     + getAsStringIfParameterIsSet("location", location,
                             compression != null || fileFormatType != null || fileFormatVersion != null)
                     + getAsStringIfParameterIsSet("compression", compression,
                             fileFormatType != null || fileFormatVersion != null)
                     + getAsStringIfParameterIsSet("fileFormatType", fileFormatType, fileFormatVersion != null)
-                    + getAsStringIfParameterIsSet("fileFormatVersion", fileFormatVersion, false) + "}";
+                    + getAsStringIfParameterIsSet("fileFormatVersion", fileFormatVersion, false) + "}}";
         }
 
 
         private AdditionalField(AdditionalFieldBuilder builder) {
+            this.name = builder.name;
             this.location = builder.location;
             this.compression = builder.compression;
             this.fileFormatType = builder.fileFormatType;
@@ -109,10 +111,16 @@ public class JsonMessage {
     }
 
     public static class AdditionalFieldBuilder {
+        private String name;
         private String location;
         private String compression;
         private String fileFormatType;
         private String fileFormatVersion;
+
+        public AdditionalFieldBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
 
         public AdditionalFieldBuilder location(String location) {
             this.location = location;
@@ -190,12 +198,13 @@ public class JsonMessage {
      * @param args Not used
      */
     public static void main(String[] args) {
-        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder().name("A20161224.1030-1045.bin.gz")
                 .location("ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz").compression("gzip")
                 .fileFormatType("org.3GPP.32.435#measCollec").fileFormatVersion("V10").build();
-        AdditionalField secondAdditionalField = new JsonMessage.AdditionalFieldBuilder()
-                .location("sftp://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz").compression("gzip")
-                .fileFormatType("org.3GPP.32.435#measCollec").fileFormatVersion("V10").build();
+        AdditionalField secondAdditionalField =
+                new JsonMessage.AdditionalFieldBuilder().name("A20161224.1030-1045.bin.gz")
+                        .location("sftp://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz").compression("gzip")
+                        .fileFormatType("org.3GPP.32.435#measCollec").fileFormatVersion("V10").build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder().changeIdentifier("PM_MEAS_FILES")
                 .changeType("FileReady").notificationFieldsVersion("1.0").addAdditionalField(additionalField)
                 .addAdditionalField(secondAdditionalField).build();
