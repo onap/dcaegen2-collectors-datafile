@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_188d25d3",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-09-18T11:33:15Z",
+      "side": 1,
+      "message": "To rename logger to LOGGER or LOG due to Java convention.\nTo do as improvement.",
+      "revId": "1de5e025e2f9015187f0dca976fd07c60c3b3e66",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_b8bf5160",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParserTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-09-18T11:33:15Z",
+      "side": 1,
+      "message": "Assertions can be imported as static.\nTo do as improvement.",
+      "revId": "1de5e025e2f9015187f0dca976fd07c60c3b3e66",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_789e9908",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/utils/JsonMessage.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-09-18T11:33:15Z",
+      "side": 1,
+      "message": "This staff can be moved to Util module or testing stuff.\nTo do as improvement",
+      "revId": "1de5e025e2f9015187f0dca976fd07c60c3b3e66",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_388ca1d9",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/utils/JsonMessage.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-09-18T11:33:15Z",
+      "side": 1,
+      "message": "Fo newest VES notification fields version is 2.0 as I remebmer correctly",
+      "revId": "1de5e025e2f9015187f0dca976fd07c60c3b3e66",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
