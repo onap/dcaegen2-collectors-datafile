@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_9b504a0c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-18T19:49:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_188d25d3",
+      "revId": "1de5e025e2f9015187f0dca976fd07c60c3b3e66",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_b8bf5160",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParserTest.java",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2018-09-18T11:33:15Z",
       "side": 1,
       "message": "Assertions can be imported as static.\nTo do as improvement.",
+      "revId": "1de5e025e2f9015187f0dca976fd07c60c3b3e66",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_5b563207",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParserTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-18T19:49:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_b8bf5160",
       "revId": "1de5e025e2f9015187f0dca976fd07c60c3b3e66",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_7b59ae33",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParserTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-18T19:49:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_9814d54d",
+      "revId": "1de5e025e2f9015187f0dca976fd07c60c3b3e66",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_789e9908",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/utils/JsonMessage.java",
         "patchSetId": 1
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_1b443a48",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/utils/JsonMessage.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-18T19:49:59Z",
+      "side": 1,
+      "message": "Do not understand. Please clarify.",
+      "parentUuid": "1a76adc5_789e9908",
+      "revId": "1de5e025e2f9015187f0dca976fd07c60c3b3e66",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_388ca1d9",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/utils/JsonMessage.java",
         "patchSetId": 1
@@ -81,6 +153,24 @@
       "writtenOn": "2018-09-18T11:33:15Z",
       "side": 1,
       "message": "Fo newest VES notification fields version is 2.0 as I remebmer correctly",
+      "revId": "1de5e025e2f9015187f0dca976fd07c60c3b3e66",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_3b3fb6b5",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/utils/JsonMessage.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-18T19:49:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_388ca1d9",
       "revId": "1de5e025e2f9015187f0dca976fd07c60c3b3e66",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
