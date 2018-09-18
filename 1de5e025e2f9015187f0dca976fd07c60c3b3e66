@@ -36,6 +36,23 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_9814d54d",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParserTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-09-18T12:37:45Z",
+      "side": 1,
+      "message": "file names shouldn\u0027t include the type, \"fileData\" should be sufficient. Same goes for other instances.",
+      "revId": "1de5e025e2f9015187f0dca976fd07c60c3b3e66",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_789e9908",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/utils/JsonMessage.java",
         "patchSetId": 1
