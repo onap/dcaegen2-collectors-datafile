@@ -16,22 +16,28 @@
  * ============LICENSE_END========================================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.service;
+package org.onap.dcaegen2.collectors.datafile.model;
 
+import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 
 /**
  * Contains data, from the fileReady event, about the file to collect from the xNF.
  *
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
- *
  */
 @Value.Immutable
+@Gson.TypeAdapters
 public interface FileData {
-    public String changeIdentifier();
-    public String changeType();
-    public String location();
-    public String compression();
-    public String fileFormatType();
-    public String fileFormatVersion();
+    String changeIdentifier();
+
+    String changeType();
+
+    String location();
+
+    String compression();
+
+    String fileFormatType();
+
+    String fileFormatVersion();
 }
