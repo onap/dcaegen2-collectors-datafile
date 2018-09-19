@@ -27,7 +27,7 @@ import java.util.List;
 import org.apache.commons.io.FilenameUtils;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
-import org.onap.dcaegen2.collectors.datafile.service.FileData;
+import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -49,15 +49,14 @@ public class DmaapPublisherTaskImpl extends DmaapPublisherTask {
     }
 
     @Override
-    public Mono<String> publish(Mono<List<ConsumerDmaapModel>> consumerDmaapModels)
-            throws DatafileTaskException {
+    public Mono<String> publish(Mono<List<ConsumerDmaapModel>> consumerDmaapModels) {
         logger.info("Publishing on DMaaP DataRouter {}", consumerDmaapModels);
         return dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModels);
     }
 
     @Override
     public Mono<String> execute(Mono<List<ConsumerDmaapModel>> consumerDmaapModels)
-            throws DatafileTaskException {
+        throws DatafileTaskException {
         if (consumerDmaapModels == null) {
             throw new DmaapNotFoundException("Invoked null object to DMaaP task");
         }
@@ -73,8 +72,7 @@ public class DmaapPublisherTaskImpl extends DmaapPublisherTask {
 
     @Override
     DmaapProducerReactiveHttpClient resolveClient() {
-        return dmaapProducerReactiveHttpClient == null
-                ? new DmaapProducerReactiveHttpClient(resolveConfiguration()).createDmaapWebClient(buildWebClient())
-                : dmaapProducerReactiveHttpClient;
+        return new DmaapProducerReactiveHttpClient(resolveConfiguration()).createDmaapWebClient(buildWebClient());
     }
+
 }
