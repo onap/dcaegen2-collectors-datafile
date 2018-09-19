@@ -24,7 +24,7 @@ import org.onap.dcaegen2.collectors.datafile.configuration.Config;
 import org.onap.dcaegen2.collectors.datafile.ftp.FileCollector;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.service.DmaapConsumerJsonParser;
-import org.onap.dcaegen2.collectors.datafile.service.FileData;
+import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.service.consumer.DmaapConsumerReactiveHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,8 +55,8 @@ public class DmaapConsumerTaskImpl extends DmaapConsumerTask {
     }
 
     protected DmaapConsumerTaskImpl(AppConfig datafileAppConfig,
-            DmaapConsumerReactiveHttpClient dmaaPConsumerReactiveHttpClient,
-            DmaapConsumerJsonParser dmaapConsumerJsonParser, FileCollector fileCollector) {
+        DmaapConsumerReactiveHttpClient dmaaPConsumerReactiveHttpClient,
+        DmaapConsumerJsonParser dmaapConsumerJsonParser, FileCollector fileCollector) {
         this.datafileAppConfig = datafileAppConfig;
         this.dmaaPConsumerReactiveHttpClient = dmaaPConsumerReactiveHttpClient;
         this.dmaapConsumerJsonParser = dmaapConsumerJsonParser;
@@ -79,7 +79,7 @@ public class DmaapConsumerTaskImpl extends DmaapConsumerTask {
         dmaaPConsumerReactiveHttpClient = resolveClient();
         logger.trace("Method called with arg {}", object);
         Mono<List<FileData>> consumerResult =
-                consume((dmaaPConsumerReactiveHttpClient.getDmaapConsumerResponse()));
+            consume((dmaaPConsumerReactiveHttpClient.getDmaapConsumerResponse()));
         return consumerResult.flatMap(this::getFilesFromSender);
     }
 
@@ -95,8 +95,6 @@ public class DmaapConsumerTaskImpl extends DmaapConsumerTask {
 
     @Override
     protected DmaapConsumerReactiveHttpClient resolveClient() {
-        return dmaaPConsumerReactiveHttpClient == null
-                ? new DmaapConsumerReactiveHttpClient(resolveConfiguration()).createDmaapWebClient(buildWebClient())
-                : dmaaPConsumerReactiveHttpClient;
+        return new DmaapConsumerReactiveHttpClient(resolveConfiguration()).createDmaapWebClient(buildWebClient());
     }
 }
