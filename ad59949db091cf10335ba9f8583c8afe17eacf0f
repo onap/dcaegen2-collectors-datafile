@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_a74de99b",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-09-19T11:21:42Z",
+      "side": 1,
+      "message": "This is the datafile project not the PRH. I think the other files so far don\u0027t mention the project actually. This is the same in all other added files in this set.",
+      "revId": "ad59949db091cf10335ba9f8583c8afe17eacf0f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
