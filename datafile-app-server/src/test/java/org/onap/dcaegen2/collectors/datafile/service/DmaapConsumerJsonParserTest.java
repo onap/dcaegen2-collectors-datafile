@@ -28,6 +28,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapNotFoundException;
+import org.onap.dcaegen2.collectors.datafile.model.FileData;
+import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
 
@@ -41,7 +43,7 @@ import reactor.test.StepVerifier;
 class DmaapConsumerJsonParserTest {
 
     @Test
-    void whenPassingCorrectJson_validationNotThrowingAnException() throws DmaapNotFoundException {
+    void whenPassingCorrectJson_validationNotThrowingAnException() {
         // given
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
                 .location("ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz").compression("gzip")

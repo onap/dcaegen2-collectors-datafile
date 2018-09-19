@@ -28,6 +28,8 @@ import java.util.stream.StreamSupport;
 
 import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapEmptyResponseException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapNotFoundException;
+import org.onap.dcaegen2.collectors.datafile.model.FileData;
+import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
 import org.springframework.util.StringUtils;
 
 import reactor.core.publisher.Mono;
@@ -53,7 +55,7 @@ public class DmaapConsumerJsonParser {
 
     /**
      * Extract info from string and create @see
-     * {@link org.onap.dcaegen2.collectors.datafile.service.FileData}.
+     * {@link FileData}.
      *
      * @param monoMessage - results from DMaaP
      * @return reactive Mono with an array of FileData
