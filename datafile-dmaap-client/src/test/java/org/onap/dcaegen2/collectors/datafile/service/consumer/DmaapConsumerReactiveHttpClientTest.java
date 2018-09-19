@@ -51,8 +51,8 @@ class DmaapConsumerReactiveHttpClientTest {
     private static final String JSON_MESSAGE = "{ \"responseFromDmaap\": \"Success\"}";
     private Mono<String> expectedResult = Mono.empty();
     private WebClient webClient;
-    private RequestHeadersUriSpec requestHeadersSpec;
-    private ResponseSpec responseSpec;
+    private RequestHeadersUriSpec requestHeadersSpecMock;
+    private ResponseSpec responseSpecMock;
 
 
     @BeforeEach
@@ -73,8 +73,8 @@ class DmaapConsumerReactiveHttpClientTest {
             .filter(basicAuthentication(consumerConfigurationMock.dmaapUserName(),
                 consumerConfigurationMock.dmaapUserPassword()))
             .build());
-        requestHeadersSpec = mock(RequestHeadersUriSpec.class);
-        responseSpec = mock(ResponseSpec.class);
+        requestHeadersSpecMock = mock(RequestHeadersUriSpec.class);
+        responseSpecMock = mock(ResponseSpec.class);
     }
 
 
@@ -85,8 +85,9 @@ class DmaapConsumerReactiveHttpClientTest {
 
         //when
         mockDependantObjects();
-        doReturn(expectedResult).when(responseSpec).bodyToMono(String.class);
+        doReturn(expectedResult).when(responseSpecMock).bodyToMono(String.class);
         dmaapConsumerReactiveHttpClient.createDmaapWebClient(webClient);
+
         Mono<String> response = dmaapConsumerReactiveHttpClient.getDmaapConsumerResponse();
 
         //then
@@ -98,24 +99,17 @@ class DmaapConsumerReactiveHttpClientTest {
     }
 
     @Test
-    void getHttpResponse_whenUriSyntaxExceptionHasBeenThrown() throws URISyntaxException {
-        //given
-        dmaapConsumerReactiveHttpClient = spy(dmaapConsumerReactiveHttpClient);
-        //when
-        when(webClient.get()).thenReturn(requestHeadersSpec);
-        dmaapConsumerReactiveHttpClient.createDmaapWebClient(webClient);
-        when(dmaapConsumerReactiveHttpClient.getUri()).thenThrow(URISyntaxException.class);
-
-        //then
-        StepVerifier.create(dmaapConsumerReactiveHttpClient.getDmaapConsumerResponse()).expectSubscription()
-            .expectError(Exception.class).verify();
+    void getAppropriateUri_whenPassingCorrectedUriData() throws URISyntaxException {
+        Assertions.assertEquals(dmaapConsumerReactiveHttpClient.getUri(),
+            URI.create("https://54.45.33.2:1234/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDCAE-c12/c12"));
     }
 
     private void mockDependantObjects() {
-        when(webClient.get()).thenReturn(requestHeadersSpec);
-        when(requestHeadersSpec.uri((URI) any())).thenReturn(requestHeadersSpec);
-        when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
-        doReturn(responseSpec).when(responseSpec).onStatus(any(), any());
+        when(webClient.get()).thenReturn(requestHeadersSpecMock);
+        when(requestHeadersSpecMock.uri((URI) any())).thenReturn(requestHeadersSpecMock);
+        when(requestHeadersSpecMock.headers(any())).thenReturn(requestHeadersSpecMock);
+        when(requestHeadersSpecMock.retrieve()).thenReturn(responseSpecMock);
+        doReturn(responseSpecMock).when(responseSpecMock).onStatus(any(), any());
     }
 
 }
