@@ -16,6 +16,8 @@
 
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
@@ -40,16 +42,20 @@ import reactor.core.publisher.Mono;
 @EnableScheduling
 public class SchedulerConfig extends DatafileAppConfig {
 
-    private static final int SCHEDULING_DELAY = 2000;
+    private static final int SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS = 10;
+    private static final int SCHEDULING_REQUEST_FOR_CONFIGURATION_DELAY = 5;
     private static volatile List<ScheduledFuture> scheduledFutureList = new ArrayList<ScheduledFuture>();
 
     private final TaskScheduler taskScheduler;
     private final ScheduledTasks scheduledTask;
+    private final CloudConfiguration cloudConfiguration;
 
     @Autowired
-    public SchedulerConfig(TaskScheduler taskScheduler, ScheduledTasks scheduledTask) {
+    public SchedulerConfig(TaskScheduler taskScheduler, ScheduledTasks scheduledTask,
+        CloudConfiguration cloudConfiguration) {
         this.taskScheduler = taskScheduler;
         this.scheduledTask = scheduledTask;
+        this.cloudConfiguration = cloudConfiguration;
     }
 
     /**
@@ -62,7 +68,7 @@ public class SchedulerConfig extends DatafileAppConfig {
         scheduledFutureList.forEach(x -> x.cancel(false));
         scheduledFutureList.clear();
         return Mono.defer(() -> Mono
-                .just(new ResponseEntity<>("Datafile Service has already been stopped!", HttpStatus.CREATED)));
+            .just(new ResponseEntity<>("Datafile Service has already been stopped!", HttpStatus.CREATED)));
     }
 
     /**
@@ -74,8 +80,11 @@ public class SchedulerConfig extends DatafileAppConfig {
     @ApiOperation(value = "Start task if possible")
     public synchronized boolean tryToStartTask() {
         if (scheduledFutureList.isEmpty()) {
+            scheduledFutureList.add(taskScheduler
+                .scheduleAtFixedRate(cloudConfiguration::runTask, Instant.now(),
+                    Duration.ofMinutes(SCHEDULING_REQUEST_FOR_CONFIGURATION_DELAY)));
             scheduledFutureList.add(taskScheduler.scheduleWithFixedDelay(scheduledTask::scheduleMainDatafileEventTask,
-                    SCHEDULING_DELAY));
+                Duration.ofSeconds(SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS)));
             return true;
         } else {
             return false;
