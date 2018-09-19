@@ -142,6 +142,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_6c43366c",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/utils/JsonMessage.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-09-19T07:18:53Z",
+      "side": 1,
+      "message": "All void main (String [] args) methods that do not start services and are used only for testing, should be located in maven modules outside production code or moved to Junit stuff",
+      "parentUuid": "1a76adc5_1b443a48",
+      "revId": "1de5e025e2f9015187f0dca976fd07c60c3b3e66",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_388ca1d9",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/utils/JsonMessage.java",
         "patchSetId": 1
