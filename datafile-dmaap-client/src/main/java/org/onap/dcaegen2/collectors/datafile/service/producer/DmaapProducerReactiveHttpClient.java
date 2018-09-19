@@ -109,6 +109,7 @@ public class DmaapProducerReactiveHttpClient {
             responseSpec.onStatus(HttpStatus::is5xxServerError,
                     clientResponse -> handlePostErrors(model, clientResponse));
             String bodyToMono = responseSpec.bodyToMono(String.class).block();
+            logger.debug("File info sent to DR with response: " + bodyToMono);
         }
     }
 
