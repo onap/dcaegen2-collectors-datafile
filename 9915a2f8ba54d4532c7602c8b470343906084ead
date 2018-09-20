@@ -53,6 +53,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_966494b9",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-09-20T10:32:44Z",
+      "side": 1,
+      "message": "Henrik is correct, naming should remain consistent. I had thought that other static final *objects* to date had been lower case, but was wrong. I note other instances in this component that are lower case, some `logger`s and `serialVersionUID`s, but overall the majority seems to use uppercase.",
+      "parentUuid": "1a76adc5_f6b14847",
+      "revId": "9915a2f8ba54d4532c7602c8b470343906084ead",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_36f26006",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParserTest.java",
         "patchSetId": 5
