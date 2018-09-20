@@ -71,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_36aa6085",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 2813
+      },
+      "writtenOn": "2018-09-20T10:51:17Z",
+      "side": 1,
+      "message": "I think it depends on the rules/method which has been chosen by yourself. Today I have found some information about final static logger naming rules. Most of them told that should be lowercase. The best solution for this would be to keep them as in the most files. So my decision is to leave them in lowercase. Good?",
+      "parentUuid": "1a76adc5_966494b9",
+      "revId": "9915a2f8ba54d4532c7602c8b470343906084ead",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_36f26006",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParserTest.java",
         "patchSetId": 5
