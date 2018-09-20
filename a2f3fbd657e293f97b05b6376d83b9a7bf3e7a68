@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_b07f58aa",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-09-20T07:15:43Z",
+      "side": 1,
+      "message": "This one should probably be lower case too (i.e. `private static final Logger logger \u003d ...`",
+      "revId": "a2f3fbd657e293f97b05b6376d83b9a7bf3e7a68",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
