@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_b632f0ef",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DatafileConfigurationProvider.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-20T10:18:31Z",
+      "side": 1,
+      "message": "Method name should be callConfigBindingServiceForDatafileConfiguration",
+      "revId": "9915a2f8ba54d4532c7602c8b470343906084ead",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_7650d80a",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DatafileConfigurationProvider.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-20T10:18:31Z",
+      "side": 1,
+      "message": "Comment should be \"Retrieving Datafile configuration\"",
+      "revId": "9915a2f8ba54d4532c7602c8b470343906084ead",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_f6b14847",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-20T10:18:31Z",
+      "side": 1,
+      "message": "Marcin commented in the change, https://gerrit.onap.org/r/#/c/67269/, that logger should be changed to LOGGER according to Java convention. I personally have no opinion, but it might be good if you were not contradicting each other:)",
+      "revId": "9915a2f8ba54d4532c7602c8b470343906084ead",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_36f26006",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParserTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-20T10:18:31Z",
+      "side": 1,
+      "message": "Since this is DFC, maybe the topic should be VES_NOTIFICATION_OUTPUT",
+      "revId": "9915a2f8ba54d4532c7602c8b470343906084ead",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_56f59cea",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParserTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-20T10:18:31Z",
+      "side": 1,
+      "message": "Since this is DFC, maybe the topic should be VES_NOTIFICATION_OUTPUT",
+      "revId": "9915a2f8ba54d4532c7602c8b470343906084ead",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
