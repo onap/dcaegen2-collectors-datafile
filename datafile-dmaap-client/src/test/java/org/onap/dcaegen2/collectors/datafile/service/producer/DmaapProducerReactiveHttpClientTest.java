@@ -27,11 +27,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.client.utils.URIBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
@@ -42,22 +40,26 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.RequestBodyUriSpec;
 import org.springframework.web.reactive.function.client.WebClient.ResponseSpec;
+import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import reactor.core.publisher.Mono;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 7/4/18
+ * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 class DmaapProducerReactiveHttpClientTest {
 
-    private static final String LOCATION = "location";
+    private static final String FILE_NAME = "A20161224.1030-1045.bin.gz";
+    private static final String LOCATION_JSON_TAG = "location";
     private static final String X_ATT_DR_META = "X-ATT-DR-META";
 
     private static final String HOST = "54.45.33.2";
-    private static final String HTTPS_SCHEME = "https";
+    private static final String HTTP_SCHEME = "http";
     private static final int PORT = 1234;
     private static final String APPLICATION_OCTET_STREAM_CONTENT_TYPE = "application/octet-stream";
-    private static final String FILE_READY_TOPIC = "fileReady";
+    private static final String PUBLISH_TOPIC = "publish";
+    private static final String DEFAULT_FEED_ID = "1";
 
     private DmaapProducerReactiveHttpClient dmaapProducerReactiveHttpClient;
 
@@ -71,12 +73,12 @@ class DmaapProducerReactiveHttpClientTest {
     @BeforeEach
     void setUp() {
         when(dmaapPublisherConfigurationMock.dmaapHostName()).thenReturn(HOST);
-        when(dmaapPublisherConfigurationMock.dmaapProtocol()).thenReturn(HTTPS_SCHEME);
+        when(dmaapPublisherConfigurationMock.dmaapProtocol()).thenReturn(HTTP_SCHEME);
         when(dmaapPublisherConfigurationMock.dmaapPortNumber()).thenReturn(PORT);
         when(dmaapPublisherConfigurationMock.dmaapUserName()).thenReturn("DATAFILE");
         when(dmaapPublisherConfigurationMock.dmaapUserPassword()).thenReturn("DATAFILE");
         when(dmaapPublisherConfigurationMock.dmaapContentType()).thenReturn(APPLICATION_OCTET_STREAM_CONTENT_TYPE);
-        when(dmaapPublisherConfigurationMock.dmaapTopicName()).thenReturn(FILE_READY_TOPIC);
+        when(dmaapPublisherConfigurationMock.dmaapTopicName()).thenReturn(PUBLISH_TOPIC);
 
         dmaapProducerReactiveHttpClient = new DmaapProducerReactiveHttpClient(dmaapPublisherConfigurationMock);
 
@@ -91,9 +93,6 @@ class DmaapProducerReactiveHttpClientTest {
 
     @Test
     void getHttpResponse_Success() {
-        // given
-
-        // when
         mockWebClientDependantObject();
         dmaapProducerReactiveHttpClient.createDmaapWebClient(webClientMock);
         List<ConsumerDmaapModel> consumerDmaapModelList = new ArrayList<ConsumerDmaapModel>();
@@ -101,18 +100,12 @@ class DmaapProducerReactiveHttpClientTest {
 
         dmaapProducerReactiveHttpClient.getDmaapProducerResponse(Mono.just(consumerDmaapModelList));
 
-        // then
         verify(requestBodyUriSpecMock).header(HttpHeaders.CONTENT_TYPE, APPLICATION_OCTET_STREAM_CONTENT_TYPE);
         JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(consumerDmaapModel));
-        metaData.getAsJsonObject().remove(LOCATION);
+        metaData.getAsJsonObject().remove(LOCATION_JSON_TAG);
         verify(requestBodyUriSpecMock).header(X_ATT_DR_META, metaData.toString());
-        URI expectedUri = null;
-        try {
-            expectedUri = new URIBuilder().setScheme(HTTPS_SCHEME).setHost(HOST).setPort(1234).setPath(FILE_READY_TOPIC)
-                    .build();
-        } catch (URISyntaxException e) {
-            // Nothing
-        }
+        URI expectedUri = new DefaultUriBuilderFactory().builder().scheme(HTTP_SCHEME).host(HOST).port(PORT)
+                .path(PUBLISH_TOPIC + "/" + DEFAULT_FEED_ID + "/" + FILE_NAME).build();
         verify(requestBodyUriSpecMock).uri(expectedUri);
         verify(requestBodyUriSpecMock).body(any());
     }

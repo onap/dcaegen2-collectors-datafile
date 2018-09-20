@@ -19,7 +19,7 @@
                 "dmaapHostName": "localhost",
                 "dmaapPortNumber": 3905,
                 "dmaapProtocol": "http",
-                "dmaapTopicName": "/events/unauthenticated.VES_NOTIFICATION_OUTPUT",
+                "dmaapTopicName": "publish",
                 "dmaapUserName": "admin",
                 "dmaapUserPassword": "admin"
             }
