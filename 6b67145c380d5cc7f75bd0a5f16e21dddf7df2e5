@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_f935afdb",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/TomcatHttpConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-09-21T16:15:10Z",
+      "side": 1,
+      "message": "Should this be Nordix?",
+      "revId": "6b67145c380d5cc7f75bd0a5f16e21dddf7df2e5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
