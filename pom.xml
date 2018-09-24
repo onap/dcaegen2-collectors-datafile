@@ -68,6 +68,7 @@
     <module>datafile-app-server</module>
     <module>datafile-dmaap-client</module>
     <module>datafile-commons</module>
+    <module>datafile-devops</module>
   </modules>
 
   <build>
