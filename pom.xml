@@ -21,12 +21,14 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <!--
   <parent>
     <groupId>org.onap.oparent</groupId>
     <artifactId>oparent</artifactId>
     <version>1.2.0</version>
     <relativePath />
   </parent>
+  -->
 
   <groupId>org.onap.dcaegen2.collectors</groupId>
   <artifactId>datafile</artifactId>
@@ -68,6 +70,7 @@
     <module>datafile-app-server</module>
     <module>datafile-dmaap-client</module>
     <module>datafile-commons</module>
+    <module>datafile-devops</module>
   </modules>
 
   <build>
