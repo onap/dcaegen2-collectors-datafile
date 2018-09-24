@@ -1,0 +1,27 @@
+version: '2'
+services:
+  datafile-server:
+    image: nexus3.onap.org:10003/onap/org.onap.dcaegen2.collectors.datafile.datafile-app-server
+    command:
+      --dmaap.dmaapConsumerConfiguration.dmaapHostName=10.42.111.36
+      --dmaap.dmaapConsumerConfiguration.dmaapPortNumber=8904
+      --dmaap.dmaapConsumerConfiguration.dmaapTopicName=/events/unauthenticated.VES_NOTIFICATION_OUTPUT.
+      --dmaap.dmaapConsumerConfiguration.dmaapProtocol=http
+      --dmaap.dmaapConsumerConfiguration.dmaapUserName=admin
+      --dmaap.dmaapConsumerConfiguration.dmaapUserPassword=admin
+      --dmaap.dmaapConsumerConfiguration.dmaapContentType=application/json
+      --dmaap.dmaapConsumerConfiguration.consumerId=c12
+      --dmaap.dmaapConsumerConfiguration.consumerGroup=OpenDCAE-c12
+      --dmaap.dmaapConsumerConfiguration.timeoutMS=-1
+      --dmaap.dmaapConsumerConfiguration.message-limit=-1
+      --dmaap.dmaapProducerConfiguration.dmaapHostName=10.42.111.36
+      --dmaap.dmaapProducerConfiguration.dmaapPortNumber=8904
+      --dmaap.dmaapProducerConfiguration.dmaapTopicName=/events/unauthenticated.PNF_READY
+      --dmaap.dmaapProducerConfiguration.dmaapProtocol=http
+      --dmaap.dmaapProducerConfiguration.dmaapUserName=admin
+      --dmaap.dmaapProducerConfiguration.dmaapUserPassword=admin
+      --dmaap.dmaapProducerConfiguration.dmaapContentType=application/json
+    ports:
+    - "8100:8100"
+    - "8433:8433"
+    restart: on-failure
