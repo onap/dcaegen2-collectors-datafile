@@ -16,6 +16,24 @@
       "revId": "ed3f91a8d595268ebdff22464b7d9c255680fe2b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_a274e036",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 2813
+      },
+      "writtenOn": "2018-09-24T05:42:22Z",
+      "side": 1,
+      "message": "Because earlier we were using UriBuilder from Apache which throws URISyntaxException. We have got UriBuilder (native DefaultUriBuilderFactory) from Spring, which doesn\u0027t throw any kind of exception.",
+      "parentUuid": "1a76adc5_16815afb",
+      "revId": "ed3f91a8d595268ebdff22464b7d9c255680fe2b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
