@@ -16,6 +16,24 @@
       "revId": "6b67145c380d5cc7f75bd0a5f16e21dddf7df2e5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_02691425",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/TomcatHttpConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-24T06:35:38Z",
+      "side": 1,
+      "message": "It comes from PRH, and we have not changed it. So we think it should just be NOKIA. We have mostly added Nordix for the files that come from PRH that we have modifed. Files that we have created have only Nordix. Is this ok with you?",
+      "parentUuid": "1a76adc5_f935afdb",
+      "revId": "6b67145c380d5cc7f75bd0a5f16e21dddf7df2e5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
