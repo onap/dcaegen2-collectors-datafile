@@ -1,0 +1,33 @@
+version: '3'
+services:
+  prh:
+    image: nexus3.onap.org:10003/onap/org.onap.dcaegen2.collectors.datafile.datafile-app-server
+    command: >
+      --dmaap.dmaapConsumerConfiguration.dmaapHostName=<HOST-TO-SET-DMAAP-MR>
+      --dmaap.dmaapConsumerConfiguration.dmaapPortNumber=3904
+      --dmaap.dmaapConsumerConfiguration.dmaapTopicName=/events/unauthenticated.VES_NOTIFICATION_OUTPUT
+      --dmaap.dmaapConsumerConfiguration.dmaapProtocol=http
+      --dmaap.dmaapConsumerConfiguration.dmaapUserName=admin
+      --dmaap.dmaapConsumerConfiguration.dmaapUserPassword=admin
+      --dmaap.dmaapConsumerConfiguration.dmaapContentType=application/json
+      --dmaap.dmaapConsumerConfiguration.consumerId=c12
+      --dmaap.dmaapConsumerConfiguration.consumerGroup=OpenDCAE-c12
+      --dmaap.dmaapConsumerConfiguration.timeoutMS=-1
+      --dmaap.dmaapConsumerConfiguration.message-limit=-1
+      --dmaap.dmaapProducerConfiguration.dmaapHostName=<HOST-TO-SET-DMAAP-DR>
+      --dmaap.dmaapProducerConfiguration.dmaapPortNumber=3905
+      --dmaap.dmaapProducerConfiguration.dmaapTopicName=publish
+      --dmaap.dmaapProducerConfiguration.dmaapProtocol=http
+      --dmaap.dmaapProducerConfiguration.dmaapUserName=admin
+      --dmaap.dmaapProducerConfiguration.dmaapUserPassword=admin
+      --dmaap.dmaapProducerConfiguration.dmaapContentType=application/octet-stream"
+    entrypoint:
+    - java
+    - -Dspring.profiles.active=dev
+    - -jar
+    - /target/datafile-app-server.jar
+    ports:
+    - "8100:8100"
+    - "8433:8433"
+    restart: always
+
