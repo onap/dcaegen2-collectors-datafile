@@ -44,7 +44,7 @@ public class SchedulerConfig extends DatafileAppConfig {
 
     private static final int SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS = 10;
     private static final int SCHEDULING_REQUEST_FOR_CONFIGURATION_DELAY = 5;
-    private static volatile List<ScheduledFuture> scheduledFutureList = new ArrayList<ScheduledFuture>();
+    private static volatile List<ScheduledFuture> scheduledFutureList = new ArrayList<>();
 
     private final TaskScheduler taskScheduler;
     private final ScheduledTasks scheduledTask;
