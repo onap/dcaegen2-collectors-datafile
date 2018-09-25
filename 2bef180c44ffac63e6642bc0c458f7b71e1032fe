@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_261c5b13",
+        "filename": "datafile-devops/src/main/resources/docker-compose.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 2813
+      },
+      "writtenOn": "2018-09-25T18:20:51Z",
+      "side": 1,
+      "message": "I think that you can delete this parameter. CONSUL_HOST is an environment. We aren\u0027t parsing this variable from main function now. You can omit them or leave as you did here. It depends on you :)",
+      "range": {
+        "startLine": 24,
+        "startChar": 6,
+        "endLine": 24,
+        "endChar": 33
+      },
+      "revId": "2bef180c44ffac63e6642bc0c458f7b71e1032fe",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
