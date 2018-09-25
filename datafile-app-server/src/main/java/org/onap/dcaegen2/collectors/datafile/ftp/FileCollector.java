@@ -58,7 +58,7 @@ public class FileCollector { // TODO: Should be final, but that means adding Pow
     }
 
     public Mono<List<ConsumerDmaapModel>> getFilesFromSender(List<FileData> listOfFileData) {
-        List<ConsumerDmaapModel> consumerModels = new ArrayList<ConsumerDmaapModel>();
+        List<ConsumerDmaapModel> consumerModels = new ArrayList<>();
         for (FileData fileData : listOfFileData) {
             String localFile = collectFile(fileData);
 

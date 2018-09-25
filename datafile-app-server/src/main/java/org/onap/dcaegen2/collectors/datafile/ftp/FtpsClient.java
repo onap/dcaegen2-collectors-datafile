@@ -16,18 +16,17 @@
 
 package org.onap.dcaegen2.collectors.datafile.ftp;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPSClient;
 import org.apache.commons.net.util.TrustManagerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Gets file from xNF with FTPS protocol.
@@ -92,8 +91,7 @@ public class FtpsClient { // TODO: Should be final but needs PowerMock or Mockit
         return success;
     }
 
-    private void getFile(String remoteFile, String localFile, FTPSClient ftps)
-            throws IOException, FileNotFoundException {
+    private void getFile(String remoteFile, String localFile, FTPSClient ftps) throws IOException {
         OutputStream output;
         File outfile = new File(localFile);
         outfile.createNewFile();
@@ -103,7 +101,7 @@ public class FtpsClient { // TODO: Should be final but needs PowerMock or Mockit
         ftps.retrieveFile(remoteFile, output);
 
         output.close();
-        logger.debug("File " + outfile.getName() + " Download Successfull from xNF");
+        logger.debug("File " + outfile.getName() + " Download Successful from xNF");
     }
 
     private void closeDownConnection(FTPSClient ftps) {

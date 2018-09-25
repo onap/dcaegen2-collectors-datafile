@@ -70,9 +70,7 @@ public class DmaapConsumerReactiveHttpClient {
     }
 
     private Consumer<HttpHeaders> getHeaders() {
-        return httpHeaders -> {
-            httpHeaders.set(HttpHeaders.CONTENT_TYPE, contentType);
-        };
+        return httpHeaders -> httpHeaders.set(HttpHeaders.CONTENT_TYPE, contentType);
     }
 
     private String createRequestPath() {

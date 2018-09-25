@@ -80,7 +80,7 @@ public class DmaapProducerReactiveHttpClient {
      * @return status code of operation
      */
     public Mono<String> getDmaapProducerResponse(Mono<List<ConsumerDmaapModel>> consumerDmaapModelMono) {
-        consumerDmaapModelMono.subscribe(models -> postFilesAndData(models));
+        consumerDmaapModelMono.subscribe(this::postFilesAndData);
         return Mono.just(HttpStatus.OK.toString());
     }
 
@@ -136,9 +136,8 @@ public class DmaapProducerReactiveHttpClient {
     private URI getUri(String location) {
         String fileName = location.substring(location.indexOf("/"), location.length());
         String path = dmaapTopicName + "/" + DEFAULT_FEED_ID + "/" +  fileName;
-        URI uri = new DefaultUriBuilderFactory().builder().scheme(dmaapProtocol).host(dmaapHostName)
+        return new DefaultUriBuilderFactory().builder().scheme(dmaapProtocol).host(dmaapHostName)
                 .port(dmaapPortNumber).path(path).build();
-        return uri;
     }
 
     private Mono<Exception> handlePostErrors(ConsumerDmaapModel model, ClientResponse clientResponse) {

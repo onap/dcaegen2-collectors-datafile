@@ -21,16 +21,10 @@ package org.onap.dcaegen2.collectors.datafile.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 public class CommonFunctions {
 
-    private static final Logger logger = LoggerFactory.getLogger(CommonFunctions.class);
-
     private static Gson gson = new GsonBuilder().create();
-
 
     private CommonFunctions() {}
 

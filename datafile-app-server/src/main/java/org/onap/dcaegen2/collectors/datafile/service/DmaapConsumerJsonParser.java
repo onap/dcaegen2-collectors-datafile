@@ -105,8 +105,7 @@ public class DmaapConsumerJsonParser {
 
             if (isNotificationFieldsHeaderNotEmpty(changeIdentifier, changeType, notificationFieldsVersion)
                 && arrayOfNamedHashMap != null) {
-                Mono<List<FileData>> res = getAllFileDataFromJson(changeIdentifier, changeType, arrayOfNamedHashMap);
-                return res;
+                return getAllFileDataFromJson(changeIdentifier, changeType, arrayOfNamedHashMap);
             }
 
             if (!isNotificationFieldsHeaderNotEmpty(changeIdentifier, changeType, notificationFieldsVersion)) {
@@ -167,19 +166,17 @@ public class DmaapConsumerJsonParser {
 
     private boolean isNotificationFieldsHeaderNotEmpty(String changeIdentifier, String changeType,
         String notificationFieldsVersion) {
-        return ((changeIdentifier != null && !changeIdentifier.isEmpty())
-            && (changeType != null && !changeType.isEmpty())
-            && (notificationFieldsVersion != null && !notificationFieldsVersion.isEmpty()));
+        return isStringIsNotNullAndNotEmpty(changeIdentifier) && isStringIsNotNullAndNotEmpty(changeType)
+            && isStringIsNotNullAndNotEmpty(notificationFieldsVersion);
     }
 
     private boolean isFileFormatFieldsNotEmpty(String fileFormatVersion, String fileFormatType) {
-        return ((fileFormatVersion != null && !fileFormatVersion.isEmpty())
-            && (fileFormatType != null && !fileFormatType.isEmpty()));
+        return isStringIsNotNullAndNotEmpty(fileFormatVersion) && isStringIsNotNullAndNotEmpty(fileFormatType);
     }
 
     private boolean isNameAndLocationAndCompressionNotEmpty(String name, String location, String compression) {
-        return (name != null && !name.isEmpty()) && (location != null && !location.isEmpty())
-            && (compression != null && !compression.isEmpty());
+        return isStringIsNotNullAndNotEmpty(name) && isStringIsNotNullAndNotEmpty(location) &&
+                isStringIsNotNullAndNotEmpty(compression);
     }
 
     private boolean containsHeader(JsonObject jsonObject) {
@@ -188,5 +185,9 @@ public class DmaapConsumerJsonParser {
 
     private boolean containsHeader(JsonObject jsonObject, String topHeader, String header) {
         return jsonObject.has(topHeader) && jsonObject.getAsJsonObject(topHeader).has(header);
+    }
+
+    private boolean isStringIsNotNullAndNotEmpty(String string) {
+        return string != null && !string.isEmpty();
     }
 }

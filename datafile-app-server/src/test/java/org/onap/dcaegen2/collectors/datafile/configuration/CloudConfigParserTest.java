@@ -31,7 +31,7 @@ import org.onap.dcaegen2.collectors.datafile.config.ImmutableDmaapPublisherConfi
 
 class CloudConfigParserTest {
 
-    private static final String correctJson =
+    private static final String CORRECT_JSON =
         "{\"dmaap.dmaapProducerConfiguration.dmaapTopicName\": \"/events/unauthenticated.VES_NOTIFICATION_OUTPUT\", "
             + "\"dmaap.dmaapConsumerConfiguration.timeoutMS\": -1,"
             + " \"dmaap.dmaapConsumerConfiguration.dmaapHostName\": \"message-router.onap.svc.cluster.local\","
@@ -78,7 +78,7 @@ class CloudConfigParserTest {
             .build();
 
     private CloudConfigParser cloudConfigParser = new CloudConfigParser(
-        new Gson().fromJson(correctJson, JsonObject.class));
+        new Gson().fromJson(CORRECT_JSON, JsonObject.class));
 
 
     @Test
