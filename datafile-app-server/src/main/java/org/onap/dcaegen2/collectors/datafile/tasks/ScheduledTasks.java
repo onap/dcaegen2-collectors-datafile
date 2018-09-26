@@ -2,35 +2,29 @@
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ===============================================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  * ============LICENSE_END========================================================================
  */
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import java.util.List;
-import java.util.concurrent.Callable;
-
-import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapEmptyResponseException;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
+import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
+import reactor.core.publisher.Flux;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 3/23/18
@@ -42,17 +36,21 @@ public class ScheduledTasks {
     private static final Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);
 
     private final DmaapConsumerTask dmaapConsumerTask;
+    private final XnfCollectorTask xnfCollectorTask;
     private final DmaapPublisherTask dmaapProducerTask;
 
     /**
      * Constructor for task registration in Datafile Workflow.
      *
      * @param dmaapConsumerTask - fist task
-     * @param dmaapPublisherTask - second task
+     * @param xnfCollectorTask - second task
+     * @param dmaapPublisherTask - third task
      */
     @Autowired
-    public ScheduledTasks(DmaapConsumerTask dmaapConsumerTask, DmaapPublisherTask dmaapPublisherTask) {
+    public ScheduledTasks(DmaapConsumerTask dmaapConsumerTask, XnfCollectorTask xnfCollectorTask,
+            DmaapPublisherTask dmaapPublisherTask) {
         this.dmaapConsumerTask = dmaapConsumerTask;
+        this.xnfCollectorTask = xnfCollectorTask;
         this.dmaapProducerTask = dmaapPublisherTask;
     }
 
@@ -62,12 +60,10 @@ public class ScheduledTasks {
     public void scheduleMainDatafileEventTask() {
         logger.trace("Execution of tasks was registered");
 
-        Mono<String> dmaapProducerResponse = Mono.fromCallable(consumeFromDmaapMessage())
-            .doOnError(DmaapEmptyResponseException.class, error -> logger.error("Nothing to consume from DMaaP"))
-            .flatMap(this::publishToDmaapConfiguration)
-            .subscribeOn(Schedulers.elastic());
-
-        dmaapProducerResponse.subscribe(this::onSuccess, this::onError, this::onComplete);
+        consumeFromDmaapMessage()
+                .doOnError(DmaapEmptyResponseException.class, error -> logger.error("Nothing to consume from DMaaP"))
+                .flatMap(this::collectFilesFromXnf).flatMap(this::publishToDmaapConfiguration)
+                .subscribe(this::onSuccess, this::onError, this::onComplete);
     }
 
     private void onComplete() {
@@ -84,18 +80,16 @@ public class ScheduledTasks {
         }
     }
 
-    private Callable<Mono<List<ConsumerDmaapModel>>> consumeFromDmaapMessage() {
-        return () -> {
-            dmaapConsumerTask.initConfigs();
-            return dmaapConsumerTask.execute("");
-        };
+    private Flux<FileData> consumeFromDmaapMessage() {
+        dmaapConsumerTask.initConfigs();
+        return dmaapConsumerTask.execute("");
     }
 
-    private Mono<String> publishToDmaapConfiguration(Mono<List<ConsumerDmaapModel>> monoModel) {
-        try {
-            return dmaapProducerTask.execute(monoModel);
-        } catch (DatafileTaskException e) {
-            return Mono.error(e);
-        }
+    private Flux<ConsumerDmaapModel> collectFilesFromXnf(FileData fileData) {
+        return xnfCollectorTask.execute(fileData);
+    }
+
+    private Flux<String> publishToDmaapConfiguration(ConsumerDmaapModel monoModel) {
+        return dmaapProducerTask.execute(monoModel);
     }
 }

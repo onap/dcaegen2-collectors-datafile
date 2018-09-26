@@ -28,12 +28,13 @@ import java.util.stream.StreamSupport;
 
 import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapEmptyResponseException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -66,8 +67,8 @@ public class DmaapConsumerJsonParser {
      * @param rawMessage - results from DMaaP
      * @return reactive Mono with an array of FileData
      */
-    public Mono<List<FileData>> getJsonObject(Mono<String> rawMessage) {
-        return rawMessage.flatMap(this::getJsonParserMessage).flatMap(this::createJsonConsumerModel);
+    public Flux<FileData> getJsonObject(Mono<String> rawMessage) {
+        return rawMessage.flatMap(this::getJsonParserMessage).flatMapMany(this::createJsonConsumerModel);
     }
 
     private Mono<JsonElement> getJsonParserMessage(String message) {
@@ -75,12 +76,12 @@ public class DmaapConsumerJsonParser {
             : Mono.fromSupplier(() -> new JsonParser().parse(message));
     }
 
-    private Mono<List<FileData>> createJsonConsumerModel(JsonElement jsonElement) {
+    private Flux<FileData> createJsonConsumerModel(JsonElement jsonElement) {
         return jsonElement.isJsonObject() ? create(Mono.fromSupplier(jsonElement::getAsJsonObject))
             : getFileDataFromJsonArray(jsonElement);
     }
 
-    private Mono<List<FileData>> getFileDataFromJsonArray(JsonElement jsonElement) {
+    private Flux<FileData> getFileDataFromJsonArray(JsonElement jsonElement) {
         return create(Mono.fromCallable(() -> StreamSupport.stream(jsonElement.getAsJsonArray().spliterator(), false)
             .findFirst().flatMap(this::getJsonObjectFromAnArray).orElseThrow(DmaapEmptyResponseException::new)));
     }
@@ -89,13 +90,13 @@ public class DmaapConsumerJsonParser {
         return Optional.of(new JsonParser().parse(element.getAsString()).getAsJsonObject());
     }
 
-    private Mono<List<FileData>> create(Mono<JsonObject> jsonObject) {
-        return jsonObject.flatMap(monoJsonP -> !containsHeader(monoJsonP)
-            ? Mono.error(new DmaapNotFoundException("Incorrect JsonObject - missing header"))
+    private Flux<FileData> create(Mono<JsonObject> jsonObject) {
+        return jsonObject.flatMapMany(monoJsonP -> !containsHeader(monoJsonP)
+            ? Flux.error(new DmaapNotFoundException("Incorrect JsonObject - missing header"))
             : transform(monoJsonP));
     }
 
-    private Mono<List<FileData>> transform(JsonObject jsonObject) {
+    private Flux<FileData> transform(JsonObject jsonObject) {
         if (containsHeader(jsonObject, EVENT, NOTIFICATION_FIELDS)) {
             JsonObject notificationFields = jsonObject.getAsJsonObject(EVENT).getAsJsonObject(NOTIFICATION_FIELDS);
             String changeIdentifier = getValueFromJson(notificationFields, CHANGE_IDENTIFIER);
@@ -105,26 +106,25 @@ public class DmaapConsumerJsonParser {
 
             if (isNotificationFieldsHeaderNotEmpty(changeIdentifier, changeType, notificationFieldsVersion)
                 && arrayOfNamedHashMap != null) {
-                Mono<List<FileData>> res = getAllFileDataFromJson(changeIdentifier, changeType, arrayOfNamedHashMap);
-                return res;
+                return getAllFileDataFromJson(changeIdentifier, changeType, arrayOfNamedHashMap);
             }
 
             if (!isNotificationFieldsHeaderNotEmpty(changeIdentifier, changeType, notificationFieldsVersion)) {
-                return Mono.error(
+                return Flux.error(
                     new DmaapNotFoundException("FileReady event header is missing information. " + jsonObject));
             } else if (arrayOfNamedHashMap != null) {
-                return Mono.error(
+                return Flux.error(
                     new DmaapNotFoundException("FileReady event arrayOfNamedHashMap is missing. " + jsonObject));
             }
-            return Mono.error(
+            return Flux.error(
                 new DmaapNotFoundException("FileReady event does not contain correct information. " + jsonObject));
         }
-        return Mono.error(
+        return Flux.error(
             new DmaapNotFoundException("FileReady event has incorrect JsonObject - missing header. " + jsonObject));
 
     }
 
-    private Mono<List<FileData>> getAllFileDataFromJson(String changeIdentifier, String changeType,
+    private Flux<FileData> getAllFileDataFromJson(String changeIdentifier, String changeType,
         JsonArray arrayOfAdditionalFields) {
         List<FileData> res = new ArrayList<>();
         for (int i = 0; i < arrayOfAdditionalFields.size(); i++) {
@@ -135,11 +135,11 @@ public class DmaapConsumerJsonParser {
                 if (fileData != null) {
                     res.add(fileData);
                 } else {
-                    logger.error("Unable to collect file from xNF. File information wrong. " + fileInfo);
+                    logger.error("Unable to collect file from xNF. File information wrong. Data: {}", fileInfo);
                 }
             }
         }
-        return Mono.just(res);
+        return Flux.fromIterable(res);
     }
 
     private FileData getFileDataFromJson(JsonObject fileInfo, String changeIdentifier, String changeType) {
@@ -154,7 +154,7 @@ public class DmaapConsumerJsonParser {
 
         if (isFileFormatFieldsNotEmpty(fileFormatVersion, fileFormatType)
             && isNameAndLocationAndCompressionNotEmpty(name, location, compression)) {
-            fileData = ImmutableFileData.builder().changeIdentifier(changeIdentifier).changeType(changeType)
+            fileData = ImmutableFileData.builder().name(name).changeIdentifier(changeIdentifier).changeType(changeType)
                 .location(location).compression(compression).fileFormatType(fileFormatType)
                 .fileFormatVersion(fileFormatVersion).build();
         }

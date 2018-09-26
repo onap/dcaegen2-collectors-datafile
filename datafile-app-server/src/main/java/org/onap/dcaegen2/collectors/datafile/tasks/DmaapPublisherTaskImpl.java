@@ -16,13 +16,9 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import java.util.List;
-
 import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.Config;
-import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
-import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapNotFoundException;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerReactiveHttpClient;
 import org.slf4j.Logger;
@@ -30,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/13/18
@@ -49,20 +45,16 @@ public class DmaapPublisherTaskImpl extends DmaapPublisherTask {
     }
 
     @Override
-    public Mono<String> publish(Mono<List<ConsumerDmaapModel>> consumerDmaapModels) {
-        logger.info("Publishing on DMaaP DataRouter {}", consumerDmaapModels);
-        return dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModels);
+    public Flux<String> publish(ConsumerDmaapModel consumerDmaapModel) {
+        logger.trace("Publishing on DMaaP DataRouter {}", consumerDmaapModel);
+        return dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel);
     }
 
     @Override
-    public Mono<String> execute(Mono<List<ConsumerDmaapModel>> consumerDmaapModels)
-        throws DatafileTaskException {
-        if (consumerDmaapModels == null) {
-            throw new DmaapNotFoundException("Invoked null object to DMaaP task");
-        }
+    public Flux<String> execute(ConsumerDmaapModel consumerDmaapModel) {
         dmaapProducerReactiveHttpClient = resolveClient();
-        logger.trace("Method called with arg {}", consumerDmaapModels);
-        return publish(consumerDmaapModels);
+        logger.trace("Method called with arg {}", consumerDmaapModel);
+        return publish(consumerDmaapModel);
     }
 
     @Override

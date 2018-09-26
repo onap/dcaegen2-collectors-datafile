@@ -14,29 +14,33 @@
  * ============LICENSE_END========================================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.ftp;
+package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
 
 import org.junit.jupiter.api.Test;
+import org.onap.dcaegen2.collectors.datafile.ftp.FileServerData;
+import org.onap.dcaegen2.collectors.datafile.ftp.FtpsClient;
+import org.onap.dcaegen2.collectors.datafile.ftp.ImmutableFileServerData;
+import org.onap.dcaegen2.collectors.datafile.ftp.SftpClient;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
+import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
 
-import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 /**
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
+ *
  */
-public class FileCollectorTest {
+public class XnfCollectorTaskImplTest {
 
     private static final String PM_MEAS_CHANGE_IDINTIFIER = "PM_MEAS_FILES";
     private static final String FILE_READY_CHANGE_TYPE = "FileReady";
@@ -46,7 +50,7 @@ public class FileCollectorTest {
     private static final int PORT_22 = 22;
     private static final String PM_FILE_NAME = "A20161224.1030-1045.bin.gz";
     private static final String REMOTE_FILE_LOCATION = "/ftp/rop/" + PM_FILE_NAME;
-    private static final String LOCAL_FILE_LOCATION = "target/" + PM_FILE_NAME;
+    private static final String LOCAL_FILE_LOCATION = "target" + File.separator + PM_FILE_NAME;
     private static final String FTPES_LOCATION = FTPES_SCHEME + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
     private static final String SFTP_LOCATION = SFTP_SCHEME + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
     private static final String GZIP_COMPRESSION = "gzip";
@@ -57,58 +61,48 @@ public class FileCollectorTest {
 
     private SftpClient sftpClientMock = mock(SftpClient.class);
 
-    private FileCollector fileCollectorUndetTest = new FileCollector(ftpsClientMock, sftpClientMock);
+    private XnfCollectorTask collectorUndetTest = new XnfCollectorTaskImpl(ftpsClientMock, sftpClientMock);
 
     @Test
     public void whenSingleFtpesFile_returnCorrectResponse() {
-        List<FileData> listOfFileData = new ArrayList<FileData>();
-        listOfFileData.add(ImmutableFileData.builder().changeIdentifier(PM_MEAS_CHANGE_IDINTIFIER)
-            .changeType(FILE_READY_CHANGE_TYPE).location(FTPES_LOCATION).compression(GZIP_COMPRESSION)
-            .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE).fileFormatVersion(FILE_FORMAT_VERSION).build());
+        FileData fileData = ImmutableFileData.builder().changeIdentifier(PM_MEAS_CHANGE_IDINTIFIER)
+                .changeType(FILE_READY_CHANGE_TYPE).name(PM_FILE_NAME).location(FTPES_LOCATION)
+                .compression(GZIP_COMPRESSION).fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION).build();
 
-        FileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(SERVER_ADDRESS).port(PORT_22)
-            .userId("").password("").build();
-        when(ftpsClientMock.collectFile(fileServerData, REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION)).thenReturn(true);
+        ConsumerDmaapModel consumerDmaapModel = ImmutableConsumerDmaapModel.builder().name(PM_FILE_NAME)
+                .location(LOCAL_FILE_LOCATION).compression(GZIP_COMPRESSION).fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION).build();
 
-        Mono<List<ConsumerDmaapModel>> consumerModelsMono =
-            fileCollectorUndetTest.getFilesFromSender(listOfFileData);
-
-        List<ConsumerDmaapModel> consumerModels = consumerModelsMono.block();
-        assertEquals(1, consumerModels.size());
-        ConsumerDmaapModel consumerDmaapModel = consumerModels.get(0);
-        assertEquals(GZIP_COMPRESSION, consumerDmaapModel.getCompression());
-        assertEquals(MEAS_COLLECT_FILE_FORMAT_TYPE, consumerDmaapModel.getFileFormatType());
-        assertEquals(FILE_FORMAT_VERSION, consumerDmaapModel.getFileFormatVersion());
-        assertEquals(LOCAL_FILE_LOCATION, consumerDmaapModel.getLocation());
         FileServerData expectedFileServerData = ImmutableFileServerData.builder().serverAddress(SERVER_ADDRESS)
-            .userId("").password("").port(PORT_22).build();
+                .userId("").password("").port(PORT_22).build();
+        when(ftpsClientMock.collectFile(expectedFileServerData, REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION))
+                .thenReturn(Boolean.TRUE);
+
+        StepVerifier.create(collectorUndetTest.execute(fileData)).expectNext(consumerDmaapModel).verifyComplete();
+
         verify(ftpsClientMock, times(1)).collectFile(expectedFileServerData, REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
         verifyNoMoreInteractions(ftpsClientMock);
     }
 
     @Test
     public void whenSingleSftpFile_returnCorrectResponse() {
-        List<FileData> listOfFileData = new ArrayList<FileData>();
-        listOfFileData.add(ImmutableFileData.builder().changeIdentifier(PM_MEAS_CHANGE_IDINTIFIER)
-            .changeType(FILE_READY_CHANGE_TYPE).location(SFTP_LOCATION).compression(GZIP_COMPRESSION)
-            .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE).fileFormatVersion(FILE_FORMAT_VERSION).build());
+        FileData fileData = ImmutableFileData.builder().changeIdentifier(PM_MEAS_CHANGE_IDINTIFIER)
+                .changeType(FILE_READY_CHANGE_TYPE).name(PM_FILE_NAME).location(SFTP_LOCATION)
+                .compression(GZIP_COMPRESSION).fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION).build();
 
-        FileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(SERVER_ADDRESS).port(PORT_22)
-            .userId("").password("").build();
-        when(sftpClientMock.collectFile(fileServerData, REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION)).thenReturn(true);
+        ConsumerDmaapModel consumerDmaapModel = ImmutableConsumerDmaapModel.builder().name(PM_FILE_NAME)
+                .location(LOCAL_FILE_LOCATION).compression(GZIP_COMPRESSION).fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION).build();
 
-        Mono<List<ConsumerDmaapModel>> consumerModelsMono =
-            fileCollectorUndetTest.getFilesFromSender(listOfFileData);
-
-        List<ConsumerDmaapModel> consumerModels = consumerModelsMono.block();
-        assertEquals(1, consumerModels.size());
-        ConsumerDmaapModel consumerDmaapModel = consumerModels.get(0);
-        assertEquals(GZIP_COMPRESSION, consumerDmaapModel.getCompression());
-        assertEquals(MEAS_COLLECT_FILE_FORMAT_TYPE, consumerDmaapModel.getFileFormatType());
-        assertEquals(FILE_FORMAT_VERSION, consumerDmaapModel.getFileFormatVersion());
-        assertEquals(LOCAL_FILE_LOCATION, consumerDmaapModel.getLocation());
         FileServerData expectedFileServerData = ImmutableFileServerData.builder().serverAddress(SERVER_ADDRESS)
-            .userId("").password("").port(PORT_22).build();
+                .userId("").password("").port(PORT_22).build();
+        when(sftpClientMock.collectFile(expectedFileServerData, REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION))
+                .thenReturn(Boolean.TRUE);
+
+        StepVerifier.create(collectorUndetTest.execute(fileData)).expectNext(consumerDmaapModel).verifyComplete();
+
         verify(sftpClientMock, times(1)).collectFile(expectedFileServerData, REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
         verifyNoMoreInteractions(ftpsClientMock);
     }

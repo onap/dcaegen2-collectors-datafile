@@ -42,7 +42,8 @@ import org.springframework.web.reactive.function.client.WebClient.RequestBodyUri
 import org.springframework.web.reactive.function.client.WebClient.ResponseSpec;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 7/4/18
@@ -52,6 +53,7 @@ class DmaapProducerReactiveHttpClientTest {
 
     private static final String FILE_NAME = "A20161224.1030-1045.bin.gz";
     private static final String LOCATION_JSON_TAG = "location";
+    private static final String NAME_JSON_TAG = "name";
     private static final String X_ATT_DR_META = "X-ATT-DR-META";
 
     private static final String HOST = "54.45.33.2";
@@ -98,11 +100,13 @@ class DmaapProducerReactiveHttpClientTest {
         List<ConsumerDmaapModel> consumerDmaapModelList = new ArrayList<ConsumerDmaapModel>();
         consumerDmaapModelList.add(consumerDmaapModel);
 
-        dmaapProducerReactiveHttpClient.getDmaapProducerResponse(Mono.just(consumerDmaapModelList));
+        StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel))
+                .expectNext("200").verifyComplete();
 
         verify(requestBodyUriSpecMock).header(HttpHeaders.CONTENT_TYPE, APPLICATION_OCTET_STREAM_CONTENT_TYPE);
         JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(consumerDmaapModel));
         metaData.getAsJsonObject().remove(LOCATION_JSON_TAG);
+        metaData.getAsJsonObject().remove(NAME_JSON_TAG);
         verify(requestBodyUriSpecMock).header(X_ATT_DR_META, metaData.toString());
         URI expectedUri = new DefaultUriBuilderFactory().builder().scheme(HTTP_SCHEME).host(HOST).port(PORT)
                 .path(PUBLISH_TOPIC + "/" + DEFAULT_FEED_ID + "/" + FILE_NAME).build();
@@ -116,7 +120,7 @@ class DmaapProducerReactiveHttpClientTest {
 
         when(requestBodyUriSpecMock.retrieve()).thenReturn(responseSpecMock);
         when(responseSpecMock.onStatus(any(), any())).thenReturn(responseSpecMock);
-        Mono<String> expectedResult = Mono.just("200");
-        when(responseSpecMock.bodyToMono(String.class)).thenReturn(expectedResult);
+        Flux<String> expectedResult = Flux.just("200");
+        when(responseSpecMock.bodyToFlux(String.class)).thenReturn(expectedResult);
     }
 }
