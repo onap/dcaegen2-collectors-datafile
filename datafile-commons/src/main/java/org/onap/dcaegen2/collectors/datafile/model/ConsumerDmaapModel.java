@@ -16,10 +16,10 @@
 
 package org.onap.dcaegen2.collectors.datafile.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
-
-import com.google.gson.annotations.SerializedName;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 5/8/18
@@ -29,6 +29,9 @@ import com.google.gson.annotations.SerializedName;
 @Value.Immutable
 @Gson.TypeAdapters
 public interface ConsumerDmaapModel {
+
+    @SerializedName("name")
+    String getName();
 
     @SerializedName("location")
     String getLocation();

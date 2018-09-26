@@ -16,21 +16,18 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import java.util.List;
-
 import org.onap.dcaegen2.collectors.datafile.config.DmaapConsumerConfiguration;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.Config;
-import org.onap.dcaegen2.collectors.datafile.ftp.FileCollector;
-import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
-import org.onap.dcaegen2.collectors.datafile.service.DmaapConsumerJsonParser;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
+import org.onap.dcaegen2.collectors.datafile.service.DmaapConsumerJsonParser;
 import org.onap.dcaegen2.collectors.datafile.service.consumer.DmaapConsumerReactiveHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -45,42 +42,32 @@ public class DmaapConsumerTaskImpl extends DmaapConsumerTask {
     private Config datafileAppConfig;
     private DmaapConsumerJsonParser dmaapConsumerJsonParser;
     private DmaapConsumerReactiveHttpClient dmaaPConsumerReactiveHttpClient;
-    FileCollector fileCollector;
 
     @Autowired
-    public DmaapConsumerTaskImpl(AppConfig datafileAppConfig, FileCollector fileCollector) {
+    public DmaapConsumerTaskImpl(AppConfig datafileAppConfig) {
         this.datafileAppConfig = datafileAppConfig;
         this.dmaapConsumerJsonParser = new DmaapConsumerJsonParser();
-        this.fileCollector = fileCollector;
     }
 
     protected DmaapConsumerTaskImpl(AppConfig datafileAppConfig,
-        DmaapConsumerReactiveHttpClient dmaaPConsumerReactiveHttpClient,
-        DmaapConsumerJsonParser dmaapConsumerJsonParser, FileCollector fileCollector) {
+            DmaapConsumerReactiveHttpClient dmaaPConsumerReactiveHttpClient,
+            DmaapConsumerJsonParser dmaapConsumerJsonParser) {
         this.datafileAppConfig = datafileAppConfig;
         this.dmaaPConsumerReactiveHttpClient = dmaaPConsumerReactiveHttpClient;
         this.dmaapConsumerJsonParser = dmaapConsumerJsonParser;
-        this.fileCollector = fileCollector;
     }
 
     @Override
-    Mono<List<FileData>> consume(Mono<String> message) {
-        logger.trace("Method called with arg {}", message);
+    Flux<FileData> consume(Mono<String> message) {
+        logger.trace("consume called with arg {}", message.toString());
         return dmaapConsumerJsonParser.getJsonObject(message);
     }
 
-    private Mono<List<ConsumerDmaapModel>> getFilesFromSender(List<FileData> listOfFileData) {
-        Mono<List<ConsumerDmaapModel>> filesFromSender = fileCollector.getFilesFromSender(listOfFileData);
-        return filesFromSender;
-    }
-
     @Override
-    protected Mono<List<ConsumerDmaapModel>> execute(String object) {
+    protected Flux<FileData> execute(String object) {
         dmaaPConsumerReactiveHttpClient = resolveClient();
-        logger.trace("Method called with arg {}", object);
-        Mono<List<FileData>> consumerResult =
-            consume((dmaaPConsumerReactiveHttpClient.getDmaapConsumerResponse()));
-        return consumerResult.flatMap(this::getFilesFromSender);
+        logger.trace("execute called with arg {}", object);
+        return consume((dmaaPConsumerReactiveHttpClient.getDmaapConsumerResponse()));
     }
 
     @Override
