@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 
 public class ConsumerDmaapModelTest {
 
+    private static final String NAME = "A20161224.1030-1045.bin.gz";
     private static final String LOCATION = "target/A20161224.1030-1045.bin.gz";
     private static final String COMPRESSION = "gzip";
     private static final String FILE_FORMAT_TYPE = "org.3GPP.32.435#measCollec";
@@ -29,13 +30,12 @@ public class ConsumerDmaapModelTest {
     @Test
     public void consumerDmaapModelBuilder_shouldBuildAnObject() {
 
-        // When
-        // Given
-        ConsumerDmaapModel consumerDmaapModel = ImmutableConsumerDmaapModel.builder().location(LOCATION).compression(COMPRESSION)
-            .fileFormatType(FILE_FORMAT_TYPE).fileFormatVersion(FILE_FORMAT_VERSION).build();
+        ConsumerDmaapModel consumerDmaapModel =
+                ImmutableConsumerDmaapModel.builder().name(NAME).location(LOCATION).compression(COMPRESSION)
+                        .fileFormatType(FILE_FORMAT_TYPE).fileFormatVersion(FILE_FORMAT_VERSION).build();
 
-        // Then
         Assertions.assertNotNull(consumerDmaapModel);
+        Assertions.assertEquals(NAME, consumerDmaapModel.getName());
         Assertions.assertEquals(LOCATION, consumerDmaapModel.getLocation());
         Assertions.assertEquals(COMPRESSION, consumerDmaapModel.getCompression());
         Assertions.assertEquals(FILE_FORMAT_TYPE, consumerDmaapModel.getFileFormatType());
