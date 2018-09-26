@@ -21,11 +21,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 class CommonFunctionsTest {
-    // Given
     private ConsumerDmaapModel model = new ConsumerDmaapModelForUnitTest();
     private static final String EXPECTED_RESULT =
-        "{\"location\":\"target/A20161224.1030-1045.bin.gz\",\"compression\":\"gzip\","
-            + "\"fileFormatType\":\"org.3GPP.32.435#measCollec\",\"fileFormatVersion\":\"V10\"}";
+            "{\"name\":\"A20161224.1030-1045.bin.gz\",\"location\":\"target/A20161224.1030-1045.bin.gz\","
+            + "\"compression\":\"gzip\",\"fileFormatType\":\"org.3GPP.32.435#measCollec\","
+            + "\"fileFormatVersion\":\"V10\"}";
 
     @Test
     void createJsonBody_shouldReturnJsonInString() {
