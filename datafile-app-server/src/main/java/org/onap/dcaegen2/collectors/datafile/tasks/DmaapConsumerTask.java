@@ -18,17 +18,14 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import java.util.List;
-
 import org.onap.dcaegen2.collectors.datafile.config.DmaapConsumerConfiguration;
-import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapNotFoundException;
-import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
-import org.onap.dcaegen2.collectors.datafile.service.DmaapReactiveWebClient;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
+import org.onap.dcaegen2.collectors.datafile.service.DmaapReactiveWebClient;
 import org.onap.dcaegen2.collectors.datafile.service.consumer.DmaapConsumerReactiveHttpClient;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -37,7 +34,7 @@ import reactor.core.publisher.Mono;
  */
 abstract class DmaapConsumerTask {
 
-    abstract Mono<List<FileData>> consume(Mono<String> message) throws DmaapNotFoundException;
+    abstract Flux<FileData> consume(Mono<String> message) throws DmaapNotFoundException;
 
     abstract DmaapConsumerReactiveHttpClient resolveClient();
 
@@ -45,7 +42,7 @@ abstract class DmaapConsumerTask {
 
     protected abstract DmaapConsumerConfiguration resolveConfiguration();
 
-    protected abstract Mono<List<ConsumerDmaapModel>> execute(String object) throws DatafileTaskException;
+    protected abstract Flux<FileData> execute(String object);
 
     WebClient buildWebClient() {
         return new DmaapReactiveWebClient().fromConfiguration(resolveConfiguration()).build();

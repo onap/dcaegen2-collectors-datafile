@@ -17,16 +17,23 @@
 package org.onap.dcaegen2.collectors.datafile.model;
 
 public class ConsumerDmaapModelForUnitTest implements ConsumerDmaapModel {
+    private final String name;
     private final String location;
     private final String compression;
     private final String fileFormatType;
     private final String fileFormatVersion;
 
     public ConsumerDmaapModelForUnitTest() {
+        this.name = "A20161224.1030-1045.bin.gz";
         this.location = "target/A20161224.1030-1045.bin.gz";
         this.compression = "gzip";
         this.fileFormatType = "org.3GPP.32.435#measCollec";
         this.fileFormatVersion = "V10";
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override

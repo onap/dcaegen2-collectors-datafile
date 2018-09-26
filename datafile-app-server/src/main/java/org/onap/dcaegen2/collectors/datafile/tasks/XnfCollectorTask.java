@@ -1,6 +1,6 @@
 /*
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,30 +16,16 @@
  * ============LICENSE_END========================================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.model;
+package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import org.immutables.gson.Gson;
-import org.immutables.value.Value;
+import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
+import org.onap.dcaegen2.collectors.datafile.model.FileData;
+
+import reactor.core.publisher.Flux;
 
 /**
- * Contains data, from the fileReady event, about the file to collect from the xNF.
- *
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
-@Value.Immutable
-@Gson.TypeAdapters
-public interface FileData {
-    String changeIdentifier();
-
-    String changeType();
-
-    String name();
-
-    String location();
-
-    String compression();
-
-    String fileFormatType();
-
-    String fileFormatVersion();
+public interface XnfCollectorTask {
+    Flux<ConsumerDmaapModel> execute(FileData fileData);
 }
