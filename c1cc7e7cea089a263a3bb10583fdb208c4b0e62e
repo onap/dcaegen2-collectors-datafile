@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_a817d553",
+        "filename": "datafile-devops/src/main/resources/docker-compose.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 2813
+      },
+      "writtenOn": "2018-09-26T10:12:16Z",
+      "side": 1,
+      "message": "For producer we could use datarouter credentials as in blueprint, as below:\n\n\n  dmaap_dr_user:\n    type: string\n    description: dmaap datarouter user name\n    default: \"dradmin\"\n  dmaap_dr_passwd:\n    type: string\n    description: dmaap datarouter password\n    default: \"dradmin\"",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 64
+      },
+      "revId": "c1cc7e7cea089a263a3bb10583fdb208c4b0e62e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
