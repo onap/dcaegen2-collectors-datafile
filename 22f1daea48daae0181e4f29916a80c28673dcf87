@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_bad4f347",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-09-27T07:51:46Z",
+      "side": 1,
+      "message": "I\u0027m not sure what is different here from the code referenced at the link? (`logger.error(\"Failed to format {}\", s, e);`)",
+      "parentUuid": "1a76adc5_9a7337b4",
+      "range": {
+        "startLine": 60,
+        "startChar": 12,
+        "endLine": 60,
+        "endChar": 93
+      },
+      "revId": "22f1daea48daae0181e4f29916a80c28673dcf87",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_5a6d9fcb",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
         "patchSetId": 4
