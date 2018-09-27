@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_3aca236f",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 2813
+      },
+      "writtenOn": "2018-09-27T08:27:15Z",
+      "side": 1,
+      "message": "Two methods of logging here:\n1. public void error(String format, Object... arguments);\n2. public void error(String msg, Throwable t);\n\nad.1 Converting exception to string and after that to Array of objects.\n\nad.2 Provide throwable object which will handled by logger library.\n\nDifference -\u003e performance of concatenation/conversion of strings.",
+      "parentUuid": "1a76adc5_bad4f347",
+      "range": {
+        "startLine": 60,
+        "startChar": 12,
+        "endLine": 60,
+        "endChar": 93
+      },
+      "revId": "22f1daea48daae0181e4f29916a80c28673dcf87",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_5a6d9fcb",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
         "patchSetId": 4
