@@ -16,6 +16,24 @@
       "revId": "851b0fb8aaac64da37ff71e0e862e8ef162731b2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_1f53996d",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/XnfCollectorTaskImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-09-27T06:40:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a76adc5_eef07593",
+      "revId": "851b0fb8aaac64da37ff71e0e862e8ef162731b2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
