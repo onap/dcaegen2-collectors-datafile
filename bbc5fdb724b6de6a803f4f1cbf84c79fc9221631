@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_13b5cd30",
+        "filename": "pom.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2018-09-28T18:14:23Z",
+      "side": 1,
+      "message": "Why is this being removed? Oparent provides standardized configuration and maven setting across all onap components",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 8
+      },
+      "revId": "bbc5fdb724b6de6a803f4f1cbf84c79fc9221631",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
