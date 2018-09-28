@@ -168,6 +168,23 @@
     },
     {
       "key": {
+        "uuid": "1a76adc5_b881564f",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-09-28T10:01:08Z",
+      "side": 1,
+      "message": "Maybe adding here log that something went wrong?",
+      "revId": "22f1daea48daae0181e4f29916a80c28673dcf87",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a76adc5_3a6463e4",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapConsumerTaskImpl.java",
         "patchSetId": 4
