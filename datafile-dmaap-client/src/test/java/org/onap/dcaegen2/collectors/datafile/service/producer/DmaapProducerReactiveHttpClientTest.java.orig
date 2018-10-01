@@ -26,17 +26,32 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+<<<<<<< HEAD
+import java.util.ArrayList;
+import java.util.List;
+=======
+>>>>>>> origin/nordix-dev
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModelForUnitTest;
+<<<<<<< HEAD
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClient.RequestBodyUriSpec;
+import org.springframework.web.reactive.function.client.WebClient.ResponseSpec;
+import org.springframework.web.util.DefaultUriBuilderFactory;
+
+import reactor.core.publisher.Flux;
+=======
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
+>>>>>>> origin/nordix-dev
 import reactor.test.StepVerifier;
 
 /**
@@ -51,7 +66,7 @@ class DmaapProducerReactiveHttpClientTest {
     private static final String X_ATT_DR_META = "X-ATT-DR-META";
 
     private static final String HOST = "54.45.33.2";
-    private static final String HTTPS_SCHEME = "https";
+    private static final String HTTP_SCHEME = "http";
     private static final int PORT = 1234;
     private static final String APPLICATION_OCTET_STREAM_CONTENT_TYPE = "application/octet-stream";
     private static final String PUBLISH_TOPIC = "publish";
@@ -70,7 +85,7 @@ class DmaapProducerReactiveHttpClientTest {
     @BeforeEach
     void setUp() {
         when(dmaapPublisherConfigurationMock.dmaapHostName()).thenReturn(HOST);
-        when(dmaapPublisherConfigurationMock.dmaapProtocol()).thenReturn(HTTPS_SCHEME);
+        when(dmaapPublisherConfigurationMock.dmaapProtocol()).thenReturn(HTTP_SCHEME);
         when(dmaapPublisherConfigurationMock.dmaapPortNumber()).thenReturn(PORT);
         when(dmaapPublisherConfigurationMock.dmaapUserName()).thenReturn("dradmin");
         when(dmaapPublisherConfigurationMock.dmaapUserPassword()).thenReturn("dradmin");
@@ -83,6 +98,26 @@ class DmaapProducerReactiveHttpClientTest {
     }
 
     @Test
+<<<<<<< HEAD
+    void getHttpResponse_Success() {
+        mockWebClientDependantObject();
+        dmaapProducerReactiveHttpClient.createDmaapWebClient(webClientMock);
+        List<ConsumerDmaapModel> consumerDmaapModelList = new ArrayList<ConsumerDmaapModel>();
+        consumerDmaapModelList.add(consumerDmaapModel);
+
+        StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel))
+                .expectNext("200").verifyComplete();
+
+        verify(requestBodyUriSpecMock).header(HttpHeaders.CONTENT_TYPE, APPLICATION_OCTET_STREAM_CONTENT_TYPE);
+        JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(consumerDmaapModel));
+        metaData.getAsJsonObject().remove(LOCATION_JSON_TAG);
+        metaData.getAsJsonObject().remove(NAME_JSON_TAG);
+        verify(requestBodyUriSpecMock).header(X_ATT_DR_META, metaData.toString());
+        URI expectedUri = new DefaultUriBuilderFactory().builder().scheme(HTTP_SCHEME).host(HOST).port(PORT)
+                .path(PUBLISH_TOPIC + "/" + DEFAULT_FEED_ID + "/" + FILE_NAME).build();
+        verify(requestBodyUriSpecMock).uri(expectedUri);
+        verify(requestBodyUriSpecMock).body(any());
+=======
     void getHttpResponse_Success() throws Exception {
         mockWebClientDependantObject();
 
@@ -94,14 +129,22 @@ class DmaapProducerReactiveHttpClientTest {
 
         verify(restTemplateMock)
                 .exchange(eq(expectedUri), eq(HttpMethod.PUT), any(), eq(String.class));
+>>>>>>> origin/nordix-dev
     }
 
     private void mockWebClientDependantObject() throws IOException {
         InputStream fileStream = new ByteArrayInputStream("Just a string.".getBytes());
         when(fileSystemResourceMock.getInputStream()).thenReturn(fileStream);
 
+<<<<<<< HEAD
+        when(requestBodyUriSpecMock.retrieve()).thenReturn(responseSpecMock);
+        when(responseSpecMock.onStatus(any(), any())).thenReturn(responseSpecMock);
+        Flux<String> expectedResult = Flux.just("200");
+        when(responseSpecMock.bodyToFlux(String.class)).thenReturn(expectedResult);
+=======
         when(restTemplateMock.exchange(any(), any(), any(), any()))
                 .thenReturn(responseEntityMock);
         when(responseEntityMock.getStatusCode()).thenReturn(HttpStatus.OK);
+>>>>>>> origin/nordix-dev
     }
 }

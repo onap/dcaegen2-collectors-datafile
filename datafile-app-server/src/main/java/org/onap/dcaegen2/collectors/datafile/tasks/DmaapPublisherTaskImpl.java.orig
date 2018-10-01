@@ -44,10 +44,23 @@ public class DmaapPublisherTaskImpl extends DmaapPublisherTask {
     }
 
     @Override
+<<<<<<< HEAD
+    public Flux<String> publish(ConsumerDmaapModel consumerDmaapModel) {
+        logger.trace("Publishing on DMaaP DataRouter {}", consumerDmaapModel);
+        return dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel);
+    }
+
+    @Override
+    public Flux<String> execute(ConsumerDmaapModel consumerDmaapModel) {
+        dmaapProducerReactiveHttpClient = resolveClient();
+        logger.trace("Method called with arg {}", consumerDmaapModel);
+        return publish(consumerDmaapModel);
+=======
     public Flux<String> execute(ConsumerDmaapModel consumerDmaapModel) {
         logger.trace("Method called with arg {}", consumerDmaapModel);
         DmaapProducerReactiveHttpClient dmaapProducerReactiveHttpClient = resolveClient();
         return dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel);
+>>>>>>> origin/nordix-dev
     }
 
     @Override

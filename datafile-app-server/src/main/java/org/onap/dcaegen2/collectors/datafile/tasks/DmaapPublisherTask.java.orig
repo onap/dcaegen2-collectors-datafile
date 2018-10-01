@@ -28,9 +28,19 @@ import reactor.core.publisher.Flux;
  */
 abstract class DmaapPublisherTask {
 
+<<<<<<< HEAD
+    abstract Flux<String> publish(ConsumerDmaapModel consumerDmaapModel);
+
+    abstract DmaapProducerReactiveHttpClient resolveClient();
+
+    protected abstract DmaapPublisherConfiguration resolveConfiguration();
+
+    protected abstract Flux<String> execute(ConsumerDmaapModel consumerDmaapModel);
+=======
     protected abstract DmaapPublisherConfiguration resolveConfiguration();
 
     protected abstract DmaapProducerReactiveHttpClient resolveClient();
+>>>>>>> origin/nordix-dev
 
     protected abstract Flux<String> execute(ConsumerDmaapModel consumerDmaapModel);
 }

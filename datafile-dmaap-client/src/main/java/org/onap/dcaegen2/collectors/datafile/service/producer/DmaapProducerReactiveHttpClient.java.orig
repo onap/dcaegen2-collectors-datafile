@@ -22,6 +22,10 @@ import com.google.gson.JsonParser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+<<<<<<< HEAD
+
+import org.apache.http.HttpHeaders;
+=======
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -29,11 +33,25 @@ import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
+>>>>>>> origin/nordix-dev
 import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.model.CommonFunctions;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+<<<<<<< HEAD
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.ClientResponse;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClient.RequestBodyUriSpec;
+import org.springframework.web.reactive.function.client.WebClient.ResponseSpec;
+import org.springframework.web.util.DefaultUriBuilderFactory;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+=======
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -42,6 +60,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import reactor.core.publisher.Flux;
+>>>>>>> origin/nordix-dev
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 7/4/18
@@ -52,7 +71,10 @@ public class DmaapProducerReactiveHttpClient {
     private static final String X_ATT_DR_META = "X-ATT-DR-META";
     private static final String NAME_JSON_TAG = "name";
     private static final String LOCATION_JSON_TAG = "location";
+<<<<<<< HEAD
+=======
     private static final String URI_SEPARATOR = "/";
+>>>>>>> origin/nordix-dev
     private static final String DEFAULT_FEED_ID = "1";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -87,14 +109,51 @@ public class DmaapProducerReactiveHttpClient {
     /**
      * Function for calling DMaaP HTTP producer - post request to DMaaP DataRouter.
      *
+<<<<<<< HEAD
+     * @param consumerDmaapModel - object which will be sent to DMaaP
+=======
      * @param consumerDmaapModel - object which will be sent to DMaaP DataRouter
+>>>>>>> origin/nordix-dev
      * @return status code of operation
      */
     public Flux<String> getDmaapProducerResponse(ConsumerDmaapModel consumerDmaapModel) {
         logger.trace("Entering getDmaapProducerResponse with {}", consumerDmaapModel);
+
+<<<<<<< HEAD
+        RequestBodyUriSpec post = webClient.post();
+
+        prepareHead(consumerDmaapModel, post);
+
+        prepareBody(consumerDmaapModel, post);
+
+        ResponseSpec responseSpec = post.retrieve();
+        responseSpec.onStatus(HttpStatus::is4xxClientError, clientResponse -> handlePostErrors(consumerDmaapModel, clientResponse));
+        responseSpec.onStatus(HttpStatus::is5xxServerError, clientResponse -> handlePostErrors(consumerDmaapModel, clientResponse));
+        Flux<String> response = responseSpec.bodyToFlux(String.class);
+
+        logger.trace("Exiting getDmaapProducerResponse with {}", response);
+        return response;
+    }
+
+    public DmaapProducerReactiveHttpClient createDmaapWebClient(WebClient webClient) {
+        this.webClient = webClient;
+        return this;
+    }
+
+    private void prepareHead(ConsumerDmaapModel model, RequestBodyUriSpec post) {
+        post.header(HttpHeaders.CONTENT_TYPE, dmaapContentType);
+
+        JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(model));
+        String name = metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
+        metaData.getAsJsonObject().remove(LOCATION_JSON_TAG);
+        post.header(X_ATT_DR_META, metaData.toString());
+
+        post.uri(getUri(name));
+=======
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType(dmaapContentType));
+
             addMetaDataToHead(consumerDmaapModel, headers);
 
             addUserCredentialsToHead(headers);
@@ -103,8 +162,8 @@ public class DmaapProducerReactiveHttpClient {
 
 
             logger.trace("Starting to publish to DR");
-            ResponseEntity<String> responseEntity = getRestTemplate().exchange(getUri(consumerDmaapModel.getName()),
-                    HttpMethod.PUT, request, String.class);
+            ResponseEntity<String> responseEntity =
+                    getRestTemplate().exchange(getUri(consumerDmaapModel.getName()), HttpMethod.PUT, request, String.class);
 
             return Flux.just(responseEntity.getStatusCode().toString());
         } catch (Exception e) {
@@ -140,6 +199,7 @@ public class DmaapProducerReactiveHttpClient {
             fileResource = new FileSystemResourceWrapper(filePath);
         }
         return fileResource.getInputStream();
+>>>>>>> origin/nordix-dev
     }
 
     private IRestTemplate getRestTemplate() throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
@@ -150,7 +210,11 @@ public class DmaapProducerReactiveHttpClient {
     }
 
     private URI getUri(String fileName) {
+<<<<<<< HEAD
+        String path = dmaapTopicName + "/" + DEFAULT_FEED_ID + "/" + fileName;
+=======
         String path = dmaapTopicName + URI_SEPARATOR + DEFAULT_FEED_ID + URI_SEPARATOR + fileName;
+>>>>>>> origin/nordix-dev
         return new DefaultUriBuilderFactory().builder().scheme(dmaapProtocol).host(dmaapHostName).port(dmaapPortNumber)
                 .path(path).build();
     }

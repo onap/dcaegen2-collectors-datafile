@@ -3,24 +3,40 @@
         "dmaap": {
             "dmaapConsumerConfiguration": {
                 "dmaapHostName": "localhost",
+<<<<<<< HEAD
+                "dmaapPortNumber": 3904,
+=======
                 "dmaapPortNumber": 2222,
+>>>>>>> origin/nordix-dev
                 "dmaapTopicName": "/events/unauthenticated.VES_NOTIFICATION_OUTPUT",
                 "dmaapProtocol": "http",
                 "dmaapUserName": "admin",
                 "dmaapUserPassword": "admin",
                 "dmaapContentType": "application/json",
+<<<<<<< HEAD
+                "consumerId": "c12",
+=======
                 "consumerId": "C12",
+>>>>>>> origin/nordix-dev
                 "consumerGroup": "OpenDcae-c12",
                 "timeoutMS": -1,
                 "messageLimit": 1
             },
             "dmaapProducerConfiguration": {
                 "dmaapHostName": "localhost",
+<<<<<<< HEAD
+                "dmaapPortNumber": 3905,
+                "dmaapTopicName": "publish",
+                "dmaapProtocol": "http",
+                "dmaapUserName": "admin",
+                "dmaapUserPassword": "admin",
+=======
                 "dmaapPortNumber": 3907,
                 "dmaapTopicName": "publish",
                 "dmaapProtocol": "https",
                 "dmaapUserName": "dradmin",
                 "dmaapUserPassword": "dradmin",
+>>>>>>> origin/nordix-dev
                 "dmaapContentType": "application/octet-stream"
             }
         }

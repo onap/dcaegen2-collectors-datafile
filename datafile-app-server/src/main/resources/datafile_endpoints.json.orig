@@ -17,11 +17,19 @@
             "dmaapProducerConfiguration": {
                 "dmaapContentType": "application/octet-stream",
                 "dmaapHostName": "localhost",
+<<<<<<< HEAD
+                "dmaapPortNumber": 3905,
+                "dmaapProtocol": "http",
+                "dmaapTopicName": "publish",
+                "dmaapUserName": "admin",
+                "dmaapUserPassword": "admin"
+=======
                 "dmaapPortNumber": 3907,
                 "dmaapProtocol": "https",
                 "dmaapTopicName": "publish",
                 "dmaapUserName": "dradmin",
                 "dmaapUserPassword": "dradmin"
+>>>>>>> origin/nordix-dev
             }
         }
     }
