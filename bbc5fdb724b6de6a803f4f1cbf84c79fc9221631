@@ -22,6 +22,30 @@
       "revId": "bbc5fdb724b6de6a803f4f1cbf84c79fc9221631",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_d61f5408",
+        "filename": "pom.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2018-10-01T07:29:43Z",
+      "side": 1,
+      "message": "My fault. To be fixed in next patch set",
+      "parentUuid": "1a76adc5_13b5cd30",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 8
+      },
+      "revId": "bbc5fdb724b6de6a803f4f1cbf84c79fc9221631",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
