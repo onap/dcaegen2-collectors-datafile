@@ -14,7 +14,7 @@ logging:
     ROOT: ERROR
     org.springframework: ERROR
     org.springframework.data: ERROR
-    org.onap.dcaegen2.collectors.datafile: INFO
+    org.onap.dcaegen2.collectors.datafile: ERROR
   file: opt/log/application.log
 app:
   filepath: config/datafile_endpoints.json
