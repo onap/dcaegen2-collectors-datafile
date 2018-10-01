@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_f6cdb85e",
+        "filename": "datafile-devops/src/main/resources/docker-compose.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 4447
+      },
+      "writtenOn": "2018-10-01T07:49:21Z",
+      "side": 1,
+      "message": "This needs to be upper case \"C12\", as in the blueprints",
+      "range": {
+        "startLine": 13,
+        "startChar": 52,
+        "endLine": 13,
+        "endChar": 55
+      },
+      "revId": "2ff4e611b8f2581935ef59c9acd4bd675f966ced",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_76e228d7",
+        "filename": "datafile-devops/src/main/resources/docker-compose.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 4447
+      },
+      "writtenOn": "2018-10-01T07:49:21Z",
+      "side": 1,
+      "message": "Data router uses https",
+      "range": {
+        "startLine": 20,
+        "startChar": 55,
+        "endLine": 20,
+        "endChar": 59
+      },
+      "revId": "2ff4e611b8f2581935ef59c9acd4bd675f966ced",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
