@@ -19,6 +19,7 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 import java.io.File;
 import java.net.URI;
 
+import org.apache.commons.io.FilenameUtils;
 import org.onap.dcaegen2.collectors.datafile.ftp.FileServerData;
 import org.onap.dcaegen2.collectors.datafile.ftp.FtpsClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.ImmutableFileServerData;
@@ -76,7 +77,7 @@ public class XnfCollectorTaskImpl implements XnfCollectorTask {
                 .userId(userInfo != null ? userInfo[0] : "").password(userInfo != null ? userInfo[1] : "")
                 .port(uri.getPort()).build();
         String remoteFile = uri.getPath();
-        String localFile = "target" + File.separator + fileData.name();
+        String localFile = "target" + File.separator + FilenameUtils.getName(remoteFile);
         String scheme = uri.getScheme();
 
         boolean fileDownloaded = false;

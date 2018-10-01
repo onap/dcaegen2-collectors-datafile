@@ -18,8 +18,6 @@
 
 package org.onap.dcaegen2.collectors.datafile.service;
 
-import static org.springframework.web.reactive.function.client.ExchangeFilterFunctions.basicAuthentication;
-
 import org.onap.dcaegen2.collectors.datafile.config.DmaapCustomConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,8 +35,6 @@ public class DmaapReactiveWebClient {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private String dmaaPContentType;
-    private String dmaaPUserName;
-    private String dmaaPUserPassword;
 
     /**
      * Creating DmaapReactiveWebClient passing to them basic DmaapConfig.
@@ -47,8 +43,6 @@ public class DmaapReactiveWebClient {
      * @return DmaapReactiveWebClient
      */
     public DmaapReactiveWebClient fromConfiguration(DmaapCustomConfig dmaapCustomConfig) {
-        this.dmaaPUserName = dmaapCustomConfig.dmaapUserName();
-        this.dmaaPUserPassword = dmaapCustomConfig.dmaapUserPassword();
         this.dmaaPContentType = dmaapCustomConfig.dmaapContentType();
         return this;
     }
@@ -61,7 +55,6 @@ public class DmaapReactiveWebClient {
     public WebClient build() {
         return WebClient.builder()
             .defaultHeader(HttpHeaders.CONTENT_TYPE, dmaaPContentType)
-            .filter(basicAuthentication(dmaaPUserName, dmaaPUserPassword))
             .filter(logRequest())
             .filter(logResponse())
             .build();
