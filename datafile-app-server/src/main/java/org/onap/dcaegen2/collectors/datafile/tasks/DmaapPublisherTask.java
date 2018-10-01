@@ -18,9 +18,7 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
-import org.onap.dcaegen2.collectors.datafile.service.DmaapReactiveWebClient;
 import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerReactiveHttpClient;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import reactor.core.publisher.Flux;
 
@@ -30,15 +28,9 @@ import reactor.core.publisher.Flux;
  */
 abstract class DmaapPublisherTask {
 
-    abstract Flux<String> publish(ConsumerDmaapModel consumerDmaapModel);
-
-    abstract DmaapProducerReactiveHttpClient resolveClient();
-
     protected abstract DmaapPublisherConfiguration resolveConfiguration();
 
-    protected abstract Flux<String> execute(ConsumerDmaapModel consumerDmaapModel);
+    protected abstract DmaapProducerReactiveHttpClient resolveClient();
 
-    WebClient buildWebClient() {
-        return new DmaapReactiveWebClient().fromConfiguration(resolveConfiguration()).build();
-    }
+    protected abstract Flux<String> execute(ConsumerDmaapModel consumerDmaapModel);
 }

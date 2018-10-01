@@ -3,10 +3,10 @@
         "dmaap": {
             "dmaapConsumerConfiguration": {
                 "consumerGroup": "notification",
-                "consumerId": "1",
+                "consumerId": "C12",
                 "dmaapContentType": "application/json",
                 "dmaapHostName": "localhost",
-                "dmaapPortNumber": 3904,
+                "dmaapPortNumber": 2222,
                 "dmaapProtocol": "http",
                 "dmaapTopicName": "/events/unauthenticated.VES_NOTIFICATION_OUTPUT",
                 "dmaapUserName": "admin",
@@ -17,11 +17,11 @@
             "dmaapProducerConfiguration": {
                 "dmaapContentType": "application/octet-stream",
                 "dmaapHostName": "localhost",
-                "dmaapPortNumber": 3905,
-                "dmaapProtocol": "http",
+                "dmaapPortNumber": 3907,
+                "dmaapProtocol": "https",
                 "dmaapTopicName": "publish",
-                "dmaapUserName": "admin",
-                "dmaapUserPassword": "admin"
+                "dmaapUserName": "dradmin",
+                "dmaapUserPassword": "dradmin"
             }
         }
     }

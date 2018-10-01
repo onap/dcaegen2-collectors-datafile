@@ -3,24 +3,24 @@
         "dmaap": {
             "dmaapConsumerConfiguration": {
                 "dmaapHostName": "localhost",
-                "dmaapPortNumber": 3904,
+                "dmaapPortNumber": 2222,
                 "dmaapTopicName": "/events/unauthenticated.VES_NOTIFICATION_OUTPUT",
                 "dmaapProtocol": "http",
                 "dmaapUserName": "admin",
                 "dmaapUserPassword": "admin",
                 "dmaapContentType": "application/json",
-                "consumerId": "c12",
+                "consumerId": "C12",
                 "consumerGroup": "OpenDcae-c12",
                 "timeoutMS": -1,
                 "messageLimit": 1
             },
             "dmaapProducerConfiguration": {
                 "dmaapHostName": "localhost",
-                "dmaapPortNumber": 3905,
+                "dmaapPortNumber": 3907,
                 "dmaapTopicName": "publish",
-                "dmaapProtocol": "http",
-                "dmaapUserName": "admin",
-                "dmaapUserPassword": "admin",
+                "dmaapProtocol": "https",
+                "dmaapUserName": "dradmin",
+                "dmaapUserPassword": "dradmin",
                 "dmaapContentType": "application/octet-stream"
             }
         }
