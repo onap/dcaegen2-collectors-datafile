@@ -61,7 +61,7 @@ public class ScheduledTasks {
         logger.trace("Execution of tasks was registered");
 
         consumeFromDmaapMessage()
-                .doOnError(DmaapEmptyResponseException.class, error -> logger.error("Nothing to consume from DMaaP"))
+                .doOnError(DmaapEmptyResponseException.class, error -> logger.info("Nothing to consume from DMaaP"))
                 .flatMap(this::collectFilesFromXnf).flatMap(this::publishToDmaapConfiguration)
                 .subscribe(this::onSuccess, this::onError, this::onComplete);
     }
