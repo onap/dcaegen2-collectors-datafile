@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_0af60fd8",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClientTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2018-10-02T08:01:06Z",
+      "side": 1,
+      "message": "Possibly use \u0027URI_SEPARATOR\u0027 in place of the \u0027/\u0027 here too?",
+      "revId": "0ccfe677782ca0366f62e10404d0035310b5102a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
