@@ -17,23 +17,33 @@
 package org.onap.dcaegen2.collectors.datafile.service.producer;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
+import org.onap.dcaegen2.collectors.datafile.model.CommonFunctions;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModelForUnitTest;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
@@ -67,6 +77,7 @@ class DmaapProducerReactiveHttpClientTest {
     private IFileSystemResource fileSystemResourceMock = mock(IFileSystemResource.class);
     private IRestTemplate restTemplateMock = mock(IRestTemplate.class);
     private ResponseEntity<String> responseEntityMock = mock(ResponseEntity.class);
+    private InputStream fileStream;
 
 
     @BeforeEach
@@ -94,16 +105,33 @@ class DmaapProducerReactiveHttpClientTest {
         URI expectedUri = new DefaultUriBuilderFactory().builder().scheme(HTTPS_SCHEME).host(HOST).port(PORT)
                 .path(PUBLISH_TOPIC + URI_SEPARATOR + DEFAULT_FEED_ID + URI_SEPARATOR + FILE_NAME).build();
 
-        verify(restTemplateMock)
-                .exchange(eq(expectedUri), eq(HttpMethod.PUT), any(), eq(String.class));
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(MediaType.parseMediaType(APPLICATION_OCTET_STREAM_CONTENT_TYPE));
+
+        JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(consumerDmaapModel));
+        metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
+        metaData.getAsJsonObject().remove(LOCATION_JSON_TAG);
+        headers.set(X_ATT_DR_META, metaData.toString());
+
+        String plainCreds = "dradmin" + ":" + "dradmin";
+        byte[] plainCredsBytes = plainCreds.getBytes(StandardCharsets.ISO_8859_1);
+        byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
+        String base64Creds = new String(base64CredsBytes);
+        headers.add("Authorization", "Basic " + base64Creds);
+
+        fileStream.reset();
+
+        HttpEntity<byte[]> requestEntity = new HttpEntity<>(IOUtils.toByteArray(fileStream), headers);
+        verify(restTemplateMock).exchange(expectedUri, HttpMethod.PUT, requestEntity, String.class);
+        verifyNoMoreInteractions(restTemplateMock);
     }
 
     private void mockWebClientDependantObject() throws IOException {
-        InputStream fileStream = new ByteArrayInputStream(FILE_CONTENT.getBytes());
+        fileStream = new ByteArrayInputStream(FILE_CONTENT.getBytes());
         when(fileSystemResourceMock.getInputStream()).thenReturn(fileStream);
 
-        when(restTemplateMock.exchange(any(), any(), any(), any()))
-                .thenReturn(responseEntityMock);
+        when(restTemplateMock.exchange(any(), any(), any(), any())).thenReturn(responseEntityMock);
         when(responseEntityMock.getStatusCode()).thenReturn(HttpStatus.OK);
     }
 }
