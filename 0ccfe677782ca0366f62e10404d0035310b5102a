@@ -16,6 +16,24 @@
       "revId": "0ccfe677782ca0366f62e10404d0035310b5102a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_aa190324",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClientTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-10-02T08:39:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_0af60fd8",
+      "revId": "0ccfe677782ca0366f62e10404d0035310b5102a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
