@@ -32,6 +32,7 @@
 
   <properties>
     <docker.image.name>onap/${project.groupId}.${project.artifactId}</docker.image.name>
+    <datafile.app.server.image.name>onap/dcaegen2/collectors/datafile/datafile-app-server</datafile.app.server.image.name>
     <maven.build.timestamp.format>yyyyMMdd'T'HHmmss</maven.build.timestamp.format>
   </properties>
 
@@ -56,7 +57,7 @@
         <artifactId>docker-maven-plugin</artifactId>
         <configuration>
           <serverId>${onap.nexus.dockerregistry.daily}</serverId>
-          <imageName>${docker.image.name}</imageName>
+          <imageName>${onap.nexus.dockerregistry.daily}/${datafile.app.server.image.name}</imageName>
           <imageTags>
             <tag>latest</tag>
           </imageTags>
@@ -95,7 +96,7 @@
             </goals>
             <configuration>
               <image>${docker.image.name}:latest</image>
-              <newName>${onap.nexus.dockerregistry.daily}/${docker.image.name}:latest</newName>
+              <newName>${onap.nexus.dockerregistry.daily}/${datafile.app.server.image.name}:latest</newName>
               <pushImage>true</pushImage>
             </configuration>
           </execution>
@@ -107,7 +108,7 @@
             </goals>
             <configuration>
               <image>${docker.image.name}:latest</image>
-              <newName>${onap.nexus.dockerregistry.daily}/${docker.image.name}:${project.version}</newName>
+              <newName>${onap.nexus.dockerregistry.daily}/${datafile.app.server.image.name}:${project.version}</newName>
               <pushImage>true</pushImage>
             </configuration>
           </execution>
@@ -119,7 +120,7 @@
             </goals>
             <configuration>
               <image>${docker.image.name}:latest</image>
-              <newName>${onap.nexus.dockerregistry.daily}/${docker.image.name}:${project.version}-${maven.build.timestamp}Z</newName>
+              <newName>${onap.nexus.dockerregistry.daily}/${datafile.app.server.image.name}:${project.version}-${maven.build.timestamp}Z</newName>
               <pushImage>true</pushImage>
             </configuration>
           </execution>
