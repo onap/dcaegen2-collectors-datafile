@@ -1,0 +1,10 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Henrik Andersson <henrik.b.andersson@est.tech>
+Code-Review+1: Conor Ward <conor.ward@ericsson.com>
+Code-Review+1: T M <tobias.mole@ericsson.com>
+Code-Review+2: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-by: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-at: Wed, 03 Oct 2018 14:09:33 +0000
+Reviewed-on: https://gerrit.onap.org/r/69732
+Project: dcaegen2/collectors/datafile
+Branch: refs/heads/master
