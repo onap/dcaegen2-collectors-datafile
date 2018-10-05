@@ -21,6 +21,10 @@ services:
       --dmaap.dmaapProducerConfiguration.dmaapUserName=dradmin
       --dmaap.dmaapProducerConfiguration.dmaapUserPassword=dradmin
       --dmaap.dmaapProducerConfiguration.dmaapContentType=application/octet-stream
+      --dmaap.ftpesConfig.keyCert=config/ftpKey.jks
+      --dmaap.ftpesConfig.keyPassword=secret
+      --dmaap.ftpesConfig.trustedCA=config/cacerts
+      --dmaap.ftpesConfig.trustedCAPassword=secret
     entrypoint:
     - java
     - -Dspring.profiles.active=dev

@@ -23,6 +23,8 @@ package org.onap.dcaegen2.collectors.datafile.exceptions;
  */
 public class DmaapNotFoundException extends DatafileTaskException {
 
+    private static final long serialVersionUID = 1L;
+
     public DmaapNotFoundException(String message) {
         super(message);
     }

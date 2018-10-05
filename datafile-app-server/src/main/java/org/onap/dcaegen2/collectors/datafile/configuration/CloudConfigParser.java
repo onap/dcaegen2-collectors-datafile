@@ -19,6 +19,7 @@
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import com.google.gson.JsonObject;
+
 import org.onap.dcaegen2.collectors.datafile.config.DmaapConsumerConfiguration;
 import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.config.ImmutableDmaapConsumerConfiguration;
@@ -61,5 +62,14 @@ public class CloudConfigParser {
             .consumerId(jsonObject.get("dmaap.dmaapConsumerConfiguration.consumerId").getAsString())
             .consumerGroup(jsonObject.get("dmaap.dmaapConsumerConfiguration.consumerGroup").getAsString())
             .build();
+    }
+
+    public FtpesConfig getFtpesConfig() {
+        return new ImmutableFtpesConfig.Builder()
+                .keyCert(jsonObject.get("dmaap.ftpesConfig.keyCert").getAsString())
+                .keyPassword(jsonObject.get("dmaap.ftpesConfig.keyPassword").getAsString())
+                .trustedCA(jsonObject.get("dmaap.ftpesConfig.trustedCA").getAsString())
+                .trustedCAPassword(jsonObject.get("dmaap.ftpesConfig.trustedCAPassword").getAsString())
+                .build();
     }
 }

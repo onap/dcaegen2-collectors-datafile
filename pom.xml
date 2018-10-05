@@ -303,6 +303,11 @@
         <artifactId>fake-sftp-server-rule</artifactId>
         <version>2.0.1</version>
       </dependency>
+      <dependency>
+        <groupId>com.jcraft</groupId>
+        <artifactId>jsch</artifactId>
+        <version>0.1.53</version>
+      </dependency>
 
       <!--REQUIRED TO GENERATE DOCUMENTATION -->
       <dependency>

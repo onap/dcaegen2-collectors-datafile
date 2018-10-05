@@ -29,7 +29,8 @@
 
   <groupId>org.onap.dcaegen2.collectors.datafile</groupId>
   <artifactId>datafile-commons</artifactId>
-  <packaging>jar</packaging>
+  <version>1.0.1-SNAPSHOT</version>
+   <packaging>jar</packaging>
 
   <dependencies>
     <dependency>
@@ -70,7 +71,6 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.0.5.RELEASE</version>
-    </dependency>
+      </dependency>
   </dependencies>
 </project>
