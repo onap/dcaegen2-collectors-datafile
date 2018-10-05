@@ -91,6 +91,18 @@ public class AppConfig extends DatafileAppConfig {
     @Value("${dmaap.dmaapProducerConfiguration.dmaapContentType:}")
     public String producerDmaapContentType;
 
+    @Value("${ftp.ftpesConfiguration.keyCert:}")
+    public String keyCert;
+
+    @Value("${ftp.ftpesConfiguration.keyPassword:}")
+    public String keyPassword;
+
+    @Value("${ftp.ftpesConfiguration.trustedCA:}")
+    public String trustedCA;
+
+    @Value("${ftp.ftpesConfiguration.trustedCAPassword:}")
+    public String trustedCAPassword;
+
     @Override
     public DmaapConsumerConfiguration getDmaapConsumerConfiguration() {
         return new ImmutableDmaapConsumerConfiguration.Builder()
@@ -154,4 +166,21 @@ public class AppConfig extends DatafileAppConfig {
             .build();
     }
 
+    @Override
+    public FtpesConfig getFtpesConfiguration() {
+        return new ImmutableFtpesConfig.Builder()
+            .keyCert(
+                Optional.ofNullable(keyCert).filter(p -> !p.isEmpty())
+                    .orElse(ftpesConfig.keyCert()))
+            .keyPassword(
+                    Optional.ofNullable(keyPassword).filter(p -> !p.isEmpty())
+                        .orElse(ftpesConfig.keyPassword()))
+            .trustedCA(
+                Optional.ofNullable(trustedCA).filter(p -> !p.isEmpty())
+                    .orElse(ftpesConfig.trustedCA()))
+            .trustedCAPassword(
+                Optional.ofNullable(trustedCAPassword).filter(p -> !p.isEmpty())
+                    .orElse(ftpesConfig.trustedCAPassword()))
+            .build();
+    }
 }

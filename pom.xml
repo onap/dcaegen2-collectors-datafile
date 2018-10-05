@@ -30,7 +30,7 @@
 
   <groupId>org.onap.dcaegen2.collectors</groupId>
   <artifactId>datafile</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 
   <name>dcaegen2-collectors.datafile</name>
   <description>datafile collector</description>
@@ -302,6 +302,11 @@
         <groupId>com.github.stefanbirkner</groupId>
         <artifactId>fake-sftp-server-rule</artifactId>
         <version>2.0.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.jcraft</groupId>
+        <artifactId>jsch</artifactId>
+        <version>0.1.53</version>
       </dependency>
 
       <!--REQUIRED TO GENERATE DOCUMENTATION -->
