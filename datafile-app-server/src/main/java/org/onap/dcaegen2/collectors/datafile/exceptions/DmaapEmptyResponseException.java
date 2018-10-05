@@ -23,6 +23,8 @@ package org.onap.dcaegen2.collectors.datafile.exceptions;
  */
 public class DmaapEmptyResponseException extends DatafileTaskException {
 
+    private static final long serialVersionUID = 1L;
+
     public DmaapEmptyResponseException() {
         super();
     }

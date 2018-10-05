@@ -6,8 +6,8 @@
                 "dmaapPortNumber": 2222,
                 "dmaapTopicName": "/events/unauthenticated.VES_NOTIFICATION_OUTPUT",
                 "dmaapProtocol": "http",
-                "dmaapUserName": "admin",
-                "dmaapUserPassword": "admin",
+                "dmaapUserName": "",
+                "dmaapUserPassword": "",
                 "dmaapContentType": "application/json",
                 "consumerId": "C12",
                 "consumerGroup": "OpenDcae-c12",
@@ -23,6 +23,15 @@
                 "dmaapUserPassword": "dradmin",
                 "dmaapContentType": "application/octet-stream"
             }
+        },
+        "ftp": {
+            "ftpesConfiguration": {
+                "keyCert": "config/ftpKey.jks",
+                "keyPassword": "secret",
+                "trustedCA": "config/cacerts",
+                "trustedCAPassword": "secret"
+            }
         }
     }
 }
+

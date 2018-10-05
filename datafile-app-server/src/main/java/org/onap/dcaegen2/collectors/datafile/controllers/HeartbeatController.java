@@ -37,7 +37,7 @@ import reactor.core.publisher.Mono;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 @RestController
-@Api(value = "HeartbeatController", description = "Check liveness of DATAFILE service")
+@Api(value = "HeartbeatController")
 public class HeartbeatController {
 
     private static final Logger logger = LoggerFactory.getLogger(HeartbeatController.class);
