@@ -18,6 +18,7 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
+import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 
@@ -27,5 +28,6 @@ import reactor.core.publisher.Flux;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 public interface XnfCollectorTask {
+    abstract FtpesConfig resolveConfiguration();
     Flux<ConsumerDmaapModel> execute(FileData fileData);
 }

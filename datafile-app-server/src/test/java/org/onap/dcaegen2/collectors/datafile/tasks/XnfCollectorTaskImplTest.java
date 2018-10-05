@@ -24,7 +24,10 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
+import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
 import org.onap.dcaegen2.collectors.datafile.ftp.FileServerData;
 import org.onap.dcaegen2.collectors.datafile.ftp.FtpsClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.ImmutableFileServerData;
@@ -60,14 +63,31 @@ public class XnfCollectorTaskImplTest {
     private static final String MEAS_COLLECT_FILE_FORMAT_TYPE = "org.3GPP.32.435#measCollec";
     private static final String FILE_FORMAT_VERSION = "V10";
 
+    private static final String FTP_KEY_PATH = "ftpKeyPath";
+    private static final String FTP_KEY_PASSWORD = "ftpKeyPassword";
+    private static final String TRUSTED_CA_PATH = "trustedCAPath";
+    private static final String TRUSTED_CA_PASSWORD = "trustedCAPassword";
+
+    private static AppConfig appConfigMock = mock(AppConfig.class);
+    private static FtpesConfig ftpesConfigMock = mock(FtpesConfig.class);
+
     private FtpsClient ftpsClientMock = mock(FtpsClient.class);
 
     private SftpClient sftpClientMock = mock(SftpClient.class);
 
-    private XnfCollectorTask collectorUndetTest = new XnfCollectorTaskImpl(ftpsClientMock, sftpClientMock);
+    private XnfCollectorTask collectorUndetTest = new XnfCollectorTaskImpl(appConfigMock, ftpsClientMock, sftpClientMock);
+
+    @BeforeAll
+    public static void setUpConfiguration() {
+        when(appConfigMock.getFtpesConfiguration()).thenReturn(ftpesConfigMock);
+        when(ftpesConfigMock.keyCert()).thenReturn(FTP_KEY_PATH);
+        when(ftpesConfigMock.keyPassword()).thenReturn(FTP_KEY_PASSWORD);
+        when(ftpesConfigMock.trustedCA()).thenReturn(TRUSTED_CA_PATH);
+        when(ftpesConfigMock.trustedCAPassword()).thenReturn(TRUSTED_CA_PASSWORD);
+    }
 
     @Test
-    public void whenSingleFtpesFile_returnCorrectResponse() {
+    public void whenFtpesFile_returnCorrectResponse() {
         FileData fileData = ImmutableFileData.builder().changeIdentifier(PM_MEAS_CHANGE_IDINTIFIER)
                 .changeType(FILE_READY_CHANGE_TYPE).name(PM_FILE_NAME).location(FTPES_LOCATION)
                 .compression(GZIP_COMPRESSION).fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
@@ -86,11 +106,15 @@ public class XnfCollectorTaskImplTest {
                 .verifyComplete();
 
         verify(ftpsClientMock, times(1)).collectFile(fileServerData, REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+        verify(ftpsClientMock).setKeyCertPath(FTP_KEY_PATH);
+        verify(ftpsClientMock).setKeyCertPassword(FTP_KEY_PASSWORD);
+        verify(ftpsClientMock).setTrustedCAPath(TRUSTED_CA_PATH);
+        verify(ftpsClientMock).setTrustedCAPassword(TRUSTED_CA_PASSWORD);
         verifyNoMoreInteractions(ftpsClientMock);
     }
 
     @Test
-    public void whenSingleSftpFile_returnCorrectResponse() {
+    public void whenSftpFile_returnCorrectResponse() {
         FileData fileData = ImmutableFileData.builder().changeIdentifier(PM_MEAS_CHANGE_IDINTIFIER)
                 .changeType(FILE_READY_CHANGE_TYPE).name(PM_FILE_NAME).location(SFTP_LOCATION)
                 .compression(GZIP_COMPRESSION).fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
@@ -109,6 +133,10 @@ public class XnfCollectorTaskImplTest {
                 .verifyComplete();
 
         verify(sftpClientMock, times(1)).collectFile(fileServerData, REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+        verify(ftpsClientMock).setKeyCertPath(FTP_KEY_PATH);
+        verify(ftpsClientMock).setKeyCertPassword(FTP_KEY_PASSWORD);
+        verify(ftpsClientMock).setTrustedCAPath(TRUSTED_CA_PATH);
+        verify(ftpsClientMock).setTrustedCAPassword(TRUSTED_CA_PASSWORD);
         verifyNoMoreInteractions(ftpsClientMock);
     }
 
@@ -126,6 +154,10 @@ public class XnfCollectorTaskImplTest {
 
         StepVerifier.create(collectorUndetTest.execute(fileData)).expectNextCount(0).verifyComplete();
 
+        verify(ftpsClientMock).setKeyCertPath(FTP_KEY_PATH);
+        verify(ftpsClientMock).setKeyCertPassword(FTP_KEY_PASSWORD);
+        verify(ftpsClientMock).setTrustedCAPath(TRUSTED_CA_PATH);
+        verify(ftpsClientMock).setTrustedCAPassword(TRUSTED_CA_PASSWORD);
         verifyNoMoreInteractions(ftpsClientMock);
     }
 }

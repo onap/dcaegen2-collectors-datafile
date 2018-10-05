@@ -30,8 +30,12 @@ import java.security.NoSuchAlgorithmException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
+import org.onap.dcaegen2.collectors.datafile.io.FileSystemResourceWrapper;
+import org.onap.dcaegen2.collectors.datafile.io.IFileSystemResource;
 import org.onap.dcaegen2.collectors.datafile.model.CommonFunctions;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
+import org.onap.dcaegen2.collectors.datafile.web.IRestTemplate;
+import org.onap.dcaegen2.collectors.datafile.web.RestTemplateWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -99,7 +103,9 @@ public class DmaapProducerReactiveHttpClient {
 
             addUserCredentialsToHead(headers);
 
-            InputStream fileInputStream = getInputStream(consumerDmaapModel.getLocation());
+            IFileSystemResource fileSystemResource = getFileSystemResource();
+            fileSystemResource.setPath(consumerDmaapModel.getLocation());
+            InputStream fileInputStream = fileSystemResource.getInputStream();
             HttpEntity<byte[]> request = addFileToRequest(fileInputStream, headers);
 
 
@@ -129,17 +135,9 @@ public class DmaapProducerReactiveHttpClient {
         metaData.getAsJsonObject().remove(LOCATION_JSON_TAG);
         headers.set(X_ATT_DR_META, metaData.toString());
     }
-
     private HttpEntity<byte[]> addFileToRequest(InputStream inputStream, HttpHeaders headers)
             throws IOException {
         return new HttpEntity<>(IOUtils.toByteArray(inputStream), headers);
-    }
-
-    private InputStream getInputStream(String filePath) throws IOException {
-        if (fileResource == null) {
-            fileResource = new FileSystemResourceWrapper(filePath);
-        }
-        return fileResource.getInputStream();
     }
 
     private IRestTemplate getRestTemplate() throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
@@ -153,6 +151,13 @@ public class DmaapProducerReactiveHttpClient {
         String path = dmaapTopicName + URI_SEPARATOR + DEFAULT_FEED_ID + URI_SEPARATOR + fileName;
         return new DefaultUriBuilderFactory().builder().scheme(dmaapProtocol).host(dmaapHostName).port(dmaapPortNumber)
                 .path(path).build();
+    }
+
+    private IFileSystemResource getFileSystemResource() {
+        if (fileResource == null) {
+            fileResource = new FileSystemResourceWrapper();
+        }
+        return fileResource;
     }
 
     protected void setFileSystemResource(IFileSystemResource fileSystemResource) {
