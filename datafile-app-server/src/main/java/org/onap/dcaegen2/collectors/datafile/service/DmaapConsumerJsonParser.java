@@ -44,7 +44,6 @@ import reactor.core.publisher.Mono;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 public class DmaapConsumerJsonParser {
-
     private static final Logger logger = LoggerFactory.getLogger(DmaapConsumerJsonParser.class);
 
     private static final String EVENT = "event";
@@ -72,6 +71,7 @@ public class DmaapConsumerJsonParser {
     }
 
     private Mono<JsonElement> getJsonParserMessage(String message) {
+        logger.trace("original message from message router: {}", message);
         return StringUtils.isEmpty(message) ? Mono.error(new DmaapEmptyResponseException())
             : Mono.fromSupplier(() -> new JsonParser().parse(message));
     }
@@ -87,6 +87,8 @@ public class DmaapConsumerJsonParser {
     }
 
     public Optional<JsonObject> getJsonObjectFromAnArray(JsonElement element) {
+        logger.trace("starting to getJsonObjectFromAnArray!");
+
         return Optional.of(new JsonParser().parse(element.getAsString()).getAsJsonObject());
     }
 
@@ -103,7 +105,6 @@ public class DmaapConsumerJsonParser {
             String changeType = getValueFromJson(notificationFields, CHANGE_TYPE);
             String notificationFieldsVersion = getValueFromJson(notificationFields, NOTIFICATION_FIELDS_VERSION);
             JsonArray arrayOfNamedHashMap = notificationFields.getAsJsonArray(ARRAY_OF_NAMED_HASH_MAP);
-
             if (isNotificationFieldsHeaderNotEmpty(changeIdentifier, changeType, notificationFieldsVersion)
                 && arrayOfNamedHashMap != null) {
                 return getAllFileDataFromJson(changeIdentifier, changeType, arrayOfNamedHashMap);
@@ -121,7 +122,6 @@ public class DmaapConsumerJsonParser {
         }
         return Flux.error(
             new DmaapNotFoundException("FileReady event has incorrect JsonObject - missing header. " + jsonObject));
-
     }
 
     private Flux<FileData> getAllFileDataFromJson(String changeIdentifier, String changeType,
@@ -143,6 +143,8 @@ public class DmaapConsumerJsonParser {
     }
 
     private FileData getFileDataFromJson(JsonObject fileInfo, String changeIdentifier, String changeType) {
+        logger.trace("starting to getFileDataFromJson!");
+
         FileData fileData = null;
 
         String name = getValueFromJson(fileInfo, NAME);
