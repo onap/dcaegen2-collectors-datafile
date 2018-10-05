@@ -31,5 +31,8 @@ public interface Config {
 
     DmaapPublisherConfiguration getDmaapPublisherConfiguration();
 
+    FtpesConfig getFtpesConfiguration();
+
     void initFileStreamReader();
+
 }

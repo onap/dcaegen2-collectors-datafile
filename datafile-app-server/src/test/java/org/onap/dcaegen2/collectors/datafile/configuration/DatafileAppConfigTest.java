@@ -26,6 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.ByteArrayInputStream;
@@ -48,23 +49,8 @@ import org.onap.dcaegen2.collectors.datafile.integration.junit5.mockito.MockitoE
 class DatafileAppConfigTest {
 
     private static final String DATAFILE_ENDPOINTS = "datafile_endpoints.json";
-    private static final String JSON_STRING =
-            "{\"configs\":{\"dmaap\":{\"dmaapConsumerConfiguration\":{\"consumerGroup\":\"other\",\"consumerId\":\"1\","
-                    + "\"dmaapContentType\":\"application/json\",\"dmaapHostName\":\"localhost\","
-                    + "\"dmaapPortNumber\":2222,\"dmaapProtocol\":\"http\",\"dmaapTopicName\":\"temp\","
-                    + "\"dmaapUserName\":\"admin\",\"dmaapUserPassword\":\"admin\",\"messageLimit\":1000,"
-                    + "\"timeoutMS\":1000},\"dmaapProducerConfiguration\":{\"dmaapContentType\":\"application/json\","
-                    + "\"dmaapHostName\":\"localhost\",\"dmaapPortNumber\":2223,\"dmaapProtocol\":\"http\","
-                    + "\"dmaapTopicName\":\"temp\",\"dmaapUserName\":\"admin\",\"dmaapUserPassword\":\"admin\"}}}}";
-    private static final String INCORRECT_JSON_STRING =
-            "{\"configs\":{\"dmaap\":{\"dmaapConsumerConfiguration\":{\"consumerGroup\":\"other\",\"consumerId\":\"1\","
-                    + "\"dmaapContentType\":\"application/json\",\"dmaapHostName\":\"localhost\","
-                    + "\"dmaapPortNumber\":2222,\"dmaapProtocol\":\"http\",\"dmaapTopicName\":\"temp\","
-                    + "\"dmaapUserName\":\"admin\",\"dmaapUserPassword\":\"admin\",\"messageLimit\":1000,"
-                    + "\"timeoutMS\":1000},\"dmaapProducerConfiguration\":{\"dmaapContentType\":\"application/json\","
-                    + "\"dmaapHostName\":\"localhost\",\"dmaapPortNumber\":2223,\"dmaapProtocol\":\"http\","
-                    + "\"FAULTY_PARAMETER_NAME\":\"temp\","
-                    + "\"dmaapUserName\":\"admin\",\"dmaapUserPassword\":\"admin\"}}}}";
+    private static final boolean CORRECT_JSON = true;
+    private static final boolean INCORRECT_JSON = false;
 
     private static DatafileAppConfig datafileAppConfig;
     private static AppConfig appConfig;
@@ -90,9 +76,10 @@ class DatafileAppConfigTest {
     }
 
     @Test
-    public void whenTheConfigurationFits_GetAaiAndDmaapObjectRepresentationConfiguration() throws IOException {
+    public void whenTheConfigurationFits_GetFtpsAndDmaapObjectRepresentationConfiguration() throws IOException {
         // Given
-        InputStream inputStream = new ByteArrayInputStream((JSON_STRING.getBytes(StandardCharsets.UTF_8)));
+        InputStream inputStream =
+                new ByteArrayInputStream((getJsonConfig(CORRECT_JSON).getBytes(StandardCharsets.UTF_8)));
 
         // When
         datafileAppConfig.setFilepath(filePath);
@@ -100,6 +87,7 @@ class DatafileAppConfigTest {
         datafileAppConfig.initFileStreamReader();
         appConfig.dmaapConsumerConfiguration = datafileAppConfig.getDmaapConsumerConfiguration();
         appConfig.dmaapPublisherConfiguration = datafileAppConfig.getDmaapPublisherConfiguration();
+        appConfig.ftpesConfig = datafileAppConfig.getFtpesConfiguration();
 
         // Then
         verify(datafileAppConfig, times(1)).setFilepath(anyString());
@@ -110,6 +98,7 @@ class DatafileAppConfigTest {
                 datafileAppConfig.getDmaapPublisherConfiguration());
         Assertions.assertEquals(appConfig.getDmaapConsumerConfiguration(),
                 datafileAppConfig.getDmaapConsumerConfiguration());
+        Assertions.assertEquals(appConfig.getFtpesConfiguration(), datafileAppConfig.getFtpesConfiguration());
 
     }
 
@@ -127,13 +116,15 @@ class DatafileAppConfigTest {
         verify(datafileAppConfig, times(1)).initFileStreamReader();
         Assertions.assertNull(datafileAppConfig.getDmaapConsumerConfiguration());
         Assertions.assertNull(datafileAppConfig.getDmaapPublisherConfiguration());
+        Assertions.assertNull(datafileAppConfig.getFtpesConfiguration());
 
     }
 
     @Test
     public void whenFileIsExistsButJsonIsIncorrect() throws IOException {
         // Given
-        InputStream inputStream = new ByteArrayInputStream((INCORRECT_JSON_STRING.getBytes(StandardCharsets.UTF_8)));
+        InputStream inputStream =
+                new ByteArrayInputStream((getJsonConfig(INCORRECT_JSON).getBytes(StandardCharsets.UTF_8)));
 
         // When
         datafileAppConfig.setFilepath(filePath);
@@ -145,6 +136,7 @@ class DatafileAppConfigTest {
         verify(datafileAppConfig, times(1)).initFileStreamReader();
         Assertions.assertNotNull(datafileAppConfig.getDmaapConsumerConfiguration());
         Assertions.assertNull(datafileAppConfig.getDmaapPublisherConfiguration());
+        Assertions.assertNotNull(datafileAppConfig.getFtpesConfiguration());
 
     }
 
@@ -152,7 +144,8 @@ class DatafileAppConfigTest {
     @Test
     public void whenTheConfigurationFits_ButRootElementIsNotAJsonObject() throws IOException {
         // Given
-        InputStream inputStream = new ByteArrayInputStream((JSON_STRING.getBytes(StandardCharsets.UTF_8)));
+        InputStream inputStream =
+                new ByteArrayInputStream((getJsonConfig(CORRECT_JSON).getBytes(StandardCharsets.UTF_8)));
         // When
         datafileAppConfig.setFilepath(filePath);
         doReturn(inputStream).when(datafileAppConfig).getInputStream(any());
@@ -162,11 +155,61 @@ class DatafileAppConfigTest {
         datafileAppConfig.initFileStreamReader();
         appConfig.dmaapConsumerConfiguration = datafileAppConfig.getDmaapConsumerConfiguration();
         appConfig.dmaapPublisherConfiguration = datafileAppConfig.getDmaapPublisherConfiguration();
+        appConfig.ftpesConfig = datafileAppConfig.getFtpesConfiguration();
 
         // Then
         verify(datafileAppConfig, times(1)).setFilepath(anyString());
         verify(datafileAppConfig, times(1)).initFileStreamReader();
         Assertions.assertNull(datafileAppConfig.getDmaapConsumerConfiguration());
         Assertions.assertNull(datafileAppConfig.getDmaapPublisherConfiguration());
+        Assertions.assertNull(datafileAppConfig.getFtpesConfiguration());
+    }
+
+    private String getJsonConfig(boolean correct) {
+        JsonObject dmaapConsumerConfigData = new JsonObject();
+        dmaapConsumerConfigData.addProperty("dmaapHostName", "localhost");
+        dmaapConsumerConfigData.addProperty("dmaapPortNumber", 2222);
+        dmaapConsumerConfigData.addProperty("dmaapTopicName", "/events/unauthenticated.VES_NOTIFICATION_OUTPUT");
+        dmaapConsumerConfigData.addProperty("dmaapProtocol", "http");
+        dmaapConsumerConfigData.addProperty("dmaapUserName", "admin");
+        dmaapConsumerConfigData.addProperty("dmaapUserPassword", "admin");
+        dmaapConsumerConfigData.addProperty("dmaapContentType", "application/json");
+        dmaapConsumerConfigData.addProperty("consumerId", "C12");
+        dmaapConsumerConfigData.addProperty("consumerGroup", "OpenDcae-c12");
+        dmaapConsumerConfigData.addProperty("timeoutMS", -1);
+        dmaapConsumerConfigData.addProperty("messageLimit", 1);
+
+        JsonObject dmaapProducerConfigData = new JsonObject();
+        dmaapProducerConfigData.addProperty("dmaapHostName", "localhost");
+        dmaapProducerConfigData.addProperty("dmaapPortNumber", 3907);
+        dmaapProducerConfigData.addProperty("dmaapTopicName", "publish");
+        dmaapProducerConfigData.addProperty("dmaapProtocol", "https");
+        if (correct) {
+            dmaapProducerConfigData.addProperty("dmaapUserName", "dradmin");
+            dmaapProducerConfigData.addProperty("dmaapUserPassword", "dradmin");
+            dmaapProducerConfigData.addProperty("dmaapContentType", "application/octet-stream");
+        }
+
+        JsonObject dmaapConfigs = new JsonObject();
+        dmaapConfigs.add("dmaapConsumerConfiguration", dmaapConsumerConfigData);
+        dmaapConfigs.add("dmaapProducerConfiguration", dmaapProducerConfigData);
+
+        JsonObject ftpesConfigData = new JsonObject();
+        ftpesConfigData.addProperty("keyCert", "config/ftpKey.jks");
+        ftpesConfigData.addProperty("keyPassword", "secret");
+        ftpesConfigData.addProperty("trustedCA", "config/cacerts");
+        ftpesConfigData.addProperty("trustedCAPassword", "secret");
+
+        JsonObject ftpesConfiguration = new JsonObject();
+        ftpesConfiguration.add("ftpesConfiguration", ftpesConfigData);
+
+        JsonObject configs = new JsonObject();
+        configs.add("dmaap", dmaapConfigs);
+        configs.add("ftp", ftpesConfiguration);
+
+        JsonObject completeJson = new JsonObject();
+        completeJson.add("configs", configs);
+
+        return completeJson.toString();
     }
 }
