@@ -19,6 +19,9 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 import java.io.File;
 import java.net.URI;
 
+import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
+import org.onap.dcaegen2.collectors.datafile.configuration.Config;
+import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
 import org.onap.dcaegen2.collectors.datafile.ftp.FileServerData;
 import org.onap.dcaegen2.collectors.datafile.ftp.FtpsClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.ImmutableFileServerData;
@@ -44,12 +47,14 @@ public class XnfCollectorTaskImpl implements XnfCollectorTask {
     private static final String SFTP = "sftp";
 
     private static final Logger logger = LoggerFactory.getLogger(XnfCollectorTaskImpl.class);
+    private Config datafileAppConfig;
 
     private final FtpsClient ftpsClient;
     private final SftpClient sftpClient;
 
     @Autowired
-    protected XnfCollectorTaskImpl(FtpsClient ftpsCleint, SftpClient sftpClient) {
+    protected XnfCollectorTaskImpl(AppConfig datafileAppConfig, FtpsClient ftpsCleint, SftpClient sftpClient) {
+        this.datafileAppConfig = datafileAppConfig;
         this.ftpsClient = ftpsCleint;
         this.sftpClient = sftpClient;
     }
@@ -57,6 +62,8 @@ public class XnfCollectorTaskImpl implements XnfCollectorTask {
     @Override
     public Flux<ConsumerDmaapModel> execute(FileData fileData) {
         logger.trace("Entering execute with {}", fileData);
+        resolveKeyStore();
+
         String localFile = collectFile(fileData);
 
         if (localFile != null) {
@@ -68,17 +75,27 @@ public class XnfCollectorTaskImpl implements XnfCollectorTask {
         return Flux.empty();
     }
 
+    @Override
+    public FtpesConfig resolveConfiguration() {
+        return datafileAppConfig.getFtpesConfiguration();
+    }
+
+    private void resolveKeyStore() {
+        FtpesConfig ftpesConfig = resolveConfiguration();
+        ftpsClient.setKeyCertPath(ftpesConfig.keyCert());
+        ftpsClient.setKeyCertPassword(ftpesConfig.keyPassword());
+        ftpsClient.setTrustedCAPath(ftpesConfig.trustedCA());
+        ftpsClient.setTrustedCAPassword(ftpesConfig.trustedCAPassword());
+    }
+
     private String collectFile(FileData fileData) {
+        logger.info("starting to collectFile");
         String location = fileData.location();
         URI uri = URI.create(location);
-        String[] userInfo = getUserNameAndPasswordIfGiven(uri.getUserInfo());
-        FileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(uri.getHost())
-                .userId(userInfo != null ? userInfo[0] : "").password(userInfo != null ? userInfo[1] : "")
-                .port(uri.getPort()).build();
+        FileServerData fileServerData = getFileServerData(uri);
         String remoteFile = uri.getPath();
         String localFile = "target" + File.separator + fileData.name();
         String scheme = uri.getScheme();
-
         boolean fileDownloaded = false;
         if (FTPES.equals(scheme) || FTPS.equals(scheme)) {
             fileDownloaded = ftpsClient.collectFile(fileServerData, remoteFile, localFile);
@@ -94,6 +111,13 @@ public class XnfCollectorTaskImpl implements XnfCollectorTask {
             localFile = null;
         }
         return localFile;
+    }
+
+    private FileServerData getFileServerData(URI uri) {
+        String[] userInfo = getUserNameAndPasswordIfGiven(uri.getUserInfo());
+        return ImmutableFileServerData.builder().serverAddress(uri.getHost())
+                .userId(userInfo != null ? userInfo[0] : "").password(userInfo != null ? userInfo[1] : "")
+                .port(uri.getPort()).build();
     }
 
     private String[] getUserNameAndPasswordIfGiven(String userInfoString) {
