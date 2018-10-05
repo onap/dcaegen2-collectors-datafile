@@ -31,14 +31,11 @@ import org.springframework.stereotype.Component;
 /**
  * Gets file from xNF with SFTP protocol.
  *
- * TODO: Refactor for better test.
- *
  * @author <a href="mailto:martin.c.yan@est.tech">Martin Yan</a>
  *
  */
 @Component
-public class SftpClient { // TODO: Should be final but needs PowerMock to be able to mock then, so
-                          // this will be done as an improvement after first version committed.
+public class SftpClient {
     private static final Logger logger = LoggerFactory.getLogger(SftpClient.class);
 
     public boolean collectFile(FileServerData fileServerData, String remoteFile, String localFile) {
@@ -50,9 +47,9 @@ public class SftpClient { // TODO: Should be final but needs PowerMock to be abl
             if (sftpChannel != null) {
                 try {
                     sftpChannel.get(remoteFile, localFile);
-                    logger.debug("File " + FilenameUtils.getName(localFile) + " Download Successfull from xNF");
+                    logger.debug("File {} Download Successfull from xNF", FilenameUtils.getName(localFile));
                 } catch (SftpException e) {
-                    logger.error("Unable to get file from xNF. " + fileServerData, e);
+                    logger.error("Unable to get file from xNF. Data: {}", fileServerData, e);
                     result = false;
                 }
 
@@ -68,8 +65,7 @@ public class SftpClient { // TODO: Should be final but needs PowerMock to be abl
     }
 
     private Session setUpSession(FileServerData fileServerData) {
-        JSch jsch = new JSch(); // TODO: Might be changed to use Spring as an improvement after
-        // first version committed.
+        JSch jsch = new JSch();
 
         Session session = null;
         try {
@@ -78,7 +74,7 @@ public class SftpClient { // TODO: Should be final but needs PowerMock to be abl
             session.setPassword(fileServerData.password());
             session.connect();
         } catch (JSchException e) {
-            logger.error("Unable to set up SFTP connection to xNF. " + fileServerData, e);
+            logger.error("Unable to set up SFTP connection to xNF. Data: {}", fileServerData, e);
         }
         return session;
     }
@@ -91,7 +87,7 @@ public class SftpClient { // TODO: Should be final but needs PowerMock to be abl
             channel.connect();
             sftpChannel = (ChannelSftp) channel;
         } catch (JSchException e) {
-            logger.error("Unable to get sftp channel to xNF. " + fileServerData, e);
+            logger.error("Unable to get sftp channel to xNF. Data: {}", fileServerData, e);
         }
         return sftpChannel;
     }

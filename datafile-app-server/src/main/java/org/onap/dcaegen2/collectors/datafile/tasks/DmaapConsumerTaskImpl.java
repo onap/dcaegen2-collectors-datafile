@@ -59,7 +59,7 @@ public class DmaapConsumerTaskImpl extends DmaapConsumerTask {
 
     @Override
     Flux<FileData> consume(Mono<String> message) {
-        logger.trace("consume called with arg {}", message.toString());
+        logger.trace("consume called with arg {}", message);
         return dmaapConsumerJsonParser.getJsonObject(message);
     }
 

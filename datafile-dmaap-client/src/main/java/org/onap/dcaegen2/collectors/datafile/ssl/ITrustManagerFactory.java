@@ -1,6 +1,6 @@
 /*
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,15 @@
  * ============LICENSE_END========================================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.model;
+package org.onap.dcaegen2.collectors.datafile.ssl;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
 
+import javax.net.ssl.TrustManager;
 
-public class CommonFunctions {
+public interface ITrustManagerFactory {
+    public void init(KeyStore ks) throws KeyStoreException;
 
-    private static Gson gson = new GsonBuilder().serializeNulls().create();
-
-    private CommonFunctions() {}
-
-    public static String createJsonBody(ConsumerDmaapModel consumerDmaapModel) {
-        return gson.toJson(consumerDmaapModel);
-    }
+    public TrustManager[] getTrustManagers();
 }
