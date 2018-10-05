@@ -2,21 +2,21 @@
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ===============================================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  * ============LICENSE_END========================================================================
  */
 
 package org.onap.dcaegen2.collectors.datafile.service;
+
+import static org.springframework.web.reactive.function.client.ExchangeFilterFunctions.basicAuthentication;
 
 import org.onap.dcaegen2.collectors.datafile.config.DmaapCustomConfig;
 import org.slf4j.Logger;
@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClient.Builder;
 
 import reactor.core.publisher.Mono;
 
@@ -35,6 +36,8 @@ public class DmaapReactiveWebClient {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private String dmaaPContentType;
+    private String dmaaPUserName;
+    private String dmaaPUserPassword;
 
     /**
      * Creating DmaapReactiveWebClient passing to them basic DmaapConfig.
@@ -53,25 +56,29 @@ public class DmaapReactiveWebClient {
      * @return WebClient
      */
     public WebClient build() {
-        return WebClient.builder()
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, dmaaPContentType)
-            .filter(logRequest())
-            .filter(logResponse())
-            .build();
+        Builder webClientBuilder = WebClient.builder().defaultHeader(HttpHeaders.CONTENT_TYPE, dmaaPContentType)
+                .filter(logRequest()).filter(logResponse());
+        if (dmaaPUserName != null && !dmaaPUserName.isEmpty() && dmaaPUserPassword != null
+                && !dmaaPUserPassword.isEmpty()) {
+            webClientBuilder.filter(basicAuthentication(dmaaPUserName, dmaaPUserPassword));
+
+        }
+        return webClientBuilder.build();
     }
 
     private ExchangeFilterFunction logResponse() {
         return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
-            logger.info("Response Status {}", clientResponse.statusCode());
+            logger.trace("Response Status {}", clientResponse.statusCode());
             return Mono.just(clientResponse);
         });
     }
 
     private ExchangeFilterFunction logRequest() {
         return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
-            logger.info("Request: {} {}", clientRequest.method(), clientRequest.url());
+            logger.trace("Request: {} {}", clientRequest.method(), clientRequest.url());
             clientRequest.headers()
-                .forEach((name, values) -> values.forEach(value -> logger.info("{}={}", name, value)));
+                    .forEach((name, values) -> values.forEach(value -> logger.info("{}={}", name, value)));
+            logger.trace("HTTP request headers: {}", clientRequest.headers());
             return Mono.just(clientRequest);
         });
     }
