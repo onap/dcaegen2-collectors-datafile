@@ -36,9 +36,11 @@ import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
+import org.onap.dcaegen2.collectors.datafile.io.IFileSystemResource;
 import org.onap.dcaegen2.collectors.datafile.model.CommonFunctions;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModelForUnitTest;
+import org.onap.dcaegen2.collectors.datafile.web.IRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -123,6 +125,7 @@ class DmaapProducerReactiveHttpClientTest {
         fileStream.reset();
 
         HttpEntity<byte[]> requestEntity = new HttpEntity<>(IOUtils.toByteArray(fileStream), headers);
+        verify(fileSystemResourceMock).setPath("target/" + FILE_NAME);
         verify(restTemplateMock).exchange(expectedUri, HttpMethod.PUT, requestEntity, String.class);
         verifyNoMoreInteractions(restTemplateMock);
     }

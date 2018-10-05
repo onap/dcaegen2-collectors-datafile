@@ -16,20 +16,36 @@
  * ============LICENSE_END========================================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.exceptions;
+package org.onap.dcaegen2.collectors.datafile.ftp;
 
-/**
- * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
- */
-public class DatafileTaskException extends Exception {
+import java.io.IOException;
+import java.io.OutputStream;
 
-    private static final long serialVersionUID = 1L;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.TrustManager;
 
-    public DatafileTaskException() {
-        super();
-    }
+public interface IFTPSClient {
+    public void setNeedClientAuth(boolean isNeedClientAuth);
 
-    public DatafileTaskException(String message) {
-        super(message);
-    }
+    public void setKeyManager(KeyManager keyManager);
+
+    public void setTrustManager(TrustManager trustManager);
+
+    public void connect(String hostname, int port) throws IOException;
+
+    public boolean login(String username, String password) throws IOException;
+
+    public boolean logout() throws IOException;
+
+    public int getReplyCode();
+
+    public void disconnect() throws IOException;
+
+    public void enterLocalPassiveMode();
+
+    public void execPBSZ(int newParam) throws IOException;
+
+    public void execPROT(String prot) throws IOException;
+
+    public boolean retrieveFile(String remote, OutputStream local) throws IOException;
 }
