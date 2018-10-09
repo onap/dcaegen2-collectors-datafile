@@ -27,4 +27,6 @@ public interface IFile {
     public boolean createNewFile() throws IOException;
 
     public File getFile();
+
+    public boolean delete();
 }

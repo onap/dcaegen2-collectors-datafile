@@ -108,6 +108,7 @@ public class DmaapConsumerJsonParser {
             if (isNotificationFieldsHeaderNotEmpty(changeIdentifier, changeType, notificationFieldsVersion)
                 && arrayOfNamedHashMap != null) {
                 return getAllFileDataFromJson(changeIdentifier, changeType, arrayOfNamedHashMap);
+
             }
 
             if (!isNotificationFieldsHeaderNotEmpty(changeIdentifier, changeType, notificationFieldsVersion)) {

@@ -36,8 +36,6 @@ import org.onap.dcaegen2.collectors.datafile.ssl.ITrustManagerFactory;
 import org.onap.dcaegen2.collectors.datafile.ssl.KeyManagerUtilsWrapper;
 import org.onap.dcaegen2.collectors.datafile.ssl.KeyStoreWrapper;
 import org.onap.dcaegen2.collectors.datafile.ssl.TrustManagerFactoryWrapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -46,9 +44,7 @@ import org.springframework.stereotype.Component;
  * @author <a href="mailto:martin.c.yan@est.tech">Martin Yan</a>
  */
 @Component
-public class FtpsClient {
-    private static final Logger logger = LoggerFactory.getLogger(FtpsClient.class);
-
+public class FtpsClient extends FileCollectClient {
     private String keyCertPath;
     private String keyCertPassword;
     private String trustedCAPath;
@@ -58,27 +54,32 @@ public class FtpsClient {
     private IKeyManagerUtils kmu;
     private IKeyStore keyStore;
     private ITrustManagerFactory trustManagerFactory;
-    private IFile localFile;
+    private IFile lf;
     private IFileSystemResource fileResource;
     private IOutputStream os;
 
-    public boolean collectFile(FileServerData fileServerData, String remoteFile, String localFile) {
-        logger.trace("collectFile called with fileServerData: {}, remoteFile: {}, localFile: {}", fileServerData,
-                remoteFile, localFile);
-        boolean result = true;
+    @Override
+    public FileCollectResult retryCollectFile() {
+        logger.trace("retryCollectFile called");
+
+        FileCollectResult fileCollectResult;
+
         IFTPSClient ftps = getFtpsClient();
 
         ftps.setNeedClientAuth(true);
 
-        if (setUpKeyManager(ftps) && setUpTrustedCA(ftps) && setUpConnection(fileServerData, ftps)) {
-            result = getFileFromxNF(remoteFile, localFile, ftps, fileServerData);
-
-            closeDownConnection(ftps);
+        if (setUpKeyManager(ftps) && setUpTrustedCA(ftps) && setUpConnection(ftps)) {
+            if (getFileFromxNF(ftps)) {
+                closeDownConnection(ftps);
+                fileCollectResult = new FileCollectResult();
+            } else {
+                fileCollectResult = new FileCollectResult(errorData);
+            }
         } else {
-            result = false;
+            fileCollectResult = new FileCollectResult(errorData);
         }
-        logger.trace("collectFile left with result: {}", result);
-        return result;
+        logger.trace("retryCollectFile left with result: {}", fileCollectResult);
+        return fileCollectResult;
     }
 
     private boolean setUpKeyManager(IFTPSClient ftps) {
@@ -88,7 +89,7 @@ public class FtpsClient {
             keyManagerUtils.setCredentials(keyCertPath, keyCertPassword);
             ftps.setKeyManager(keyManagerUtils.getClientKeyManager());
         } catch (GeneralSecurityException | IOException e) {
-            logger.error("Unable to use own key store {}", keyCertPath, e);
+            addError("Unable to use own key store " + keyCertPath, e);
             result = false;
         }
         return result;
@@ -108,13 +109,13 @@ public class FtpsClient {
             ftps.setTrustManager(tmf.getTrustManagers()[0]);
 
         } catch (Exception e) {
-            logger.error("Unable to trust xNF's CA, {}", trustedCAPath, e);
+            addError("Unable to trust xNF's CA, " + trustedCAPath, e);
             result = false;
         }
         return result;
     }
 
-    private boolean setUpConnection(FileServerData fileServerData, IFTPSClient ftps) {
+    private boolean setUpConnection(IFTPSClient ftps) {
         boolean result = true;
         try {
             ftps.connect(fileServerData.serverAddress(), fileServerData.port());
@@ -122,7 +123,7 @@ public class FtpsClient {
             boolean loginSuccesful = ftps.login(fileServerData.userId(), fileServerData.password());
             if (!loginSuccesful) {
                 ftps.logout();
-                logger.error("Unable to log in to xNF. {}", fileServerData);
+                addError("Unable to log in to xNF. " + fileServerData, null);
                 result = false;
             }
 
@@ -134,24 +135,23 @@ public class FtpsClient {
                 ftps.execPROT("P");
             } else {
                 ftps.disconnect();
-                logger.error("Unable to connect to xNF. {}", fileServerData);
+                addError("Unable to connect to xNF. " + fileServerData + "xNF reply code: " + ftps.getReplyCode(), null);
                 result = false;
             }
         } catch (Exception ex) {
-            logger.error("Unable to connect to xNF. Data: {}", fileServerData, ex);
+            addError("Unable to connect to xNF. Data: " + fileServerData, ex);
             result = false;
         }
         logger.trace("setUpConnection return value: {}", result);
         return result;
     }
 
-    private boolean getFileFromxNF(String remoteFile, String localFilePath, IFTPSClient ftps,
-            FileServerData fileServerData) {
+    private boolean getFileFromxNF(IFTPSClient ftps) {
         logger.trace("starting to getFile");
         boolean result = true;
+        IFile outfile = getFile();
         try {
-            IFile outfile = getFile();
-            outfile.setPath(localFilePath);
+            outfile.setPath(localFile);
             outfile.createNewFile();
 
             IOutputStream outputStream = getOutputStream();
@@ -160,9 +160,14 @@ public class FtpsClient {
             ftps.retrieveFile(remoteFile, output);
 
             output.close();
-            logger.debug("File {} Download Successfull from xNF", localFilePath);
+            logger.debug("File {} Download Successfull from xNF", localFile);
         } catch (IOException ex) {
-            logger.error("Unable to collect file from xNF. Data: {}", fileServerData, ex);
+            addError("Unable to collect file from xNF. Data: " + fileServerData, ex);
+            try {
+                outfile.delete();
+            } catch (Exception e) {
+                // Nothing
+            }
             result = false;
         }
         return result;
@@ -227,11 +232,11 @@ public class FtpsClient {
     }
 
     private IFile getFile() {
-        if (localFile == null) {
-            localFile = new FileWrapper();
+        if (lf == null) {
+            lf = new FileWrapper();
         }
 
-        return localFile;
+        return lf;
     }
 
     private IOutputStream getOutputStream() {
@@ -266,7 +271,7 @@ public class FtpsClient {
     }
 
     protected void setFile(IFile file) {
-        localFile = file;
+        lf = file;
     }
 
     protected void setOutputStream(IOutputStream outputStream) {

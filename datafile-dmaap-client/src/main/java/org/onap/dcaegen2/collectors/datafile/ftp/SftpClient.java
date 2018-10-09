@@ -24,8 +24,6 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -35,11 +33,12 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class SftpClient {
-    private static final Logger logger = LoggerFactory.getLogger(SftpClient.class);
+public class SftpClient extends FileCollectClient {
+    @Override
+    public FileCollectResult retryCollectFile() {
+        logger.trace("retryCollectFile called");
 
-    public boolean collectFile(FileServerData fileServerData, String remoteFile, String localFile) {
-        boolean result = true;
+        FileCollectResult result;
         Session session = setUpSession(fileServerData);
 
         if (session != null) {
@@ -47,20 +46,22 @@ public class SftpClient {
             if (sftpChannel != null) {
                 try {
                     sftpChannel.get(remoteFile, localFile);
+                    result = new FileCollectResult();
                     logger.debug("File {} Download Successfull from xNF", FilenameUtils.getName(localFile));
                 } catch (SftpException e) {
-                    logger.error("Unable to get file from xNF. Data: {}", fileServerData, e);
-                    result = false;
+                    addError("Unable to get file from xNF. Data: " + fileServerData, e);
+                    result = new FileCollectResult(errorData);
                 }
 
                 sftpChannel.exit();
             } else {
-                result = false;
+                result = new FileCollectResult(errorData);
             }
             session.disconnect();
         } else {
-            result = false;
+            result = new FileCollectResult(errorData);
         }
+        logger.trace("retryCollectFile left with result: {}", result);
         return result;
     }
 
@@ -74,7 +75,7 @@ public class SftpClient {
             session.setPassword(fileServerData.password());
             session.connect();
         } catch (JSchException e) {
-            logger.error("Unable to set up SFTP connection to xNF. Data: {}", fileServerData, e);
+            addError("Unable to set up SFTP connection to xNF. Data: " + fileServerData, e);
         }
         return session;
     }
@@ -87,7 +88,7 @@ public class SftpClient {
             channel.connect();
             sftpChannel = (ChannelSftp) channel;
         } catch (JSchException e) {
-            logger.error("Unable to get sftp channel to xNF. Data: {}", fileServerData, e);
+            addError("Unable to get sftp channel to xNF. Data: " + fileServerData, e);
         }
         return sftpChannel;
     }

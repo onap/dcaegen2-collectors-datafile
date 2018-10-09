@@ -106,9 +106,9 @@ public class FtpsClientTest {
         ImmutableFileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(XNF_ADDRESS)
                 .userId(USERNAME).password(PASSWORD).port(PORT).build();
 
-        boolean result = clientUnderTest.collectFile(fileServerData, REMOTE_FILE_PATH, LOCAL_FILE_PATH);
+        FileCollectResult result = clientUnderTest.collectFile(fileServerData, REMOTE_FILE_PATH, LOCAL_FILE_PATH);
 
-        assertTrue(result);
+        assertTrue(result.downloadSuccessful());
         verify(ftpsClientMock).setNeedClientAuth(true);
         verify(keyManagerUtilsMock).setCredentials(FTP_KEY_PATH, FTP_KEY_PASSWORD);
         verify(ftpsClientMock).setKeyManager(keyManagerMock);
@@ -140,9 +140,9 @@ public class FtpsClientTest {
         ImmutableFileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(XNF_ADDRESS)
                 .userId(USERNAME).password(PASSWORD).port(PORT).build();
 
-        boolean result = clientUnderTest.collectFile(fileServerData, REMOTE_FILE_PATH, LOCAL_FILE_PATH);
+        FileCollectResult result = clientUnderTest.collectFile(fileServerData, REMOTE_FILE_PATH, LOCAL_FILE_PATH);
 
-        assertFalse(result);
+        assertFalse(result.downloadSuccessful());
     }
 
     @Test
@@ -156,9 +156,9 @@ public class FtpsClientTest {
         ImmutableFileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(XNF_ADDRESS)
                 .userId(USERNAME).password(PASSWORD).port(PORT).build();
 
-        boolean result = clientUnderTest.collectFile(fileServerData, REMOTE_FILE_PATH, LOCAL_FILE_PATH);
+        FileCollectResult result = clientUnderTest.collectFile(fileServerData, REMOTE_FILE_PATH, LOCAL_FILE_PATH);
 
-        assertFalse(result);
+        assertFalse(result.downloadSuccessful());
     }
 
     @Test
@@ -172,10 +172,10 @@ public class FtpsClientTest {
         ImmutableFileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(XNF_ADDRESS)
                 .userId(USERNAME).password(PASSWORD).port(PORT).build();
 
-        boolean result = clientUnderTest.collectFile(fileServerData, REMOTE_FILE_PATH, LOCAL_FILE_PATH);
+        FileCollectResult result = clientUnderTest.collectFile(fileServerData, REMOTE_FILE_PATH, LOCAL_FILE_PATH);
 
         verify(ftpsClientMock, times(1)).logout();
-        assertFalse(result);
+        assertFalse(result.downloadSuccessful());
     }
 
     @Test
@@ -190,10 +190,10 @@ public class FtpsClientTest {
         ImmutableFileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(XNF_ADDRESS)
                 .userId(USERNAME).password(PASSWORD).port(PORT).build();
 
-        boolean result = clientUnderTest.collectFile(fileServerData, REMOTE_FILE_PATH, LOCAL_FILE_PATH);
+        FileCollectResult result = clientUnderTest.collectFile(fileServerData, REMOTE_FILE_PATH, LOCAL_FILE_PATH);
 
         verify(ftpsClientMock, times(1)).disconnect();
-        assertFalse(result);
+        assertFalse(result.downloadSuccessful());
     }
 
     @Test
@@ -208,9 +208,9 @@ public class FtpsClientTest {
         ImmutableFileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(XNF_ADDRESS)
                 .userId(USERNAME).password(PASSWORD).port(PORT).build();
 
-        boolean result = clientUnderTest.collectFile(fileServerData, REMOTE_FILE_PATH, LOCAL_FILE_PATH);
+        FileCollectResult result = clientUnderTest.collectFile(fileServerData, REMOTE_FILE_PATH, LOCAL_FILE_PATH);
 
-        assertFalse(result);
+        assertFalse(result.downloadSuccessful());
     }
 
     @Test
@@ -227,8 +227,9 @@ public class FtpsClientTest {
         ImmutableFileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(XNF_ADDRESS)
                 .userId(USERNAME).password(PASSWORD).port(PORT).build();
 
-        boolean result = clientUnderTest.collectFile(fileServerData, REMOTE_FILE_PATH, LOCAL_FILE_PATH);
+        FileCollectResult result = clientUnderTest.collectFile(fileServerData, REMOTE_FILE_PATH, LOCAL_FILE_PATH);
 
-        assertFalse(result);
+        assertFalse(result.downloadSuccessful());
+        verify(localFileMock, times(1)).delete();
     }
 }

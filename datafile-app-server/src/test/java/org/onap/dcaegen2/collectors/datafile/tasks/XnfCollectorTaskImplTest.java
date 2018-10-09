@@ -16,6 +16,7 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -28,6 +29,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
+import org.onap.dcaegen2.collectors.datafile.ftp.ErrorData;
+import org.onap.dcaegen2.collectors.datafile.ftp.FileCollectResult;
 import org.onap.dcaegen2.collectors.datafile.ftp.FileServerData;
 import org.onap.dcaegen2.collectors.datafile.ftp.FtpsClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.ImmutableFileServerData;
@@ -74,8 +77,8 @@ public class XnfCollectorTaskImplTest {
     private FtpsClient ftpsClientMock = mock(FtpsClient.class);
 
     private SftpClient sftpClientMock = mock(SftpClient.class);
+    private RetryTimer retryTimerMock = mock(RetryTimer.class);
 
-    private XnfCollectorTask collectorUndetTest = new XnfCollectorTaskImpl(appConfigMock, ftpsClientMock, sftpClientMock);
 
     @BeforeAll
     public static void setUpConfiguration() {
@@ -88,6 +91,8 @@ public class XnfCollectorTaskImplTest {
 
     @Test
     public void whenFtpesFile_returnCorrectResponse() {
+        XnfCollectorTaskImpl collectorUndetTest = new XnfCollectorTaskImpl(appConfigMock, ftpsClientMock, sftpClientMock);
+
         FileData fileData = ImmutableFileData.builder().changeIdentifier(PM_MEAS_CHANGE_IDINTIFIER)
                 .changeType(FILE_READY_CHANGE_TYPE).name(PM_FILE_NAME).location(FTPES_LOCATION)
                 .compression(GZIP_COMPRESSION).fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
@@ -96,7 +101,7 @@ public class XnfCollectorTaskImplTest {
         FileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(SERVER_ADDRESS).userId(USER)
                 .password(PWD).port(PORT_22).build();
         when(ftpsClientMock.collectFile(fileServerData, REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION))
-                .thenReturn(Boolean.TRUE);
+                .thenReturn(new FileCollectResult());
 
         ConsumerDmaapModel expectedConsumerDmaapModel = ImmutableConsumerDmaapModel.builder().name(PM_FILE_NAME)
                 .location(LOCAL_FILE_LOCATION).compression(GZIP_COMPRESSION)
@@ -115,6 +120,8 @@ public class XnfCollectorTaskImplTest {
 
     @Test
     public void whenSftpFile_returnCorrectResponse() {
+        XnfCollectorTaskImpl collectorUndetTest = new XnfCollectorTaskImpl(appConfigMock, ftpsClientMock, sftpClientMock);
+
         FileData fileData = ImmutableFileData.builder().changeIdentifier(PM_MEAS_CHANGE_IDINTIFIER)
                 .changeType(FILE_READY_CHANGE_TYPE).name(PM_FILE_NAME).location(SFTP_LOCATION)
                 .compression(GZIP_COMPRESSION).fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
@@ -123,7 +130,7 @@ public class XnfCollectorTaskImplTest {
         FileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(SERVER_ADDRESS).userId("")
                 .password("").port(PORT_22).build();
         when(sftpClientMock.collectFile(fileServerData, REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION))
-                .thenReturn(Boolean.TRUE);
+                .thenReturn(new FileCollectResult());
 
         ConsumerDmaapModel expectedConsumerDmaapModel = ImmutableConsumerDmaapModel.builder().name(PM_FILE_NAME)
                 .location(LOCAL_FILE_LOCATION).compression(GZIP_COMPRESSION)
@@ -133,15 +140,67 @@ public class XnfCollectorTaskImplTest {
                 .verifyComplete();
 
         verify(sftpClientMock, times(1)).collectFile(fileServerData, REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
-        verify(ftpsClientMock).setKeyCertPath(FTP_KEY_PATH);
-        verify(ftpsClientMock).setKeyCertPassword(FTP_KEY_PASSWORD);
-        verify(ftpsClientMock).setTrustedCAPath(TRUSTED_CA_PATH);
-        verify(ftpsClientMock).setTrustedCAPassword(TRUSTED_CA_PASSWORD);
-        verifyNoMoreInteractions(ftpsClientMock);
+        verifyNoMoreInteractions(sftpClientMock);
+    }
+
+    @Test
+    public void whenFtpesFileAlwaysFail_retryAndReturnEmpty() {
+        XnfCollectorTaskImpl collectorUndetTest = new XnfCollectorTaskImpl(appConfigMock, ftpsClientMock, sftpClientMock);
+        collectorUndetTest.setRetryTimer(retryTimerMock);
+
+        FileData fileData = ImmutableFileData.builder().changeIdentifier(PM_MEAS_CHANGE_IDINTIFIER)
+                .changeType(FILE_READY_CHANGE_TYPE).name(PM_FILE_NAME).location(FTPES_LOCATION)
+                .compression(GZIP_COMPRESSION).fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION).build();
+
+        FileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(SERVER_ADDRESS).userId(USER)
+                .password(PWD).port(PORT_22).build();
+        ErrorData errorData = new ErrorData();
+        errorData.addError("Unable to collect file.", new Exception());
+        when(ftpsClientMock.collectFile(fileServerData, REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION))
+                .thenReturn(new FileCollectResult(errorData));
+        doReturn(new FileCollectResult(errorData)).when(ftpsClientMock).retryCollectFile();
+
+        StepVerifier.create(collectorUndetTest.execute(fileData)).expectNextCount(0).verifyComplete();
+
+        verify(ftpsClientMock, times(1)).collectFile(fileServerData, REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+        verify(ftpsClientMock, times(2)).retryCollectFile();
+    }
+
+    @Test
+    public void whenFtpesFileFailOnce_retryAndReturnCorrectResponse() {
+        XnfCollectorTaskImpl collectorUndetTest = new XnfCollectorTaskImpl(appConfigMock, ftpsClientMock, sftpClientMock);
+        collectorUndetTest.setRetryTimer(retryTimerMock);
+
+        FileData fileData = ImmutableFileData.builder().changeIdentifier(PM_MEAS_CHANGE_IDINTIFIER)
+                .changeType(FILE_READY_CHANGE_TYPE).name(PM_FILE_NAME).location(FTPES_LOCATION)
+                .compression(GZIP_COMPRESSION).fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION).build();
+
+        FileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(SERVER_ADDRESS).userId(USER)
+                .password(PWD).port(PORT_22).build();
+        ErrorData errorData = new ErrorData();
+        errorData.addError("Unable to collect file.", new Exception());
+        when(ftpsClientMock.collectFile(fileServerData, REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION))
+        .thenReturn(new FileCollectResult(errorData));
+        doReturn(new FileCollectResult()).when(ftpsClientMock).retryCollectFile();
+
+        ConsumerDmaapModel expectedConsumerDmaapModel = ImmutableConsumerDmaapModel.builder().name(PM_FILE_NAME)
+                .location(LOCAL_FILE_LOCATION).compression(GZIP_COMPRESSION)
+                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE).fileFormatVersion(FILE_FORMAT_VERSION).build();
+
+        StepVerifier.create(collectorUndetTest.execute(fileData)).expectNext(expectedConsumerDmaapModel)
+                .verifyComplete();
+
+
+        verify(ftpsClientMock, times(1)).collectFile(fileServerData, REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+        verify(ftpsClientMock, times(1)).retryCollectFile();
     }
 
     @Test
     public void whenWrongScheme_returnEmpty() {
+        XnfCollectorTaskImpl collectorUndetTest = new XnfCollectorTaskImpl(appConfigMock, ftpsClientMock, sftpClientMock);
+
         FileData fileData = ImmutableFileData.builder().changeIdentifier(PM_MEAS_CHANGE_IDINTIFIER)
                 .changeType(FILE_READY_CHANGE_TYPE).name(PM_FILE_NAME).location("http://host.com/file.zip")
                 .compression(GZIP_COMPRESSION).fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
@@ -150,14 +209,10 @@ public class XnfCollectorTaskImplTest {
         FileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(SERVER_ADDRESS).userId("")
                 .password("").port(PORT_22).build();
         when(sftpClientMock.collectFile(fileServerData, REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION))
-                .thenReturn(Boolean.TRUE);
+                .thenReturn(new FileCollectResult());
 
         StepVerifier.create(collectorUndetTest.execute(fileData)).expectNextCount(0).verifyComplete();
 
-        verify(ftpsClientMock).setKeyCertPath(FTP_KEY_PATH);
-        verify(ftpsClientMock).setKeyCertPassword(FTP_KEY_PASSWORD);
-        verify(ftpsClientMock).setTrustedCAPath(TRUSTED_CA_PATH);
-        verify(ftpsClientMock).setTrustedCAPassword(TRUSTED_CA_PASSWORD);
-        verifyNoMoreInteractions(ftpsClientMock);
+        verifyNoMoreInteractions(sftpClientMock);
     }
 }

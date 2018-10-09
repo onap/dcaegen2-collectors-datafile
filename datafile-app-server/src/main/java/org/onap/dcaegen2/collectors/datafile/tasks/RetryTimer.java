@@ -16,34 +16,15 @@
  * ============LICENSE_END========================================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.io;
+package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import java.io.File;
-import java.io.IOException;
-
-public class FileWrapper implements IFile {
-    private File file;
-
-    @Override
-    public void setPath(String path) {
-        file = new File(path);
-    }
-
-    @Override
-    public boolean createNewFile() throws IOException {
-        if (file == null) {
-            throw new IOException("Path to file not set.");
+public class RetryTimer {
+    public void waitRetryTime() {
+        try {
+            Thread.sleep(60000);
+        } catch (InterruptedException e) {
+            // Nothing, no one will interrupt.
         }
-        return file.createNewFile();
-    }
 
-    @Override
-    public File getFile() {
-        return file;
-    }
-
-    @Override
-    public boolean delete() {
-        return file.delete();
     }
 }

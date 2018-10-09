@@ -16,34 +16,31 @@
  * ============LICENSE_END========================================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.io;
+package org.onap.dcaegen2.collectors.datafile.ftp;
 
-import java.io.File;
-import java.io.IOException;
+public class FileCollectResult {
+    private boolean result;
+    private ErrorData errorData;
 
-public class FileWrapper implements IFile {
-    private File file;
+    public FileCollectResult() {
+        this.result = true;
+    }
 
-    @Override
-    public void setPath(String path) {
-        file = new File(path);
+    public FileCollectResult(ErrorData errorData) {
+        this.errorData = errorData;
+        result = false;
+    }
+
+    public boolean downloadSuccessful() {
+        return result;
+    }
+
+    public String getErrorData() {
+        return errorData.toString();
     }
 
     @Override
-    public boolean createNewFile() throws IOException {
-        if (file == null) {
-            throw new IOException("Path to file not set.");
-        }
-        return file.createNewFile();
-    }
-
-    @Override
-    public File getFile() {
-        return file;
-    }
-
-    @Override
-    public boolean delete() {
-        return file.delete();
+    public String toString() {
+        return "Download successful: " + result + " Error data: " + getErrorData();
     }
 }
