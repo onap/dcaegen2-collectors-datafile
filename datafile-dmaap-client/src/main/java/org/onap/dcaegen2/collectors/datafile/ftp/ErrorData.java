@@ -16,34 +16,26 @@
  * ============LICENSE_END========================================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.io;
+package org.onap.dcaegen2.collectors.datafile.ftp;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class FileWrapper implements IFile {
-    private File file;
+public class ErrorData {
+    private List<String> errorMessages = new ArrayList<>();
+    private List<Throwable> errorCauses = new ArrayList<>();
 
-    @Override
-    public void setPath(String path) {
-        file = new File(path);
+    public void addError(String errorMessage, Throwable errorCause) {
+        errorMessages.add(errorMessage);
+        errorCauses.add(errorCause);
     }
 
     @Override
-    public boolean createNewFile() throws IOException {
-        if (file == null) {
-            throw new IOException("Path to file not set.");
+    public String toString() {
+        StringBuilder message = new StringBuilder();
+        for (int i = 0; i < errorMessages.size(); i++) {
+            message.append(errorMessages.get(i)).append(" Cause: ").append(errorCauses.get(i)).append("\n");
         }
-        return file.createNewFile();
-    }
-
-    @Override
-    public File getFile() {
-        return file;
-    }
-
-    @Override
-    public boolean delete() {
-        return file.delete();
+        return message.toString();
     }
 }

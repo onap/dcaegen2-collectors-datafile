@@ -22,6 +22,8 @@ import java.net.URI;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.Config;
 import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
+import org.onap.dcaegen2.collectors.datafile.ftp.FileCollectClient;
+import org.onap.dcaegen2.collectors.datafile.ftp.FileCollectResult;
 import org.onap.dcaegen2.collectors.datafile.ftp.FileServerData;
 import org.onap.dcaegen2.collectors.datafile.ftp.FtpsClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.ImmutableFileServerData;
@@ -51,6 +53,7 @@ public class XnfCollectorTaskImpl implements XnfCollectorTask {
 
     private final FtpsClient ftpsClient;
     private final SftpClient sftpClient;
+    private RetryTimer retryTimer;
 
     @Autowired
     protected XnfCollectorTaskImpl(AppConfig datafileAppConfig, FtpsClient ftpsCleint, SftpClient sftpClient) {
@@ -95,19 +98,20 @@ public class XnfCollectorTaskImpl implements XnfCollectorTask {
         FileServerData fileServerData = getFileServerData(uri);
         String remoteFile = uri.getPath();
         String localFile = "target" + File.separator + fileData.name();
-        String scheme = uri.getScheme();
-        boolean fileDownloaded = false;
-        if (FTPES.equals(scheme) || FTPS.equals(scheme)) {
-            fileDownloaded = ftpsClient.collectFile(fileServerData, remoteFile, localFile);
-        } else if (SFTP.equals(scheme)) {
-            fileDownloaded = sftpClient.collectFile(fileServerData, remoteFile, localFile);
-        } else {
 
-            logger.error("DFC does not support protocol {}. Supported protocols are {}, {}, and {}. Data: {}", scheme,
-                    FTPES, FTPS, SFTP, fileData);
-            localFile = null;
-        }
-        if (!fileDownloaded) {
+        FileCollectClient currentClient = selectClient(fileData, uri);
+
+        if (currentClient != null) {
+            FileCollectResult fileCollectResult = currentClient.collectFile(fileServerData, remoteFile, localFile);
+            if (!fileCollectResult.downloadSuccessful()) {
+                fileCollectResult = retry(fileCollectResult, currentClient);
+            }
+            if (!fileCollectResult.downloadSuccessful()) {
+                localFile = null;
+                logger.error("Download of file aborted after maximum number of retries. Data: {} Error causes {}",
+                        fileServerData, fileCollectResult.getErrorData());
+            }
+        } else {
             localFile = null;
         }
         return localFile;
@@ -128,6 +132,30 @@ public class XnfCollectorTaskImpl implements XnfCollectorTask {
         return userInfo;
     }
 
+    private FileCollectClient selectClient(FileData fileData, URI uri) {
+        FileCollectClient selectedClient = null;
+        String scheme = uri.getScheme();
+        if (FTPES.equals(scheme) || FTPS.equals(scheme)) {
+            selectedClient = ftpsClient;
+        } else if (SFTP.equals(scheme)) {
+            selectedClient = sftpClient;
+        } else {
+            logger.error("DFC does not support protocol {}. Supported protocols are {}, {}, and {}. Data: {}", scheme,
+                    FTPES, FTPS, SFTP, fileData);
+        }
+        return selectedClient;
+    }
+
+    private FileCollectResult retry(FileCollectResult fileCollectResult, FileCollectClient fileCollectClient) {
+        int retryCount = 1;
+        FileCollectResult newResult = fileCollectResult;
+        while (!newResult.downloadSuccessful() && retryCount++ < 3) {
+            getRetryTimer().waitRetryTime();
+            newResult = fileCollectClient.retryCollectFile();
+        }
+        return newResult;
+    }
+
     private ConsumerDmaapModel getConsumerDmaapModel(FileData fileData, String localFile) {
         String name = fileData.name();
         String compression = fileData.compression();
@@ -136,5 +164,16 @@ public class XnfCollectorTaskImpl implements XnfCollectorTask {
 
         return ImmutableConsumerDmaapModel.builder().name(name).location(localFile).compression(compression)
                 .fileFormatType(fileFormatType).fileFormatVersion(fileFormatVersion).build();
+    }
+
+    private RetryTimer getRetryTimer() {
+        if (retryTimer == null) {
+            retryTimer = new RetryTimer();
+        }
+        return retryTimer;
+    }
+
+    protected void setRetryTimer(RetryTimer retryTimer) {
+        this.retryTimer = retryTimer;
     }
 }
