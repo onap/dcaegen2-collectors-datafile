@@ -48,4 +48,6 @@ public interface IFTPSClient {
     public void execPROT(String prot) throws IOException;
 
     public boolean retrieveFile(String remote, OutputStream local) throws IOException;
+
+    void setTimeout(Integer t);
 }
