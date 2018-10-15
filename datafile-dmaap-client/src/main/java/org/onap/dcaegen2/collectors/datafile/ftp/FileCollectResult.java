@@ -36,7 +36,10 @@ public class FileCollectResult {
     }
 
     public String getErrorData() {
-        return errorData.toString();
+        if (errorData != null) {
+            return errorData.toString();
+        }
+        return "";
     }
 
     @Override
