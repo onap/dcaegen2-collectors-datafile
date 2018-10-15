@@ -57,6 +57,8 @@ public class FtpsClient extends FileCollectClient {
     private IFile lf;
     private IFileSystemResource fileResource;
     private IOutputStream os;
+    private boolean keyManagerSet = false;
+    private boolean trustManagerSet = false;
 
     @Override
     public FileCollectResult retryCollectFile() {
@@ -84,19 +86,27 @@ public class FtpsClient extends FileCollectClient {
 
     private boolean setUpKeyManager(IFTPSClient ftps) {
         boolean result = true;
+        if(keyManagerSet) {
+            return result;
+        }
         try {
             IKeyManagerUtils keyManagerUtils = getKeyManagerUtils();
             keyManagerUtils.setCredentials(keyCertPath, keyCertPassword);
             ftps.setKeyManager(keyManagerUtils.getClientKeyManager());
+            keyManagerSet = true;
         } catch (GeneralSecurityException | IOException e) {
             addError("Unable to use own key store " + keyCertPath, e);
             result = false;
         }
+        logger.trace("complete setUpKeyManager");
         return result;
     }
 
     private boolean setUpTrustedCA(IFTPSClient ftps) {
         boolean result = true;
+        if(trustManagerSet) {
+            return result;
+        }
         try {
             IFileSystemResource fileSystemResource = getFileSystemResource();
             fileSystemResource.setPath(trustedCAPath);
@@ -107,11 +117,13 @@ public class FtpsClient extends FileCollectClient {
             ITrustManagerFactory tmf = getTrustManagerFactory();
             tmf.init(ks.getKeyStore());
             ftps.setTrustManager(tmf.getTrustManagers()[0]);
+            trustManagerSet = true;
 
         } catch (Exception e) {
             addError("Unable to trust xNF's CA, " + trustedCAPath, e);
             result = false;
         }
+        logger.trace("complete setUpTrustedCA");
         return result;
     }
 
@@ -119,7 +131,7 @@ public class FtpsClient extends FileCollectClient {
         boolean result = true;
         try {
             ftps.connect(fileServerData.serverAddress(), fileServerData.port());
-
+            logger.trace("after ftp connect");
             boolean loginSuccesful = ftps.login(fileServerData.userId(), fileServerData.password());
             if (!loginSuccesful) {
                 ftps.logout();
@@ -157,8 +169,12 @@ public class FtpsClient extends FileCollectClient {
             IOutputStream outputStream = getOutputStream();
             OutputStream output = outputStream.getOutputStream(outfile.getFile());
 
-            ftps.retrieveFile(remoteFile, output);
-
+            result = ftps.retrieveFile(remoteFile, output);
+            if(!result) {
+                output.close();
+                logger.debug("retriveFile from ftp server failed");
+                return result;
+            }
             output.close();
             logger.debug("File {} Download Successfull from xNF", localFile);
         } catch (IOException ex) {

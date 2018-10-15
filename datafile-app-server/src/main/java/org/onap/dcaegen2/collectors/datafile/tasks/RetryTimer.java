@@ -22,7 +22,7 @@ public class RetryTimer {
     public void waitRetryTime() {
         try {
             Thread.sleep(60000);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             // Nothing, no one will interrupt.
         }
 

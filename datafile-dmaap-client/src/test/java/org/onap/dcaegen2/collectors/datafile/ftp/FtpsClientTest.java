@@ -102,6 +102,7 @@ public class FtpsClientTest {
         when(localFileMock.getFile()).thenReturn(fileMock);
         OutputStream osMock = mock(OutputStream.class);
         when(outputStreamMock.getOutputStream(fileMock)).thenReturn(osMock);
+        when(ftpsClientMock.retrieveFile(REMOTE_FILE_PATH, osMock)).thenReturn(true);
 
         ImmutableFileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(XNF_ADDRESS)
                 .userId(USERNAME).password(PASSWORD).port(PORT).build();

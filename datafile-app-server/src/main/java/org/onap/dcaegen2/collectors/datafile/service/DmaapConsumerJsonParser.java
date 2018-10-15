@@ -16,11 +16,6 @@
 
 package org.onap.dcaegen2.collectors.datafile.service;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +28,11 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
