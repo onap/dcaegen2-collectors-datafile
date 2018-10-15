@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_ed0ff7df",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SchedulerConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-10-15T13:14:20Z",
+      "side": 1,
+      "message": "Please remove extra empty line",
+      "revId": "6ba1821b0a0855c1fde9d2362c68277a60836fbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_0d159bf0",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-10-15T13:14:20Z",
+      "side": 1,
+      "message": "Please remove extra empty line",
+      "revId": "6ba1821b0a0855c1fde9d2362c68277a60836fbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_cdf6b3d7",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-10-15T13:14:20Z",
+      "side": 1,
+      "message": "Please remove \"this.\", not needed.",
+      "revId": "6ba1821b0a0855c1fde9d2362c68277a60836fbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_adf9efc9",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-10-15T13:14:20Z",
+      "side": 1,
+      "message": "Please remove \"this.\", not needed.",
+      "revId": "6ba1821b0a0855c1fde9d2362c68277a60836fbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_0d2cbb46",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-10-15T13:14:20Z",
+      "side": 1,
+      "message": "Please change log level to TRACE or DEBUG",
+      "revId": "6ba1821b0a0855c1fde9d2362c68277a60836fbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_6d0307b9",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-10-15T13:14:20Z",
+      "side": 1,
+      "message": "Please remove \"this.\", not needed.",
+      "revId": "6ba1821b0a0855c1fde9d2362c68277a60836fbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_2d2dff46",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-10-15T13:14:20Z",
+      "side": 1,
+      "message": "Please remove \"this.\", not needed.",
+      "revId": "6ba1821b0a0855c1fde9d2362c68277a60836fbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_ad200f4a",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-10-15T13:14:20Z",
+      "side": 1,
+      "message": "Please change log level to TRACE or DEBUG",
+      "revId": "6ba1821b0a0855c1fde9d2362c68277a60836fbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_cd1d5311",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-10-15T13:14:20Z",
+      "side": 1,
+      "message": "Please change log level to TRACE or DEBUG",
+      "revId": "6ba1821b0a0855c1fde9d2362c68277a60836fbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
