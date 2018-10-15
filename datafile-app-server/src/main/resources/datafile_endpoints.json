@@ -2,27 +2,36 @@
     "configs": {
         "dmaap": {
             "dmaapConsumerConfiguration": {
-                "consumerGroup": "notification",
-                "consumerId": "C12",
-                "dmaapContentType": "application/json",
                 "dmaapHostName": "localhost",
                 "dmaapPortNumber": 2222,
-                "dmaapProtocol": "http",
                 "dmaapTopicName": "/events/unauthenticated.VES_NOTIFICATION_OUTPUT",
-                "dmaapUserName": "admin",
-                "dmaapUserPassword": "admin",
-                "messageLimit": 1000,
-                "timeoutMS": 1000
+                "dmaapProtocol": "http",
+                "dmaapUserName": "",
+                "dmaapUserPassword": "",
+                "dmaapContentType": "application/json",
+                "consumerId": "C12",
+                "consumerGroup": "OpenDcae-c12",
+                "timeoutMS": -1,
+                "messageLimit": 1
             },
             "dmaapProducerConfiguration": {
-                "dmaapContentType": "application/octet-stream",
                 "dmaapHostName": "localhost",
                 "dmaapPortNumber": 3907,
-                "dmaapProtocol": "https",
                 "dmaapTopicName": "publish",
+                "dmaapProtocol": "https",
                 "dmaapUserName": "dradmin",
-                "dmaapUserPassword": "dradmin"
+                "dmaapUserPassword": "dradmin",
+                "dmaapContentType": "application/octet-stream"
+            }
+        },
+        "ftp": {
+            "ftpesConfiguration": {
+                "keyCert": "config/ftpKey.jks",
+                "keyPassword": "secret",
+                "trustedCA": "config/cacerts",
+                "trustedCAPassword": "secret"
             }
         }
     }
 }
+
