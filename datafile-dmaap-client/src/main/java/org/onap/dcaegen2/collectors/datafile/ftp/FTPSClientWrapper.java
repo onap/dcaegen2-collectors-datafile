@@ -89,4 +89,8 @@ public class FTPSClientWrapper implements IFTPSClient {
         return ftpsClient.retrieveFile(remote, local);
     }
 
+    @Override
+    public void setTimeout(Integer t) {
+        this.ftpsClient.setDefaultTimeout(t);
+    }
 }
