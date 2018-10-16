@@ -14,17 +14,21 @@
  * ============LICENSE_END========================================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.service.producer;
+package org.onap.dcaegen2.collectors.datafile.web;
 
-import java.io.IOException;
-import java.io.InputStream;
+import org.junit.jupiter.api.Test;
 
-/**
- * @author
- *
- */
-@FunctionalInterface
-public interface IFileSystemResource {
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 
-    InputStream getInputStream() throws IOException;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+class RestTemplateWrapperTest {
+
+    @Test
+    void constructor_shouldReturnNotNullObject() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
+        RestTemplateWrapper restTemplateWrapper = new RestTemplateWrapper();
+        assertNotNull(restTemplateWrapper);
+    }
 }
