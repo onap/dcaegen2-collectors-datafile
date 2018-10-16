@@ -26,6 +26,7 @@ import org.springframework.http.ResponseEntity;
  * @author
  *
  */
+@FunctionalInterface
 public interface IRestTemplate {
     public ResponseEntity<String> exchange(URI url, HttpMethod method, HttpEntity<byte[]> requestEntity,
             Class<String> responseType);

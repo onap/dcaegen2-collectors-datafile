@@ -14,17 +14,29 @@
  * ============LICENSE_END========================================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.service.producer;
+package org.onap.dcaegen2.collectors.datafile.web;
 
-import java.io.IOException;
-import java.io.InputStream;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-/**
- * @author
- *
- */
-@FunctionalInterface
-public interface IFileSystemResource {
+class PublishRedirectStrategyTest {
+    static PublishRedirectStrategy publishRedirectStrategy;
 
-    InputStream getInputStream() throws IOException;
+
+
+    @BeforeAll
+    static void setUp() {
+        publishRedirectStrategy = new PublishRedirectStrategy();
+    }
+
+    @Test
+    void isRedirectable_shouldReturnTrue() {
+        Assertions.assertTrue(publishRedirectStrategy.isRedirectable("Put"));
+    }
+
+    @Test
+    void isRedirectable_shouldReturnFalse() {
+        Assertions.assertFalse(publishRedirectStrategy.isRedirectable("HaHa"));
+    }
 }
