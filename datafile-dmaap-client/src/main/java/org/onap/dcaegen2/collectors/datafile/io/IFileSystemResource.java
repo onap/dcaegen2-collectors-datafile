@@ -19,10 +19,6 @@ package org.onap.dcaegen2.collectors.datafile.io;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * @author
- *
- */
 public interface IFileSystemResource {
 
     public void setPath(String filePath);

@@ -44,22 +44,4 @@ public abstract class DmaapConsumerConfiguration implements DmaapCustomConfig {
 
     @Value.Parameter
     public abstract Integer messageLimit();
-
-
-    public interface Builder
-            extends DmaapCustomConfig.Builder<DmaapConsumerConfiguration, DmaapConsumerConfiguration.Builder> {
-
-        Builder consumerId(String consumerId);
-
-        Builder consumerGroup(String consumerGroup);
-
-        Builder timeoutMS(Integer timeoutMS);
-
-        Builder messageLimit(Integer messageLimit);
-    }
-
-    public static DmaapConsumerConfiguration.Builder builder() {
-        return ImmutableDmaapConsumerConfiguration.builder();
-    }
-
 }

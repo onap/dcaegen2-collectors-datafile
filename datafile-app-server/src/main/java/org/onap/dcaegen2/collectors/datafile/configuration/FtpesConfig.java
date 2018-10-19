@@ -19,10 +19,6 @@
  */
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
-/**
- * @author
- *
- */
 import java.io.Serializable;
 
 import org.immutables.gson.Gson;

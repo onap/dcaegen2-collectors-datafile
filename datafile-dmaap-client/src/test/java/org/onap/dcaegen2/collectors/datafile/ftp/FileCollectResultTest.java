@@ -18,30 +18,28 @@
 
 package org.onap.dcaegen2.collectors.datafile.ftp;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class ErrorData {
-    private List<String> errorMessages = new ArrayList<>();
-    private List<Throwable> errorCauses = new ArrayList<>();
+import org.junit.jupiter.api.Test;
 
-    public void addError(String errorMessage, Throwable errorCause) {
-        errorMessages.add(errorMessage);
-        errorCauses.add(errorCause);
+public class FileCollectResultTest {
+
+    @Test
+    public void successfulResult() {
+        FileCollectResult resultUnderTest = new FileCollectResult();
+        assertTrue(resultUnderTest.downloadSuccessful());
+        assertEquals("Download successful: true Error data: ", resultUnderTest.toString());
     }
 
-    @Override
-    public String toString() {
-        StringBuilder message = new StringBuilder();
-        for (int i = 0; i < errorMessages.size(); i++) {
-            message.append(errorMessages.get(i));
-            if (errorCauses.get(i) != null) {
-                message.append(" Cause: ").append(errorCauses.get(i));
-            }
-            if (i < errorMessages.size() -1) {
-                message.append("\n");
-            }
-        }
-        return message.toString();
+    @Test
+    public void unSuccessfulResult() {
+        ErrorData errorData = new ErrorData();
+        errorData.addError("Error", null);
+        errorData.addError("Null", new NullPointerException());
+        FileCollectResult resultUnderTest = new FileCollectResult(errorData);
+        assertFalse(resultUnderTest.downloadSuccessful());
+        assertEquals("Download successful: false Error data: " + errorData.toString(), resultUnderTest.toString());
     }
 }
