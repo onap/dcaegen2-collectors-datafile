@@ -76,6 +76,7 @@ public class SftpClient extends FileCollectClient {
             session.connect();
         } catch (JSchException e) {
             addError("Unable to set up SFTP connection to xNF. Data: " + fileServerData, e);
+            session = null;
         }
         return session;
     }

@@ -18,26 +18,28 @@
 
 package org.onap.dcaegen2.collectors.datafile.ftp;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.Test;
 
-public class ErrorDataTest {
+public class FileCollectResultTest {
 
     @Test
-    public void emptyData() {
-        ErrorData dataUnderTest = new ErrorData();
-
-        assertEquals("", dataUnderTest.toString());
+    public void successfulResult() {
+        FileCollectResult resultUnderTest = new FileCollectResult();
+        assertTrue(resultUnderTest.downloadSuccessful());
+        assertEquals("FileCollectResult: true Error data: ", resultUnderTest.toString());
     }
 
     @Test
-    public void withData() {
-        ErrorData dataUnderTest = new ErrorData();
-        dataUnderTest.addError("Error", null);
-        dataUnderTest.addError("Null", new NullPointerException("Null"));
-
-        assertEquals("Error\nNull Cause: java.lang.NullPointerException: Null", dataUnderTest.toString());
+    public void unSuccessfulResult() {
+        ErrorData errorData = new ErrorData();
+        errorData.addError("Error", null);
+        errorData.addError("Null", new NullPointerException());
+        FileCollectResult resultUnderTest = new FileCollectResult(errorData);
+        assertFalse(resultUnderTest.downloadSuccessful());
+        assertEquals("FileCollectResult: false Error data: " + errorData.toString(), resultUnderTest.toString());
     }
 }
-

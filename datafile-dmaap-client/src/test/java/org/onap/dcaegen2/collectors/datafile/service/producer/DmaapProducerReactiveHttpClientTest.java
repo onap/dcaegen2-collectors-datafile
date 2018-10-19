@@ -39,7 +39,7 @@ import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.io.IFileSystemResource;
 import org.onap.dcaegen2.collectors.datafile.model.CommonFunctions;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
-import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModelForUnitTest;
+import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.web.IRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -74,7 +74,7 @@ class DmaapProducerReactiveHttpClientTest {
     private DmaapProducerReactiveHttpClient dmaapProducerReactiveHttpClient;
 
     private DmaapPublisherConfiguration dmaapPublisherConfigurationMock = mock(DmaapPublisherConfiguration.class);
-    private ConsumerDmaapModel consumerDmaapModel = new ConsumerDmaapModelForUnitTest();
+    private ConsumerDmaapModel consumerDmaapModel;
 
     private IFileSystemResource fileSystemResourceMock = mock(IFileSystemResource.class);
     private IRestTemplate restTemplateMock = mock(IRestTemplate.class);
@@ -92,6 +92,10 @@ class DmaapProducerReactiveHttpClientTest {
         when(dmaapPublisherConfigurationMock.dmaapContentType()).thenReturn(APPLICATION_OCTET_STREAM_CONTENT_TYPE);
         when(dmaapPublisherConfigurationMock.dmaapTopicName()).thenReturn(PUBLISH_TOPIC);
 
+        consumerDmaapModel = ImmutableConsumerDmaapModel.builder().name(FILE_NAME)
+                .location("target/A20161224.1030-1045.bin.gz").compression("gzip")
+                .fileFormatType("org.3GPP.32.435#measCollec").fileFormatVersion("V10").build();
+
         dmaapProducerReactiveHttpClient = new DmaapProducerReactiveHttpClient(dmaapPublisherConfigurationMock);
         dmaapProducerReactiveHttpClient.setFileSystemResource(fileSystemResourceMock);
         dmaapProducerReactiveHttpClient.setRestTemplate(restTemplateMock);
@@ -99,7 +103,7 @@ class DmaapProducerReactiveHttpClientTest {
 
     @Test
     void getHttpResponse_Success() throws Exception {
-        mockWebClientDependantObject();
+        mockWebClientDependantObject(true);
 
         StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel))
                 .expectNext(HttpStatus.OK.toString()).verifyComplete();
@@ -130,11 +134,23 @@ class DmaapProducerReactiveHttpClientTest {
         verifyNoMoreInteractions(restTemplateMock);
     }
 
-    private void mockWebClientDependantObject() throws IOException {
+    @Test
+    void getHttpResponse_Fail() throws Exception {
+        mockWebClientDependantObject(false);
+
+        StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel))
+                .verifyComplete();
+    }
+
+    private void mockWebClientDependantObject(boolean success) throws IOException {
         fileStream = new ByteArrayInputStream(FILE_CONTENT.getBytes());
         when(fileSystemResourceMock.getInputStream()).thenReturn(fileStream);
 
-        when(restTemplateMock.exchange(any(), any(), any(), any())).thenReturn(responseEntityMock);
-        when(responseEntityMock.getStatusCode()).thenReturn(HttpStatus.OK);
+        if (success) {
+            when(restTemplateMock.exchange(any(), any(), any(), any())).thenReturn(responseEntityMock);
+            when(responseEntityMock.getStatusCode()).thenReturn(HttpStatus.OK);
+        } else {
+            when(restTemplateMock.exchange(any(), any(), any(), any())).thenThrow(new RuntimeException());
+        }
     }
 }

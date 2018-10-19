@@ -34,7 +34,13 @@ public class ErrorData {
     public String toString() {
         StringBuilder message = new StringBuilder();
         for (int i = 0; i < errorMessages.size(); i++) {
-            message.append(errorMessages.get(i)).append(" Cause: ").append(errorCauses.get(i)).append("\n");
+            message.append(errorMessages.get(i));
+            if (errorCauses.get(i) != null) {
+                message.append(" Cause: ").append(errorCauses.get(i));
+            }
+            if (i < errorMessages.size() -1) {
+                message.append("\n");
+            }
         }
         return message.toString();
     }

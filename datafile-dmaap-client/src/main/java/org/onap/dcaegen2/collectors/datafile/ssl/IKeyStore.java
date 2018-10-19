@@ -16,16 +16,19 @@
 
 package org.onap.dcaegen2.collectors.datafile.ssl;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
 
 public interface IKeyStore {
-    public void load(InputStream arg0, char[] arg1)
-            throws IOException, NoSuchAlgorithmException, CertificateException, KeyStoreException;
+    public void load(InputStream arg0, char[] arg1) throws KeyStoreLoadException;
 
     public KeyStore getKeyStore();
+
+    public static class KeyStoreLoadException extends Exception {
+        private static final long serialVersionUID = 1L;
+
+        public KeyStoreLoadException(Exception e) {
+            super(e);
+        }
+    }
 }
