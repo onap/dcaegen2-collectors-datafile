@@ -19,7 +19,6 @@ package org.onap.dcaegen2.collectors.datafile.ftp;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.security.GeneralSecurityException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 
@@ -31,6 +30,7 @@ import org.onap.dcaegen2.collectors.datafile.io.IFileSystemResource;
 import org.onap.dcaegen2.collectors.datafile.io.IOutputStream;
 import org.onap.dcaegen2.collectors.datafile.io.OutputStreamWrapper;
 import org.onap.dcaegen2.collectors.datafile.ssl.IKeyManagerUtils;
+import org.onap.dcaegen2.collectors.datafile.ssl.IKeyManagerUtils.KeyManagerException;
 import org.onap.dcaegen2.collectors.datafile.ssl.IKeyStore;
 import org.onap.dcaegen2.collectors.datafile.ssl.ITrustManagerFactory;
 import org.onap.dcaegen2.collectors.datafile.ssl.KeyManagerUtilsWrapper;
@@ -94,7 +94,7 @@ public class FtpsClient extends FileCollectClient {
             keyManagerUtils.setCredentials(keyCertPath, keyCertPassword);
             ftps.setKeyManager(keyManagerUtils.getClientKeyManager());
             keyManagerSet = true;
-        } catch (GeneralSecurityException | IOException e) {
+        } catch (KeyManagerException e) {
             addError("Unable to use own key store " + keyCertPath, e);
             result = false;
         }
@@ -184,7 +184,7 @@ public class FtpsClient extends FileCollectClient {
             try {
                 outfile.delete();
             } catch (Exception e) {
-                // Nothing
+                logger.trace("Unable to delete file {}.", localFile, e);
             }
             result = false;
         }
@@ -199,7 +199,7 @@ public class FtpsClient extends FileCollectClient {
                 ftps.disconnect();
             }
         } catch (Exception e) {
-            // Do nothing, file has been collected.
+            logger.trace("Unable to logout and close connection.", e);
         }
     }
 

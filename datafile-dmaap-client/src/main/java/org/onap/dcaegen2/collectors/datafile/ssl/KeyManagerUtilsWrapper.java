@@ -26,16 +26,16 @@ import javax.net.ssl.KeyManager;
 
 import org.apache.commons.net.util.KeyManagerUtils;
 
-/**
- * @author
- *
- */
 public class KeyManagerUtilsWrapper implements IKeyManagerUtils {
     private KeyManager keyManager;
 
     @Override
-    public void setCredentials(String keyStorePath, String keyStorePass) throws IOException, GeneralSecurityException {
-        keyManager = KeyManagerUtils.createClientKeyManager(new File(keyStorePath), keyStorePass);
+    public void setCredentials(String keyStorePath, String keyStorePass) throws KeyManagerException {
+        try {
+            keyManager = KeyManagerUtils.createClientKeyManager(new File(keyStorePath), keyStorePass);
+        } catch (IOException | GeneralSecurityException e) {
+            throw new KeyManagerException(e);
+        }
     }
 
     @Override

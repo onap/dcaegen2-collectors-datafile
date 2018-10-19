@@ -135,7 +135,7 @@ public class FtpsClientTest {
 
     @Test
     public void collectFileFaultyOwnKey_shouldFail() throws Exception {
-        doThrow(new GeneralSecurityException())
+        doThrow(new IKeyManagerUtils.KeyManagerException(new GeneralSecurityException()))
                 .when(keyManagerUtilsMock).setCredentials(FTP_KEY_PATH, FTP_KEY_PASSWORD);
 
         ImmutableFileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(XNF_ADDRESS)

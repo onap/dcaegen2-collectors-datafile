@@ -30,13 +30,4 @@ import org.immutables.value.Value;
 public abstract class DmaapPublisherConfiguration implements DmaapCustomConfig {
 
     private static final long serialVersionUID = 1L;
-
-    interface Builder
-            extends DmaapCustomConfig.Builder<DmaapPublisherConfiguration, DmaapPublisherConfiguration.Builder> {
-
-    }
-
-    public static DmaapPublisherConfiguration.Builder builder() {
-        return ImmutableDmaapPublisherConfiguration.builder();
-    }
 }

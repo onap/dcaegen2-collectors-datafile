@@ -32,8 +32,12 @@ public class KeyStoreWrapper implements IKeyStore {
 
     @Override
     public void load(InputStream stream, char[] password)
-            throws IOException, NoSuchAlgorithmException, CertificateException, KeyStoreException {
-        keyStore.load(stream, password);
+            throws KeyStoreLoadException {
+        try {
+            keyStore.load(stream, password);
+        } catch (NoSuchAlgorithmException | CertificateException | IOException e) {
+            throw new KeyStoreLoadException(e);
+        }
     }
 
     @Override
