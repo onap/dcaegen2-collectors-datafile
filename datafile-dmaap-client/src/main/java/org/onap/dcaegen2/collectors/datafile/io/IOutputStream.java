@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
 
+@FunctionalInterface
 public interface IOutputStream {
     public OutputStream getOutputStream(File file) throws FileNotFoundException;
 }
