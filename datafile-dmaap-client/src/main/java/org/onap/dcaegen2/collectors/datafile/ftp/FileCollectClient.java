@@ -20,8 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author
- *
+ * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 public abstract class FileCollectClient {
     protected static final Logger logger = LoggerFactory.getLogger(FtpsClient.class);

@@ -23,13 +23,10 @@ import java.io.InputStream;
 
 import org.springframework.core.io.FileSystemResource;
 
-/**
- * @author
- *
- */
 public class FileSystemResourceWrapper implements IFileSystemResource {
     private FileSystemResource realResource;
 
+    @Override
     public void setPath(String path) {
         realResource = new FileSystemResource(path);
     }

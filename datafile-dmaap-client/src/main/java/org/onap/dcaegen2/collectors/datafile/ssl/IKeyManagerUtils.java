@@ -18,17 +18,18 @@
 
 package org.onap.dcaegen2.collectors.datafile.ssl;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
 import javax.net.ssl.KeyManager;
 
-/**
- * @author
- *
- */
 public interface IKeyManagerUtils {
-    public void setCredentials(String keyStorePath, String keyStorePass) throws IOException, GeneralSecurityException;
+    public void setCredentials(String keyStorePath, String keyStorePass) throws KeyManagerException;
 
     public KeyManager getClientKeyManager();
+
+    public static class KeyManagerException extends Exception {
+        private static final long serialVersionUID = 1L;
+
+        public KeyManagerException(Exception e) {
+            super(e);
+        }
+    }
 }

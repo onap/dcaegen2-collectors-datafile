@@ -21,6 +21,8 @@ package org.onap.dcaegen2.collectors.datafile.ftp;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.commons.io.IOUtils.toByteArray;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.github.stefanbirkner.fakesftpserver.rule.FakeSftpServerRule;
 import com.jcraft.jsch.ChannelSftp;
@@ -61,6 +63,38 @@ public class SftpClientTest {
         byte[] localFile = Files.readAllBytes(new File(LOCAL_DUMMY_FILE).toPath());
         assertThat(new String(file, UTF_8)).isEqualTo(DUMMY_CONTENT);
         assertThat(new String(localFile, UTF_8)).isEqualTo(DUMMY_CONTENT);
+    }
+
+    @Test
+    public void collectFile_withWrongUserName_shouldFail() throws IOException, JSchException, SftpException {
+        SftpClient sftpClient = new SftpClient();
+        sftpServer.putFile(REMOTE_DUMMY_FILE, DUMMY_CONTENT, UTF_8);
+        byte[] file = downloadFile(sftpServer, REMOTE_DUMMY_FILE);
+        FileServerData expectedFileServerData = ImmutableFileServerData.builder().serverAddress("127.0.0.1")
+                .userId("Wrong").password(PASSWORD).port(sftpServer.getPort()).build();
+        FileCollectResult actualResult = sftpClient.collectFile(expectedFileServerData, REMOTE_DUMMY_FILE,
+                LOCAL_DUMMY_FILE);
+
+        assertFalse(actualResult.downloadSuccessful());
+        String expectedErrorMessage = "Unable to set up SFTP connection to xNF. Data: "
+                + "FileServerData{serverAddress=127.0.0.1, userId=Wrong, password=123, port=";
+        assertTrue(actualResult.getErrorData().toString().startsWith(expectedErrorMessage));
+    }
+
+    @Test
+    public void collectFile_withWrongFileName_shouldFail() throws IOException, JSchException, SftpException {
+        SftpClient sftpClient = new SftpClient();
+        sftpServer.putFile(REMOTE_DUMMY_FILE, DUMMY_CONTENT, UTF_8);
+        byte[] file = downloadFile(sftpServer, REMOTE_DUMMY_FILE);
+        FileServerData expectedFileServerData = ImmutableFileServerData.builder().serverAddress("127.0.0.1")
+                .userId(USERNAME).password(PASSWORD).port(sftpServer.getPort()).build();
+        FileCollectResult actualResult = sftpClient.collectFile(expectedFileServerData, "wrong",
+                LOCAL_DUMMY_FILE);
+
+        assertFalse(actualResult.downloadSuccessful());
+        String expectedErrorMessage = "Unable to get file from xNF. Data: FileServerData{serverAddress=127.0.0.1, "
+                + "userId=bob, password=123, port=";
+        assertTrue(actualResult.getErrorData().toString().startsWith(expectedErrorMessage));
     }
 
     private static Session connectToServer(FakeSftpServerRule sftpServer) throws JSchException {
