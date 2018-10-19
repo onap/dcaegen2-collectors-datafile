@@ -26,10 +26,6 @@ import javax.net.ssl.KeyManager;
 
 import org.apache.commons.net.util.KeyManagerUtils;
 
-/**
- * @author
- *
- */
 public class KeyManagerUtilsWrapper implements IKeyManagerUtils {
     private KeyManager keyManager;
 

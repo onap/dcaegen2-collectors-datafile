@@ -16,25 +16,28 @@
  * ============LICENSE_END========================================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.service.producer;
+package org.onap.dcaegen2.collectors.datafile.ftp;
 
-import java.io.IOException;
-import java.io.InputStream;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.springframework.core.io.FileSystemResource;
+import org.junit.jupiter.api.Test;
 
-/**
- * @author
- *
- */
-public class FileSystemResourceWrapper implements IFileSystemResource {
-    private FileSystemResource realResource;
+public class ErrorDataTest {
 
-    public FileSystemResourceWrapper(String path) {
-        realResource = new FileSystemResource(path);
+    @Test
+    public void emptyData() {
+        ErrorData dataUnderTest = new ErrorData();
+
+        assertEquals("", dataUnderTest.toString());
     }
-    @Override
-    public InputStream getInputStream() throws IOException {
-        return realResource.getInputStream();
+
+    @Test
+    public void withData() {
+        ErrorData dataUnderTest = new ErrorData();
+        dataUnderTest.addError("Error", null);
+        dataUnderTest.addError("Null", new NullPointerException("Null"));
+
+        assertEquals("Error\nNull Cause: java.lang.NullPointerException: Null", dataUnderTest.toString());
     }
 }
+

@@ -150,7 +150,11 @@ public class XnfCollectorTaskImpl implements XnfCollectorTask {
         int retryCount = 1;
         FileCollectResult newResult = fileCollectResult;
         while (!newResult.downloadSuccessful() && retryCount++ < 3) {
-            getRetryTimer().waitRetryTime();
+            try {
+                getRetryTimer().waitRetryTime();
+            } catch (InterruptedException e) {
+                logger.error("File collect retry was interrupted.");
+            }
             newResult = fileCollectClient.retryCollectFile();
         }
         return newResult;

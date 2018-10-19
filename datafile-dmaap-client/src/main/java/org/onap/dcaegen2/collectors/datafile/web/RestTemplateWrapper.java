@@ -34,10 +34,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
-/**
- * @author
- *
- */
 public class RestTemplateWrapper implements IRestTemplate {
     private RestTemplate restTemplate;
 
