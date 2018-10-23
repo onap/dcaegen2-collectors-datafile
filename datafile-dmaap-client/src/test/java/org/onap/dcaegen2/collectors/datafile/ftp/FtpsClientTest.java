@@ -16,6 +16,7 @@
 
 package org.onap.dcaegen2.collectors.datafile.ftp;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doThrow;
@@ -56,6 +57,7 @@ public class FtpsClientTest {
     private static final String FTP_KEY_PASSWORD = "ftpKeyPassword";
     private static final String TRUSTED_CA_PATH = "trustedCAPath";
     private static final String TRUSTED_CA_PASSWORD = "trustedCAPassword";
+    private static final String NO_ERROR_MESSAGE = "";
 
     private static final String USERNAME = "bob";
     private static final String PASSWORD = "123";
@@ -110,6 +112,7 @@ public class FtpsClientTest {
         FileCollectResult result = clientUnderTest.collectFile(fileServerData, REMOTE_FILE_PATH, LOCAL_FILE_PATH);
 
         assertTrue(result.downloadSuccessful());
+        assertEquals(result.getErrorData(), NO_ERROR_MESSAGE);
         verify(ftpsClientMock).setNeedClientAuth(true);
         verify(keyManagerUtilsMock).setCredentials(FTP_KEY_PATH, FTP_KEY_PASSWORD);
         verify(ftpsClientMock).setKeyManager(keyManagerMock);

@@ -133,7 +133,6 @@ class DmaapProducerReactiveHttpClientTest {
     private void mockWebClientDependantObject() throws IOException {
         fileStream = new ByteArrayInputStream(FILE_CONTENT.getBytes());
         when(fileSystemResourceMock.getInputStream()).thenReturn(fileStream);
-
         when(restTemplateMock.exchange(any(), any(), any(), any())).thenReturn(responseEntityMock);
         when(responseEntityMock.getStatusCode()).thenReturn(HttpStatus.OK);
     }
