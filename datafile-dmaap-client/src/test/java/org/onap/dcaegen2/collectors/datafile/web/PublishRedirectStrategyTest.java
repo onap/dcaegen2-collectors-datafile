@@ -16,11 +16,26 @@
 
 package org.onap.dcaegen2.collectors.datafile.web;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import org.apache.http.Header;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.ProtocolException;
+import org.apache.http.RequestLine;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class PublishRedirectStrategyTest {
+
+    private static final String URI = "sftp://localhost:80/";
 
     private static PublishRedirectStrategy publishRedirectStrategy;
 
@@ -38,5 +53,23 @@ class PublishRedirectStrategyTest {
     @Test
     void isRedirectable_shouldReturnFalse() {
         Assertions.assertFalse(publishRedirectStrategy.isRedirectable("not valid method"));
+    }
+
+    @Test
+    void getRedirect_shouldReturnCorrectUri() throws ProtocolException {
+        HttpRequest requestMock = mock(HttpRequest.class);
+        HttpResponse responseMock = mock(HttpResponse.class);
+        HttpContext contextMock = mock(HttpContext.class);
+        Header headerMock = mock(Header.class);
+        when(responseMock.getFirstHeader("location")).thenReturn(headerMock);
+        when(headerMock.getValue()).thenReturn(URI);
+        RequestConfig requestConfigMock = mock(RequestConfig.class);
+        when(contextMock.getAttribute(HttpClientContext.REQUEST_CONFIG)).thenReturn(requestConfigMock);
+        RequestLine requestLineMock = mock(RequestLine.class);
+        when(requestMock.getRequestLine()).thenReturn(requestLineMock);
+        when(requestLineMock.getUri()).thenReturn(URI);
+
+        HttpUriRequest actualRedirect = publishRedirectStrategy.getRedirect(requestMock, responseMock, contextMock);
+        assertEquals(URI, actualRedirect.getURI().toString());
     }
 }
