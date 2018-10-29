@@ -106,22 +106,44 @@ public class DmaapConsumerJsonParser {
             String notificationFieldsVersion = getValueFromJson(notificationFields, NOTIFICATION_FIELDS_VERSION);
             JsonArray arrayOfNamedHashMap = notificationFields.getAsJsonArray(ARRAY_OF_NAMED_HASH_MAP);
             if (isNotificationFieldsHeaderNotEmpty(changeIdentifier, changeType, notificationFieldsVersion)
-                && arrayOfNamedHashMap != null) {
+                && arrayOfNamedHashMap != null && isChangeIdentifierCorrect(changeIdentifier)
+                && isChangeTypeCorrect(changeType)) {
                 return getAllFileDataFromJson(changeIdentifier, changeType, arrayOfNamedHashMap);
             }
 
             if (!isNotificationFieldsHeaderNotEmpty(changeIdentifier, changeType, notificationFieldsVersion)) {
                 return Flux.error(
                     new DmaapNotFoundException("FileReady event header is missing information. " + jsonObject));
-            } else if (arrayOfNamedHashMap != null) {
+            }
+
+            if (arrayOfNamedHashMap == null) {
                 return Flux.error(
                     new DmaapNotFoundException("FileReady event arrayOfNamedHashMap is missing. " + jsonObject));
             }
+
+            if (!isChangeIdentifierCorrect(changeIdentifier)) {
+                return Flux.error(
+                        new DmaapNotFoundException("FileReady event changeIdentifier is incorrect. " + jsonObject));
+            }
+
+            if (!isChangeTypeCorrect(changeType)) {
+                return Flux.error(
+                        new DmaapNotFoundException("FileReady event changeType is incorrect. " + jsonObject));
+            }
+
             return Flux.error(
                 new DmaapNotFoundException("FileReady event does not contain correct information. " + jsonObject));
         }
         return Flux.error(
             new DmaapNotFoundException("FileReady event has incorrect JsonObject - missing header. " + jsonObject));
+    }
+
+    private boolean isChangeTypeCorrect(String changeType) {
+        return "FileReady".equals(changeType);
+    }
+
+    private boolean isChangeIdentifierCorrect(String changeIdentifier) {
+        return "PM_MEAS_FILES".equals(changeIdentifier);
     }
 
     private Flux<FileData> getAllFileDataFromJson(String changeIdentifier, String changeType,
