@@ -44,6 +44,6 @@ public class FileCollectResult {
 
     @Override
     public String toString() {
-        return "Download successful: " + result + " Error data: " + getErrorData();
+        return "FileCollectResult: " + result + " Error data: " + getErrorData();
     }
 }
