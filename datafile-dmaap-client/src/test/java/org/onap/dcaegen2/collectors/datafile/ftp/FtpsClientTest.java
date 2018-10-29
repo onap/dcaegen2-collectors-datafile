@@ -233,4 +233,26 @@ public class FtpsClientTest {
         assertFalse(result.downloadSuccessful());
         verify(localFileMock, times(1)).delete();
     }
+
+    @Test
+    public void collectFileFailingFileRetrieve_shouldFail() throws Exception {
+        when(keyManagerUtilsMock.getClientKeyManager()).thenReturn(keyManagerMock);
+        when(fileResourceMock.getInputStream()).thenReturn(inputStreamMock);
+        when(keyStoreWrapperMock.getKeyStore()).thenReturn(keyStoreMock);
+        when(trustManagerFactoryMock.getTrustManagers()).thenReturn(new TrustManager[] {trustManagerMock});
+        when(ftpsClientMock.login(USERNAME, PASSWORD)).thenReturn(true);
+        when(ftpsClientMock.getReplyCode()).thenReturn(HttpStatus.OK.value());
+        File fileMock = mock(File.class);
+        when(localFileMock.getFile()).thenReturn(fileMock);
+        OutputStream osMock = mock(OutputStream.class);
+        when(outputStreamMock.getOutputStream(fileMock)).thenReturn(osMock);
+        when(ftpsClientMock.retrieveFile(REMOTE_FILE_PATH, osMock)).thenReturn(false);
+
+        ImmutableFileServerData fileServerData = ImmutableFileServerData.builder().serverAddress(XNF_ADDRESS)
+                .userId(USERNAME).password(PASSWORD).port(PORT).build();
+
+        FileCollectResult result = clientUnderTest.collectFile(fileServerData, REMOTE_FILE_PATH, LOCAL_FILE_PATH);
+
+        assertFalse(result.downloadSuccessful());
+    }
 }
