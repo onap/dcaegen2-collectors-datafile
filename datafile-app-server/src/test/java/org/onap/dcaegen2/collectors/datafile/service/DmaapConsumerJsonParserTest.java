@@ -45,7 +45,9 @@ class DmaapConsumerJsonParserTest {
     private static final String FILE_FORMAT_TYPE = "org.3GPP.32.435#measCollec";
     private static final String FILE_FORMAT_VERSION = "V10";
     private static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
+    private static final String INCORRECT_CHANGE_IDENTIFIER = "INCORRECT_PM_MEAS_FILES";
     private static final String CHANGE_TYPE = "FileReady";
+    private static final String INCORRECT_CHANGE_TYPE = "IncorrectFileReady";
     private static final String NOTIFICATION_FIELDS_VERSION = "1.0";
 
     @Test
@@ -73,7 +75,7 @@ class DmaapConsumerJsonParserTest {
     }
 
     @Test
-    void whenPassingCorrectJsonWihoutName_noFileData() {
+    void whenPassingCorrectJsonWithoutName_noFileData() {
         AdditionalField additionalField =
                 new JsonMessage.AdditionalFieldBuilder().location(LOCATION).compression(GZIP_COMPRESSION)
                         .fileFormatType(FILE_FORMAT_TYPE).fileFormatVersion(FILE_FORMAT_VERSION).build();
@@ -93,7 +95,7 @@ class DmaapConsumerJsonParserTest {
     }
 
     @Test
-    void whenPassingCorrectJsonWihoutLocation_noFileData() {
+    void whenPassingCorrectJsonWithoutLocation_noFileData() {
         AdditionalField additionalField =
                 new JsonMessage.AdditionalFieldBuilder().name(PM_FILE_NAME).compression(GZIP_COMPRESSION)
                         .fileFormatType(FILE_FORMAT_TYPE).fileFormatVersion(FILE_FORMAT_VERSION).build();
@@ -113,7 +115,7 @@ class DmaapConsumerJsonParserTest {
     }
 
     @Test
-    void whenPassingCorrectJsonWihoutCompression_noFileData() {
+    void whenPassingCorrectJsonWithoutCompression_noFileData() {
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder().name(PM_FILE_NAME).location(LOCATION)
                 .fileFormatType(FILE_FORMAT_TYPE).fileFormatVersion(FILE_FORMAT_VERSION).build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder().changeIdentifier(CHANGE_IDENTIFIER)
@@ -132,7 +134,7 @@ class DmaapConsumerJsonParserTest {
     }
 
     @Test
-    void whenPassingCorrectJsonWihoutFileFormatType_noFileData() {
+    void whenPassingCorrectJsonWithoutFileFormatType_noFileData() {
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder().name(PM_FILE_NAME).location(LOCATION)
                 .compression(GZIP_COMPRESSION).fileFormatVersion(FILE_FORMAT_VERSION).build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder().changeIdentifier(CHANGE_IDENTIFIER)
@@ -151,7 +153,7 @@ class DmaapConsumerJsonParserTest {
     }
 
     @Test
-    void whenPassingOneCorrectJsonWihoutFileFormatVersionAndOneCorrect_oneFileData() {
+    void whenPassingOneCorrectJsonWithoutFileFormatVersionAndOneCorrect_oneFileData() {
         AdditionalField additionalFaultyField = new JsonMessage.AdditionalFieldBuilder().name(PM_FILE_NAME)
                 .location(LOCATION).compression(GZIP_COMPRESSION).fileFormatType(FILE_FORMAT_TYPE).build();
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder().name(PM_FILE_NAME).location(LOCATION)
@@ -206,5 +208,43 @@ class DmaapConsumerJsonParserTest {
 
         StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(incorrectMessageString)))
                 .expectSubscription().expectError(DmaapNotFoundException.class).verify();
+    }
+
+    @Test
+    void whenPassingCorrectJsonWithIncorrectChangeType_validationThrowingAnException() {
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder().name(PM_FILE_NAME).location(LOCATION)
+                .compression(GZIP_COMPRESSION).fileFormatVersion(FILE_FORMAT_VERSION).build();
+        JsonMessage message = new JsonMessage.JsonMessageBuilder().changeIdentifier(CHANGE_IDENTIFIER)
+                .changeType(INCORRECT_CHANGE_TYPE).notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
+                .addAdditionalField(additionalField).build();
+
+        String messageString = message.toString();
+        String parsedString = message.getParsed();
+        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+                .getJsonObjectFromAnArray(jsonElement);
+
+        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
+                .expectNextCount(0).expectError(DmaapNotFoundException.class).verify();
+    }
+
+    @Test
+    void whenPassingCorrectJsonWithIncorrectChangeIdentifier_validationThrowingAnException() {
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder().name(PM_FILE_NAME).location(LOCATION)
+                .compression(GZIP_COMPRESSION).fileFormatVersion(FILE_FORMAT_VERSION).build();
+        JsonMessage message = new JsonMessage.JsonMessageBuilder().changeIdentifier(INCORRECT_CHANGE_IDENTIFIER)
+                .changeType(CHANGE_TYPE).notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
+                .addAdditionalField(additionalField).build();
+
+        String messageString = message.toString();
+        String parsedString = message.getParsed();
+        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+                .getJsonObjectFromAnArray(jsonElement);
+
+        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
+                .expectNextCount(0).expectError(DmaapNotFoundException.class).verify();
     }
 }
