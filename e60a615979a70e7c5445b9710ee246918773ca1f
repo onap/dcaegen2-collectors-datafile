@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_4d6375b1",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParser.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-10-30T12:58:16Z",
+      "side": 1,
+      "message": "Maybe all this error handling code can be moved to a separate method, called jsonErrorHandling or something?",
+      "revId": "e60a615979a70e7c5445b9710ee246918773ca1f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_ed5909ff",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParser.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-10-30T12:58:16Z",
+      "side": 1,
+      "message": "Declare constant, called FILE_READY_CHANGE_TYPE.",
+      "revId": "e60a615979a70e7c5445b9710ee246918773ca1f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_ad73017f",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParser.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-10-30T12:58:16Z",
+      "side": 1,
+      "message": "Declare constant, called PM_MEAS_FILE_CHANGE_IDENTIFIER.",
+      "revId": "e60a615979a70e7c5445b9710ee246918773ca1f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
