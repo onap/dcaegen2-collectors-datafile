@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_ed9a6962",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-10-30T13:31:18Z",
+      "side": 1,
+      "message": "It would be less code if a message variable was declared here, and then in the if statements, it gets the correct message. Then the creation of the exception can be done with the correct message when returning at the end of the function.",
+      "revId": "656c6897d042c0a85793086dbf3baefba6ad8ead",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
