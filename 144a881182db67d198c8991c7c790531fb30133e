@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_95754434",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/ErrorDataTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2018-11-01T13:08:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_f5e37003",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 13
+      },
+      "revId": "144a881182db67d198c8991c7c790531fb30133e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_95f0e4ca",
         "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/ErrorDataTest.java",
         "patchSetId": 3
@@ -59,6 +83,30 @@
       "writtenOn": "2018-11-01T12:51:42Z",
       "side": 1,
       "message": "Although its not required it\u0027s better for readability to put private before this.",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 7
+      },
+      "revId": "144a881182db67d198c8991c7c790531fb30133e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_f578502d",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/ErrorDataTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2018-11-01T13:08:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_95f0e4ca",
       "range": {
         "startLine": 32,
         "startChar": 4,
@@ -94,6 +142,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_d57bcc27",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/ErrorDataTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2018-11-01T13:08:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_b5ede8f1",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 36,
+        "endChar": 16
+      },
+      "revId": "144a881182db67d198c8991c7c790531fb30133e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_15b4f4f0",
         "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/ErrorDataTest.java",
         "patchSetId": 3
@@ -105,6 +177,30 @@
       "writtenOn": "2018-11-01T12:51:42Z",
       "side": 1,
       "message": "Don\u0027t call this method toString() because toString() methods are supposed to print the class. I would just call it getMessagesAsString() or something like that.",
+      "range": {
+        "startLine": 47,
+        "startChar": 18,
+        "endLine": 47,
+        "endChar": 26
+      },
+      "revId": "144a881182db67d198c8991c7c790531fb30133e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_3587b811",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/ErrorDataTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2018-11-01T13:08:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_15b4f4f0",
       "range": {
         "startLine": 47,
         "startChar": 18,
