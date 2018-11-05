@@ -56,14 +56,28 @@ public class JsonMessage {
             }
             additionalFieldsString.append("]");
         }
-
-        return "{" + "\"event\":{" + "\"commonEventHeader\":{" + "\"domain\":\"notification\","
-                + "\"eventId\":\"<<SerialNumber>>-reg\"," + "\"eventName\":\"EriNoti_RnNode_FileReady\","
-                + "\"eventType\":\"fileReady\"," + "\"internalHeaderFields\":{},"
-                + "\"lastEpochMicrosec\":1519837825682," + "\"nfNamingCode\":\"5GRAN\"," + "\"nfcNamingCode\":\"5DU\","
-                + "\"priority\":\"Normal\"," + "\"reportingEntityName\":\"5GRAN_DU\"," + "\"sequence\":0,"
-                + "\"sourceId\":\"<<SerialNumber>>\"," + "\"sourceName\":\"5GRAN_DU\","
-                + "\"startEpochMicrosec\":\"1519837825682\"," + "\"version\":3" + "}," + "\"notificationFields\":{"
+        // @formatter:off
+        return "{" + "\"event\":{"
+                + "\"commonEventHeader\":{"
+                + "\"domain\":\"notification\","
+                + "\"eventId\":\"<<SerialNumber>>-reg\","
+                + "\"eventName\":\"Noti_NrRadio-Ericsson_FileReady\","
+                + "\"eventType\":\"fileReady\","
+                + "\"internalHeaderFields\":{},"
+                + "\"lastEpochMicrosec\":1519837825682,"
+                + "\"nfNamingCode\":\"5GRAN\","
+                + "\"nfcNamingCode\":\"5DU\","
+                + "\"priority\":\"Normal\","
+                + "\"reportingEntityName\":\"5GRAN_DU\","
+                + "\"sequence\":0,"
+                + "\"sourceId\":\"<<SerialNumber>>\","
+                + "\"sourceName\":\"5GRAN_DU\","
+                + "\"timeZoneOffset\":\"UTC+05:00\","
+                + "\"startEpochMicrosec\":\"1519837825682\","
+                + "\"version\":3"
+                + "},"
+                + "\"notificationFields\":{"
+        // @formatter:on
                 + getAsStringIfParameterIsSet("changeIdentifier", changeIdentifier,
                         changeType != null || notificationFieldsVersion != null || arrayOfAdditionalFields.size() > 0)
                 + getAsStringIfParameterIsSet("changeType", changeType,
@@ -89,8 +103,7 @@ public class JsonMessage {
 
         @Override
         public String toString() {
-            return "{" + getAsStringIfParameterIsSet("name", name, true)
-                    + "\"hashMap\":{"
+            return "{" + getAsStringIfParameterIsSet("name", name, true) + "\"hashMap\":{"
                     + getAsStringIfParameterIsSet("location", location,
                             compression != null || fileFormatType != null || fileFormatVersion != null)
                     + getAsStringIfParameterIsSet("compression", compression,
@@ -198,16 +211,29 @@ public class JsonMessage {
      * @param args Not used
      */
     public static void main(String[] args) {
-        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder().name("A20161224.1030-1045.bin.gz")
-                .location("ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz").compression("gzip")
-                .fileFormatType("org.3GPP.32.435#measCollec").fileFormatVersion("V10").build();
-        AdditionalField secondAdditionalField =
-                new JsonMessage.AdditionalFieldBuilder().name("A20161224.1030-1045.bin.gz")
-                        .location("sftp://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz").compression("gzip")
-                        .fileFormatType("org.3GPP.32.435#measCollec").fileFormatVersion("V10").build();
-        JsonMessage message = new JsonMessage.JsonMessageBuilder().changeIdentifier("PM_MEAS_FILES")
-                .changeType("FileReady").notificationFieldsVersion("2.0").addAdditionalField(additionalField)
-                .addAdditionalField(secondAdditionalField).build();
+        // @formatter:off
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
+                .name("A20161224.1030-1045.bin.gz")
+                .location("ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz")
+                .compression("gzip")
+                .fileFormatType("org.3GPP.32.435#measCollec")
+                .fileFormatVersion("V10")
+                .build();
+        AdditionalField secondAdditionalField = new JsonMessage.AdditionalFieldBuilder()
+                .name("A20161224.1030-1045.bin.gz")
+                .location("sftp://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz")
+                .compression("gzip")
+                .fileFormatType("org.3GPP.32.435#measCollec")
+                .fileFormatVersion("V10")
+                .build();
+        JsonMessage message = new JsonMessage.JsonMessageBuilder()
+                .changeIdentifier("PM_MEAS_FILES")
+                .changeType("FileReady")
+                .notificationFieldsVersion("2.0")
+                .addAdditionalField(additionalField)
+                .addAdditionalField(secondAdditionalField)
+                .build();
+        // @formatter:on
         System.out.println(message.toString());
     }
 }

@@ -55,7 +55,7 @@ public class DmaapProducerReactiveHttpClient {
 
     private static final String X_ATT_DR_META = "X-ATT-DR-META";
     private static final String NAME_JSON_TAG = "name";
-    private static final String LOCATION_JSON_TAG = "location";
+    private static final String INTERNAL_LOCATION_JSON_TAG = "internalLocation";
     private static final String URI_SEPARATOR = "/";
     private static final String DEFAULT_FEED_ID = "1";
 
@@ -104,7 +104,7 @@ public class DmaapProducerReactiveHttpClient {
             addUserCredentialsToHead(headers);
 
             IFileSystemResource fileSystemResource = getFileSystemResource();
-            fileSystemResource.setPath(consumerDmaapModel.getLocation());
+            fileSystemResource.setPath(consumerDmaapModel.getInternalLocation());
             InputStream fileInputStream = fileSystemResource.getInputStream();
             HttpEntity<byte[]> request = addFileToRequest(fileInputStream, headers);
 
@@ -132,7 +132,7 @@ public class DmaapProducerReactiveHttpClient {
     private void addMetaDataToHead(ConsumerDmaapModel consumerDmaapModel, HttpHeaders headers) {
         JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(consumerDmaapModel));
         metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
-        metaData.getAsJsonObject().remove(LOCATION_JSON_TAG);
+        metaData.getAsJsonObject().remove(INTERNAL_LOCATION_JSON_TAG);
         headers.set(X_ATT_DR_META, metaData.toString());
     }
     private HttpEntity<byte[]> addFileToRequest(InputStream inputStream, HttpHeaders headers)

@@ -58,7 +58,7 @@ import reactor.test.StepVerifier;
 class DmaapProducerReactiveHttpClientTest {
 
     private static final String FILE_NAME = "A20161224.1030-1045.bin.gz";
-    private static final String LOCATION_JSON_TAG = "location";
+    private static final String INTERNAL_LOCATION_JSON_TAG = "internalLocation";
     private static final String NAME_JSON_TAG = "name";
     private static final String X_ATT_DR_META = "X-ATT-DR-META";
 
@@ -92,9 +92,22 @@ class DmaapProducerReactiveHttpClientTest {
         when(dmaapPublisherConfigurationMock.dmaapContentType()).thenReturn(APPLICATION_OCTET_STREAM_CONTENT_TYPE);
         when(dmaapPublisherConfigurationMock.dmaapTopicName()).thenReturn(PUBLISH_TOPIC);
 
-        consumerDmaapModel = ImmutableConsumerDmaapModel.builder().name(FILE_NAME)
-                .location("target/A20161224.1030-1045.bin.gz").compression("gzip")
-                .fileFormatType("org.3GPP.32.435#measCollec").fileFormatVersion("V10").build();
+        // @formatter:off
+        consumerDmaapModel = ImmutableConsumerDmaapModel.builder()
+                .productName("NrRadio")
+                .vendorName("Ericsson")
+                .lastEpochMicrosec("8745745764578")
+                .sourceName("oteNB5309")
+                .startEpochMicrosec("8745745764578")
+                .timeZoneOffset("UTC+05:00")
+                .name("A20161224.1030-1045.bin.gz")
+                .location("ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1145.bin.gz")
+                .internalLocation("target/A20161224.1030-1045.bin.gz")
+                .compression("gzip")
+                .fileFormatType("org.3GPP.32.435#measCollec")
+                .fileFormatVersion("V10")
+                .build();
+        //formatter:on
 
         dmaapProducerReactiveHttpClient = new DmaapProducerReactiveHttpClient(dmaapPublisherConfigurationMock);
         dmaapProducerReactiveHttpClient.setFileSystemResource(fileSystemResourceMock);
@@ -117,7 +130,7 @@ class DmaapProducerReactiveHttpClientTest {
 
         JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(consumerDmaapModel));
         metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
-        metaData.getAsJsonObject().remove(LOCATION_JSON_TAG);
+        metaData.getAsJsonObject().remove(INTERNAL_LOCATION_JSON_TAG);
         headers.set(X_ATT_DR_META, metaData.toString());
 
         String plainCreds = "dradmin" + ":" + "dradmin";

@@ -43,6 +43,12 @@ import reactor.test.StepVerifier;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 class DmaapPublisherTaskImplTest {
+    private static final String PRODUCT_NAME = "NrRadio";
+    private static final String VENDOR_NAME = "Ericsson";
+    private static final String LAST_EPOCH_MICROSEC = "8745745764578";
+    private static final String SOURCE_NAME = "oteNB5309";
+    private static final String START_EPOCH_MICROSEC = "8745745764578";
+    private static final String TIME_ZONE_OFFSET = "UTC+05:00";
     private static final String PM_FILE_NAME = "A20161224.1030-1045.bin.gz";
 
     private static ConsumerDmaapModel consumerDmaapModel;
@@ -53,13 +59,32 @@ class DmaapPublisherTaskImplTest {
 
     @BeforeAll
     public static void setUp() {
-        dmaapPublisherConfiguration =
-                new ImmutableDmaapPublisherConfiguration.Builder().dmaapContentType("application/json")
-                        .dmaapHostName("54.45.33.2").dmaapPortNumber(1234).dmaapProtocol("https").dmaapUserName("DFC")
-                        .dmaapUserPassword("DFC").dmaapTopicName("unauthenticated.VES_NOTIFICATION_OUTPUT").build();
-        consumerDmaapModel = ImmutableConsumerDmaapModel.builder().name(PM_FILE_NAME).location("target/" + PM_FILE_NAME)
-                .compression("gzip").fileFormatType("org.3GPP.32.435#measCollec").fileFormatVersion("V10").build();
+        //@formatter:off
+        dmaapPublisherConfiguration = new ImmutableDmaapPublisherConfiguration.Builder()
+                .dmaapContentType("application/json")
+                .dmaapHostName("54.45.33.2")
+                .dmaapPortNumber(1234)
+                .dmaapProtocol("https")
+                .dmaapUserName("DFC")
+                .dmaapUserPassword("DFC")
+                .dmaapTopicName("unauthenticated.VES_NOTIFICATION_OUTPUT")
+                .build();
+        consumerDmaapModel = ImmutableConsumerDmaapModel.builder()
+                .productName(PRODUCT_NAME)
+                .vendorName(VENDOR_NAME)
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
+                .sourceName(SOURCE_NAME)
+                .startEpochMicrosec(START_EPOCH_MICROSEC)
+                .timeZoneOffset(TIME_ZONE_OFFSET)
+                .name(PM_FILE_NAME)
+                .location("ftpes://192.168.0.101:22/ftp/rop/" + PM_FILE_NAME)
+                .internalLocation("target/" + PM_FILE_NAME)
+                .compression("gzip")
+                .fileFormatType("org.3GPP.32.435#measCollec")
+                .fileFormatVersion("V10")
+                .build();
         appConfig = mock(AppConfig.class);
+        //@formatter:on
     }
 
     @Test
