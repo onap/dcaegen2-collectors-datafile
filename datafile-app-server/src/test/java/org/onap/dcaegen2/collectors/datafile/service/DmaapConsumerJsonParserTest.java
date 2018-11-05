@@ -39,6 +39,12 @@ import reactor.test.StepVerifier;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 class DmaapConsumerJsonParserTest {
+    private static final String PRODUCT_NAME = "NrRadio";
+    private static final String VENDOR_NAME = "Ericsson";
+    private static final String LAST_EPOCH_MICROSEC = "1519837825682";
+    private static final String SOURCE_NAME = "5GRAN_DU";
+    private static final String START_EPOCH_MICROSEC = "1519837825682";
+    private static final String TIME_ZONE_OFFSET = "UTC+05:00";
     private static final String PM_FILE_NAME = "A20161224.1030-1045.bin.gz";
     private static final String LOCATION = "ftpes://192.168.0.101:22/ftp/rop/" + PM_FILE_NAME;
     private static final String GZIP_COMPRESSION = "gzip";
@@ -59,9 +65,11 @@ class DmaapConsumerJsonParserTest {
                 .changeType(CHANGE_TYPE).notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
                 .addAdditionalField(additionalField).build();
 
-        FileData expectedFileData = ImmutableFileData.builder().changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE).name(PM_FILE_NAME).location(LOCATION).compression(GZIP_COMPRESSION)
-                .fileFormatType(FILE_FORMAT_TYPE).fileFormatVersion(FILE_FORMAT_VERSION).build();
+        FileData expectedFileData = ImmutableFileData.builder().productName(PRODUCT_NAME).vendorName(VENDOR_NAME)
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC).sourceName(SOURCE_NAME).startEpochMicrosec(START_EPOCH_MICROSEC)
+                .timeZoneOffset(TIME_ZONE_OFFSET).changeIdentifier(CHANGE_IDENTIFIER).changeType(CHANGE_TYPE)
+                .name(PM_FILE_NAME).location(LOCATION).compression(GZIP_COMPRESSION).fileFormatType(FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION).build();
 
         String messageString = message.toString();
         String parsedString = message.getParsed();
@@ -163,9 +171,11 @@ class DmaapConsumerJsonParserTest {
                 .changeType(CHANGE_TYPE).notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
                 .addAdditionalField(additionalFaultyField).addAdditionalField(additionalField).build();
 
-        FileData expectedFileData = ImmutableFileData.builder().changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE).name(PM_FILE_NAME).location(LOCATION).compression(GZIP_COMPRESSION)
-                .fileFormatType(FILE_FORMAT_TYPE).fileFormatVersion(FILE_FORMAT_VERSION).build();
+        FileData expectedFileData = ImmutableFileData.builder().productName(PRODUCT_NAME).vendorName(VENDOR_NAME)
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC).sourceName(SOURCE_NAME).startEpochMicrosec(START_EPOCH_MICROSEC)
+                .timeZoneOffset(TIME_ZONE_OFFSET).changeIdentifier(CHANGE_IDENTIFIER).changeType(CHANGE_TYPE)
+                .name(PM_FILE_NAME).location(LOCATION).compression(GZIP_COMPRESSION).fileFormatType(FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION).build();
 
         String messageString = message.toString();
         String parsedString = message.getParsed();
