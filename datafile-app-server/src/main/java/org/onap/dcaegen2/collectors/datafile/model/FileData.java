@@ -29,6 +29,18 @@ import org.immutables.value.Value;
 @Value.Immutable
 @Gson.TypeAdapters
 public interface FileData {
+    String productName();
+
+    String vendorName();
+
+    String lastEpochMicrosec();
+
+    String sourceName();
+
+    String startEpochMicrosec();
+
+    String timeZoneOffset();
+
     String changeIdentifier();
 
     String changeType();
