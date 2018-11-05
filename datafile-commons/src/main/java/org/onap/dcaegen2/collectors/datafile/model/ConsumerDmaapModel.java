@@ -30,11 +30,32 @@ import org.immutables.value.Value;
 @Gson.TypeAdapters
 public interface ConsumerDmaapModel {
 
+    @SerializedName("productName")
+    String getProductName();
+
+    @SerializedName("vendorName")
+    String getVendorName();
+
+    @SerializedName("lastEpochMicrosec")
+    String getLastEpochMicrosec();
+
+    @SerializedName("sourceName")
+    String getSourceName();
+
+    @SerializedName("startEpochMicrosec")
+    String getStartEpochMicrosec();
+
+    @SerializedName("timeZoneOffset")
+    String getTimeZoneOffset();
+
     @SerializedName("name")
     String getName();
 
     @SerializedName("location")
     String getLocation();
+
+    @SerializedName("internalLocation")
+    String getInternalLocation();
 
     @SerializedName("compression")
     String getCompression();

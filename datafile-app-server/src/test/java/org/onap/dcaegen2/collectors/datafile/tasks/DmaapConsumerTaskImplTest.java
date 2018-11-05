@@ -52,6 +52,12 @@ import reactor.test.StepVerifier;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 class DmaapConsumerTaskImplTest {
+    private static final String PRODUCT_NAME = "NrRadio";
+    private static final String VENDOR_NAME = "Ericsson";
+    private static final String LAST_EPOCH_MICROSEC = "8745745764578";
+    private static final String SOURCE_NAME = "oteNB5309";
+    private static final String START_EPOCH_MICROSEC = "8745745764578";
+    private static final String TIME_ZONE_OFFSET = "UTC+05:00";
     private static final String PM_MEAS_CHANGE_IDENTIFIER = "PM_MEAS_FILES";
     private static final String FILE_READY_CHANGE_TYPE = "FileReady";
     private static final String FTPES_SCHEME = "ftpes://";
@@ -82,42 +88,99 @@ class DmaapConsumerTaskImplTest {
 
     @BeforeAll
     public static void setUp() {
-        dmaapConsumerConfiguration = new ImmutableDmaapConsumerConfiguration.Builder().consumerGroup("OpenDCAE-c12")
-                .consumerId("c12").dmaapContentType("application/json").dmaapHostName("54.45.33.2")
-                .dmaapPortNumber(1234).dmaapProtocol("https").dmaapUserName("Datafile").dmaapUserPassword("Datafile")
-                .dmaapTopicName("unauthenticated.NOTIFICATION").timeoutMS(-1).messageLimit(-1).build();
+        //@formatter:off
+        dmaapConsumerConfiguration = new ImmutableDmaapConsumerConfiguration.Builder()
+                .consumerGroup("OpenDCAE-c12")
+                .consumerId("c12")
+                .dmaapContentType("application/json")
+                .dmaapHostName("54.45.33.2")
+                .dmaapPortNumber(1234).dmaapProtocol("https")
+                .dmaapUserName("Datafile")
+                .dmaapUserPassword("Datafile")
+                .dmaapTopicName("unauthenticated.NOTIFICATION")
+                .timeoutMS(-1)
+                .messageLimit(-1)
+                .build();
 
         appConfig = mock(AppConfig.class);
 
-        AdditionalField ftpesAdditionalField =
-                new JsonMessage.AdditionalFieldBuilder().location(FTPES_LOCATION).compression(GZIP_COMPRESSION)
-                        .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE).fileFormatVersion(FILE_FORMAT_VERSION).build();
-        JsonMessage ftpesJsonMessage = new JsonMessage.JsonMessageBuilder().changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
-                .changeType(FILE_READY_CHANGE_TYPE).notificationFieldsVersion("1.0")
-                .addAdditionalField(ftpesAdditionalField).build();
+        AdditionalField ftpesAdditionalField = new JsonMessage.AdditionalFieldBuilder()
+                .location(FTPES_LOCATION)
+                .compression(GZIP_COMPRESSION)
+                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION)
+                .build();
+
+        JsonMessage ftpesJsonMessage = new JsonMessage.JsonMessageBuilder()
+                .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
+                .changeType(FILE_READY_CHANGE_TYPE)
+                .notificationFieldsVersion("1.0")
+                .addAdditionalField(ftpesAdditionalField)
+                .build();
+
         ftpesMessage = ftpesJsonMessage.toString();
-        ftpesFileData = ImmutableFileData.builder().changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
-                .changeType(FILE_READY_CHANGE_TYPE).name(PM_FILE_NAME).location(FTPES_LOCATION)
-                .compression(GZIP_COMPRESSION).fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION).build();
+        ftpesFileData = ImmutableFileData.builder()
+                .productName(PRODUCT_NAME)
+                .vendorName(VENDOR_NAME)
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
+                .sourceName(SOURCE_NAME)
+                .startEpochMicrosec(START_EPOCH_MICROSEC)
+                .timeZoneOffset(TIME_ZONE_OFFSET)
+                .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
+                .changeType(FILE_READY_CHANGE_TYPE)
+                .name(PM_FILE_NAME)
+                .location(FTPES_LOCATION)
+                .compression(GZIP_COMPRESSION)
+                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION)
+                .build();
 
-        AdditionalField sftpAdditionalField =
-                new JsonMessage.AdditionalFieldBuilder().location(SFTP_LOCATION).compression(GZIP_COMPRESSION)
-                        .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE).fileFormatVersion(FILE_FORMAT_VERSION).build();
-        JsonMessage sftpJsonMessage = new JsonMessage.JsonMessageBuilder().changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
-                .changeType(FILE_READY_CHANGE_TYPE).notificationFieldsVersion("1.0")
-                .addAdditionalField(sftpAdditionalField).build();
+        AdditionalField sftpAdditionalField = new JsonMessage.AdditionalFieldBuilder()
+                .location(SFTP_LOCATION)
+                .compression(GZIP_COMPRESSION)
+                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION)
+                .build();
+        JsonMessage sftpJsonMessage = new JsonMessage.JsonMessageBuilder()
+                .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
+                .changeType(FILE_READY_CHANGE_TYPE)
+                .notificationFieldsVersion("1.0")
+                .addAdditionalField(sftpAdditionalField)
+                .build();
         sftpMessage = sftpJsonMessage.toString();
-        sftpFileData = ImmutableFileData.builder().changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
-                .changeType(FILE_READY_CHANGE_TYPE).name(PM_FILE_NAME).location(SFTP_LOCATION)
-                .compression(GZIP_COMPRESSION).fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION).build();
+        sftpFileData = ImmutableFileData.builder()
+                .productName(PRODUCT_NAME)
+                .vendorName(VENDOR_NAME)
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
+                .sourceName(SOURCE_NAME)
+                .startEpochMicrosec(START_EPOCH_MICROSEC)
+                .timeZoneOffset(TIME_ZONE_OFFSET)
+                .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
+                .changeType(FILE_READY_CHANGE_TYPE)
+                .name(PM_FILE_NAME)
+                .location(SFTP_LOCATION)
+                .compression(GZIP_COMPRESSION)
+                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION)
+                .build();
 
 
-        ImmutableConsumerDmaapModel consumerDmaapModel = ImmutableConsumerDmaapModel.builder().name(PM_FILE_NAME)
-                .location(LOCAL_FILE_LOCATION).compression(GZIP_COMPRESSION)
-                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE).fileFormatVersion(FILE_FORMAT_VERSION).build();
+        ImmutableConsumerDmaapModel consumerDmaapModel = ImmutableConsumerDmaapModel.builder()
+                .productName(PRODUCT_NAME)
+                .vendorName(VENDOR_NAME)
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
+                .sourceName(SOURCE_NAME)
+                .startEpochMicrosec(START_EPOCH_MICROSEC)
+                .timeZoneOffset(TIME_ZONE_OFFSET)
+                .name(PM_FILE_NAME)
+                .location(FTPES_LOCATION)
+                .internalLocation(LOCAL_FILE_LOCATION)
+                .compression(GZIP_COMPRESSION)
+                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION)
+                .build();
         listOfConsumerDmaapModel.add(consumerDmaapModel);
+        //@formatter:on
     }
 
     @Test
