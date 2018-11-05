@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_c7fb1946",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2018-11-05T20:36:31Z",
+      "side": 1,
+      "message": "should be vendorName",
+      "revId": "5522d95b0f27e9e0afa3ebf045b7c96706da1141",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
