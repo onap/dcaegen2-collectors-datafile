@@ -157,12 +157,20 @@ public class XnfCollectorTaskImpl implements XnfCollectorTask {
     }
 
     private ConsumerDmaapModel getConsumerDmaapModel(FileData fileData, String localFile) {
+        String productName = fileData.productName();
+        String vendorName = fileData.vendorName();
+        String lastEpochMicrosec = fileData.lastEpochMicrosec();
+        String sourceName = fileData.sourceName();
+        String startEpochMicrosec = fileData.startEpochMicrosec();
+        String timeZoneOffset = fileData.timeZoneOffset();
         String name = fileData.name();
         String compression = fileData.compression();
         String fileFormatType = fileData.fileFormatType();
         String fileFormatVersion = fileData.fileFormatVersion();
 
-        return ImmutableConsumerDmaapModel.builder().name(name).location(localFile).compression(compression)
+        return ImmutableConsumerDmaapModel.builder().productName(productName).vendorName(vendorName)
+                .lastEpochMicrosec(lastEpochMicrosec).sourceName(sourceName).startEpochMicrosec(startEpochMicrosec)
+                .timeZoneOffset(timeZoneOffset).name(name).location(localFile).compression(compression)
                 .fileFormatType(fileFormatType).fileFormatVersion(fileFormatVersion).build();
     }
 

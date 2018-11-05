@@ -23,9 +23,11 @@ import org.junit.jupiter.api.Test;
 class CommonFunctionsTest {
     private ConsumerDmaapModel model = new ConsumerDmaapModelForUnitTest();
     private static final String EXPECTED_RESULT =
-            "{\"name\":\"A20161224.1030-1045.bin.gz\",\"location\":\"target/A20161224.1030-1045.bin.gz\","
-            + "\"compression\":\"gzip\",\"fileFormatType\":\"org.3GPP.32.435#measCollec\","
-            + "\"fileFormatVersion\":\"V10\"}";
+            "{\"productName\":\"NrRadio\",\"vendorName\":\"Ericsson\",\"lastEpochMicrosec\":\"8745745764578\","
+                    + "\"sourceName\":\"oteNB5309\",\"startEpochMicrosec\":\"8745745764578\",\"timeZoneOffset\":\"UTC+05:00\","
+                    + "\"name\":\"A20161224.1030-1045.bin.gz\",\"location\":\"target/A20161224.1030-1045.bin.gz\","
+                    + "\"compression\":\"gzip\",\"fileFormatType\":\"org.3GPP.32.435#measCollec\","
+                    + "\"fileFormatVersion\":\"V10\"}";
 
     @Test
     void createJsonBody_shouldReturnJsonInString() {

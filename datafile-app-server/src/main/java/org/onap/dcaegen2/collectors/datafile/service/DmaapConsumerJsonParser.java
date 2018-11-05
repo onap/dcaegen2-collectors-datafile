@@ -46,6 +46,13 @@ import reactor.core.publisher.Mono;
 public class DmaapConsumerJsonParser {
     private static final Logger logger = LoggerFactory.getLogger(DmaapConsumerJsonParser.class);
 
+    private static final String COMMON_EVENT_HEADER = "commonEventHeader";
+    private static final String EVENT_NAME = "eventName";
+    private static final String LAST_EPOCH_MICROSEC = "lastEpochMicrosec";
+    private static final String SOURCE_NAME = "sourceName";
+    private static final String START_EPOCH_MICROSEC = "startEpochMicrosec";
+    private static final String TIME_ZONE_OFFSET = "timeZoneOffset";
+
     private static final String EVENT = "event";
     private static final String NOTIFICATION_FIELDS = "notificationFields";
     private static final String CHANGE_IDENTIFIER = "changeIdentifier";
@@ -103,6 +110,15 @@ public class DmaapConsumerJsonParser {
 
     private Flux<FileData> transform(JsonObject jsonObject) {
         if (containsHeader(jsonObject, EVENT, NOTIFICATION_FIELDS)) {
+            JsonObject commonEventHeader = jsonObject.getAsJsonObject(EVENT).getAsJsonObject(COMMON_EVENT_HEADER);
+            String eventName = getValueFromJson(commonEventHeader, EVENT_NAME);
+            String productName = getProductNameFromEventName(eventName);
+            String vendorName = getVendorNameFromEventName(eventName);
+            String lastEpochMicrosec = getValueFromJson(commonEventHeader, LAST_EPOCH_MICROSEC);
+            String sourceName = getValueFromJson(commonEventHeader, SOURCE_NAME);
+            String startEpochMicrosec = getValueFromJson(commonEventHeader, START_EPOCH_MICROSEC);
+            String timeZoneOffset = getValueFromJson(commonEventHeader, TIME_ZONE_OFFSET);
+
             JsonObject notificationFields = jsonObject.getAsJsonObject(EVENT).getAsJsonObject(NOTIFICATION_FIELDS);
             String changeIdentifier = getValueFromJson(notificationFields, CHANGE_IDENTIFIER);
             String changeType = getValueFromJson(notificationFields, CHANGE_TYPE);
@@ -111,7 +127,8 @@ public class DmaapConsumerJsonParser {
             if (isNotificationFieldsHeaderNotEmpty(changeIdentifier, changeType, notificationFieldsVersion)
                     && arrayOfNamedHashMap != null && isChangeIdentifierCorrect(changeIdentifier)
                     && isChangeTypeCorrect(changeType)) {
-                return getAllFileDataFromJson(changeIdentifier, changeType, arrayOfNamedHashMap);
+                return getAllFileDataFromJson(productName, vendorName, lastEpochMicrosec, sourceName,
+                        startEpochMicrosec, timeZoneOffset, changeIdentifier, changeType, arrayOfNamedHashMap);
             }
 
             return handleJsonError(changeIdentifier, changeType, notificationFieldsVersion, arrayOfNamedHashMap,
@@ -129,13 +146,15 @@ public class DmaapConsumerJsonParser {
         return FILE_READY_CHANGE_IDENTIFIER.equals(changeIdentifier);
     }
 
-    private Flux<FileData> getAllFileDataFromJson(String changeIdentifier, String changeType,
-            JsonArray arrayOfAdditionalFields) {
+    private Flux<FileData> getAllFileDataFromJson(String productName, String vendorName, String lastEpochMicrosec,
+            String sourceName, String startEpochMicrosec, String timeZoneOffset, String changeIdentifier,
+            String changeType, JsonArray arrayOfAdditionalFields) {
         List<FileData> res = new ArrayList<>();
         for (int i = 0; i < arrayOfAdditionalFields.size(); i++) {
             if (arrayOfAdditionalFields.get(i) != null) {
                 JsonObject fileInfo = (JsonObject) arrayOfAdditionalFields.get(i);
-                FileData fileData = getFileDataFromJson(fileInfo, changeIdentifier, changeType);
+                FileData fileData = getFileDataFromJson(productName, vendorName, lastEpochMicrosec, sourceName,
+                        startEpochMicrosec, timeZoneOffset, fileInfo, changeIdentifier, changeType);
 
                 if (fileData != null) {
                     res.add(fileData);
@@ -147,7 +166,9 @@ public class DmaapConsumerJsonParser {
         return Flux.fromIterable(res);
     }
 
-    private FileData getFileDataFromJson(JsonObject fileInfo, String changeIdentifier, String changeType) {
+    private FileData getFileDataFromJson(String productName, String vendorName, String lastEpochMicrosec,
+            String sourceName, String startEpochMicrosec, String timeZoneOffset, JsonObject fileInfo,
+            String changeIdentifier, String changeType) {
         logger.trace("starting to getFileDataFromJson!");
 
         FileData fileData = null;
@@ -161,11 +182,43 @@ public class DmaapConsumerJsonParser {
 
         if (isFileFormatFieldsNotEmpty(fileFormatVersion, fileFormatType)
                 && isNameAndLocationAndCompressionNotEmpty(name, location, compression)) {
-            fileData = ImmutableFileData.builder().name(name).changeIdentifier(changeIdentifier).changeType(changeType)
+            fileData = ImmutableFileData.builder().productName(productName).vendorName(vendorName)
+                    .lastEpochMicrosec(lastEpochMicrosec).sourceName(sourceName).startEpochMicrosec(startEpochMicrosec)
+                    .timeZoneOffset(timeZoneOffset).name(name).changeIdentifier(changeIdentifier).changeType(changeType)
                     .location(location).compression(compression).fileFormatType(fileFormatType)
                     .fileFormatVersion(fileFormatVersion).build();
         }
         return fileData;
+    }
+
+    /**
+     * @param eventName
+     * @return String of vendorName eventName is defined as:
+     *         {DomainAbbreviation}_{productName}-{vendorName}_{Description}, example:
+     *         Noti_RnNode-Ericsson_FileReady
+     */
+    private String getVendorNameFromEventName(String eventName) {
+        String[] eventArray = eventName.split("_|-");
+        if (eventArray.length >= 4) {
+            return eventArray[2];
+        } else {
+            logger.trace("Can not get vendorName from eventName, eventName is not in correct format: " + eventName);
+        }
+        return "";
+    }
+
+    /**
+     * @param eventName
+     * @return String of productName
+     */
+    private String getProductNameFromEventName(String eventName) {
+        String[] eventArray = eventName.split("_|-");
+        if (eventArray.length >= 4) {
+            return eventArray[1];
+        } else {
+            logger.trace("Can not get productName from eventName, eventName is not in correct format: " + eventName);
+        }
+        return "";
     }
 
     private String getValueFromJson(JsonObject jsonObject, String jsonKey) {

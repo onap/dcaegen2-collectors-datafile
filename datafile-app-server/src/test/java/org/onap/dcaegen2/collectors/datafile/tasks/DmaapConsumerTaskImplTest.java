@@ -52,6 +52,12 @@ import reactor.test.StepVerifier;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 class DmaapConsumerTaskImplTest {
+    private static final String PRODUCT_NAME = "NrRadio";
+    private static final String VENDOR_NAME = "Ericsson";
+    private static final String LAST_EPOCH_MICROSEC = "8745745764578";
+    private static final String SOURCE_NAME = "oteNB5309";
+    private static final String START_EPOCH_MICROSEC = "8745745764578";
+    private static final String TIME_ZONE_OFFSET = "UTC+05:00";
     private static final String PM_MEAS_CHANGE_IDENTIFIER = "PM_MEAS_FILES";
     private static final String FILE_READY_CHANGE_TYPE = "FileReady";
     private static final String FTPES_SCHEME = "ftpes://";
@@ -96,7 +102,9 @@ class DmaapConsumerTaskImplTest {
                 .changeType(FILE_READY_CHANGE_TYPE).notificationFieldsVersion("1.0")
                 .addAdditionalField(ftpesAdditionalField).build();
         ftpesMessage = ftpesJsonMessage.toString();
-        ftpesFileData = ImmutableFileData.builder().changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
+        ftpesFileData = ImmutableFileData.builder().productName(PRODUCT_NAME).vendorName(VENDOR_NAME)
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC).sourceName(SOURCE_NAME).startEpochMicrosec(START_EPOCH_MICROSEC)
+                .timeZoneOffset(TIME_ZONE_OFFSET).changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
                 .changeType(FILE_READY_CHANGE_TYPE).name(PM_FILE_NAME).location(FTPES_LOCATION)
                 .compression(GZIP_COMPRESSION).fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
                 .fileFormatVersion(FILE_FORMAT_VERSION).build();
@@ -108,13 +116,17 @@ class DmaapConsumerTaskImplTest {
                 .changeType(FILE_READY_CHANGE_TYPE).notificationFieldsVersion("1.0")
                 .addAdditionalField(sftpAdditionalField).build();
         sftpMessage = sftpJsonMessage.toString();
-        sftpFileData = ImmutableFileData.builder().changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
+        sftpFileData = ImmutableFileData.builder().productName(PRODUCT_NAME).vendorName(VENDOR_NAME)
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC).sourceName(SOURCE_NAME).startEpochMicrosec(START_EPOCH_MICROSEC)
+                .timeZoneOffset(TIME_ZONE_OFFSET).changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
                 .changeType(FILE_READY_CHANGE_TYPE).name(PM_FILE_NAME).location(SFTP_LOCATION)
                 .compression(GZIP_COMPRESSION).fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
                 .fileFormatVersion(FILE_FORMAT_VERSION).build();
 
 
-        ImmutableConsumerDmaapModel consumerDmaapModel = ImmutableConsumerDmaapModel.builder().name(PM_FILE_NAME)
+        ImmutableConsumerDmaapModel consumerDmaapModel = ImmutableConsumerDmaapModel.builder().productName(PRODUCT_NAME)
+                .vendorName(VENDOR_NAME).lastEpochMicrosec(LAST_EPOCH_MICROSEC).sourceName(SOURCE_NAME)
+                .startEpochMicrosec(START_EPOCH_MICROSEC).timeZoneOffset(TIME_ZONE_OFFSET).name(PM_FILE_NAME)
                 .location(LOCAL_FILE_LOCATION).compression(GZIP_COMPRESSION)
                 .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE).fileFormatVersion(FILE_FORMAT_VERSION).build();
         listOfConsumerDmaapModel.add(consumerDmaapModel);
