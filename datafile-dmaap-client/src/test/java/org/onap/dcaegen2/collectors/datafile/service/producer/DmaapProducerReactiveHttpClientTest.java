@@ -39,6 +39,7 @@ import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.io.IFileSystemResource;
 import org.onap.dcaegen2.collectors.datafile.model.CommonFunctions;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
+import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModelForUnitTest;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.web.IRestTemplate;
 import org.springframework.http.HttpEntity;
@@ -92,7 +93,9 @@ class DmaapProducerReactiveHttpClientTest {
         when(dmaapPublisherConfigurationMock.dmaapContentType()).thenReturn(APPLICATION_OCTET_STREAM_CONTENT_TYPE);
         when(dmaapPublisherConfigurationMock.dmaapTopicName()).thenReturn(PUBLISH_TOPIC);
 
-        consumerDmaapModel = ImmutableConsumerDmaapModel.builder().name(FILE_NAME)
+        consumerDmaapModel = ImmutableConsumerDmaapModel.builder().productName("NrRadio").vendorName("Ericsson")
+                .lastEpochMicrosec("8745745764578").sourceName("oteNB5309").startEpochMicrosec("8745745764578")
+                .timeZoneOffset("UTC+05:00").name("A20161224.1030-1045.bin.gz")
                 .location("target/A20161224.1030-1045.bin.gz").compression("gzip")
                 .fileFormatType("org.3GPP.32.435#measCollec").fileFormatVersion("V10").build();
 
@@ -117,7 +120,6 @@ class DmaapProducerReactiveHttpClientTest {
 
         JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(consumerDmaapModel));
         metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
-        metaData.getAsJsonObject().remove(LOCATION_JSON_TAG);
         headers.set(X_ATT_DR_META, metaData.toString());
 
         String plainCreds = "dradmin" + ":" + "dradmin";

@@ -132,7 +132,6 @@ public class DmaapProducerReactiveHttpClient {
     private void addMetaDataToHead(ConsumerDmaapModel consumerDmaapModel, HttpHeaders headers) {
         JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(consumerDmaapModel));
         metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
-        metaData.getAsJsonObject().remove(LOCATION_JSON_TAG);
         headers.set(X_ATT_DR_META, metaData.toString());
     }
     private HttpEntity<byte[]> addFileToRequest(InputStream inputStream, HttpHeaders headers)
