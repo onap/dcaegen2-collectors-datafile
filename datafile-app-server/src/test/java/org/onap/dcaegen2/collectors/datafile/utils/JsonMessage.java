@@ -56,14 +56,28 @@ public class JsonMessage {
             }
             additionalFieldsString.append("]");
         }
-
-        return "{" + "\"event\":{" + "\"commonEventHeader\":{" + "\"domain\":\"notification\","
-                + "\"eventId\":\"<<SerialNumber>>-reg\"," + "\"eventName\":\"EriNoti_RnNode_FileReady\","
-                + "\"eventType\":\"fileReady\"," + "\"internalHeaderFields\":{},"
-                + "\"lastEpochMicrosec\":1519837825682," + "\"nfNamingCode\":\"5GRAN\"," + "\"nfcNamingCode\":\"5DU\","
-                + "\"priority\":\"Normal\"," + "\"reportingEntityName\":\"5GRAN_DU\"," + "\"sequence\":0,"
-                + "\"sourceId\":\"<<SerialNumber>>\"," + "\"sourceName\":\"5GRAN_DU\","
-                + "\"startEpochMicrosec\":\"1519837825682\"," + "\"version\":3" + "}," + "\"notificationFields\":{"
+        // @formatter:off
+        return "{" + "\"event\":{"
+                + "\"commonEventHeader\":{"
+                + "\"domain\":\"notification\","
+                + "\"eventId\":\"<<SerialNumber>>-reg\","
+                + "\"eventName\":\"Noti_NrRadio-Ericsson_FileReady\","
+                + "\"eventType\":\"fileReady\","
+                + "\"internalHeaderFields\":{},"
+                + "\"lastEpochMicrosec\":1519837825682,"
+                + "\"nfNamingCode\":\"5GRAN\","
+                + "\"nfcNamingCode\":\"5DU\","
+                + "\"priority\":\"Normal\","
+                + "\"reportingEntityName\":\"5GRAN_DU\","
+                + "\"sequence\":0,"
+                + "\"sourceId\":\"<<SerialNumber>>\","
+                + "\"sourceName\":\"5GRAN_DU\","
+                + "\"timeZoneOffset\":\"UTC+05:00\","
+                + "\"startEpochMicrosec\":\"1519837825682\","
+                + "\"version\":3"
+                + "},"
+                + "\"notificationFields\":{"
+        // @formatter:on
                 + getAsStringIfParameterIsSet("changeIdentifier", changeIdentifier,
                         changeType != null || notificationFieldsVersion != null || arrayOfAdditionalFields.size() > 0)
                 + getAsStringIfParameterIsSet("changeType", changeType,
@@ -89,8 +103,7 @@ public class JsonMessage {
 
         @Override
         public String toString() {
-            return "{" + getAsStringIfParameterIsSet("name", name, true)
-                    + "\"hashMap\":{"
+            return "{" + getAsStringIfParameterIsSet("name", name, true) + "\"hashMap\":{"
                     + getAsStringIfParameterIsSet("location", location,
                             compression != null || fileFormatType != null || fileFormatVersion != null)
                     + getAsStringIfParameterIsSet("compression", compression,

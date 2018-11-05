@@ -119,9 +119,14 @@ public class XnfCollectorTaskImpl implements XnfCollectorTask {
 
     private FileServerData getFileServerData(URI uri) {
         String[] userInfo = getUserNameAndPasswordIfGiven(uri.getUserInfo());
-        return ImmutableFileServerData.builder().serverAddress(uri.getHost())
-                .userId(userInfo != null ? userInfo[0] : "").password(userInfo != null ? userInfo[1] : "")
-                .port(uri.getPort()).build();
+        // @formatter:off
+        return ImmutableFileServerData.builder()
+                .serverAddress(uri.getHost())
+                .userId(userInfo != null ? userInfo[0] : "")
+                .password(userInfo != null ? userInfo[1] : "")
+                .port(uri.getPort())
+                .build();
+        // @formatter:on
     }
 
     private String[] getUserNameAndPasswordIfGiven(String userInfoString) {
@@ -157,13 +162,35 @@ public class XnfCollectorTaskImpl implements XnfCollectorTask {
     }
 
     private ConsumerDmaapModel getConsumerDmaapModel(FileData fileData, String localFile) {
+        String productName = fileData.productName();
+        String vendorName = fileData.vendorName();
+        String lastEpochMicrosec = fileData.lastEpochMicrosec();
+        String sourceName = fileData.sourceName();
+        String startEpochMicrosec = fileData.startEpochMicrosec();
+        String timeZoneOffset = fileData.timeZoneOffset();
         String name = fileData.name();
+        String location = fileData.location();
+        String internalLocation = localFile;
         String compression = fileData.compression();
         String fileFormatType = fileData.fileFormatType();
         String fileFormatVersion = fileData.fileFormatVersion();
 
-        return ImmutableConsumerDmaapModel.builder().name(name).location(localFile).compression(compression)
-                .fileFormatType(fileFormatType).fileFormatVersion(fileFormatVersion).build();
+        // @formatter:off
+        return ImmutableConsumerDmaapModel.builder()
+                .productName(productName)
+                .vendorName(vendorName)
+                .lastEpochMicrosec(lastEpochMicrosec)
+                .sourceName(sourceName)
+                .startEpochMicrosec(startEpochMicrosec)
+                .timeZoneOffset(timeZoneOffset)
+                .name(name)
+                .location(location)
+                .internalLocation(internalLocation)
+                .compression(compression)
+                .fileFormatType(fileFormatType)
+                .fileFormatVersion(fileFormatVersion)
+                .build();
+        // @formatter:on
     }
 
     private RetryTimer getRetryTimer() {
