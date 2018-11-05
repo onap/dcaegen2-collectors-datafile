@@ -46,6 +46,13 @@ import reactor.core.publisher.Mono;
 public class DmaapConsumerJsonParser {
     private static final Logger logger = LoggerFactory.getLogger(DmaapConsumerJsonParser.class);
 
+    private static final String COMMON_EVENT_HEADER = "commonEventHeader";
+    private static final String EVENT_NAME = "eventName";
+    private static final String LAST_EPOCH_MICROSEC = "lastEpochMicrosec";
+    private static final String SOURCE_NAME = "sourceName";
+    private static final String START_EPOCH_MICROSEC = "startEpochMicrosec";
+    private static final String TIME_ZONE_OFFSET = "timeZoneOffset";
+
     private static final String EVENT = "event";
     private static final String NOTIFICATION_FIELDS = "notificationFields";
     private static final String CHANGE_IDENTIFIER = "changeIdentifier";
@@ -73,17 +80,17 @@ public class DmaapConsumerJsonParser {
     private Mono<JsonElement> getJsonParserMessage(String message) {
         logger.trace("original message from message router: {}", message);
         return StringUtils.isEmpty(message) ? Mono.error(new DmaapEmptyResponseException())
-            : Mono.fromSupplier(() -> new JsonParser().parse(message));
+                : Mono.fromSupplier(() -> new JsonParser().parse(message));
     }
 
     private Flux<FileData> createJsonConsumerModel(JsonElement jsonElement) {
         return jsonElement.isJsonObject() ? create(Mono.fromSupplier(jsonElement::getAsJsonObject))
-            : getFileDataFromJsonArray(jsonElement);
+                : getFileDataFromJsonArray(jsonElement);
     }
 
     private Flux<FileData> getFileDataFromJsonArray(JsonElement jsonElement) {
         return create(Mono.fromCallable(() -> StreamSupport.stream(jsonElement.getAsJsonArray().spliterator(), false)
-            .findFirst().flatMap(this::getJsonObjectFromAnArray).orElseThrow(DmaapEmptyResponseException::new)));
+                .findFirst().flatMap(this::getJsonObjectFromAnArray).orElseThrow(DmaapEmptyResponseException::new)));
     }
 
     public Optional<JsonObject> getJsonObjectFromAnArray(JsonElement element) {
@@ -94,43 +101,55 @@ public class DmaapConsumerJsonParser {
 
     private Flux<FileData> create(Mono<JsonObject> jsonObject) {
         return jsonObject.flatMapMany(monoJsonP -> !containsHeader(monoJsonP)
-            ? Flux.error(new DmaapNotFoundException("Incorrect JsonObject - missing header"))
-            : transform(monoJsonP));
+                ? Flux.error(new DmaapNotFoundException("Incorrect JsonObject - missing header"))
+                : transform(monoJsonP));
     }
 
     private Flux<FileData> transform(JsonObject jsonObject) {
         if (containsHeader(jsonObject, EVENT, NOTIFICATION_FIELDS)) {
+            JsonObject commonEventHeader = jsonObject.getAsJsonObject(EVENT).getAsJsonObject(COMMON_EVENT_HEADER);
+            String eventName = getValueFromJson(commonEventHeader, EVENT_NAME);
+            String productName = getProductNameFromEventName(eventName);
+            String vendorName = getVendorNameFromEventName(eventName);
+            String lastEpochMicrosec = getValueFromJson(commonEventHeader, LAST_EPOCH_MICROSEC);
+            String sourceName = getValueFromJson(commonEventHeader, SOURCE_NAME);
+            String startEpochMicrosec = getValueFromJson(commonEventHeader, START_EPOCH_MICROSEC);
+            String timeZoneOffset = getValueFromJson(commonEventHeader, TIME_ZONE_OFFSET);
+
             JsonObject notificationFields = jsonObject.getAsJsonObject(EVENT).getAsJsonObject(NOTIFICATION_FIELDS);
             String changeIdentifier = getValueFromJson(notificationFields, CHANGE_IDENTIFIER);
             String changeType = getValueFromJson(notificationFields, CHANGE_TYPE);
             String notificationFieldsVersion = getValueFromJson(notificationFields, NOTIFICATION_FIELDS_VERSION);
             JsonArray arrayOfNamedHashMap = notificationFields.getAsJsonArray(ARRAY_OF_NAMED_HASH_MAP);
             if (isNotificationFieldsHeaderNotEmpty(changeIdentifier, changeType, notificationFieldsVersion)
-                && arrayOfNamedHashMap != null) {
-                return getAllFileDataFromJson(changeIdentifier, changeType, arrayOfNamedHashMap);
+                    && arrayOfNamedHashMap != null) {
+                return getAllFileDataFromJson(productName, vendorName, lastEpochMicrosec, sourceName,
+                        startEpochMicrosec, timeZoneOffset, changeIdentifier, changeType, arrayOfNamedHashMap);
             }
 
             if (!isNotificationFieldsHeaderNotEmpty(changeIdentifier, changeType, notificationFieldsVersion)) {
                 return Flux.error(
-                    new DmaapNotFoundException("FileReady event header is missing information. " + jsonObject));
+                        new DmaapNotFoundException("FileReady event header is missing information. " + jsonObject));
             } else if (arrayOfNamedHashMap != null) {
                 return Flux.error(
-                    new DmaapNotFoundException("FileReady event arrayOfNamedHashMap is missing. " + jsonObject));
+                        new DmaapNotFoundException("FileReady event arrayOfNamedHashMap is missing. " + jsonObject));
             }
             return Flux.error(
-                new DmaapNotFoundException("FileReady event does not contain correct information. " + jsonObject));
+                    new DmaapNotFoundException("FileReady event does not contain correct information. " + jsonObject));
         }
         return Flux.error(
-            new DmaapNotFoundException("FileReady event has incorrect JsonObject - missing header. " + jsonObject));
+                new DmaapNotFoundException("FileReady event has incorrect JsonObject - missing header. " + jsonObject));
     }
 
-    private Flux<FileData> getAllFileDataFromJson(String changeIdentifier, String changeType,
-        JsonArray arrayOfAdditionalFields) {
+    private Flux<FileData> getAllFileDataFromJson(String productName, String vendorName, String lastEpochMicrosec,
+            String sourceName, String startEpochMicrosec, String timeZoneOffset, String changeIdentifier,
+            String changeType, JsonArray arrayOfAdditionalFields) {
         List<FileData> res = new ArrayList<>();
         for (int i = 0; i < arrayOfAdditionalFields.size(); i++) {
             if (arrayOfAdditionalFields.get(i) != null) {
                 JsonObject fileInfo = (JsonObject) arrayOfAdditionalFields.get(i);
-                FileData fileData = getFileDataFromJson(fileInfo, changeIdentifier, changeType);
+                FileData fileData = getFileDataFromJson(productName, vendorName, lastEpochMicrosec, sourceName,
+                        startEpochMicrosec, timeZoneOffset, fileInfo, changeIdentifier, changeType);
 
                 if (fileData != null) {
                     res.add(fileData);
@@ -142,7 +161,9 @@ public class DmaapConsumerJsonParser {
         return Flux.fromIterable(res);
     }
 
-    private FileData getFileDataFromJson(JsonObject fileInfo, String changeIdentifier, String changeType) {
+    private FileData getFileDataFromJson(String productName, String vendorName, String lastEpochMicrosec,
+            String sourceName, String startEpochMicrosec, String timeZoneOffset, JsonObject fileInfo,
+            String changeIdentifier, String changeType) {
         logger.trace("starting to getFileDataFromJson!");
 
         FileData fileData = null;
@@ -155,12 +176,44 @@ public class DmaapConsumerJsonParser {
         String compression = getValueFromJson(data, COMPRESSION);
 
         if (isFileFormatFieldsNotEmpty(fileFormatVersion, fileFormatType)
-            && isNameAndLocationAndCompressionNotEmpty(name, location, compression)) {
-            fileData = ImmutableFileData.builder().name(name).changeIdentifier(changeIdentifier).changeType(changeType)
-                .location(location).compression(compression).fileFormatType(fileFormatType)
-                .fileFormatVersion(fileFormatVersion).build();
+                && isNameAndLocationAndCompressionNotEmpty(name, location, compression)) {
+            fileData = ImmutableFileData.builder().productName(productName).vendorName(vendorName)
+                    .lastEpochMicrosec(lastEpochMicrosec).sourceName(sourceName).startEpochMicrosec(startEpochMicrosec)
+                    .timeZoneOffset(timeZoneOffset).name(name).changeIdentifier(changeIdentifier).changeType(changeType)
+                    .location(location).compression(compression).fileFormatType(fileFormatType)
+                    .fileFormatVersion(fileFormatVersion).build();
         }
         return fileData;
+    }
+
+    /**
+     * @param eventName
+     * @return String of vendorName eventName is defined as:
+     *         {DomainAbbreviation}_{productName}-{vendorName}_{Description}, example:
+     *         Noti_RnNode-Ericsson_FileReady
+     */
+    private String getVendorNameFromEventName(String eventName) {
+        String[] eventArray = eventName.split("_|-");
+        if (eventArray.length >= 4) {
+            return eventArray[2];
+        } else {
+            logger.trace("Can not get productName from eventName, eventName is not in correct format");
+        }
+        return "";
+    }
+
+    /**
+     * @param eventName
+     * @return String of productName
+     */
+    private String getProductNameFromEventName(String eventName) {
+        String[] eventArray = eventName.split("_|-");
+        if (eventArray.length >= 4) {
+            return eventArray[1];
+        } else {
+            logger.trace("Can not get productName from eventName, eventName is not in correct format");;
+        }
+        return "";
     }
 
     private String getValueFromJson(JsonObject jsonObject, String jsonKey) {
@@ -168,9 +221,9 @@ public class DmaapConsumerJsonParser {
     }
 
     private boolean isNotificationFieldsHeaderNotEmpty(String changeIdentifier, String changeType,
-        String notificationFieldsVersion) {
+            String notificationFieldsVersion) {
         return isStringIsNotNullAndNotEmpty(changeIdentifier) && isStringIsNotNullAndNotEmpty(changeType)
-            && isStringIsNotNullAndNotEmpty(notificationFieldsVersion);
+                && isStringIsNotNullAndNotEmpty(notificationFieldsVersion);
     }
 
     private boolean isFileFormatFieldsNotEmpty(String fileFormatVersion, String fileFormatType) {
@@ -178,8 +231,8 @@ public class DmaapConsumerJsonParser {
     }
 
     private boolean isNameAndLocationAndCompressionNotEmpty(String name, String location, String compression) {
-        return isStringIsNotNullAndNotEmpty(name) && isStringIsNotNullAndNotEmpty(location) &&
-                isStringIsNotNullAndNotEmpty(compression);
+        return isStringIsNotNullAndNotEmpty(name) && isStringIsNotNullAndNotEmpty(location)
+                && isStringIsNotNullAndNotEmpty(compression);
     }
 
     private boolean containsHeader(JsonObject jsonObject) {
