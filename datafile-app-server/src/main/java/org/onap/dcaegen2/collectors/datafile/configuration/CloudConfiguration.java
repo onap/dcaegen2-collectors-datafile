@@ -1,26 +1,25 @@
 /*
- * ============LICENSE_START=======================================================
- * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
- * ================================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * ============LICENSE_START======================================================= Copyright (C)
+ * 2018 NOKIA Intellectual Property. All rights reserved.
+ * ================================================================================ Licensed under
+ * the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * ============LICENSE_END=========================================================
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License. ============LICENSE_END=========================================================
  */
 
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import com.google.gson.JsonObject;
+
 import java.util.Optional;
 import java.util.Properties;
+
 import org.onap.dcaegen2.collectors.datafile.config.DmaapConsumerConfiguration;
 import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.model.EnvProperties;
@@ -33,6 +32,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
@@ -50,6 +50,7 @@ public class CloudConfiguration extends AppConfig {
     private DatafileConfigurationProvider datafileConfigurationProvider;
     private DmaapPublisherConfiguration dmaapPublisherCloudConfiguration;
     private DmaapConsumerConfiguration dmaapConsumerCloudConfiguration;
+    private FtpesConfig ftpesCloudConfiguration;
 
     @Value("#{systemEnvironment}")
     private Properties systemEnvironment;
@@ -61,9 +62,8 @@ public class CloudConfiguration extends AppConfig {
 
 
     protected void runTask() {
-        Flux.defer(() -> EnvironmentProcessor.evaluate(systemEnvironment))
-            .subscribeOn(Schedulers.parallel())
-            .subscribe(this::parsingConfigSuccess, this::parsingConfigError);
+        Flux.defer(() -> EnvironmentProcessor.evaluate(systemEnvironment)).subscribeOn(Schedulers.parallel())
+                .subscribe(this::parsingConfigSuccess, this::parsingConfigError);
     }
 
     private void parsingConfigError(Throwable throwable) {
@@ -77,7 +77,7 @@ public class CloudConfiguration extends AppConfig {
     private void parsingConfigSuccess(EnvProperties envProperties) {
         logger.info("Fetching Datafile Collector configuration from ConfigBindingService/Consul");
         datafileConfigurationProvider.callForDataFileCollectorConfiguration(envProperties)
-            .subscribe(this::parseCloudConfig, this::cloudConfigError);
+                .subscribe(this::parseCloudConfig, this::cloudConfigError);
     }
 
     private void parseCloudConfig(JsonObject jsonObject) {
@@ -85,6 +85,7 @@ public class CloudConfiguration extends AppConfig {
         CloudConfigParser cloudConfigParser = new CloudConfigParser(jsonObject);
         dmaapPublisherCloudConfiguration = cloudConfigParser.getDmaapPublisherConfig();
         dmaapConsumerCloudConfiguration = cloudConfigParser.getDmaapConsumerConfig();
+        ftpesCloudConfiguration = cloudConfigParser.getFtpesConfig();
     }
 
     @Override
@@ -95,5 +96,10 @@ public class CloudConfiguration extends AppConfig {
     @Override
     public DmaapConsumerConfiguration getDmaapConsumerConfiguration() {
         return Optional.ofNullable(dmaapConsumerCloudConfiguration).orElse(super.getDmaapConsumerConfiguration());
+    }
+
+    @Override
+    public FtpesConfig getFtpesConfiguration() {
+        return Optional.ofNullable(ftpesCloudConfiguration).orElse(super.getFtpesConfiguration());
     }
 }
