@@ -16,6 +16,24 @@
       "revId": "f964ebd72b28c29d2b00cf09803e2076996376fe",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_f54a7eab",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2018-11-07T07:58:59Z",
+      "side": 0,
+      "message": "I added the code for the getFtpesConfig method when we introduced the configuration of mutual authentication. But at the time I forgot to update the license information.",
+      "parentUuid": "9adffdf1_6420269c",
+      "revId": "f964ebd72b28c29d2b00cf09803e2076996376fe",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
