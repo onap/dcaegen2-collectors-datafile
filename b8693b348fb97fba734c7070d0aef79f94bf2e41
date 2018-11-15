@@ -1,0 +1,9 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: T M <tobias.mole@ericsson.com>
+Code-Review+1: Martin Yan <martin.c.yan@est.tech>
+Code-Review+2: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-by: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-at: Thu, 15 Nov 2018 04:04:47 +0000
+Reviewed-on: https://gerrit.onap.org/r/71141
+Project: dcaegen2/collectors/datafile
+Branch: refs/heads/master
