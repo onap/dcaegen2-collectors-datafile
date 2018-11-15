@@ -1,0 +1,15 @@
+Code-Review+1: Michal Dziedzic <michal.1.dziedzic@nokia.com>
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Piotr Wielebski <piotr.wielebski@nokia.com>
+Code-Review+1: T M <tobias.mole@ericsson.com>
+Code-Review+1: Martin Yan <martin.c.yan@est.tech>
+Code-Review+1: Przemyslaw Wasala <przemyslaw.wasala@nokia.com>
+Code-Review+1: Henrik Andersson <henrik.b.andersson@est.tech>
+Code-Review+1: Marcin Migdal <marcin.migdal@nokia.com>
+Code-Review+1: Damian Nowak <damain.nowak@nokia.com>
+Code-Review+2: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-by: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-at: Thu, 15 Nov 2018 04:04:39 +0000
+Reviewed-on: https://gerrit.onap.org/r/71053
+Project: dcaegen2/collectors/datafile
+Branch: refs/heads/master
