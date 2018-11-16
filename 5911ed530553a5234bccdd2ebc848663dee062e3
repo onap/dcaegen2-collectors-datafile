@@ -33,6 +33,23 @@
       "revId": "5911ed530553a5234bccdd2ebc848663dee062e3",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_491e3272",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/utils/JsonMessage.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2018-11-16T17:13:30Z",
+      "side": 1,
+      "message": "use formatter:off?",
+      "revId": "5911ed530553a5234bccdd2ebc848663dee062e3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
