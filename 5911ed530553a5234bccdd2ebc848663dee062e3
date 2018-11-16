@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_c9ff8233",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParser.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2018-11-16T13:12:10Z",
+      "side": 1,
+      "message": "use @formatter:off?",
+      "revId": "5911ed530553a5234bccdd2ebc848663dee062e3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_e99fe601",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/service/DmaapConsumerJsonParserTest.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2018-11-16T13:12:10Z",
+      "side": 1,
+      "message": "formatter:on/off?",
+      "revId": "5911ed530553a5234bccdd2ebc848663dee062e3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
