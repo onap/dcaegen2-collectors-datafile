@@ -70,6 +70,15 @@ public class DmaapConsumerJsonParser {
     private static final String FILE_READY_CHANGE_TYPE = "FileReady";
     private static final String FILE_READY_CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
+    private String productName;
+    private String vendorName;
+    private String lastEpochMicrosec;
+    private String sourceName;
+    private String startEpochMicrosec;
+    private String timeZoneOffset;
+    private String changeIdentifier;
+    private String changeType;
+
     /**
      * Extract info from string and create @see {@link FileData}.
      *
@@ -112,23 +121,22 @@ public class DmaapConsumerJsonParser {
         if (containsHeader(jsonObject, EVENT, NOTIFICATION_FIELDS)) {
             JsonObject commonEventHeader = jsonObject.getAsJsonObject(EVENT).getAsJsonObject(COMMON_EVENT_HEADER);
             String eventName = getValueFromJson(commonEventHeader, EVENT_NAME);
-            String productName = getProductNameFromEventName(eventName);
-            String vendorName = getVendorNameFromEventName(eventName);
-            String lastEpochMicrosec = getValueFromJson(commonEventHeader, LAST_EPOCH_MICROSEC);
-            String sourceName = getValueFromJson(commonEventHeader, SOURCE_NAME);
-            String startEpochMicrosec = getValueFromJson(commonEventHeader, START_EPOCH_MICROSEC);
-            String timeZoneOffset = getValueFromJson(commonEventHeader, TIME_ZONE_OFFSET);
+            productName = getProductNameFromEventName(eventName);
+            vendorName = getVendorNameFromEventName(eventName);
+            lastEpochMicrosec = getValueFromJson(commonEventHeader, LAST_EPOCH_MICROSEC);
+            sourceName = getValueFromJson(commonEventHeader, SOURCE_NAME);
+            startEpochMicrosec = getValueFromJson(commonEventHeader, START_EPOCH_MICROSEC);
+            timeZoneOffset = getValueFromJson(commonEventHeader, TIME_ZONE_OFFSET);
 
             JsonObject notificationFields = jsonObject.getAsJsonObject(EVENT).getAsJsonObject(NOTIFICATION_FIELDS);
-            String changeIdentifier = getValueFromJson(notificationFields, CHANGE_IDENTIFIER);
-            String changeType = getValueFromJson(notificationFields, CHANGE_TYPE);
+            changeIdentifier = getValueFromJson(notificationFields, CHANGE_IDENTIFIER);
+            changeType = getValueFromJson(notificationFields, CHANGE_TYPE);
             String notificationFieldsVersion = getValueFromJson(notificationFields, NOTIFICATION_FIELDS_VERSION);
             JsonArray arrayOfNamedHashMap = notificationFields.getAsJsonArray(ARRAY_OF_NAMED_HASH_MAP);
             if (isNotificationFieldsHeaderNotEmpty(changeIdentifier, changeType, notificationFieldsVersion)
                     && arrayOfNamedHashMap != null && isChangeIdentifierCorrect(changeIdentifier)
                     && isChangeTypeCorrect(changeType)) {
-                return getAllFileDataFromJson(productName, vendorName, lastEpochMicrosec, sourceName,
-                        startEpochMicrosec, timeZoneOffset, changeIdentifier, changeType, arrayOfNamedHashMap);
+                return getAllFileDataFromJson(arrayOfNamedHashMap);
             }
 
             return handleJsonError(changeIdentifier, changeType, notificationFieldsVersion, arrayOfNamedHashMap,
@@ -146,15 +154,12 @@ public class DmaapConsumerJsonParser {
         return FILE_READY_CHANGE_IDENTIFIER.equals(changeIdentifier);
     }
 
-    private Flux<FileData> getAllFileDataFromJson(String productName, String vendorName, String lastEpochMicrosec,
-            String sourceName, String startEpochMicrosec, String timeZoneOffset, String changeIdentifier,
-            String changeType, JsonArray arrayOfAdditionalFields) {
+    private Flux<FileData> getAllFileDataFromJson(JsonArray arrayOfAdditionalFields) {
         List<FileData> res = new ArrayList<>();
         for (int i = 0; i < arrayOfAdditionalFields.size(); i++) {
             if (arrayOfAdditionalFields.get(i) != null) {
                 JsonObject fileInfo = (JsonObject) arrayOfAdditionalFields.get(i);
-                FileData fileData = getFileDataFromJson(productName, vendorName, lastEpochMicrosec, sourceName,
-                        startEpochMicrosec, timeZoneOffset, fileInfo, changeIdentifier, changeType);
+                FileData fileData = getFileDataFromJson(fileInfo);
 
                 if (fileData != null) {
                     res.add(fileData);
@@ -166,9 +171,7 @@ public class DmaapConsumerJsonParser {
         return Flux.fromIterable(res);
     }
 
-    private FileData getFileDataFromJson(String productName, String vendorName, String lastEpochMicrosec,
-            String sourceName, String startEpochMicrosec, String timeZoneOffset, JsonObject fileInfo,
-            String changeIdentifier, String changeType) {
+    private FileData getFileDataFromJson(JsonObject fileInfo) {
         logger.trace("starting to getFileDataFromJson!");
 
         FileData fileData = null;
