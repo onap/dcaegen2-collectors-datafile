@@ -37,8 +37,15 @@
   </properties>
 
   <dependencies>
-
     <!-- DEVELOPMENT DEPENDENCIES -->
+    <dependency>
+      <groupId>org.asynchttpclient</groupId>
+      <artifactId>async-http-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpasyncclient</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.onap.dcaegen2.collectors.datafile</groupId>
       <artifactId>datafile-commons</artifactId>

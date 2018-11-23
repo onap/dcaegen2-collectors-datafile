@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 3/23/18
@@ -59,11 +60,18 @@ public class ScheduledTasks {
      */
     public void scheduleMainDatafileEventTask() {
         logger.trace("Execution of tasks was registered");
-
+        //@formatter:off
         consumeFromDmaapMessage()
+                .publishOn(Schedulers.parallel())
+                .cache()
                 .doOnError(DmaapEmptyResponseException.class, error -> logger.info("Nothing to consume from DMaaP"))
-                .flatMap(this::collectFilesFromXnf).flatMap(this::publishToDmaapConfiguration)
+                .flatMap(this::collectFilesFromXnf)
+                .retry(3)
+                .cache()
+                .flatMap(this::publishToDmaapConfiguration)
+                .retry(3)
                 .subscribe(this::onSuccess, this::onError, this::onComplete);
+        //@formatter:on
     }
 
     private void onComplete() {
