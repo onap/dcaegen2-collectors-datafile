@@ -23,6 +23,7 @@ import java.security.GeneralSecurityException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPReply;
 import org.onap.dcaegen2.collectors.datafile.io.FileSystemResourceWrapper;
 import org.onap.dcaegen2.collectors.datafile.io.FileWrapper;
@@ -72,7 +73,6 @@ public class FtpsClient extends FileCollectClient {
 
         if (setUpKeyManager(ftps) && setUpTrustedCA(ftps) && setUpConnection(ftps)) {
             if (getFileFromxNF(ftps)) {
-                closeDownConnection(ftps);
                 fileCollectResult = new FileCollectResult();
             } else {
                 fileCollectResult = new FileCollectResult(errorData);
@@ -80,6 +80,7 @@ public class FtpsClient extends FileCollectClient {
         } else {
             fileCollectResult = new FileCollectResult(errorData);
         }
+        closeDownConnection(ftps);
         logger.trace("retryCollectFile left with result: {}", fileCollectResult);
         return fileCollectResult;
     }
@@ -87,6 +88,7 @@ public class FtpsClient extends FileCollectClient {
     private boolean setUpKeyManager(IFTPSClient ftps) {
         boolean result = true;
         if (keyManagerSet) {
+            logger.trace("keyManager already set!");
             return result;
         }
         try {
@@ -105,6 +107,7 @@ public class FtpsClient extends FileCollectClient {
     private boolean setUpTrustedCA(IFTPSClient ftps) {
         boolean result = true;
         if (trustManagerSet) {
+            logger.trace("trustManager already set!");
             return result;
         }
         try {
@@ -130,32 +133,42 @@ public class FtpsClient extends FileCollectClient {
     private boolean setUpConnection(IFTPSClient ftps) {
         boolean result = true;
         try {
+            if (ftps.isConnected()) {
+                addError(
+                        "Looks like previous ftp connection is still in use, will retry in 1 minute. " + fileServerData,
+                        null);
+                return false;
+            }
             ftps.connect(fileServerData.serverAddress(), fileServerData.port());
             logger.trace("after ftp connect");
             boolean loginSuccesful = ftps.login(fileServerData.userId(), fileServerData.password());
             if (!loginSuccesful) {
-                ftps.logout();
+                closeDownConnection(ftps);
                 addError("Unable to log in to xNF. " + fileServerData, null);
-                result = false;
+                return false;
             }
 
             if (loginSuccesful && FTPReply.isPositiveCompletion(ftps.getReplyCode())) {
                 ftps.enterLocalPassiveMode();
+                ftps.setFileType(FTP.BINARY_FILE_TYPE);
                 // Set protection buffer size
                 ftps.execPBSZ(0);
                 // Set data channel protection to private
                 ftps.execPROT("P");
+                ftps.setBufferSize(1024 * 1024);
             } else {
-                ftps.disconnect();
+                closeDownConnection(ftps);
                 addError("Unable to connect to xNF. " + fileServerData + " xNF reply code: " + ftps.getReplyCode(),
                         null);
-                result = false;
+                return false;
             }
-        } catch (Exception ex) {
-            addError("Unable to connect to xNF. Data: " + fileServerData, ex);
-            result = false;
+        } catch (Exception e) {
+            logger.trace("connect to ftp server failed.", e);
+            addError("Unable to connect to xNF. Data: " + fileServerData, e);
+            closeDownConnection(ftps);
+            return false;
         }
-        logger.trace("setUpConnection return value: {}", result);
+        logger.trace("setUpConnection successfully!");
         return result;
     }
 
@@ -169,8 +182,9 @@ public class FtpsClient extends FileCollectClient {
 
             IOutputStream outputStream = getOutputStream();
             OutputStream output = outputStream.getOutputStream(outfile.getFile());
-
+            logger.trace("begin to retrieve from xNF.");
             result = ftps.retrieveFile(remoteFile, output);
+            logger.trace("end retrieve from xNF.");
             if (!result) {
                 output.close();
                 logger.debug("Unable to retrieve file from xNF. Cause unknown!");
@@ -186,20 +200,28 @@ public class FtpsClient extends FileCollectClient {
             } catch (Exception e) {
                 // Nothing
             }
-            result = false;
+            return false;
         }
         return result;
     }
 
     private void closeDownConnection(IFTPSClient ftps) {
         logger.trace("starting to closeDownConnection");
-        try {
-            if (ftps != null) {
-                ftps.logout();
-                ftps.disconnect();
+        if (ftps != null) {
+            if (ftps.isConnected()) {
+                try {
+                    boolean logOut = ftps.logout();
+                    logger.trace("logOut: {}", logOut);
+                } catch (Exception e) {
+                    logger.trace("Unable to logout connection.", e);
+                }
+                try {
+                    ftps.disconnect();
+                    logger.trace("disconnected!");
+                } catch (Exception e) {
+                    logger.trace("Unable to disconnect connection.", e);
+                }
             }
-        } catch (Exception e) {
-            // Do nothing, file has been collected.
         }
     }
 
