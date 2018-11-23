@@ -46,7 +46,7 @@
   <properties>
     <java.version>8</java.version>
     <immutable.version>2.7.1</immutable.version>
-    <spring.version>5.1.0.RELEASE</spring.version>
+    <spring.version>5.1.2.RELEASE</spring.version>
     <spring-boot.version>2.1.0.M4</spring-boot.version>
     <tomcat.version>8.5.32</tomcat.version>
     <docker.maven.version>1.0.0</docker.maven.version>
@@ -135,6 +135,16 @@
 
  <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.asynchttpclient</groupId>
+        <artifactId>async-http-client</artifactId>
+        <version>2.6.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpasyncclient</artifactId>
+        <version>4.1.4</version>
+      </dependency>
       <dependency>
         <groupId>io.projectreactor</groupId>
         <artifactId>reactor-bom</artifactId>
