@@ -30,7 +30,7 @@ public class FileCollectResultTest {
     public void successfulResult() {
         FileCollectResult resultUnderTest = new FileCollectResult();
         assertTrue(resultUnderTest.downloadSuccessful());
-        assertEquals("FileCollectResult: true Error data: ", resultUnderTest.toString());
+        assertEquals("FileCollectResult: successful!", resultUnderTest.toString());
     }
 
     @Test
@@ -40,6 +40,6 @@ public class FileCollectResultTest {
         errorData.addError("Null", new NullPointerException());
         FileCollectResult resultUnderTest = new FileCollectResult(errorData);
         assertFalse(resultUnderTest.downloadSuccessful());
-        assertEquals("FileCollectResult: false Error data: " + errorData.toString(), resultUnderTest.toString());
+        assertEquals("FileCollectResult: unsuccessful! Error data: " + errorData.toString(), resultUnderTest.toString());
     }
 }
