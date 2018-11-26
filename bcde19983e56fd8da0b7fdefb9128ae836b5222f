@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_289dcd59",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2018-11-26T14:08:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_cd02133e",
+      "range": {
+        "startLine": 185,
+        "startChar": 49,
+        "endLine": 185,
+        "endChar": 59
+      },
+      "revId": "bcde19983e56fd8da0b7fdefb9128ae836b5222f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_ed84b7b2",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClient.java",
         "patchSetId": 3
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_88add98a",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2018-11-26T14:08:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_ed84b7b2",
+      "range": {
+        "startLine": 129,
+        "startChar": 19,
+        "endLine": 129,
+        "endChar": 24
+      },
+      "revId": "bcde19983e56fd8da0b7fdefb9128ae836b5222f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_edab571c",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClient.java",
         "patchSetId": 3
@@ -59,6 +107,30 @@
       "writtenOn": "2018-11-26T13:49:56Z",
       "side": 1,
       "message": "Possible should be error, same for below and in getWebClient method",
+      "range": {
+        "startLine": 159,
+        "startChar": 19,
+        "endLine": 159,
+        "endChar": 24
+      },
+      "revId": "bcde19983e56fd8da0b7fdefb9128ae836b5222f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_e89ee553",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2018-11-26T14:08:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_edab571c",
       "range": {
         "startLine": 159,
         "startChar": 19,
