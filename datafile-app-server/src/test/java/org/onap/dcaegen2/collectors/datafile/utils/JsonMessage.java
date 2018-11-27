@@ -27,6 +27,7 @@ import java.util.List;
  *
  */
 public class JsonMessage {
+    private String eventName;
     private String changeIdentifier;
     private String changeType;
     private String notificationFieldsVersion;
@@ -61,7 +62,7 @@ public class JsonMessage {
                 + "\"commonEventHeader\":{"
                 + "\"domain\":\"notification\","
                 + "\"eventId\":\"<<SerialNumber>>-reg\","
-                + "\"eventName\":\"Noti_NrRadio-Ericsson_FileReady\","
+                + "\"eventName\":\"" + eventName + "\","
                 + "\"eventType\":\"fileReady\","
                 + "\"internalHeaderFields\":{},"
                 + "\"lastEpochMicrosec\":1519837825682,"
@@ -88,6 +89,7 @@ public class JsonMessage {
     }
 
     private JsonMessage(final JsonMessageBuilder builder) {
+        this.eventName = builder.eventName;
         this.changeIdentifier = builder.changeIdentifier;
         this.changeType = builder.changeType;
         this.notificationFieldsVersion = builder.notificationFieldsVersion;
@@ -161,10 +163,16 @@ public class JsonMessage {
     }
 
     public static class JsonMessageBuilder {
+        private String eventName;
         private String changeIdentifier;
         private String changeType;
         private String notificationFieldsVersion;
         private List<AdditionalField> arrayOfAdditionalFields = new ArrayList<AdditionalField>();
+
+        public JsonMessageBuilder eventName(String eventName) {
+            this.eventName = eventName;
+            return this;
+        }
 
         public JsonMessageBuilder changeIdentifier(String changeIdentifier) {
             this.changeIdentifier = changeIdentifier;
@@ -227,6 +235,7 @@ public class JsonMessage {
                 .fileFormatVersion("V10")
                 .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder()
+                .eventName("Noti_NrRadio-Ericsson_FileReady")
                 .changeIdentifier("PM_MEAS_FILES")
                 .changeType("FileReady")
                 .notificationFieldsVersion("2.0")

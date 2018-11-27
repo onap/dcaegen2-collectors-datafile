@@ -162,12 +162,12 @@ public class XnfCollectorTaskImpl implements XnfCollectorTask {
     }
 
     private ConsumerDmaapModel getConsumerDmaapModel(FileData fileData, String localFile) {
-        String productName = fileData.productName();
-        String vendorName = fileData.vendorName();
-        String lastEpochMicrosec = fileData.lastEpochMicrosec();
-        String sourceName = fileData.sourceName();
-        String startEpochMicrosec = fileData.startEpochMicrosec();
-        String timeZoneOffset = fileData.timeZoneOffset();
+        String productName = fileData.fileMetaData().productName();
+        String vendorName = fileData.fileMetaData().vendorName();
+        String lastEpochMicrosec = fileData.fileMetaData().lastEpochMicrosec();
+        String sourceName = fileData.fileMetaData().sourceName();
+        String startEpochMicrosec = fileData.fileMetaData().startEpochMicrosec();
+        String timeZoneOffset = fileData.fileMetaData().timeZoneOffset();
         String name = fileData.name();
         String location = fileData.location();
         String internalLocation = localFile;

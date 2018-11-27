@@ -36,8 +36,10 @@ import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapEmptyResponseException;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
+import org.onap.dcaegen2.collectors.datafile.model.FileMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
+import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileMetaData;
 import org.onap.dcaegen2.collectors.datafile.service.DmaapConsumerJsonParser;
 import org.onap.dcaegen2.collectors.datafile.service.consumer.DmaapConsumerReactiveHttpClient;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
@@ -52,6 +54,7 @@ import reactor.test.StepVerifier;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 class DmaapConsumerTaskImplTest {
+    private static final String NR_RADIO_ERICSSON_EVENT_NAME = "Noti_NrRadio-Ericsson_FileReady";
     private static final String PRODUCT_NAME = "NrRadio";
     private static final String VENDOR_NAME = "Ericsson";
     private static final String LAST_EPOCH_MICROSEC = "8745745764578";
@@ -112,6 +115,7 @@ class DmaapConsumerTaskImplTest {
                 .build();
 
         JsonMessage ftpesJsonMessage = new JsonMessage.JsonMessageBuilder()
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
                 .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
                 .changeType(FILE_READY_CHANGE_TYPE)
                 .notificationFieldsVersion("1.0")
@@ -119,7 +123,7 @@ class DmaapConsumerTaskImplTest {
                 .build();
 
         ftpesMessage = ftpesJsonMessage.toString();
-        ftpesFileData = ImmutableFileData.builder()
+        FileMetaData fileMetaData = ImmutableFileMetaData.builder()
                 .productName(PRODUCT_NAME)
                 .vendorName(VENDOR_NAME)
                 .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
@@ -128,6 +132,9 @@ class DmaapConsumerTaskImplTest {
                 .timeZoneOffset(TIME_ZONE_OFFSET)
                 .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
                 .changeType(FILE_READY_CHANGE_TYPE)
+                .build();
+        ftpesFileData = ImmutableFileData.builder()
+                .fileMetaData(fileMetaData)
                 .name(PM_FILE_NAME)
                 .location(FTPES_LOCATION)
                 .compression(GZIP_COMPRESSION)
@@ -142,6 +149,7 @@ class DmaapConsumerTaskImplTest {
                 .fileFormatVersion(FILE_FORMAT_VERSION)
                 .build();
         JsonMessage sftpJsonMessage = new JsonMessage.JsonMessageBuilder()
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
                 .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
                 .changeType(FILE_READY_CHANGE_TYPE)
                 .notificationFieldsVersion("1.0")
@@ -149,14 +157,7 @@ class DmaapConsumerTaskImplTest {
                 .build();
         sftpMessage = sftpJsonMessage.toString();
         sftpFileData = ImmutableFileData.builder()
-                .productName(PRODUCT_NAME)
-                .vendorName(VENDOR_NAME)
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
-                .sourceName(SOURCE_NAME)
-                .startEpochMicrosec(START_EPOCH_MICROSEC)
-                .timeZoneOffset(TIME_ZONE_OFFSET)
-                .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
-                .changeType(FILE_READY_CHANGE_TYPE)
+                .fileMetaData(fileMetaData)
                 .name(PM_FILE_NAME)
                 .location(SFTP_LOCATION)
                 .compression(GZIP_COMPRESSION)

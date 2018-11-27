@@ -37,8 +37,10 @@ import org.onap.dcaegen2.collectors.datafile.ftp.ImmutableFileServerData;
 import org.onap.dcaegen2.collectors.datafile.ftp.SftpClient;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
+import org.onap.dcaegen2.collectors.datafile.model.FileMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
+import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileMetaData;
 
 import reactor.test.StepVerifier;
 
@@ -53,7 +55,7 @@ public class XnfCollectorTaskImplTest {
     private static final String SOURCE_NAME = "oteNB5309";
     private static final String START_EPOCH_MICROSEC = "8745745764578";
     private static final String TIME_ZONE_OFFSET = "UTC+05:00";
-    private static final String PM_MEAS_CHANGE_IDINTIFIER = "PM_MEAS_FILES";
+    private static final String PM_MEAS_CHANGE_IDENTIFIER = "PM_MEAS_FILES";
     private static final String FILE_READY_CHANGE_TYPE = "FileReady";
     private static final String FTPES_SCHEME = "ftpes://";
     private static final String SFTP_SCHEME = "sftp://";
@@ -83,7 +85,18 @@ public class XnfCollectorTaskImplTest {
 
     private SftpClient sftpClientMock = mock(SftpClient.class);
     private RetryTimer retryTimerMock = mock(RetryTimer.class);
-
+    // @formatter:off
+    private FileMetaData fileMetaData = ImmutableFileMetaData.builder()
+                .productName(PRODUCT_NAME)
+                .vendorName(VENDOR_NAME)
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
+                .sourceName(SOURCE_NAME)
+                .startEpochMicrosec(START_EPOCH_MICROSEC)
+                .timeZoneOffset(TIME_ZONE_OFFSET)
+                .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
+                .changeType(FILE_READY_CHANGE_TYPE)
+                .build();;
+                // @formatter:on
 
     @BeforeAll
     public static void setUpConfiguration() {
@@ -99,16 +112,9 @@ public class XnfCollectorTaskImplTest {
         XnfCollectorTaskImpl collectorUndetTest =
                 new XnfCollectorTaskImpl(appConfigMock, ftpsClientMock, sftpClientMock);
 
-        // @formatter:off
+       // @formatter:off
         FileData fileData = ImmutableFileData.builder()
-                .productName(PRODUCT_NAME)
-                .vendorName(VENDOR_NAME)
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
-                .sourceName(SOURCE_NAME)
-                .startEpochMicrosec(START_EPOCH_MICROSEC)
-                .timeZoneOffset(TIME_ZONE_OFFSET)
-                .changeIdentifier(PM_MEAS_CHANGE_IDINTIFIER)
-                .changeType(FILE_READY_CHANGE_TYPE)
+                .fileMetaData(fileMetaData)
                 .name(PM_FILE_NAME)
                 .location(FTPES_LOCATION)
                 .compression(GZIP_COMPRESSION)
@@ -160,14 +166,7 @@ public class XnfCollectorTaskImplTest {
                 new XnfCollectorTaskImpl(appConfigMock, ftpsClientMock, sftpClientMock);
         // @formatter:off
         FileData fileData = ImmutableFileData.builder()
-                .productName(PRODUCT_NAME)
-                .vendorName(VENDOR_NAME)
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
-                .sourceName(SOURCE_NAME)
-                .startEpochMicrosec(START_EPOCH_MICROSEC)
-                .timeZoneOffset(TIME_ZONE_OFFSET)
-                .changeIdentifier(PM_MEAS_CHANGE_IDINTIFIER)
-                .changeType(FILE_READY_CHANGE_TYPE)
+                .fileMetaData(fileMetaData)
                 .name(PM_FILE_NAME)
                 .location(SFTP_LOCATION)
                 .compression(GZIP_COMPRESSION)
@@ -215,14 +214,7 @@ public class XnfCollectorTaskImplTest {
         collectorUndetTest.setRetryTimer(retryTimerMock);
         // @formatter:off
         FileData fileData = ImmutableFileData.builder()
-                .productName(PRODUCT_NAME)
-                .vendorName(VENDOR_NAME)
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
-                .sourceName(SOURCE_NAME)
-                .startEpochMicrosec(START_EPOCH_MICROSEC)
-                .timeZoneOffset(TIME_ZONE_OFFSET)
-                .changeIdentifier(PM_MEAS_CHANGE_IDINTIFIER)
-                .changeType(FILE_READY_CHANGE_TYPE)
+                .fileMetaData(fileMetaData)
                 .name(PM_FILE_NAME)
                 .location(FTPES_LOCATION)
                 .compression(GZIP_COMPRESSION)
@@ -256,14 +248,7 @@ public class XnfCollectorTaskImplTest {
         collectorUndetTest.setRetryTimer(retryTimerMock);
         // @formatter:off
         FileData fileData = ImmutableFileData.builder()
-                .productName(PRODUCT_NAME)
-                .vendorName(VENDOR_NAME)
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
-                .sourceName(SOURCE_NAME)
-                .startEpochMicrosec(START_EPOCH_MICROSEC)
-                .timeZoneOffset(TIME_ZONE_OFFSET)
-                .changeIdentifier(PM_MEAS_CHANGE_IDINTIFIER)
-                .changeType(FILE_READY_CHANGE_TYPE)
+                .fileMetaData(fileMetaData)
                 .name(PM_FILE_NAME)
                 .location(FTPES_LOCATION)
                 .compression(GZIP_COMPRESSION)
@@ -313,14 +298,7 @@ public class XnfCollectorTaskImplTest {
                 new XnfCollectorTaskImpl(appConfigMock, ftpsClientMock, sftpClientMock);
         // @formatter:off
         FileData fileData = ImmutableFileData.builder()
-                .productName(PRODUCT_NAME)
-                .vendorName(VENDOR_NAME)
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
-                .sourceName(SOURCE_NAME)
-                .startEpochMicrosec(START_EPOCH_MICROSEC)
-                .timeZoneOffset(TIME_ZONE_OFFSET)
-                .changeIdentifier(PM_MEAS_CHANGE_IDINTIFIER)
-                .changeType(FILE_READY_CHANGE_TYPE)
+                .fileMetaData(fileMetaData)
                 .name(PM_FILE_NAME)
                 .location("http://host.com/file.zip")
                 .compression(GZIP_COMPRESSION)

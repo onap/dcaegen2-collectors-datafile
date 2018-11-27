@@ -27,7 +27,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapNotFoundException;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
+import org.onap.dcaegen2.collectors.datafile.model.FileMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
+import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileMetaData;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
 
@@ -39,6 +41,7 @@ import reactor.test.StepVerifier;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 class DmaapConsumerJsonParserTest {
+    private static final String NR_RADIO_ERICSSON_EVENT_NAME = "Noti_NrRadio-Ericsson_FileReady";
     private static final String PRODUCT_NAME = "NrRadio";
     private static final String VENDOR_NAME = "Ericsson";
     private static final String LAST_EPOCH_MICROSEC = "1519837825682";
@@ -67,13 +70,14 @@ class DmaapConsumerJsonParserTest {
                 .fileFormatVersion(FILE_FORMAT_VERSION)
                 .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder()
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
                 .changeIdentifier(CHANGE_IDENTIFIER)
                 .changeType(CHANGE_TYPE)
                 .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
                 .addAdditionalField(additionalField)
                 .build();
 
-        FileData expectedFileData = ImmutableFileData.builder()
+        FileMetaData fileMetaData = ImmutableFileMetaData.builder()
                 .productName(PRODUCT_NAME)
                 .vendorName(VENDOR_NAME)
                 .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
@@ -82,6 +86,9 @@ class DmaapConsumerJsonParserTest {
                 .timeZoneOffset(TIME_ZONE_OFFSET)
                 .changeIdentifier(CHANGE_IDENTIFIER)
                 .changeType(CHANGE_TYPE)
+                .build();
+        FileData expectedFileData = ImmutableFileData.builder()
+                .fileMetaData(fileMetaData)
                 .name(PM_FILE_NAME)
                 .location(LOCATION)
                 .compression(GZIP_COMPRESSION)
@@ -101,6 +108,34 @@ class DmaapConsumerJsonParserTest {
     }
 
     @Test
+    void whenPassingCorrectJsonWithFaultyEventName_validationThrowingAnException() {
+        // @formatter:off
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
+                .location(LOCATION)
+                .compression(GZIP_COMPRESSION)
+                .fileFormatType(FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION)
+                .build();
+        JsonMessage message = new JsonMessage.JsonMessageBuilder()
+                .eventName("Faulty event name")
+                .changeIdentifier(CHANGE_IDENTIFIER)
+                .changeType(CHANGE_TYPE)
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
+                .addAdditionalField(additionalField)
+                .build();
+        // @formatter:on
+        String messageString = message.toString();
+        String parsedString = message.getParsed();
+        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+                .getJsonObjectFromAnArray(jsonElement);
+
+        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
+                .expectError(DmaapNotFoundException.class).verify();
+    }
+
+    @Test
     void whenPassingCorrectJsonWithoutName_noFileData() {
         // @formatter:off
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
@@ -110,6 +145,7 @@ class DmaapConsumerJsonParserTest {
                 .fileFormatVersion(FILE_FORMAT_VERSION)
                 .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder()
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
                 .changeIdentifier(CHANGE_IDENTIFIER)
                 .changeType(CHANGE_TYPE)
                 .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
@@ -137,6 +173,7 @@ class DmaapConsumerJsonParserTest {
                 .fileFormatVersion(FILE_FORMAT_VERSION)
                 .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder()
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
                 .changeIdentifier(CHANGE_IDENTIFIER)
                 .changeType(CHANGE_TYPE)
                 .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
@@ -164,6 +201,7 @@ class DmaapConsumerJsonParserTest {
                 .fileFormatVersion(FILE_FORMAT_VERSION)
                 .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder()
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
                 .changeIdentifier(CHANGE_IDENTIFIER)
                 .changeType(CHANGE_TYPE)
                 .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
@@ -191,6 +229,7 @@ class DmaapConsumerJsonParserTest {
                 .fileFormatVersion(FILE_FORMAT_VERSION)
                 .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder()
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
                 .changeIdentifier(CHANGE_IDENTIFIER)
                 .changeType(CHANGE_TYPE)
                 .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
@@ -225,6 +264,7 @@ class DmaapConsumerJsonParserTest {
                 .fileFormatVersion(FILE_FORMAT_VERSION)
                 .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder()
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
                 .changeIdentifier(CHANGE_IDENTIFIER)
                 .changeType(CHANGE_TYPE)
                 .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
@@ -232,7 +272,7 @@ class DmaapConsumerJsonParserTest {
                 .addAdditionalField(additionalField)
                 .build();
 
-        FileData expectedFileData = ImmutableFileData.builder()
+        FileMetaData fileMetaData = ImmutableFileMetaData.builder()
                 .productName(PRODUCT_NAME)
                 .vendorName(VENDOR_NAME)
                 .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
@@ -241,6 +281,9 @@ class DmaapConsumerJsonParserTest {
                 .timeZoneOffset(TIME_ZONE_OFFSET)
                 .changeIdentifier(CHANGE_IDENTIFIER)
                 .changeType(CHANGE_TYPE)
+                .build();
+        FileData expectedFileData = ImmutableFileData.builder()
+                .fileMetaData(fileMetaData)
                 .name(PM_FILE_NAME)
                 .location(LOCATION)
                 .compression(GZIP_COMPRESSION)
@@ -263,6 +306,7 @@ class DmaapConsumerJsonParserTest {
     void whenPassingJsonWithoutMandatoryHeaderInformation_validationThrowingAnException() {
         // @formatter:off
         JsonMessage message = new JsonMessage.JsonMessageBuilder()
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
                 .changeIdentifier("PM_MEAS_FILES_INVALID")
                 .changeType("FileReady_INVALID")
                 .notificationFieldsVersion("1.0_INVALID")
@@ -305,6 +349,7 @@ class DmaapConsumerJsonParserTest {
                 .fileFormatVersion(FILE_FORMAT_VERSION)
                 .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder()
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
                 .changeIdentifier(CHANGE_IDENTIFIER)
                 .changeType(INCORRECT_CHANGE_TYPE)
                 .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
@@ -332,6 +377,7 @@ class DmaapConsumerJsonParserTest {
                 .fileFormatVersion(FILE_FORMAT_VERSION)
                 .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder()
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
                 .changeIdentifier(INCORRECT_CHANGE_IDENTIFIER)
                 .changeType(CHANGE_TYPE)
                 .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
