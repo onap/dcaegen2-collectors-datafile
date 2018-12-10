@@ -60,7 +60,7 @@ class DmaapConsumerJsonParserTest {
     private static final String NOTIFICATION_FIELDS_VERSION = "1.0";
 
     @Test
-    void whenPassingCorrectJson_validationNotThrowingAnException() throws DmaapNotFoundException {
+    void whenPassingCorrectJson_oneFileData() throws DmaapNotFoundException {
         // @formatter:off
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
                 .name(PM_FILE_NAME)
@@ -108,7 +108,98 @@ class DmaapConsumerJsonParserTest {
     }
 
     @Test
-    void whenPassingCorrectJsonWithFaultyEventName_validationThrowingAnException() {
+    void whenPassingCorrectJsonWithTwoEvents_twoFileData() throws DmaapNotFoundException {
+        // @formatter:off
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
+                .name(PM_FILE_NAME)
+                .location(LOCATION)
+                .compression(GZIP_COMPRESSION)
+                .fileFormatType(FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION)
+                .build();
+        JsonMessage message = new JsonMessage.JsonMessageBuilder()
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
+                .changeIdentifier(CHANGE_IDENTIFIER)
+                .changeType(CHANGE_TYPE)
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
+                .addAdditionalField(additionalField)
+                .build();
+
+        FileMetaData fileMetaData = ImmutableFileMetaData.builder()
+                .productName(PRODUCT_NAME)
+                .vendorName(VENDOR_NAME)
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
+                .sourceName(SOURCE_NAME)
+                .startEpochMicrosec(START_EPOCH_MICROSEC)
+                .timeZoneOffset(TIME_ZONE_OFFSET)
+                .changeIdentifier(CHANGE_IDENTIFIER)
+                .changeType(CHANGE_TYPE)
+                .build();
+        FileData expectedFileData = ImmutableFileData.builder()
+                .fileMetaData(fileMetaData)
+                .name(PM_FILE_NAME)
+                .location(LOCATION)
+                .compression(GZIP_COMPRESSION)
+                .fileFormatType(FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION)
+                .build();
+        // @formatter:on
+        String parsedString = message.getParsed();
+        String messageString = "[" + parsedString + "," + parsedString + "]";
+        DmaapConsumerJsonParser dmaapConsumerJsonParser = new DmaapConsumerJsonParser();
+
+        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
+                .expectNext(expectedFileData).expectNext(expectedFileData).verifyComplete();
+    }
+
+    @Test
+    void whenPassingCorrectJsonWithTwoEventsFirstNoHeader_oneFileDatan()
+            throws DmaapNotFoundException {
+        // @formatter:off
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
+                .name(PM_FILE_NAME)
+                .location(LOCATION)
+                .compression(GZIP_COMPRESSION)
+                .fileFormatType(FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION)
+                .build();
+        JsonMessage message = new JsonMessage.JsonMessageBuilder()
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
+                .changeIdentifier(CHANGE_IDENTIFIER)
+                .changeType(CHANGE_TYPE)
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
+                .addAdditionalField(additionalField)
+                .build();
+
+        FileMetaData fileMetaData = ImmutableFileMetaData.builder()
+                .productName(PRODUCT_NAME)
+                .vendorName(VENDOR_NAME)
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
+                .sourceName(SOURCE_NAME)
+                .startEpochMicrosec(START_EPOCH_MICROSEC)
+                .timeZoneOffset(TIME_ZONE_OFFSET)
+                .changeIdentifier(CHANGE_IDENTIFIER)
+                .changeType(CHANGE_TYPE)
+                .build();
+        FileData expectedFileData = ImmutableFileData.builder()
+                .fileMetaData(fileMetaData)
+                .name(PM_FILE_NAME)
+                .location(LOCATION)
+                .compression(GZIP_COMPRESSION)
+                .fileFormatType(FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION)
+                .build();
+        // @formatter:on
+        String parsedString = message.getParsed();
+        String messageString = "[{\"event\":{}}," + parsedString + "]";
+        DmaapConsumerJsonParser dmaapConsumerJsonParser = new DmaapConsumerJsonParser();
+
+        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
+                .expectNext(expectedFileData).verifyComplete();
+    }
+
+    @Test
+    void whenPassingCorrectJsonWithFaultyEventName_noFileData() {
         // @formatter:off
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
                 .location(LOCATION)
@@ -132,7 +223,7 @@ class DmaapConsumerJsonParserTest {
                 .getJsonObjectFromAnArray(jsonElement);
 
         StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
-                .expectError(DmaapNotFoundException.class).verify();
+                .expectComplete().verify();
     }
 
     @Test
@@ -161,6 +252,27 @@ class DmaapConsumerJsonParserTest {
 
         StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
                 .expectNextCount(0).verifyComplete();
+    }
+
+    @Test
+    void whenPassingCorrectJsonWithoutAdditionalFields_noFileData() {
+        // @formatter:off
+        JsonMessage message = new JsonMessage.JsonMessageBuilder()
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
+                .changeIdentifier(CHANGE_IDENTIFIER)
+                .changeType(CHANGE_TYPE)
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
+                .build();
+        // @formatter:on
+        String messageString = message.toString();
+        String parsedString = message.getParsed();
+        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+        .getJsonObjectFromAnArray(jsonElement);
+
+        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
+        .expectNextCount(0).verifyComplete();
     }
 
     @Test
@@ -303,7 +415,7 @@ class DmaapConsumerJsonParserTest {
     }
 
     @Test
-    void whenPassingJsonWithoutMandatoryHeaderInformation_validationThrowingAnException() {
+    void whenPassingJsonWithoutMandatoryHeaderInformation_noFileData() {
         // @formatter:off
         JsonMessage message = new JsonMessage.JsonMessageBuilder()
                 .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
@@ -320,27 +432,23 @@ class DmaapConsumerJsonParserTest {
                 .getJsonObjectFromAnArray(jsonElement);
 
         StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(incorrectMessageString)))
-                .expectSubscription().expectError(DmaapNotFoundException.class).verify();
+                .expectSubscription().expectComplete().verify();
     }
 
     @Test
-    void whenPassingJsonWithNullJsonElement_validationThrowingAnException() {
-        JsonMessage message = new JsonMessage.JsonMessageBuilder().build();
-
-        String incorrectMessageString = message.toString();
-        String parsedString = message.getParsed();
+    void whenPassingJsonWithNullJsonElement_noFileData() {
         DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
-        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        JsonElement jsonElement = new JsonParser().parse("{}");
 
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(incorrectMessageString)))
-                .expectSubscription().expectError(DmaapNotFoundException.class).verify();
+        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just("[{}]"))).expectSubscription()
+                .expectComplete().verify();
     }
 
     @Test
-    void whenPassingCorrectJsonWithIncorrectChangeType_validationThrowingAnException() {
+    void whenPassingCorrectJsonWithIncorrectChangeType_noFileData() {
         // @formatter:off
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
                 .name(PM_FILE_NAME)
@@ -364,11 +472,11 @@ class DmaapConsumerJsonParserTest {
                 .getJsonObjectFromAnArray(jsonElement);
 
         StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
-                .expectNextCount(0).expectError(DmaapNotFoundException.class).verify();
+                .expectNextCount(0).expectComplete().verify();
     }
 
     @Test
-    void whenPassingCorrectJsonWithIncorrectChangeIdentifier_validationThrowingAnException() {
+    void whenPassingCorrectJsonWithIncorrectChangeIdentifier_noFileData() {
         // @formatter:off
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
                 .name(PM_FILE_NAME)
@@ -392,6 +500,6 @@ class DmaapConsumerJsonParserTest {
                 .getJsonObjectFromAnArray(jsonElement);
 
         StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
-                .expectNextCount(0).expectError(DmaapNotFoundException.class).verify();
+                .expectComplete().verify();
     }
 }
