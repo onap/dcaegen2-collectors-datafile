@@ -27,12 +27,13 @@ import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
-import org.onap.dcaegen2.collectors.datafile.config.ImmutableDmaapPublisherConfiguration;
+
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerReactiveHttpClient;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
 import org.springframework.http.HttpStatus;
 
 import reactor.core.publisher.Flux;
@@ -68,6 +69,11 @@ class DmaapPublisherTaskImplTest {
                 .dmaapUserName("DFC")
                 .dmaapUserPassword("DFC")
                 .dmaapTopicName("unauthenticated.VES_NOTIFICATION_OUTPUT")
+                .trustStorePath("trustStorePath")
+                .trustStorePasswordPath("trustStorePasswordPath")
+                .keyStorePath("keyStorePath")
+                .keyStorePasswordPath("keyStorePasswordPath")
+                .enableDmaapCertAuth(true)
                 .build();
         consumerDmaapModel = ImmutableConsumerDmaapModel.builder()
                 .productName(PRODUCT_NAME)

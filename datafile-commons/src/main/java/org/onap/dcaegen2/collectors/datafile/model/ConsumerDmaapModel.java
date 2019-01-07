@@ -20,6 +20,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
+import org.onap.dcaegen2.services.sdk.rest.services.model.DmaapModel;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 5/8/18
@@ -28,7 +29,7 @@ import org.immutables.value.Value;
 
 @Value.Immutable
 @Gson.TypeAdapters
-public interface ConsumerDmaapModel {
+public interface ConsumerDmaapModel extends DmaapModel {
 
     @SerializedName("productName")
     String getProductName();

@@ -29,8 +29,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.onap.dcaegen2.collectors.datafile.config.DmaapConsumerConfiguration;
-import org.onap.dcaegen2.collectors.datafile.config.ImmutableDmaapConsumerConfiguration;
+
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapEmptyResponseException;
@@ -41,10 +40,13 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileMetaData;
 import org.onap.dcaegen2.collectors.datafile.service.DmaapConsumerJsonParser;
-import org.onap.dcaegen2.collectors.datafile.service.consumer.DmaapConsumerReactiveHttpClient;
+
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
 
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapConsumerConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.service.consumer.DMaaPConsumerReactiveHttpClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -81,7 +83,7 @@ class DmaapConsumerTaskImplTest {
     private static AppConfig appConfig;
     private static DmaapConsumerConfiguration dmaapConsumerConfiguration;
     private DmaapConsumerTaskImpl dmaapConsumerTask;
-    private DmaapConsumerReactiveHttpClient dmaapConsumerReactiveHttpClient;
+    private DMaaPConsumerReactiveHttpClient dmaapConsumerReactiveHttpClient;
 
     private static String ftpesMessage;
     private static FileData ftpesFileData;
@@ -101,8 +103,13 @@ class DmaapConsumerTaskImplTest {
                 .dmaapUserName("Datafile")
                 .dmaapUserPassword("Datafile")
                 .dmaapTopicName("unauthenticated.NOTIFICATION")
-                .timeoutMS(-1)
+                .timeoutMs(-1)
                 .messageLimit(-1)
+                .trustStorePath("trustStorePath")
+                .trustStorePasswordPath("trustStorePasswordPath")
+                .keyStorePath("keyStorePath")
+                .keyStorePasswordPath("keyStorePasswordPath")
+                .enableDmaapCertAuth(true)
                 .build();
 
         appConfig = mock(AppConfig.class);
@@ -191,7 +198,7 @@ class DmaapConsumerTaskImplTest {
         StepVerifier.create(dmaapConsumerTask.execute("Sample input")).expectSubscription()
                 .expectError(DmaapEmptyResponseException.class).verify();
 
-        verify(dmaapConsumerReactiveHttpClient, times(1)).getDmaapConsumerResponse();
+        verify(dmaapConsumerReactiveHttpClient, times(1)).getDMaaPConsumerResponse();
     }
 
     @Test
@@ -200,7 +207,7 @@ class DmaapConsumerTaskImplTest {
 
         StepVerifier.create(dmaapConsumerTask.execute(ftpesMessage)).expectNext(ftpesFileData).verifyComplete();
 
-        verify(dmaapConsumerReactiveHttpClient, times(1)).getDmaapConsumerResponse();
+        verify(dmaapConsumerReactiveHttpClient, times(1)).getDMaaPConsumerResponse();
         verifyNoMoreInteractions(dmaapConsumerReactiveHttpClient);
     }
 
@@ -210,15 +217,15 @@ class DmaapConsumerTaskImplTest {
 
         StepVerifier.create(dmaapConsumerTask.execute(ftpesMessage)).expectNext(sftpFileData).verifyComplete();
 
-        verify(dmaapConsumerReactiveHttpClient, times(1)).getDmaapConsumerResponse();
+        verify(dmaapConsumerReactiveHttpClient, times(1)).getDMaaPConsumerResponse();
         verifyNoMoreInteractions(dmaapConsumerReactiveHttpClient);
     }
 
     private void prepareMocksForDmaapConsumer(String message, FileData fileDataAfterConsume) {
         Mono<String> messageAsMono = Mono.just(message);
         DmaapConsumerJsonParser dmaapConsumerJsonParserMock = mock(DmaapConsumerJsonParser.class);
-        dmaapConsumerReactiveHttpClient = mock(DmaapConsumerReactiveHttpClient.class);
-        when(dmaapConsumerReactiveHttpClient.getDmaapConsumerResponse()).thenReturn(messageAsMono);
+        dmaapConsumerReactiveHttpClient = mock(DMaaPConsumerReactiveHttpClient.class);
+        when(dmaapConsumerReactiveHttpClient.getDMaaPConsumerResponse()).thenReturn(messageAsMono);
 
         if (!message.isEmpty()) {
             when(dmaapConsumerJsonParserMock.getJsonObject(messageAsMono)).thenReturn(Flux.just(fileDataAfterConsume));

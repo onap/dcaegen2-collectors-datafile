@@ -21,8 +21,9 @@ import com.google.gson.JsonObject;
 import java.util.Optional;
 import java.util.Properties;
 
-import org.onap.dcaegen2.collectors.datafile.config.DmaapConsumerConfiguration;
-import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
+
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.providers.ReactiveCloudConfigurationProvider;
 import org.slf4j.Logger;
@@ -47,7 +48,7 @@ import reactor.core.scheduler.Schedulers;
 @EnableConfigurationProperties
 @EnableScheduling
 @Primary
-public class CloudConfiguration extends AppConfig {   
+public class CloudConfiguration extends AppConfig {
     private static final Logger logger = LoggerFactory.getLogger(CloudConfiguration.class);
     private ReactiveCloudConfigurationProvider reactiveCloudConfigurationProvider;
     private DmaapPublisherConfiguration dmaapPublisherCloudConfiguration;

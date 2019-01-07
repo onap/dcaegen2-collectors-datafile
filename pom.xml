@@ -51,7 +51,7 @@
     <tomcat.version>8.5.34</tomcat.version>
     <docker.maven.version>1.0.0</docker.maven.version>
     <resource.maven.plugin.version>3.1.0</resource.maven.plugin.version>
-    <sdk.version>1.1.0-SNAPSHOT</sdk.version>
+    <sdk.version>1.1.1-SNAPSHOT</sdk.version>
 
     <!-- LOGGING SETTINGS -->
     <slf4j.version>1.7.25</slf4j.version>
@@ -130,6 +130,13 @@
             <skip>true</skip>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
@@ -139,6 +146,16 @@
       <dependency>
         <groupId>org.onap.dcaegen2.services.sdk.rest.services</groupId>
         <artifactId>cbs-client</artifactId>
+        <version>${sdk.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.onap.dcaegen2.services.sdk.rest.services</groupId>
+        <artifactId>dmaap-client</artifactId>
+        <version>${sdk.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.onap.dcaegen2.services.sdk.rest.services</groupId>
+        <artifactId>common-dependency</artifactId>
         <version>${sdk.version}</version>
       </dependency>
       <dependency>

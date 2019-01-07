@@ -21,24 +21,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.gson.JsonObject;
 
 import org.junit.jupiter.api.Test;
-import org.onap.dcaegen2.collectors.datafile.config.DmaapConsumerConfiguration;
-import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
-import org.onap.dcaegen2.collectors.datafile.config.ImmutableDmaapConsumerConfiguration;
-import org.onap.dcaegen2.collectors.datafile.config.ImmutableDmaapPublisherConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapConsumerConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
+
 
 class CloudConfigParserTest {
 
     private static final ImmutableDmaapConsumerConfiguration CORRECT_DMAAP_CONSUMER_CONFIG =
-            new ImmutableDmaapConsumerConfiguration.Builder().timeoutMS(-1)
+            new ImmutableDmaapConsumerConfiguration.Builder().timeoutMs(-1)
                     .dmaapHostName("message-router.onap.svc.cluster.local").dmaapUserName("admin")
                     .dmaapUserPassword("admin").dmaapTopicName("/events/unauthenticated.VES_NOTIFICATION_OUTPUT")
                     .dmaapPortNumber(2222).dmaapContentType("application/json").messageLimit(-1).dmaapProtocol("http")
-                    .consumerId("C12").consumerGroup("OpenDCAE-c12").build();
+                    .consumerId("C12").consumerGroup("OpenDCAE-c12").trustStorePath("trustStorePath")
+                    .trustStorePasswordPath("trustStorePasswordPath").keyStorePath("keyStorePath")
+                    .keyStorePasswordPath("keyStorePasswordPath").enableDmaapCertAuth(true)
+                    .build();
 
     private static final ImmutableDmaapPublisherConfiguration CORRECT_DMAAP_PUBLISHER_CONFIG =
             new ImmutableDmaapPublisherConfiguration.Builder().dmaapTopicName("publish").dmaapUserPassword("dradmin")
                     .dmaapPortNumber(3907).dmaapProtocol("https").dmaapContentType("application/json")
-                    .dmaapHostName("message-router.onap.svc.cluster.local").dmaapUserName("dradmin").build();
+                    .dmaapHostName("message-router.onap.svc.cluster.local").dmaapUserName("dradmin")
+                    .trustStorePath("trustStorePath")
+                    .trustStorePasswordPath("trustStorePasswordPath").keyStorePath("keyStorePath")
+                    .keyStorePasswordPath("keyStorePasswordPath").enableDmaapCertAuth(true)
+                    .build();
 
     private static final ImmutableFtpesConfig CORRECT_FTPES_CONFIGURATION =
             new ImmutableFtpesConfig.Builder().keyCert("/config/ftpKey.jks").keyPassword("secret")
@@ -95,6 +103,12 @@ class CloudConfigParserTest {
         config.addProperty("dmaap.ftpesConfig.keyPassword", "secret");
         config.addProperty("dmaap.ftpesConfig.trustedCA", "config/cacerts");
         config.addProperty("dmaap.ftpesConfig.trustedCAPassword", "secret");
+
+        config.addProperty("dmaap.security.trustStorePath", "trustStorePath");
+        config.addProperty("dmaap.security.trustStorePasswordPath", "trustStorePasswordPath");
+        config.addProperty("dmaap.security.keyStorePath", "keyStorePath");
+        config.addProperty("dmaap.security.keyStorePasswordPath", "keyStorePasswordPath");
+        config.addProperty("dmaap.security.enableDmaapCertAuth", "true");
 
         return config;
     }

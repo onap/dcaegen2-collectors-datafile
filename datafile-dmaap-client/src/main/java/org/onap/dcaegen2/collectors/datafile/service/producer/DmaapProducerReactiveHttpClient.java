@@ -36,13 +36,14 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
+
 import org.onap.dcaegen2.collectors.datafile.io.FileSystemResourceWrapper;
 import org.onap.dcaegen2.collectors.datafile.io.IFileSystemResource;
 import org.onap.dcaegen2.collectors.datafile.model.CommonFunctions;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.service.HttpUtils;
 import org.onap.dcaegen2.collectors.datafile.web.PublishRedirectStrategy;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -141,7 +142,7 @@ public class DmaapProducerReactiveHttpClient {
 
     private void prepareHead(ConsumerDmaapModel model, HttpPut put) {
         put.addHeader(HttpHeaders.CONTENT_TYPE, dmaapContentType);
-        JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(model));
+        JsonElement metaData = new JsonParser().parse(new CommonFunctions().createJsonBody(model));
         String name = metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
         metaData.getAsJsonObject().remove(INTERNAL_LOCATION_JSON_TAG);
         put.addHeader(X_ATT_DR_META, metaData.toString());
