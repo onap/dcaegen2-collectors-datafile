@@ -132,6 +132,10 @@
   <dependencies>
     <dependency>
       <groupId>org.onap.dcaegen2.services.sdk.rest.services</groupId>
+      <artifactId>dmaap-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.onap.dcaegen2.services.sdk.rest.services</groupId>
       <artifactId>cbs-client</artifactId>
     </dependency>
     <dependency>
