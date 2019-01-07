@@ -25,7 +25,9 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.onap.dcaegen2.collectors.datafile.config.DmaapConsumerConfiguration;
+
+
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
 import org.springframework.web.reactive.function.client.WebClient;
 
 class DmaapReactiveWebClientTest {

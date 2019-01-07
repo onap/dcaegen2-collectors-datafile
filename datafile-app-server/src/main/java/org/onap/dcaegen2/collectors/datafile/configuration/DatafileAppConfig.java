@@ -26,8 +26,9 @@ import java.util.ServiceLoader;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.onap.dcaegen2.collectors.datafile.config.DmaapConsumerConfiguration;
-import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
+
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -56,7 +57,7 @@ public abstract class DatafileAppConfig implements Config {
     private static final String DMAAP_CONSUMER = "dmaapConsumerConfiguration";
     private static final String FTP = "ftp";
     private static final String FTPES_CONFIGURATION = "ftpesConfiguration";
-
+    private static final String SECURITY = "security";
 
     private static final Logger logger = LoggerFactory.getLogger(DatafileAppConfig.class);
 
@@ -99,12 +100,14 @@ public abstract class DatafileAppConfig implements Config {
                 ftpesConfig = deserializeType(gsonBuilder,
                         jsonObject.getAsJsonObject(CONFIG).getAsJsonObject(FTP).getAsJsonObject(FTPES_CONFIGURATION),
                         FtpesConfig.class);
-                dmaapConsumerConfiguration = deserializeType(gsonBuilder,
+                dmaapConsumerConfiguration = deserializeType(gsonBuilder, concatenateJsonObjects(
                         jsonObject.getAsJsonObject(CONFIG).getAsJsonObject(DMAAP).getAsJsonObject(DMAAP_CONSUMER),
+                        rootElement.getAsJsonObject().getAsJsonObject(CONFIG).getAsJsonObject(SECURITY)),
                         DmaapConsumerConfiguration.class);
 
-                dmaapPublisherConfiguration = deserializeType(gsonBuilder,
+                dmaapPublisherConfiguration = deserializeType(gsonBuilder, concatenateJsonObjects(
                         jsonObject.getAsJsonObject(CONFIG).getAsJsonObject(DMAAP).getAsJsonObject(DMAAP_PRODUCER),
+                        rootElement.getAsJsonObject().getAsJsonObject(CONFIG).getAsJsonObject(SECURITY)),
                         DmaapPublisherConfiguration.class);
             }
         } catch (IOException e) {
@@ -135,4 +138,9 @@ public abstract class DatafileAppConfig implements Config {
         this.filepath = filepath;
     }
 
+    private JsonObject concatenateJsonObjects(JsonObject target, JsonObject source) {
+        source.entrySet()
+                .forEach(entry -> target.add(entry.getKey(), entry.getValue()));
+        return target;
+    }
 }

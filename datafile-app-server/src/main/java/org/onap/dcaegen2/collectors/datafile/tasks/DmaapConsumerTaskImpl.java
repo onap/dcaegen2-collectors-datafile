@@ -16,12 +16,13 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import org.onap.dcaegen2.collectors.datafile.config.DmaapConsumerConfiguration;
+
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.Config;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.service.DmaapConsumerJsonParser;
-import org.onap.dcaegen2.collectors.datafile.service.consumer.DmaapConsumerReactiveHttpClient;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.service.consumer.DMaaPConsumerReactiveHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class DmaapConsumerTaskImpl extends DmaapConsumerTask {
 
     private Config datafileAppConfig;
     private DmaapConsumerJsonParser dmaapConsumerJsonParser;
-    private DmaapConsumerReactiveHttpClient dmaaPConsumerReactiveHttpClient;
+    private DMaaPConsumerReactiveHttpClient dmaaPConsumerReactiveHttpClient;
 
     @Autowired
     public DmaapConsumerTaskImpl(AppConfig datafileAppConfig) {
@@ -50,8 +51,8 @@ public class DmaapConsumerTaskImpl extends DmaapConsumerTask {
     }
 
     protected DmaapConsumerTaskImpl(AppConfig datafileAppConfig,
-            DmaapConsumerReactiveHttpClient dmaaPConsumerReactiveHttpClient,
-            DmaapConsumerJsonParser dmaapConsumerJsonParser) {
+                                    DMaaPConsumerReactiveHttpClient dmaaPConsumerReactiveHttpClient,
+                                    DmaapConsumerJsonParser dmaapConsumerJsonParser) {
         this.datafileAppConfig = datafileAppConfig;
         this.dmaaPConsumerReactiveHttpClient = dmaaPConsumerReactiveHttpClient;
         this.dmaapConsumerJsonParser = dmaapConsumerJsonParser;
@@ -67,7 +68,7 @@ public class DmaapConsumerTaskImpl extends DmaapConsumerTask {
     protected Flux<FileData> execute(String object) {
         dmaaPConsumerReactiveHttpClient = resolveClient();
         logger.trace("execute called with arg {}", object);
-        return consume((dmaaPConsumerReactiveHttpClient.getDmaapConsumerResponse()));
+        return consume((dmaaPConsumerReactiveHttpClient.getDMaaPConsumerResponse()));
     }
 
     @Override
@@ -81,7 +82,7 @@ public class DmaapConsumerTaskImpl extends DmaapConsumerTask {
     }
 
     @Override
-    protected DmaapConsumerReactiveHttpClient resolveClient() {
-        return new DmaapConsumerReactiveHttpClient(resolveConfiguration()).createDmaapWebClient(buildWebClient());
+    protected DMaaPConsumerReactiveHttpClient resolveClient() {
+        return new DMaaPConsumerReactiveHttpClient(resolveConfiguration(),buildWebClient());
     }
 }
