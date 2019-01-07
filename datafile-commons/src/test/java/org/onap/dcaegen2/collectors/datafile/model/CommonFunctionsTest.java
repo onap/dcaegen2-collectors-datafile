@@ -53,6 +53,6 @@ class CommonFunctionsTest {
     // @formatter:on
     @Test
     void createJsonBody_shouldReturnJsonInString() {
-        assertEquals(EXPECTED_RESULT, CommonFunctions.createJsonBody(model));
+        assertEquals(EXPECTED_RESULT, new CommonFunctions().createJsonBody(model));
     }
 }

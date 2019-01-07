@@ -130,6 +130,13 @@
             <skip>true</skip>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
@@ -139,6 +146,16 @@
       <dependency>
         <groupId>org.onap.dcaegen2.services.sdk.rest.services</groupId>
         <artifactId>cbs-client</artifactId>
+        <version>${sdk.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.onap.dcaegen2.services.sdk.rest.services</groupId>
+        <artifactId>dmaap-client</artifactId>
+        <version>${sdk.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.onap.dcaegen2.services.sdk.rest.services</groupId>
+        <artifactId>common-dependency</artifactId>
         <version>${sdk.version}</version>
       </dependency>
       <dependency>
