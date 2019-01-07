@@ -18,7 +18,7 @@ package org.onap.dcaegen2.collectors.datafile.service;
 
 import static org.springframework.web.reactive.function.client.ExchangeFilterFunctions.basicAuthentication;
 
-import org.onap.dcaegen2.collectors.datafile.config.DmaapCustomConfig;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapCustomConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;

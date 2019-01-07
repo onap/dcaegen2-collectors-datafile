@@ -39,6 +39,10 @@
   <dependencies>
     <!-- DEVELOPMENT DEPENDENCIES -->
     <dependency>
+      <groupId>org.onap.dcaegen2.services.sdk.rest.services</groupId>
+      <artifactId>dmaap-client</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.asynchttpclient</groupId>
       <artifactId>async-http-client</artifactId>
     </dependency>
