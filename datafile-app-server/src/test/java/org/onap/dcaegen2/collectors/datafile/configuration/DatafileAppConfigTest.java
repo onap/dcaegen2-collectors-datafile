@@ -176,7 +176,7 @@ class DatafileAppConfigTest {
         dmaapConsumerConfigData.addProperty("dmaapContentType", "application/json");
         dmaapConsumerConfigData.addProperty("consumerId", "C12");
         dmaapConsumerConfigData.addProperty("consumerGroup", "OpenDcae-c12");
-        dmaapConsumerConfigData.addProperty("timeoutMS", -1);
+        dmaapConsumerConfigData.addProperty("timeoutMs", -1);
         dmaapConsumerConfigData.addProperty("messageLimit", 1);
 
         JsonObject dmaapProducerConfigData = new JsonObject();
@@ -200,12 +200,20 @@ class DatafileAppConfigTest {
         ftpesConfigData.addProperty("trustedCA", "config/cacerts");
         ftpesConfigData.addProperty("trustedCAPassword", "secret");
 
+        JsonObject security = new JsonObject();
+        security.addProperty("trustStorePath", "trustStorePath");
+        security.addProperty("trustStorePasswordPath", "trustStorePasswordPath");
+        security.addProperty("keyStorePath", "keyStorePath");
+        security.addProperty("keyStorePasswordPath", "keyStorePasswordPath");
+        security.addProperty("enableDmaapCertAuth", "enableDmaapCertAuth");
+
         JsonObject ftpesConfiguration = new JsonObject();
         ftpesConfiguration.add("ftpesConfiguration", ftpesConfigData);
 
         JsonObject configs = new JsonObject();
         configs.add("dmaap", dmaapConfigs);
         configs.add("ftp", ftpesConfiguration);
+        configs.add("security", security);
 
         JsonObject completeJson = new JsonObject();
         completeJson.add("configs", configs);
