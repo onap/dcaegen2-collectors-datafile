@@ -23,13 +23,14 @@ import java.util.Properties;
 
 import org.onap.dcaegen2.collectors.datafile.config.DmaapConsumerConfiguration;
 import org.onap.dcaegen2.collectors.datafile.config.DmaapPublisherConfiguration;
-import org.onap.dcaegen2.collectors.datafile.model.EnvProperties;
-import org.onap.dcaegen2.collectors.datafile.service.DatafileConfigurationProvider;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.providers.ReactiveCloudConfigurationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -42,14 +43,13 @@ import reactor.core.scheduler.Schedulers;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 @Configuration
+@ComponentScan("org.onap.dcaegen2.services.sdk.rest.services.cbs.client.providers")
 @EnableConfigurationProperties
 @EnableScheduling
 @Primary
-public class CloudConfiguration extends AppConfig {
-
+public class CloudConfiguration extends AppConfig {   
     private static final Logger logger = LoggerFactory.getLogger(CloudConfiguration.class);
-
-    private DatafileConfigurationProvider datafileConfigurationProvider;
+    private ReactiveCloudConfigurationProvider reactiveCloudConfigurationProvider;
     private DmaapPublisherConfiguration dmaapPublisherCloudConfiguration;
     private DmaapConsumerConfiguration dmaapConsumerCloudConfiguration;
     private FtpesConfig ftpesCloudConfiguration;
@@ -58,8 +58,8 @@ public class CloudConfiguration extends AppConfig {
     private Properties systemEnvironment;
 
     @Autowired
-    public void setThreadPoolTaskScheduler(DatafileConfigurationProvider datafileConfigurationProvider) {
-        this.datafileConfigurationProvider = datafileConfigurationProvider;
+    public void setThreadPoolTaskScheduler(ReactiveCloudConfigurationProvider reactiveCloudConfigurationProvider) {
+        this.reactiveCloudConfigurationProvider = reactiveCloudConfigurationProvider;
     }
 
 
@@ -78,7 +78,7 @@ public class CloudConfiguration extends AppConfig {
 
     private void parsingConfigSuccess(EnvProperties envProperties) {
         logger.info("Fetching Datafile Collector configuration from ConfigBindingService/Consul");
-        datafileConfigurationProvider.callForDataFileCollectorConfiguration(envProperties)
+        reactiveCloudConfigurationProvider.callForServiceConfigurationReactive(envProperties)
                 .subscribe(this::parseCloudConfig, this::cloudConfigError);
     }
 
