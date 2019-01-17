@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_da9ed906",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-01-17T15:24:39Z",
+      "side": 1,
+      "message": "Maybe the pattern established above, filter(p -\u003e !p.isEmpty(), should be used below also? So it is the same pattern everywhere.",
+      "revId": "4ca454492f0272383ddda92df57c3db3e8a2e750",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_faa15d46",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapConsumerTask.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-01-17T15:24:39Z",
+      "side": 1,
+      "message": "Maybe the DmaapConsumerConfiguration should be named DMaaPConsumerConfiguration to align with DMaaPConsumerReactiveHttpClient as they are both under the same package org.onap.dcaegen2.services.sdk.rest.services.dmaap.client?",
+      "revId": "4ca454492f0272383ddda92df57c3db3e8a2e750",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_ba8755b4",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapConsumerTaskImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-01-17T15:24:39Z",
+      "side": 1,
+      "message": "I think the coding standard says that there should be a space between parameters in a method call.",
+      "revId": "4ca454492f0272383ddda92df57c3db3e8a2e750",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_5a92e9f6",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/DatafileAppConfigTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-01-17T15:24:39Z",
+      "side": 1,
+      "message": "Remove commented code",
+      "revId": "4ca454492f0272383ddda92df57c3db3e8a2e750",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_9ab37197",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/ConsumerDmaapModel.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-01-17T15:24:39Z",
+      "side": 1,
+      "message": "Maybe DmaapModel should be renamed DMaaPModel to keep naming in the sdk packages consistent?",
+      "revId": "4ca454492f0272383ddda92df57c3db3e8a2e750",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
