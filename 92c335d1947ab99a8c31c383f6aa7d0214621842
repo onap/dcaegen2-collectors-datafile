@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_76190121",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2019-01-22T11:37:54Z",
+      "side": 1,
+      "message": "perhaps DFC does not need this, because DFC does not communicate with AAI.",
+      "range": {
+        "startLine": 121,
+        "startChar": 19,
+        "endLine": 121,
+        "endChar": 36
+      },
+      "revId": "92c335d1947ab99a8c31c383f6aa7d0214621842",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_9614a5e9",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2019-01-22T11:37:54Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "92c335d1947ab99a8c31c383f6aa7d0214621842",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
