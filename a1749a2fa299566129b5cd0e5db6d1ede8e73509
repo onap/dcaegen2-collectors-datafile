@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_d6930d59",
+        "filename": "datafile-app-server/config/datafile_endpoints.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-01-22T11:57:54Z",
+      "side": 1,
+      "message": "Since the enableAaiCertAuth parameter is not used it should also be removed from here.",
+      "revId": "a1749a2fa299566129b5cd0e5db6d1ede8e73509",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_769ee164",
+        "filename": "datafile-app-server/src/test/resources/datafile_endpoints.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-01-22T11:57:54Z",
+      "side": 1,
+      "message": "Since the enableAaiCertAuth parameter is no longer used it should be removed from here also.",
+      "revId": "a1749a2fa299566129b5cd0e5db6d1ede8e73509",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
