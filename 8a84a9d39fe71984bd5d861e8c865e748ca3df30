@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9adffdf1_2bc302ee",
+        "filename": "pom.xml",
+        "patchSetId": 11
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-01-28T04:21:13Z",
+      "side": 1,
+      "message": "This will not be necessary if the dependent artifacts are released. Should be enabled back once sdk modules are released.",
+      "range": {
+        "startLine": 133,
+        "startChar": 1,
+        "endLine": 139,
+        "endChar": 17
+      },
+      "revId": "8a84a9d39fe71984bd5d861e8c865e748ca3df30",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
