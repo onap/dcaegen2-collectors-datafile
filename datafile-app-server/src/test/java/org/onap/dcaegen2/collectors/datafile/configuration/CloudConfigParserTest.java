@@ -80,7 +80,7 @@ class CloudConfigParserTest {
 
     public JsonObject getCloudConfigJsonObject() {
         JsonObject config = new JsonObject();
-        config.addProperty("dmaap.dmaapConsumerConfiguration.timeoutMS", -1);
+        config.addProperty("dmaap.dmaapConsumerConfiguration.timeoutMs", -1);
         config.addProperty("dmaap.dmaapConsumerConfiguration.dmaapHostName", "message-router.onap.svc.cluster.local");
         config.addProperty("dmaap.dmaapConsumerConfiguration.dmaapUserName", "admin");
         config.addProperty("dmaap.dmaapConsumerConfiguration.dmaapUserPassword", "admin");

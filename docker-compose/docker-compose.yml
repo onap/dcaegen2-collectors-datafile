@@ -12,7 +12,7 @@ services:
       --dmaap.dmaapConsumerConfiguration.dmaapContentType=application/json
       --dmaap.dmaapConsumerConfiguration.consumerId=C12
       --dmaap.dmaapConsumerConfiguration.consumerGroup=OpenDCAE-c12
-      --dmaap.dmaapConsumerConfiguration.timeoutMS=-1
+      --dmaap.dmaapConsumerConfiguration.timeoutMs=-1
       --dmaap.dmaapConsumerConfiguration.message-limit=-1
       --dmaap.dmaapProducerConfiguration.dmaapHostName=<HOST-TO-SET-DMAAP-DR>
       --dmaap.dmaapProducerConfiguration.dmaapPortNumber=8443

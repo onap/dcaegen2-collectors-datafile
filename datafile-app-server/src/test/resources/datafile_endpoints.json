@@ -11,7 +11,7 @@
                 "dmaapUserPassword": "admin",
                 "dmaapContentType": "application/json",
                 "consumerGroup": "OpenDcae-c12",
-                "timeoutMS": -1,
+                "timeoutMs": -1,
                 "messageLimit": 1
             },
             "dmaapProducerConfiguration": {
