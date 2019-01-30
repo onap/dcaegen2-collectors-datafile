@@ -66,8 +66,8 @@ public class AppConfig extends DatafileAppConfig {
     @Value("${dmaap.dmaapConsumerConfiguration.consumerGroup:}")
     public String consumerGroup;
 
-    @Value("${dmaap.dmaapConsumerConfiguration.timeoutMS:}")
-    public Integer consumerTimeoutMS;
+    @Value("${dmaap.dmaapConsumerConfiguration.timeoutMs:}")
+    public Integer consumerTimeoutMs;
 
     @Value("${dmaap.dmaapConsumerConfiguration.message-limit:}")
     public Integer consumerMessageLimit;
@@ -147,7 +147,7 @@ public class AppConfig extends DatafileAppConfig {
                 .messageLimit(
                         Optional.ofNullable(consumerMessageLimit).filter(p -> !p.toString().isEmpty())
                                 .orElse(dmaapConsumerConfiguration.messageLimit()))
-                .timeoutMs(Optional.ofNullable(consumerTimeoutMS).filter(p -> !p.toString().isEmpty())
+                .timeoutMs(Optional.ofNullable(consumerTimeoutMs).filter(p -> !p.toString().isEmpty())
                         .orElse(dmaapConsumerConfiguration.timeoutMs()))
                 .consumerGroup(Optional.ofNullable(consumerGroup).filter(isEmpty.negate())
                         .orElse(dmaapConsumerConfiguration.consumerGroup()))
