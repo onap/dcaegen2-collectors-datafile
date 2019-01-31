@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9adffdf1_adea9d71",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 4893
+      },
+      "writtenOn": "2019-01-31T10:17:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_6d6b551e",
+      "revId": "4b5fe3791bc06994f6b3738c25ddec2c84ae2dd9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9adffdf1_2d71cd0b",
         "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClientTest.java",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2019-01-31T09:51:49Z",
       "side": 1,
       "message": "Maybe rename the constant also, so that it matches the value?",
+      "revId": "4b5fe3791bc06994f6b3738c25ddec2c84ae2dd9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9adffdf1_8de799ab",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 4893
+      },
+      "writtenOn": "2019-01-31T10:17:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9adffdf1_2d71cd0b",
       "revId": "4b5fe3791bc06994f6b3738c25ddec2c84ae2dd9",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
