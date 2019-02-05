@@ -24,7 +24,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-
+import java.time.Duration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +35,6 @@ import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerReact
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
 import org.springframework.http.HttpStatus;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -95,18 +94,42 @@ class DmaapPublisherTaskImplTest {
 
     @Test
     public void whenPassedObjectFits_ReturnsCorrectStatus() {
-        prepareMocksForTests(HttpStatus.OK.value());
+        prepareMocksForTests(Flux.just(HttpStatus.OK));
 
-        StepVerifier.create(dmaapPublisherTask.execute(consumerDmaapModel)).expectNext("200").verifyComplete();
+        StepVerifier.create(dmaapPublisherTask.execute(consumerDmaapModel, 1, Duration.ofSeconds(0)))
+                .expectNext("200 OK").verifyComplete();
 
         verify(dMaaPProducerReactiveHttpClient, times(1)).getDmaapProducerResponse(any());
         verifyNoMoreInteractions(dMaaPProducerReactiveHttpClient);
     }
 
-    private void prepareMocksForTests(Integer httpResponseCode) {
+    @Test
+    public void whenPassedObjectFits_firstFailsThenSucceeds() {
+        prepareMocksForTests(Flux.just(HttpStatus.BAD_GATEWAY), Flux.just(HttpStatus.OK));
+
+        StepVerifier.create(dmaapPublisherTask.execute(consumerDmaapModel, 1, Duration.ofSeconds(0)))
+                .expectNext("200 OK").verifyComplete();
+
+        verify(dMaaPProducerReactiveHttpClient, times(2)).getDmaapProducerResponse(any());
+        verifyNoMoreInteractions(dMaaPProducerReactiveHttpClient);
+    }
+
+    @Test
+    public void whenPassedObjectFits_firstFailsThenFails() {
+        prepareMocksForTests(Flux.just(HttpStatus.BAD_GATEWAY), Flux.just(HttpStatus.BAD_GATEWAY));
+
+        StepVerifier.create(dmaapPublisherTask.execute(consumerDmaapModel, 1, Duration.ofSeconds(0)))
+                .expectErrorMessage("Retries exhausted: 1/1").verify();
+
+        verify(dMaaPProducerReactiveHttpClient, times(2)).getDmaapProducerResponse(any());
+        verifyNoMoreInteractions(dMaaPProducerReactiveHttpClient);
+    }
+
+    @SafeVarargs
+    final private void prepareMocksForTests(Flux<HttpStatus> firstResponse, Flux<HttpStatus>... nextHttpResponses) {
         dMaaPProducerReactiveHttpClient = mock(DmaapProducerReactiveHttpClient.class);
-        when(dMaaPProducerReactiveHttpClient.getDmaapProducerResponse(any()))
-                .thenReturn(Flux.just(httpResponseCode.toString()));
+        when(dMaaPProducerReactiveHttpClient.getDmaapProducerResponse(any())).thenReturn(firstResponse,
+                nextHttpResponses);
         when(appConfig.getDmaapPublisherConfiguration()).thenReturn(dmaapPublisherConfiguration);
         dmaapPublisherTask = spy(new DmaapPublisherTaskImpl(appConfig));
         when(dmaapPublisherTask.resolveConfiguration()).thenReturn(dmaapPublisherConfiguration);

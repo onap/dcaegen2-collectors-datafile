@@ -16,6 +16,8 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
+import java.time.Duration;
+import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapEmptyResponseException;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
@@ -23,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
@@ -38,21 +39,20 @@ public class ScheduledTasks {
 
     private final DmaapConsumerTask dmaapConsumerTask;
     private final XnfCollectorTask xnfCollectorTask;
-    private final DmaapPublisherTask dmaapProducerTask;
+    private final AppConfig applicationConfiguration;
 
     /**
      * Constructor for task registration in Datafile Workflow.
      *
-     * @param dmaapConsumerTask - fist task
+     * @param applicationConfiguration - application configuration
      * @param xnfCollectorTask - second task
      * @param dmaapPublisherTask - third task
      */
     @Autowired
-    public ScheduledTasks(DmaapConsumerTask dmaapConsumerTask, XnfCollectorTask xnfCollectorTask,
-            DmaapPublisherTask dmaapPublisherTask) {
+    public ScheduledTasks(AppConfig applicationConfiguration, DmaapConsumerTask dmaapConsumerTask, XnfCollectorTask xnfCollectorTask) {
         this.dmaapConsumerTask = dmaapConsumerTask;
         this.xnfCollectorTask = xnfCollectorTask;
-        this.dmaapProducerTask = dmaapPublisherTask;
+        this.applicationConfiguration = applicationConfiguration;
     }
 
     /**
@@ -62,15 +62,15 @@ public class ScheduledTasks {
         logger.trace("Execution of tasks was registered");
         //@formatter:off
         consumeFromDmaapMessage()
-                .publishOn(Schedulers.parallel())
-                .cache()
-                .doOnError(DmaapEmptyResponseException.class, error -> logger.info("Nothing to consume from DMaaP"))
-                .flatMap(this::collectFilesFromXnf)
-                .retry(3)
-                .cache()
-                .flatMap(this::publishToDmaapConfiguration)
-                .retry(3)
-                .subscribe(this::onSuccess, this::onError, this::onComplete);
+            .publishOn(Schedulers.parallel())
+            .cache()
+            .doOnError(DmaapEmptyResponseException.class, error -> logger.info("Nothing to consume from DMaaP"))
+            .flatMap(this::collectFilesFromXnf)
+            .retry(3)
+            .cache()
+            .flatMap(this::publishToDmaapConfiguration)
+            .retry(3)
+            .subscribe(this::onSuccess, this::onError, this::onComplete);
         //@formatter:on
     }
 
@@ -97,7 +97,24 @@ public class ScheduledTasks {
         return xnfCollectorTask.execute(fileData);
     }
 
-    private Flux<String> publishToDmaapConfiguration(ConsumerDmaapModel monoModel) {
-        return dmaapProducerTask.execute(monoModel);
+    private Flux<String> publishToDmaapConfiguration(ConsumerDmaapModel model) {
+        final long maxNumberOfRetries = 10;
+        final Duration initialRetryTimeout = Duration.ofSeconds(5);
+
+        DmaapPublisherTaskImpl publisherTask = new DmaapPublisherTaskImpl(applicationConfiguration);
+
+        return publisherTask.execute(model, maxNumberOfRetries, initialRetryTimeout)
+                .onErrorResume(exception -> handlePublishFailure(model, exception));
     }
+
+    private Flux<String> handlePublishFailure(ConsumerDmaapModel model, Throwable exception) {
+        if (exception instanceof IllegalStateException) {
+            logger.error("File publishing failed: " + " " + model.getName() + " reason: "
+                    + ((IllegalStateException) exception).getMessage());
+        } else {
+            logger.error("File publishing failed: " + " " + model.getName() + " exception: " + exception);
+        }
+        return Flux.empty();
+    }
+
 }

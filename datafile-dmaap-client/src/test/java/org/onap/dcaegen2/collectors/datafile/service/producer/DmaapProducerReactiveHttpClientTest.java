@@ -20,10 +20,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +29,6 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -49,8 +46,8 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.service.HttpUtils;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.util.DefaultUriBuilderFactory;
-
 import reactor.test.StepVerifier;
 
 /**
@@ -142,18 +139,19 @@ class DmaapProducerReactiveHttpClientTest {
 
         fileStream.reset();
         StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel))
-        .expectNext(responseMock.toString()).verifyComplete();
+        .expectNext(HttpStatus.OK).verifyComplete();
 
         verify(fileSystemResourceMock).setPath("target/" + FILE_NAME);
         InputStream fileInputStream = fileSystemResourceMock.getInputStream();
         httpPut.setEntity(new ByteArrayEntity(IOUtils.toByteArray(fileInputStream)));
     }
 
-    @Test
+   @Test
     void getHttpResponse_Fail() throws Exception {
         mockWebClientDependantObject(false);
         StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel))
-                .verifyComplete();
+        .expectError()
+        .verify();
     }
 
     private void mockWebClientDependantObject(boolean success)
