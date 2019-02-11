@@ -28,56 +28,49 @@ import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.Immutabl
 
 
 class CloudConfigParserTest {
-
-    private static final ImmutableDmaapConsumerConfiguration CORRECT_DMAAP_CONSUMER_CONFIG =
-            //@formatter:on
-            new ImmutableDmaapConsumerConfiguration.Builder()
-                    .timeoutMs(-1)
-                    .dmaapHostName("message-router.onap.svc.cluster.local")
-                    .dmaapUserName("admin")
-                    .dmaapUserPassword("admin")
-                    .dmaapTopicName("/events/unauthenticated.VES_NOTIFICATION_OUTPUT")
-                    .dmaapPortNumber(2222)
-                    .dmaapContentType("application/json")
-                    .messageLimit(-1)
-                    .dmaapProtocol("http")
-                    .consumerId("C12")
-                    .consumerGroup("OpenDCAE-c12")
-                    .trustStorePath("trustStorePath")
-                    .trustStorePasswordPath("trustStorePasswordPath")
-                    .keyStorePath("keyStorePath")
-                    .keyStorePasswordPath("keyStorePasswordPath")
-                    .enableDmaapCertAuth(true)
+    private static final ImmutableDmaapConsumerConfiguration CORRECT_DMAAP_CONSUMER_CONFIG = //
+            new ImmutableDmaapConsumerConfiguration.Builder() //
+                    .timeoutMs(-1) //
+                    .dmaapHostName("message-router.onap.svc.cluster.local") //
+                    .dmaapUserName("admin") //
+                    .dmaapUserPassword("admin") //
+                    .dmaapTopicName("/events/unauthenticated.VES_NOTIFICATION_OUTPUT") //
+                    .dmaapPortNumber(2222) //
+                    .dmaapContentType("application/json") //
+                    .messageLimit(-1) //
+                    .dmaapProtocol("http") //
+                    .consumerId("C12") //
+                    .consumerGroup("OpenDCAE-c12") //
+                    .trustStorePath("trustStorePath") //
+                    .trustStorePasswordPath("trustStorePasswordPath") //
+                    .keyStorePath("keyStorePath") //
+                    .keyStorePasswordPath("keyStorePasswordPath") //
+                    .enableDmaapCertAuth(true) //
                     .build();
-            //@formatter:off
 
-    private static final ImmutableDmaapPublisherConfiguration CORRECT_DMAAP_PUBLISHER_CONFIG =
-            //@formatter:on
-            new ImmutableDmaapPublisherConfiguration.Builder()
-                    .dmaapTopicName("publish")
-                    .dmaapUserPassword("dradmin")
-                    .dmaapPortNumber(3907)
-                    .dmaapProtocol("https")
-                    .dmaapContentType("application/json")
-                    .dmaapHostName("message-router.onap.svc.cluster.local")
-                    .dmaapUserName("dradmin")
-                    .trustStorePath("trustStorePath")
-                    .trustStorePasswordPath("trustStorePasswordPath")
-                    .keyStorePath("keyStorePath")
-                    .keyStorePasswordPath("keyStorePasswordPath")
-                    .enableDmaapCertAuth(true)
+    private static final ImmutableDmaapPublisherConfiguration CORRECT_DMAAP_PUBLISHER_CONFIG = //
+            new ImmutableDmaapPublisherConfiguration.Builder() //
+                    .dmaapTopicName("publish") //
+                    .dmaapUserPassword("dradmin") //
+                    .dmaapPortNumber(3907) //
+                    .dmaapProtocol("https") //
+                    .dmaapContentType("application/json") //
+                    .dmaapHostName("message-router.onap.svc.cluster.local") //
+                    .dmaapUserName("dradmin") //
+                    .trustStorePath("trustStorePath") //
+                    .trustStorePasswordPath("trustStorePasswordPath") //
+                    .keyStorePath("keyStorePath") //
+                    .keyStorePasswordPath("keyStorePasswordPath") //
+                    .enableDmaapCertAuth(true) //
                     .build();
-            //@formatter:off
 
-    private static final ImmutableFtpesConfig CORRECT_FTPES_CONFIGURATION =
-            //@formatter:on
-            new ImmutableFtpesConfig.Builder()
-                    .keyCert("/config/ftpKey.jks")
-                    .keyPassword("secret")
-                    .trustedCA("config/cacerts")
-                    .trustedCAPassword("secret")
+    private static final ImmutableFtpesConfig CORRECT_FTPES_CONFIGURATION = //
+            new ImmutableFtpesConfig.Builder() //
+                    .keyCert("/config/ftpKey.jks") //
+                    .keyPassword("secret") //
+                    .trustedCA("config/cacerts") //
+                    .trustedCAPassword("secret") //
                     .build();
-            //@formatter:off
 
     private CloudConfigParser cloudConfigParser = new CloudConfigParser(getCloudConfigJsonObject());
 

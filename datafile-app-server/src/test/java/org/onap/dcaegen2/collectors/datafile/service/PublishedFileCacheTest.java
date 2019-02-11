@@ -35,8 +35,8 @@ public class PublishedFileCacheTest {
 
     @Test
     public void purgeFiles_timeNotExpired() {
-        Assertions.assertNull(testObject.put(Paths.get("A")));
-        Assertions.assertNotNull(testObject.put(Paths.get("A")));
+        Assertions.assertFalse(testObject.put(Paths.get("A")));
+        Assertions.assertTrue(testObject.put(Paths.get("A")));
         testObject.put(Paths.get("B"));
 
         testObject.purge(Instant.now());
