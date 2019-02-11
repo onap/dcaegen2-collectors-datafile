@@ -30,6 +30,6 @@ public class DatafileTaskException extends Exception {
     }
 
     public DatafileTaskException(String message, Exception e) {
-        super(message + e);
+        super(message, e);
     }
 }

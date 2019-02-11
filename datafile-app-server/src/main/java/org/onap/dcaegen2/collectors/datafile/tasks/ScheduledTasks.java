@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
@@ -18,13 +18,13 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
@@ -37,14 +37,15 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 /**
- * This implements the main flow of the data file collector. Fetch file ready events from the
- * message router, fetch new files from the PNF publish these in the data router.
+ * This implements the main flow of the data file collector. Fetch file ready events from the message router, fetch new
+ * files from the PNF publish these in the data router.
  */
 @Component
 public class ScheduledTasks {
@@ -52,7 +53,7 @@ public class ScheduledTasks {
     private static final int MAX_NUMBER_OF_CONCURRENT_TASKS = 200;
     private static final int MAX_ILDLE_THREAD_TIME_TO_LIVE_SECONDS = 10;
 
-    /** Data needed for fetching of one file */
+    /** Data needed for fetching of one file. */
     private class FileCollectionData {
         final FileData fileData;
         final MessageMetaData metaData;
@@ -64,6 +65,7 @@ public class ScheduledTasks {
     }
 
     private static final Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);
+
     private final AppConfig applicationConfiguration;
     private final AtomicInteger currentNumberOfTasks = new AtomicInteger();
     private final Scheduler scheduler =
@@ -96,17 +98,17 @@ public class ScheduledTasks {
                 .parallel(getParallelism()) // Each FileReadyMessage in a separate thread
                 .runOn(scheduler) //
                 .flatMap(this::createFileCollectionTask) //
-                .filter(this::shouldBePublished) //
+                .filter(fileData -> shouldBePublished(fileData, contextMap)) //
                 .doOnNext(fileData -> currentNumberOfTasks.incrementAndGet()) //
                 .flatMap(fileData -> collectFileFromXnf(fileData, contextMap)) //
                 .flatMap(model -> publishToDataRouter(model, contextMap)) //
-                .doOnNext(model -> deleteFile(Paths.get(model.getInternalLocation()), contextMap)) //
+                .doOnNext(model -> deleteFile(model.getInternalLocation(), contextMap)) //
                 .doOnNext(model -> currentNumberOfTasks.decrementAndGet()) //
                 .sequential();
     }
 
     /**
-     * called in regular intervals to remove out-dated cached information
+     * called in regular intervals to remove out-dated cached information.
      */
     public void purgeCachedInformation(Instant now) {
         alreadyPublishedFiles.purge(now);
@@ -144,8 +146,13 @@ public class ScheduledTasks {
         return Flux.fromIterable(fileCollects);
     }
 
-    private boolean shouldBePublished(FileCollectionData task) {
-        return alreadyPublishedFiles.put(task.fileData.getLocalFileName()) == null;
+    private boolean shouldBePublished(FileCollectionData task, Map<String, String> contextMap) {
+        boolean result = false;
+        Path localFileName = task.fileData.getLocalFileName();
+        if (alreadyPublishedFiles.put(localFileName) == null) {
+            result = !createPublishedChecker().execute(localFileName.getFileName().toString(), contextMap);
+        }
+        return result;
     }
 
     private Mono<ConsumerDmaapModel> collectFileFromXnf(FileCollectionData fileCollect,
@@ -156,7 +163,7 @@ public class ScheduledTasks {
         MdcVariables.setMdcContextMap(contextMap);
         return createFileCollector()
                 .execute(fileCollect.fileData, fileCollect.metaData, maxNUmberOfRetries, initialRetryTimeout,
-                        contextMap)
+                contextMap)
                 .onErrorResume(exception -> handleCollectFailure(fileCollect.fileData, contextMap));
     }
 
@@ -174,10 +181,9 @@ public class ScheduledTasks {
         final long maxNumberOfRetries = 3;
         final Duration initialRetryTimeout = Duration.ofSeconds(5);
 
-        DataRouterPublisher publisherTask = createDataRouterPublisher();
 
         MdcVariables.setMdcContextMap(contextMap);
-        return publisherTask.execute(model, maxNumberOfRetries, initialRetryTimeout, contextMap)
+        return createDataRouterPublisher().execute(model, maxNumberOfRetries, initialRetryTimeout, contextMap)
                 .onErrorResume(exception -> handlePublishFailure(model, exception, contextMap));
     }
 
@@ -185,7 +191,7 @@ public class ScheduledTasks {
             Map<String, String> contextMap) {
         MdcVariables.setMdcContextMap(contextMap);
         logger.error("File publishing failed: {}, exception: {}", model.getName(), exception);
-        Path internalFileName = Paths.get(model.getInternalLocation());
+        Path internalFileName = model.getInternalLocation();
         deleteFile(internalFileName, contextMap);
         alreadyPublishedFiles.remove(internalFileName);
         currentNumberOfTasks.decrementAndGet();
@@ -221,6 +227,10 @@ public class ScheduledTasks {
         } catch (Exception e) {
             logger.trace("Could not delete file: {}", localFile);
         }
+    }
+
+    PublishedChecker createPublishedChecker() {
+        return new PublishedChecker(applicationConfiguration);
     }
 
     int getCurrentNumberOfTasks() {

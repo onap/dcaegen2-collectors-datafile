@@ -68,48 +68,47 @@ class JsonMessageParserTest {
 
     @Test
     void whenPassingCorrectJson_oneFileReadyMessage() throws DmaapNotFoundException {
-        // @formatter:off
-        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
-                .name(PM_FILE_NAME)
-                .location(LOCATION)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
+                .name(PM_FILE_NAME) //
+                .location(LOCATION) //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatType(FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
-        JsonMessage message = new JsonMessage.JsonMessageBuilder()
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
-                .changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE)
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
-                .addAdditionalField(additionalField)
+        JsonMessage message = new JsonMessage.JsonMessageBuilder() //
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+                .addAdditionalField(additionalField) //
                 .build();
 
-        MessageMetaData messageMetaData = ImmutableMessageMetaData.builder()
-                .productName(PRODUCT_NAME)
-                .vendorName(VENDOR_NAME)
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
-                .sourceName(SOURCE_NAME)
-                .startEpochMicrosec(START_EPOCH_MICROSEC)
-                .timeZoneOffset(TIME_ZONE_OFFSET)
-                .changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE)
+        MessageMetaData messageMetaData = ImmutableMessageMetaData.builder() //
+                .productName(PRODUCT_NAME) //
+                .vendorName(VENDOR_NAME) //
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+                .sourceName(SOURCE_NAME) //
+                .startEpochMicrosec(START_EPOCH_MICROSEC) //
+                .timeZoneOffset(TIME_ZONE_OFFSET) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
                 .build();
-        FileData expectedFileData = ImmutableFileData.builder()
-                .name(PM_FILE_NAME)
-                .location(LOCATION)
-                .scheme(Scheme.FTPS)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+        FileData expectedFileData = ImmutableFileData.builder() //
+                .name(PM_FILE_NAME) //
+                .location(LOCATION) //
+                .scheme(Scheme.FTPS) //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatType(FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
         List<FileData> files = new ArrayList<>();
         files.add(expectedFileData);
         FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder()
-                .pnfName(SOURCE_NAME)
-                .messageMetaData(messageMetaData)
-                .files(files)
+                .pnfName(SOURCE_NAME) //
+                .messageMetaData(messageMetaData) //
+                .files(files) //
                 .build();
-        // @formatter:on
+
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
@@ -123,48 +122,47 @@ class JsonMessageParserTest {
 
     @Test
     void whenPassingCorrectJsonWithTwoEvents_twoMessages() throws DmaapNotFoundException {
-        // @formatter:off
-        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
-                .name(PM_FILE_NAME)
-                .location(LOCATION)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
+                .name(PM_FILE_NAME) //
+                .location(LOCATION) //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatType(FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
-        JsonMessage message = new JsonMessage.JsonMessageBuilder()
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
-                .changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE)
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
-                .addAdditionalField(additionalField)
+        JsonMessage message = new JsonMessage.JsonMessageBuilder() //
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+                .addAdditionalField(additionalField) //
                 .build();
 
-        MessageMetaData messageMetaData = ImmutableMessageMetaData.builder()
-                .productName(PRODUCT_NAME)
-                .vendorName(VENDOR_NAME)
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
-                .sourceName(SOURCE_NAME)
-                .startEpochMicrosec(START_EPOCH_MICROSEC)
-                .timeZoneOffset(TIME_ZONE_OFFSET)
-                .changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE)
+        MessageMetaData messageMetaData = ImmutableMessageMetaData.builder() //
+                .productName(PRODUCT_NAME) //
+                .vendorName(VENDOR_NAME) //
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+                .sourceName(SOURCE_NAME) //
+                .startEpochMicrosec(START_EPOCH_MICROSEC) //
+                .timeZoneOffset(TIME_ZONE_OFFSET) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
                 .build();
-        FileData expectedFileData = ImmutableFileData.builder()
-                .name(PM_FILE_NAME)
-                .location(LOCATION)
-                .scheme(Scheme.FTPS)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+        FileData expectedFileData = ImmutableFileData.builder() //
+                .name(PM_FILE_NAME) //
+                .location(LOCATION) //
+                .scheme(Scheme.FTPS) //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatType(FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
         List<FileData> files = new ArrayList<>();
         files.add(expectedFileData);
-        FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder()
-                .pnfName(SOURCE_NAME)
-                .messageMetaData(messageMetaData)
-                .files(files)
+        FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder() //
+                .pnfName(SOURCE_NAME) //
+                .messageMetaData(messageMetaData) //
+                .files(files) //
                 .build();
-        // @formatter:on
+
         String parsedString = message.getParsed();
         String messageString = "[" + parsedString + "," + parsedString + "]";
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
@@ -178,21 +176,20 @@ class JsonMessageParserTest {
 
     @Test
     void whenPassingCorrectJsonWithoutLocation_noMessage() {
-        // @formatter:off
-        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
-                .name(PM_FILE_NAME)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
+                .name(PM_FILE_NAME) //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatType(FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
-        JsonMessage message = new JsonMessage.JsonMessageBuilder()
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
-                .changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE)
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
-                .addAdditionalField(additionalField)
+        JsonMessage message = new JsonMessage.JsonMessageBuilder() //
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+                .addAdditionalField(additionalField) //
                 .build();
-        // @formatter:on
+
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
@@ -206,48 +203,47 @@ class JsonMessageParserTest {
 
     @Test
     void whenPassingCorrectJsonWithTwoEventsFirstNoHeader_oneFileDatan() throws DmaapNotFoundException {
-        // @formatter:off
-        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
-                .name(PM_FILE_NAME)
-                .location(LOCATION)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
+                .name(PM_FILE_NAME) //
+                .location(LOCATION) //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatType(FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
-        JsonMessage message = new JsonMessage.JsonMessageBuilder()
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
-                .changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE)
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
-                .addAdditionalField(additionalField)
+        JsonMessage message = new JsonMessage.JsonMessageBuilder() //
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+                .addAdditionalField(additionalField) //
                 .build();
 
-        MessageMetaData messageMetaData = ImmutableMessageMetaData.builder()
-                .productName(PRODUCT_NAME)
-                .vendorName(VENDOR_NAME)
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
-                .sourceName(SOURCE_NAME)
-                .startEpochMicrosec(START_EPOCH_MICROSEC)
-                .timeZoneOffset(TIME_ZONE_OFFSET)
-                .changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE)
+        MessageMetaData messageMetaData = ImmutableMessageMetaData.builder() //
+                .productName(PRODUCT_NAME) //
+                .vendorName(VENDOR_NAME) //
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+                .sourceName(SOURCE_NAME) //
+                .startEpochMicrosec(START_EPOCH_MICROSEC) //
+                .timeZoneOffset(TIME_ZONE_OFFSET) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
                 .build();
-        FileData expectedFileData = ImmutableFileData.builder()
-                .name(PM_FILE_NAME)
-                .location(LOCATION)
-                .scheme(Scheme.FTPS)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+        FileData expectedFileData = ImmutableFileData.builder() //
+                .name(PM_FILE_NAME) //
+                .location(LOCATION) //
+                .scheme(Scheme.FTPS) //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatType(FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
         List<FileData> files = new ArrayList<>();
         files.add(expectedFileData);
-        FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder()
-                .pnfName(SOURCE_NAME)
-                .messageMetaData(messageMetaData)
-                .files(files)
+        FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder() //
+                .pnfName(SOURCE_NAME) //
+                .messageMetaData(messageMetaData) //
+                .files(files) //
                 .build();
-        // @formatter:on
+
         String parsedString = message.getParsed();
         String messageString = "[{\"event\":{}}," + parsedString + "]";
         JsonMessageParser jsonMessageParserUnderTest = new JsonMessageParser();
@@ -258,21 +254,20 @@ class JsonMessageParserTest {
 
     @Test
     void whenPassingCorrectJsonWithFaultyEventName_noFileData() {
-        // @formatter:off
-        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
-                .location(LOCATION)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
+                .location(LOCATION) //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatType(FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
-        JsonMessage message = new JsonMessage.JsonMessageBuilder()
-                .eventName("Faulty event name")
-                .changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE)
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
-                .addAdditionalField(additionalField)
+        JsonMessage message = new JsonMessage.JsonMessageBuilder() //
+                .eventName("Faulty event name") //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+                .addAdditionalField(additionalField) //
                 .build();
-        // @formatter:on
+
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
@@ -286,21 +281,20 @@ class JsonMessageParserTest {
 
     @Test
     void whenPassingCorrectJsonWithoutName_noFileData() {
-        // @formatter:off
-        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
-                .location(LOCATION)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
+                .location(LOCATION) //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatType(FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
-        JsonMessage message = new JsonMessage.JsonMessageBuilder()
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
-                .changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE)
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
-                .addAdditionalField(additionalField)
+        JsonMessage message = new JsonMessage.JsonMessageBuilder() //
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+                .addAdditionalField(additionalField) //
                 .build();
-        // @formatter:on
+
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
@@ -314,14 +308,13 @@ class JsonMessageParserTest {
 
     @Test
     void whenPassingCorrectJsonWithoutAdditionalFields_noFileData() {
-        // @formatter:off
-        JsonMessage message = new JsonMessage.JsonMessageBuilder()
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
-                .changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE)
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
+        JsonMessage message = new JsonMessage.JsonMessageBuilder() //
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
                 .build();
-        // @formatter:on
+
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
@@ -335,21 +328,20 @@ class JsonMessageParserTest {
 
     @Test
     void whenPassingCorrectJsonWithoutCompression_noFileData() {
-        // @formatter:off
-        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
-                .name(PM_FILE_NAME)
-                .location(LOCATION)
-                .fileFormatType(FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
+                .name(PM_FILE_NAME) //
+                .location(LOCATION) //
+                .fileFormatType(FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
-        JsonMessage message = new JsonMessage.JsonMessageBuilder()
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
-                .changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE)
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
-                .addAdditionalField(additionalField)
+        JsonMessage message = new JsonMessage.JsonMessageBuilder() //
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+                .addAdditionalField(additionalField) //
                 .build();
-        // @formatter:on
+
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
@@ -363,21 +355,20 @@ class JsonMessageParserTest {
 
     @Test
     void whenPassingCorrectJsonWithoutFileFormatType_noFileData() {
-        // @formatter:off
-        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
-                .name(PM_FILE_NAME)
-                .location(LOCATION)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
+                .name(PM_FILE_NAME) //
+                .location(LOCATION) //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
-        JsonMessage message = new JsonMessage.JsonMessageBuilder()
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
-                .changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE)
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
-                .addAdditionalField(additionalField)
+        JsonMessage message = new JsonMessage.JsonMessageBuilder() //
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+                .addAdditionalField(additionalField) //
                 .build();
-        // @formatter:on
+
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
@@ -391,55 +382,54 @@ class JsonMessageParserTest {
 
     @Test
     void whenPassingOneCorrectJsonWithoutFileFormatVersionAndOneCorrect_oneFileData() {
-        // @formatter:off
-        AdditionalField additionalFaultyField = new JsonMessage.AdditionalFieldBuilder()
-                .name(PM_FILE_NAME)
-                .location(LOCATION)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(FILE_FORMAT_TYPE)
+        AdditionalField additionalFaultyField = new JsonMessage.AdditionalFieldBuilder() //
+                .name(PM_FILE_NAME) //
+                .location(LOCATION) //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatType(FILE_FORMAT_TYPE) //
                 .build();
-        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
-                .name(PM_FILE_NAME)
-                .location(LOCATION)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
+                .name(PM_FILE_NAME) //
+                .location(LOCATION) //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatType(FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
-        JsonMessage message = new JsonMessage.JsonMessageBuilder()
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
-                .changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE)
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
-                .addAdditionalField(additionalFaultyField)
-                .addAdditionalField(additionalField)
+        JsonMessage message = new JsonMessage.JsonMessageBuilder() //
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+                .addAdditionalField(additionalFaultyField) //
+                .addAdditionalField(additionalField) //
                 .build();
 
-        MessageMetaData messageMetaData = ImmutableMessageMetaData.builder()
-                .productName(PRODUCT_NAME)
-                .vendorName(VENDOR_NAME)
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
-                .sourceName(SOURCE_NAME)
-                .startEpochMicrosec(START_EPOCH_MICROSEC)
-                .timeZoneOffset(TIME_ZONE_OFFSET)
-                .changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE)
+        MessageMetaData messageMetaData = ImmutableMessageMetaData.builder() //
+                .productName(PRODUCT_NAME) //
+                .vendorName(VENDOR_NAME) //
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+                .sourceName(SOURCE_NAME) //
+                .startEpochMicrosec(START_EPOCH_MICROSEC) //
+                .timeZoneOffset(TIME_ZONE_OFFSET) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
                 .build();
-        FileData expectedFileData = ImmutableFileData.builder()
-                .name(PM_FILE_NAME)
-                .location(LOCATION)
-                .scheme(Scheme.FTPS)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+        FileData expectedFileData = ImmutableFileData.builder() //
+                .name(PM_FILE_NAME) //
+                .location(LOCATION) //
+                .scheme(Scheme.FTPS) //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatType(FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
         List<FileData> files = new ArrayList<>();
         files.add(expectedFileData);
-        FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder()
-                .pnfName(SOURCE_NAME)
-                .messageMetaData(messageMetaData)
-                .files(files)
+        FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder() //
+                .pnfName(SOURCE_NAME) //
+                .messageMetaData(messageMetaData) //
+                .files(files) //
                 .build();
-        // @formatter:on
+
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
@@ -453,14 +443,13 @@ class JsonMessageParserTest {
 
     @Test
     void whenPassingJsonWithoutMandatoryHeaderInformation_noFileData() {
-        // @formatter:off
-        JsonMessage message = new JsonMessage.JsonMessageBuilder()
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
-                .changeIdentifier("PM_MEAS_FILES_INVALID")
-                .changeType("FileReady_INVALID")
-                .notificationFieldsVersion("1.0_INVALID")
+        JsonMessage message = new JsonMessage.JsonMessageBuilder() //
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+                .changeIdentifier("PM_MEAS_FILES_INVALID") //
+                .changeType("FileReady_INVALID") //
+                .notificationFieldsVersion("1.0_INVALID") //
                 .build();
-        // @formatter:on
+
         String incorrectMessageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
@@ -486,21 +475,20 @@ class JsonMessageParserTest {
 
     @Test
     void whenPassingCorrectJsonWithIncorrectChangeType_noFileData() {
-        // @formatter:off
-        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
-                .name(PM_FILE_NAME)
-                .location(LOCATION)
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
+                .name(PM_FILE_NAME) //
+                .location(LOCATION) //
                 .compression(GZIP_COMPRESSION)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
-        JsonMessage message = new JsonMessage.JsonMessageBuilder()
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
-                .changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(INCORRECT_CHANGE_TYPE)
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
-                .addAdditionalField(additionalField)
+        JsonMessage message = new JsonMessage.JsonMessageBuilder() //
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(INCORRECT_CHANGE_TYPE) //
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+                .addAdditionalField(additionalField) //
                 .build();
-        // @formatter:on
+
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
@@ -514,21 +502,20 @@ class JsonMessageParserTest {
 
     @Test
     void whenPassingCorrectJsonWithIncorrectChangeIdentifier_noFileData() {
-        // @formatter:off
-        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
-                .name(PM_FILE_NAME)
-                .location(LOCATION)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
+                .name(PM_FILE_NAME) //
+                .location(LOCATION) //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
-        JsonMessage message = new JsonMessage.JsonMessageBuilder()
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
-                .changeIdentifier(INCORRECT_CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE)
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
-                .addAdditionalField(additionalField)
+        JsonMessage message = new JsonMessage.JsonMessageBuilder() //
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+                .changeIdentifier(INCORRECT_CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+                .addAdditionalField(additionalField) //
                 .build();
-        // @formatter:on
+
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());

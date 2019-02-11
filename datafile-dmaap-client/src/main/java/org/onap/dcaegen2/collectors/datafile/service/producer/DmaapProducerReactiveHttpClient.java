@@ -16,54 +16,34 @@
 
 package org.onap.dcaegen2.collectors.datafile.service.producer;
 
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.REQUEST_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_INVOCATION_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_ONAP_REQUEST_ID;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.Future;
 
 import javax.net.ssl.SSLContext;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
-import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.onap.dcaegen2.collectors.datafile.io.FileSystemResourceWrapper;
-import org.onap.dcaegen2.collectors.datafile.io.IFileSystemResource;
-import org.onap.dcaegen2.collectors.datafile.model.CommonFunctions;
-import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
+import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.onap.dcaegen2.collectors.datafile.http.HttpAsyncClientBuilderWrapper;
+import org.onap.dcaegen2.collectors.datafile.http.IHttpAsyncClientBuilder;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
 import org.onap.dcaegen2.collectors.datafile.web.PublishRedirectStrategy;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.util.DefaultUriBuilderFactory;
-
-import reactor.core.publisher.Mono;
+import org.springframework.web.util.UriBuilder;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 7/4/18
@@ -71,11 +51,7 @@ import reactor.core.publisher.Mono;
  */
 public class DmaapProducerReactiveHttpClient {
 
-    private static final String X_DMAAP_DR_META = "X-DMAAP-DR-META";
-    private static final String NAME_JSON_TAG = "name";
-    private static final String INTERNAL_LOCATION_JSON_TAG = "internalLocation";
-    private static final String URI_SEPARATOR = "/";
-    private static final String DEFAULT_FEED_ID = "1";
+    private static final int NO_REQUEST_TIMEOUT = -1;
     private static final Marker INVOKE = MarkerFactory.getMarker("INVOKE");
     private static final Marker INVOKE_RETURN = MarkerFactory.getMarker("INVOKE_RETURN");
 
@@ -83,13 +59,9 @@ public class DmaapProducerReactiveHttpClient {
 
     private final String dmaapHostName;
     private final Integer dmaapPortNumber;
-    private final String dmaapTopicName;
     private final String dmaapProtocol;
-    private final String dmaapContentType;
     private final String user;
     private final String pwd;
-
-    private IFileSystemResource fileResource = new FileSystemResourceWrapper();
 
     /**
      * Constructor DmaapProducerReactiveHttpClient.
@@ -99,96 +71,86 @@ public class DmaapProducerReactiveHttpClient {
     public DmaapProducerReactiveHttpClient(DmaapPublisherConfiguration dmaapPublisherConfiguration) {
         this.dmaapHostName = dmaapPublisherConfiguration.dmaapHostName();
         this.dmaapPortNumber = dmaapPublisherConfiguration.dmaapPortNumber();
-        this.dmaapTopicName = dmaapPublisherConfiguration.dmaapTopicName();
         this.dmaapProtocol = dmaapPublisherConfiguration.dmaapProtocol();
-        this.dmaapContentType = dmaapPublisherConfiguration.dmaapContentType();
         this.user = dmaapPublisherConfiguration.dmaapUserName();
         this.pwd = dmaapPublisherConfiguration.dmaapUserPassword();
     }
 
-    /**
-     * Function for calling DMaaP HTTP producer - post request to DMaaP DataRouter.
-     *
-     * @param consumerDmaapModel - object which will be sent to DMaaP DataRouter
-     * @return status code of operation
-     */
-    public Mono<HttpStatus> getDmaapProducerResponse(ConsumerDmaapModel consumerDmaapModel,
-            Map<String, String> contextMap) {
-        MdcVariables.setMdcContextMap(contextMap);
-       try (CloseableHttpAsyncClient webClient = createWebClient()) {
+    public HttpResponse getDmaapProducerResponseWithRedirect(HttpUriRequest request, Map<String, String> contextMap)
+            throws DatafileTaskException {
+        try (CloseableHttpAsyncClient webClient = createWebClient(true, NO_REQUEST_TIMEOUT)) {
+            MdcVariables.setMdcContextMap(contextMap);
+            webClient.start();
 
-            HttpPut put = new HttpPut();
-            prepareHead(consumerDmaapModel, put);
-            prepareBody(consumerDmaapModel, put);
-            addUserCredentialsToHead(put);
-
-            logger.trace(INVOKE, "Starting to publish to DR {}", consumerDmaapModel.getInternalLocation());
-            Future<HttpResponse> future = webClient.execute(put, null);
+            logger.trace(INVOKE, "Starting to produce to DR {}", request);
+            Future<HttpResponse> future = webClient.execute(request, null);
             HttpResponse response = future.get();
-            logger.trace(INVOKE_RETURN, "Response from DR {}", response);
-            return Mono.just(HttpStatus.valueOf(response.getStatusLine().getStatusCode()));
+            logger.trace(INVOKE_RETURN, "Response from DR {}", response.toString());
+            return response;
         } catch (Exception e) {
-            logger.error("Unable to send file to DataRouter. Data: {}", consumerDmaapModel.getInternalLocation(), e);
-            return Mono.error(e);
+            throw new DatafileTaskException("Unable to create web client.", e);
         }
     }
 
-    private void addUserCredentialsToHead(HttpPut put) {
+    public HttpResponse getDmaapProducerResponseWithCustomTimeout(HttpUriRequest request, int requestTimeout,
+            Map<String, String> contextMap) throws DatafileTaskException {
+        try (CloseableHttpAsyncClient webClient = createWebClient(false, requestTimeout)) {
+            MdcVariables.setMdcContextMap(contextMap);
+            webClient.start();
+
+            logger.trace(INVOKE, "Starting to produce to DR {}", request);
+            Future<HttpResponse> future = webClient.execute(request, null);
+            HttpResponse response = future.get();
+            logger.trace(INVOKE_RETURN, "Response from DR {}", response.toString());
+            return response;
+        } catch (Exception e) {
+            throw new DatafileTaskException("Unable to create web client.", e);
+        }
+    }
+
+    public void addUserCredentialsToHead(HttpUriRequest request) {
         String plainCreds = user + ":" + pwd;
         byte[] plainCredsBytes = plainCreds.getBytes(StandardCharsets.ISO_8859_1);
         byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
         String base64Creds = new String(base64CredsBytes);
         logger.trace("base64Creds...: {}", base64Creds);
-        put.addHeader("Authorization", "Basic " + base64Creds);
+        request.addHeader("Authorization", "Basic " + base64Creds);
     }
 
-    private void prepareHead(ConsumerDmaapModel model, HttpPut put) {
-        put.addHeader(HttpHeaders.CONTENT_TYPE, dmaapContentType);
-        JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(model));
-        String name = metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
-        metaData.getAsJsonObject().remove(INTERNAL_LOCATION_JSON_TAG);
-        put.addHeader(X_DMAAP_DR_META, metaData.toString());
-        put.setURI(getUri(name));
-
-        String requestID = MDC.get(REQUEST_ID);
-        put.addHeader(X_ONAP_REQUEST_ID, requestID);
-        String invocationID = UUID.randomUUID().toString();
-        put.addHeader(X_INVOCATION_ID, invocationID);
+    public UriBuilder getBaseUri() {
+        return new DefaultUriBuilderFactory().builder() //
+                .scheme(dmaapProtocol) //
+                .host(dmaapHostName) //
+                .port(dmaapPortNumber);
     }
 
-    private void prepareBody(ConsumerDmaapModel model, HttpPut put) throws IOException {
-        Path fileLocation = Paths.get(model.getInternalLocation());
-        this.fileResource.setPath(fileLocation);
-        InputStream fileInputStream = fileResource.getInputStream();
-
-        put.setEntity(new ByteArrayEntity(IOUtils.toByteArray(fileInputStream)));
-
-    }
-
-    private URI getUri(String fileName) {
-        String path = dmaapTopicName + URI_SEPARATOR + DEFAULT_FEED_ID + URI_SEPARATOR + fileName;
-        return new DefaultUriBuilderFactory().builder().scheme(dmaapProtocol).host(dmaapHostName).port(dmaapPortNumber)
-                .path(path).build();
-    }
-
-    void setFileSystemResource(IFileSystemResource fileSystemResource) {
-        fileResource = fileSystemResource;
-    }
-
-    protected CloseableHttpAsyncClient createWebClient()
+    private CloseableHttpAsyncClient createWebClient(boolean expectRedirect, int requestTimeout)
             throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+        SSLContext sslContext =
+                new SSLContextBuilder().loadTrustMaterial(null, (certificate, authType) -> true).build();
 
-        SSLContext sslContext = new SSLContextBuilder() //
-                .loadTrustMaterial(null, (certificate, authType) -> true) //
-                .build();
+        IHttpAsyncClientBuilder clientBuilder = getHttpClientBuilder();
+        clientBuilder.setSSLContext(sslContext) //
+                .setSSLHostnameVerifier(new NoopHostnameVerifier());
 
-        CloseableHttpAsyncClient webClient =  HttpAsyncClients.custom() //
-                .setSSLContext(sslContext) //
-                .setSSLHostnameVerifier(new NoopHostnameVerifier()) //
-                .setRedirectStrategy(PublishRedirectStrategy.INSTANCE) //
-                .build();
-        webClient.start();
-        return webClient;
+        if (expectRedirect) {
+            clientBuilder.setRedirectStrategy(PublishRedirectStrategy.INSTANCE);
+        }
+
+        if (requestTimeout > NO_REQUEST_TIMEOUT) {
+            RequestConfig requestConfig = RequestConfig.custom() //
+                    .setSocketTimeout(requestTimeout) //
+                    .setConnectTimeout(requestTimeout) //
+                    .setConnectionRequestTimeout(requestTimeout) //
+                    .build();
+
+            clientBuilder.setDefaultRequestConfig(requestConfig);
+        }
+
+        return clientBuilder.build();
     }
 
+    IHttpAsyncClientBuilder getHttpClientBuilder() {
+        return new HttpAsyncClientBuilderWrapper();
+    }
 }
