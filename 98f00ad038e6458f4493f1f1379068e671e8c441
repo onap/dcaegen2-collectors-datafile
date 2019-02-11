@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c415a5fb_12e16cd2",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2019-02-11T14:59:35Z",
+      "side": 1,
+      "message": "please remove trailing space (can be good to set your IDE to remove these automatically maybe)",
+      "range": {
+        "startLine": 143,
+        "startChar": 43,
+        "endLine": 143,
+        "endChar": 47
+      },
+      "revId": "98f00ad038e6458f4493f1f1379068e671e8c441",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fcb8e3ac_24d8d342",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2019-02-11T14:59:35Z",
+      "side": 1,
+      "message": "Remove redundant space chars",
+      "range": {
+        "startLine": 371,
+        "startChar": 0,
+        "endLine": 371,
+        "endChar": 6
+      },
+      "revId": "98f00ad038e6458f4493f1f1379068e671e8c441",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}

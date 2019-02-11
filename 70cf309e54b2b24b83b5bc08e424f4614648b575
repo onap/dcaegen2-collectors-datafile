@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6a184af0_3fafed72",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapPublisherTaskImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2019-02-11T14:59:35Z",
+      "side": 0,
+      "message": "Nothing extends this abstract class anymore - is this intended? If so, maybe the class itself should be removed.",
+      "range": {
+        "startLine": 37,
+        "startChar": 44,
+        "endLine": 37,
+        "endChar": 62
+      },
+      "revId": "70cf309e54b2b24b83b5bc08e424f4614648b575",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
