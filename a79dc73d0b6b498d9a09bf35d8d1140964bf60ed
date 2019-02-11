@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d0a11ac2_15a1fbfe",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2019-02-11T21:16:56Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "a2159138_23ca2057",
+      "range": {
+        "startLine": 3,
+        "startChar": 116,
+        "endLine": 3,
+        "endChar": 117
+      },
+      "revId": "a79dc73d0b6b498d9a09bf35d8d1140964bf60ed",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5afb1822_3a6b6e39",
         "filename": "datafile-app-server/config/dfc.crt",
         "patchSetId": 2
@@ -36,6 +60,24 @@
       "writtenOn": "2019-02-11T16:17:15Z",
       "side": 1,
       "message": "Should security artifacts be added to a repo?",
+      "revId": "a79dc73d0b6b498d9a09bf35d8d1140964bf60ed",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0af039a6_0aa9f04c",
+        "filename": "datafile-app-server/config/dfc.crt",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2019-02-11T21:16:56Z",
+      "side": 1,
+      "message": "Yes, done",
+      "parentUuid": "5afb1822_3a6b6e39",
       "revId": "a79dc73d0b6b498d9a09bf35d8d1140964bf60ed",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
