@@ -19,6 +19,7 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Map;
+
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
@@ -32,6 +33,7 @@ import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import reactor.core.publisher.Mono;
 
 /**
@@ -57,12 +59,10 @@ public class FileCollector {
         logger.trace("Entering execute with {}", fileData);
         resolveKeyStore();
 
-        //@formatter:off
-        return Mono.just(fileData)
-            .cache()
-            .flatMap(fd -> collectFile(fileData, metaData, contextMap))
-            .retryBackoff(maxNumberOfRetries, firstBackoffTimeout);
-        //@formatter:on
+        return Mono.just(fileData) //
+                .cache() //
+                .flatMap(fd -> collectFile(fileData, metaData, contextMap)) //
+                .retryBackoff(maxNumberOfRetries, firstBackoffTimeout);
     }
 
     private FtpesConfig resolveConfiguration() {
@@ -112,21 +112,19 @@ public class FileCollector {
     private ConsumerDmaapModel getConsumerDmaapModel(FileData fileData, MessageMetaData metaData, Path localFile) {
         String location = fileData.location();
 
-        // @formatter:off
-        return ImmutableConsumerDmaapModel.builder()
-                .productName(metaData.productName())
-                .vendorName(metaData.vendorName())
-                .lastEpochMicrosec(metaData.lastEpochMicrosec())
-                .sourceName(metaData.sourceName())
-                .startEpochMicrosec(metaData.startEpochMicrosec())
-                .timeZoneOffset(metaData.timeZoneOffset())
-                .name(fileData.name())
-                .location(location)
-                .internalLocation(localFile.toString())
-                .compression(fileData.compression())
-                .fileFormatType(fileData.fileFormatType())
-                .fileFormatVersion(fileData.fileFormatVersion())
+        return ImmutableConsumerDmaapModel.builder() //
+                .productName(metaData.productName()) //
+                .vendorName(metaData.vendorName()) //
+                .lastEpochMicrosec(metaData.lastEpochMicrosec()) //
+                .sourceName(metaData.sourceName()) //
+                .startEpochMicrosec(metaData.startEpochMicrosec()) //
+                .timeZoneOffset(metaData.timeZoneOffset()) //
+                .name(fileData.name()) //
+                .location(location) //
+                .internalLocation(localFile) //
+                .compression(fileData.compression()) //
+                .fileFormatType(fileData.fileFormatType()) //
+                .fileFormatVersion(fileData.fileFormatVersion()) //
                 .build();
-        // @formatter:on
     }
 }

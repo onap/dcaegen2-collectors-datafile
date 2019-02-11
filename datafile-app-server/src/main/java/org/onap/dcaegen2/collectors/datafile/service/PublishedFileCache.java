@@ -13,6 +13,7 @@
  * the License.
  * ============LICENSE_END========================================================================
  */
+
 package org.onap.dcaegen2.collectors.datafile.service;
 
 import java.nio.file.Path;
@@ -29,14 +30,30 @@ import java.util.Map;
 public class PublishedFileCache {
     private final Map<Path, Instant> publishedFiles = Collections.synchronizedMap(new HashMap<Path, Instant>());
 
+    /**
+     * Adds a file to the cache.
+     *
+     * @param path the name of the file to add.
+     * @return <code>null</code> if the file is not already in the cache.
+     */
     public Instant put(Path path) {
         return publishedFiles.put(path, Instant.now());
     }
 
+    /**
+     * Removes a file from the cache.
+     *
+     * @param localFileName name of the file to remove.
+     */
     public void remove(Path localFileName) {
         publishedFiles.remove(localFileName);
     }
 
+    /**
+     * Removes files 24 hours older than the given instant.
+     *
+     * @param now the instant will determine which files that will be purged.
+     */
     public void purge(Instant now) {
         for (Iterator<Map.Entry<Path, Instant>> it = publishedFiles.entrySet().iterator(); it.hasNext();) {
             Map.Entry<Path, Instant> pair = it.next();
@@ -46,7 +63,7 @@ public class PublishedFileCache {
         }
     }
 
-    public int size() {
+    int size() {
         return publishedFiles.size();
     }
 
