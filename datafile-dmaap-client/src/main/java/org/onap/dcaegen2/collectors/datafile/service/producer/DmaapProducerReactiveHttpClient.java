@@ -57,7 +57,7 @@ import reactor.core.publisher.Flux;
  */
 public class DmaapProducerReactiveHttpClient {
 
-    private static final String X_ATT_DR_META = "X-ATT-DR-META";
+    private static final String X_DMAAP_DR_META = "X-DMAAP-DR-META";
     private static final String NAME_JSON_TAG = "name";
     private static final String INTERNAL_LOCATION_JSON_TAG = "internalLocation";
     private static final String URI_SEPARATOR = "/";
@@ -145,7 +145,7 @@ public class DmaapProducerReactiveHttpClient {
         JsonElement metaData = new JsonParser().parse(new CommonFunctions().createJsonBody(model));
         String name = metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
         metaData.getAsJsonObject().remove(INTERNAL_LOCATION_JSON_TAG);
-        put.addHeader(X_ATT_DR_META, metaData.toString());
+        put.addHeader(X_DMAAP_DR_META, metaData.toString());
         put.setURI(getUri(name));
     }
 

@@ -62,7 +62,7 @@ class DmaapProducerReactiveHttpClientTest {
     private static final String FILE_NAME = "A20161224.1030-1045.bin.gz";
     private static final String INTERNAL_LOCATION_JSON_TAG = "internalLocation";
     private static final String NAME_JSON_TAG = "name";
-    private static final String X_ATT_DR_META = "X-ATT-DR-META";
+    private static final String X_DMAAP_DR_META = "X-DMAAP-DR-META";
 
     private static final String HOST = "54.45.33.2";
     private static final String HTTPS_SCHEME = "https";
@@ -131,7 +131,7 @@ class DmaapProducerReactiveHttpClientTest {
         JsonElement metaData = new JsonParser().parse(new CommonFunctions().createJsonBody(consumerDmaapModel));
         metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
         metaData.getAsJsonObject().remove(INTERNAL_LOCATION_JSON_TAG);
-        httpPut.addHeader(X_ATT_DR_META, metaData.toString());
+        httpPut.addHeader(X_DMAAP_DR_META, metaData.toString());
         httpPut.setURI(expectedUri);
 
         String plainCreds = "dradmin" + ":" + "dradmin";
