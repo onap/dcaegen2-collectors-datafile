@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "507e0c26_5424ff8c",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 4593
+      },
+      "writtenOn": "2019-02-12T07:58:59Z",
+      "side": 1,
+      "message": "All trailing spaces can be removed. Most IDEs allow you to set this automatically",
+      "range": {
+        "startLine": 27,
+        "startChar": 117,
+        "endLine": 27,
+        "endChar": 119
+      },
+      "revId": "2188ab3c94610954e77dc6ceb5b3624fc5d77a8a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
