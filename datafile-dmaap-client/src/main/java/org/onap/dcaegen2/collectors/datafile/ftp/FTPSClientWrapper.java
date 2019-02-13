@@ -18,11 +18,10 @@ package org.onap.dcaegen2.collectors.datafile.ftp;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
-
 import org.apache.commons.net.ftp.FTPSClient;
+import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 
 public class FTPSClientWrapper implements IFTPSClient {
     private FTPSClient ftpsClient = new FTPSClient();
@@ -88,8 +87,14 @@ public class FTPSClientWrapper implements IFTPSClient {
     }
 
     @Override
-    public boolean retrieveFile(String remote, OutputStream local) throws IOException {
-        return ftpsClient.retrieveFile(remote, local);
+    public void retrieveFile(String remote, OutputStream local) throws DatafileTaskException {
+        try {
+            if (!ftpsClient.retrieveFile(remote, local)) {
+                throw new DatafileTaskException("could not retrieve file");
+            }
+        } catch (IOException e) {
+            throw new DatafileTaskException(e);
+        }
     }
 
     @Override

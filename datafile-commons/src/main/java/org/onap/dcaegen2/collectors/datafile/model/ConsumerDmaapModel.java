@@ -17,7 +17,6 @@
 package org.onap.dcaegen2.collectors.datafile.model;
 
 import com.google.gson.annotations.SerializedName;
-
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 import org.onap.dcaegen2.services.sdk.rest.services.model.DmaapModel;

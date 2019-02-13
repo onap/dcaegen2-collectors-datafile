@@ -1,17 +1,19 @@
-/*
- * ============LICENSE_START======================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
- * ===============================================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
+/*-
+ * ============LICENSE_START=======================================================
+ * Copyright (C) 2018 Nordix Foundation. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- * ============LICENSE_END========================================================================
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
  */
 
 package org.onap.dcaegen2.collectors.datafile.service;
@@ -21,15 +23,20 @@ import static org.mockito.Mockito.spy;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapNotFoundException;
+import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
-import org.onap.dcaegen2.collectors.datafile.model.FileMetaData;
+import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
-import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileMetaData;
+import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileReadyMessage;
+import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
+import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
 
@@ -40,7 +47,7 @@ import reactor.test.StepVerifier;
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 5/8/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
-class DmaapConsumerJsonParserTest {
+class JsonMessageParserTest {
     private static final String NR_RADIO_ERICSSON_EVENT_NAME = "Noti_NrRadio-Ericsson_FileReady";
     private static final String PRODUCT_NAME = "NrRadio";
     private static final String VENDOR_NAME = "Ericsson";
@@ -60,7 +67,7 @@ class DmaapConsumerJsonParserTest {
     private static final String NOTIFICATION_FIELDS_VERSION = "1.0";
 
     @Test
-    void whenPassingCorrectJson_oneFileData() throws DmaapNotFoundException {
+    void whenPassingCorrectJson_oneFileReadyMessage() throws DmaapNotFoundException {
         // @formatter:off
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
                 .name(PM_FILE_NAME)
@@ -77,7 +84,7 @@ class DmaapConsumerJsonParserTest {
                 .addAdditionalField(additionalField)
                 .build();
 
-        FileMetaData fileMetaData = ImmutableFileMetaData.builder()
+        MessageMetaData messageMetaData = ImmutableMessageMetaData.builder()
                 .productName(PRODUCT_NAME)
                 .vendorName(VENDOR_NAME)
                 .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
@@ -88,27 +95,34 @@ class DmaapConsumerJsonParserTest {
                 .changeType(CHANGE_TYPE)
                 .build();
         FileData expectedFileData = ImmutableFileData.builder()
-                .fileMetaData(fileMetaData)
                 .name(PM_FILE_NAME)
                 .location(LOCATION)
+                .scheme(Scheme.FTPS)
                 .compression(GZIP_COMPRESSION)
                 .fileFormatType(FILE_FORMAT_TYPE)
                 .fileFormatVersion(FILE_FORMAT_VERSION)
+                .build();
+        List<FileData> files = new ArrayList<>();
+        files.add(expectedFileData);
+        FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder()
+                .pnfName(SOURCE_NAME)
+                .messageMetaData(messageMetaData)
+                .files(files)
                 .build();
         // @formatter:on
         String messageString = message.toString();
         String parsedString = message.getParsed();
-        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
-                .expectNext(expectedFileData).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+                .expectSubscription().expectNext(expectedMessage).verifyComplete();
     }
 
     @Test
-    void whenPassingCorrectJsonWithTwoEvents_twoFileData() throws DmaapNotFoundException {
+    void whenPassingCorrectJsonWithTwoEvents_twoMessages() throws DmaapNotFoundException {
         // @formatter:off
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
                 .name(PM_FILE_NAME)
@@ -125,7 +139,7 @@ class DmaapConsumerJsonParserTest {
                 .addAdditionalField(additionalField)
                 .build();
 
-        FileMetaData fileMetaData = ImmutableFileMetaData.builder()
+        MessageMetaData messageMetaData = ImmutableMessageMetaData.builder()
                 .productName(PRODUCT_NAME)
                 .vendorName(VENDOR_NAME)
                 .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
@@ -136,25 +150,62 @@ class DmaapConsumerJsonParserTest {
                 .changeType(CHANGE_TYPE)
                 .build();
         FileData expectedFileData = ImmutableFileData.builder()
-                .fileMetaData(fileMetaData)
                 .name(PM_FILE_NAME)
                 .location(LOCATION)
+                .scheme(Scheme.FTPS)
                 .compression(GZIP_COMPRESSION)
                 .fileFormatType(FILE_FORMAT_TYPE)
                 .fileFormatVersion(FILE_FORMAT_VERSION)
+                .build();
+        List<FileData> files = new ArrayList<>();
+        files.add(expectedFileData);
+        FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder()
+                .pnfName(SOURCE_NAME)
+                .messageMetaData(messageMetaData)
+                .files(files)
                 .build();
         // @formatter:on
         String parsedString = message.getParsed();
         String messageString = "[" + parsedString + "," + parsedString + "]";
-        DmaapConsumerJsonParser dmaapConsumerJsonParser = new DmaapConsumerJsonParser();
+        JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
+        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
+                .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
-                .expectNext(expectedFileData).expectNext(expectedFileData).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+                .expectSubscription().expectNext(expectedMessage).expectNext(expectedMessage).verifyComplete();
     }
 
     @Test
-    void whenPassingCorrectJsonWithTwoEventsFirstNoHeader_oneFileDatan()
-            throws DmaapNotFoundException {
+    void whenPassingCorrectJsonWithoutLocation_noMessage() {
+        // @formatter:off
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
+                .name(PM_FILE_NAME)
+                .compression(GZIP_COMPRESSION)
+                .fileFormatType(FILE_FORMAT_TYPE)
+                .fileFormatVersion(FILE_FORMAT_VERSION)
+                .build();
+        JsonMessage message = new JsonMessage.JsonMessageBuilder()
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
+                .changeIdentifier(CHANGE_IDENTIFIER)
+                .changeType(CHANGE_TYPE)
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
+                .addAdditionalField(additionalField)
+                .build();
+        // @formatter:on
+        String messageString = message.toString();
+        String parsedString = message.getParsed();
+        JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
+        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
+                .getJsonObjectFromAnArray(jsonElement);
+
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+                .expectSubscription().expectNextCount(0).verifyComplete();
+    }
+
+    @Test
+    void whenPassingCorrectJsonWithTwoEventsFirstNoHeader_oneFileDatan() throws DmaapNotFoundException {
         // @formatter:off
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
                 .name(PM_FILE_NAME)
@@ -171,7 +222,7 @@ class DmaapConsumerJsonParserTest {
                 .addAdditionalField(additionalField)
                 .build();
 
-        FileMetaData fileMetaData = ImmutableFileMetaData.builder()
+        MessageMetaData messageMetaData = ImmutableMessageMetaData.builder()
                 .productName(PRODUCT_NAME)
                 .vendorName(VENDOR_NAME)
                 .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
@@ -182,20 +233,27 @@ class DmaapConsumerJsonParserTest {
                 .changeType(CHANGE_TYPE)
                 .build();
         FileData expectedFileData = ImmutableFileData.builder()
-                .fileMetaData(fileMetaData)
                 .name(PM_FILE_NAME)
                 .location(LOCATION)
+                .scheme(Scheme.FTPS)
                 .compression(GZIP_COMPRESSION)
                 .fileFormatType(FILE_FORMAT_TYPE)
                 .fileFormatVersion(FILE_FORMAT_VERSION)
                 .build();
+        List<FileData> files = new ArrayList<>();
+        files.add(expectedFileData);
+        FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder()
+                .pnfName(SOURCE_NAME)
+                .messageMetaData(messageMetaData)
+                .files(files)
+                .build();
         // @formatter:on
         String parsedString = message.getParsed();
         String messageString = "[{\"event\":{}}," + parsedString + "]";
-        DmaapConsumerJsonParser dmaapConsumerJsonParser = new DmaapConsumerJsonParser();
+        JsonMessageParser jsonMessageParserUnderTest = new JsonMessageParser();
 
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
-                .expectNext(expectedFileData).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+                .expectSubscription().expectNext(expectedMessage).verifyComplete();
     }
 
     @Test
@@ -217,13 +275,13 @@ class DmaapConsumerJsonParserTest {
         // @formatter:on
         String messageString = message.toString();
         String parsedString = message.getParsed();
-        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
-                .expectComplete().verify();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+                .expectSubscription().expectComplete().verify();
     }
 
     @Test
@@ -245,13 +303,13 @@ class DmaapConsumerJsonParserTest {
         // @formatter:on
         String messageString = message.toString();
         String parsedString = message.getParsed();
-        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
-                .expectNextCount(0).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+                .expectSubscription().expectNextCount(0).verifyComplete();
     }
 
     @Test
@@ -266,41 +324,13 @@ class DmaapConsumerJsonParserTest {
         // @formatter:on
         String messageString = message.toString();
         String parsedString = message.getParsed();
-        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
-        .getJsonObjectFromAnArray(jsonElement);
-
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
-        .expectNextCount(0).verifyComplete();
-    }
-
-    @Test
-    void whenPassingCorrectJsonWithoutLocation_noFileData() {
-        // @formatter:off
-        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
-                .name(PM_FILE_NAME)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
-                .build();
-        JsonMessage message = new JsonMessage.JsonMessageBuilder()
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME)
-                .changeIdentifier(CHANGE_IDENTIFIER)
-                .changeType(CHANGE_TYPE)
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION)
-                .addAdditionalField(additionalField)
-                .build();
-        // @formatter:on
-        String messageString = message.toString();
-        String parsedString = message.getParsed();
-        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
-        JsonElement jsonElement = new JsonParser().parse(parsedString);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
-                .expectNextCount(0).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+                .expectSubscription().expectNextCount(0).verifyComplete();
     }
 
     @Test
@@ -322,13 +352,13 @@ class DmaapConsumerJsonParserTest {
         // @formatter:on
         String messageString = message.toString();
         String parsedString = message.getParsed();
-        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
-                .expectNextCount(0).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+                .expectSubscription().expectNextCount(0).verifyComplete();
     }
 
     @Test
@@ -350,13 +380,13 @@ class DmaapConsumerJsonParserTest {
         // @formatter:on
         String messageString = message.toString();
         String parsedString = message.getParsed();
-        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
-                .expectNextCount(0).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+                .expectSubscription().expectNextCount(0).verifyComplete();
     }
 
     @Test
@@ -384,7 +414,7 @@ class DmaapConsumerJsonParserTest {
                 .addAdditionalField(additionalField)
                 .build();
 
-        FileMetaData fileMetaData = ImmutableFileMetaData.builder()
+        MessageMetaData messageMetaData = ImmutableMessageMetaData.builder()
                 .productName(PRODUCT_NAME)
                 .vendorName(VENDOR_NAME)
                 .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
@@ -395,23 +425,30 @@ class DmaapConsumerJsonParserTest {
                 .changeType(CHANGE_TYPE)
                 .build();
         FileData expectedFileData = ImmutableFileData.builder()
-                .fileMetaData(fileMetaData)
                 .name(PM_FILE_NAME)
                 .location(LOCATION)
+                .scheme(Scheme.FTPS)
                 .compression(GZIP_COMPRESSION)
                 .fileFormatType(FILE_FORMAT_TYPE)
                 .fileFormatVersion(FILE_FORMAT_VERSION)
                 .build();
+        List<FileData> files = new ArrayList<>();
+        files.add(expectedFileData);
+        FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder()
+                .pnfName(SOURCE_NAME)
+                .messageMetaData(messageMetaData)
+                .files(files)
+                .build();
         // @formatter:on
         String messageString = message.toString();
         String parsedString = message.getParsed();
-        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
-                .expectNext(expectedFileData).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+                .expectSubscription().expectNext(expectedMessage).verifyComplete();
     }
 
     @Test
@@ -426,24 +463,24 @@ class DmaapConsumerJsonParserTest {
         // @formatter:on
         String incorrectMessageString = message.toString();
         String parsedString = message.getParsed();
-        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(incorrectMessageString)))
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(incorrectMessageString)))
                 .expectSubscription().expectComplete().verify();
     }
 
     @Test
     void whenPassingJsonWithNullJsonElement_noFileData() {
-        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse("{}");
 
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just("[{}]"))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just("[{}]"))).expectSubscription()
                 .expectComplete().verify();
     }
 
@@ -466,13 +503,13 @@ class DmaapConsumerJsonParserTest {
         // @formatter:on
         String messageString = message.toString();
         String parsedString = message.getParsed();
-        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
-                .expectNextCount(0).expectComplete().verify();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+                .expectSubscription().expectNextCount(0).expectComplete().verify();
     }
 
     @Test
@@ -494,12 +531,12 @@ class DmaapConsumerJsonParserTest {
         // @formatter:on
         String messageString = message.toString();
         String parsedString = message.getParsed();
-        DmaapConsumerJsonParser dmaapConsumerJsonParser = spy(new DmaapConsumerJsonParser());
+        JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
-        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(dmaapConsumerJsonParser)
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(dmaapConsumerJsonParser.getJsonObject(Mono.just(messageString))).expectSubscription()
-                .expectComplete().verify();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+                .expectSubscription().expectComplete().verify();
     }
 }

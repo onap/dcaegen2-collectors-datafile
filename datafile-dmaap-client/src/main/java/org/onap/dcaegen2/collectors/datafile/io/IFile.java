@@ -20,9 +20,10 @@ package org.onap.dcaegen2.collectors.datafile.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 public interface IFile {
-    public void setPath(String path);
+    public void setPath(Path path);
 
     public boolean createNewFile() throws IOException;
 
