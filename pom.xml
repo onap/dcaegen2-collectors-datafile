@@ -46,8 +46,8 @@
   <properties>
     <java.version>8</java.version>
     <immutable.version>2.7.1</immutable.version>
-    <spring.version>5.1.2.RELEASE</spring.version>
-    <spring-boot.version>2.1.0.M4</spring-boot.version>
+    <spring.version>5.1.4.RELEASE</spring.version>
+    <spring-boot.version>2.1.2.RELEASE</spring-boot.version>
     <tomcat.version>8.5.34</tomcat.version>
     <docker.maven.version>1.0.0</docker.maven.version>
     <resource.maven.plugin.version>3.1.0</resource.maven.plugin.version>
@@ -339,7 +339,7 @@
       <dependency>
         <groupId>com.jcraft</groupId>
         <artifactId>jsch</artifactId>
-        <version>0.1.53</version>
+        <version>0.1.54</version>
       </dependency>
 
       <!--REQUIRED TO GENERATE DOCUMENTATION -->
