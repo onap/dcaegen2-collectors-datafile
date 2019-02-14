@@ -625,6 +625,24 @@
     },
     {
       "key": {
+        "uuid": "9c94d5b1_7800dbfe",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T15:49:20Z",
+      "side": 1,
+      "message": "Yes, or maybe a timestamp updated each access and then purge in regular intervals.",
+      "parentUuid": "dec16b8e_c2253984",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1b4ea5a1_c5a2d0ca",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
         "patchSetId": 1
@@ -965,6 +983,24 @@
       "side": 1,
       "message": "Yes, in https://gerrit.onap.org/r/#/c/78373/ we step spring to 5.1.4.RELEASE. So in this commit here we should remove the version for reactor-bom since we don\u0027t need to specify the version here.",
       "parentUuid": "6486d578_84a0e0b1",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cac0077e_2fb90634",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T15:49:20Z",
+      "side": 1,
+      "message": "Done, the dependency is removed.",
+      "parentUuid": "495bad29_548536c1",
       "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
