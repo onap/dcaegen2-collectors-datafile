@@ -20,14 +20,15 @@ package org.onap.dcaegen2.collectors.datafile.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.onap.dcaegen2.services.sdk.rest.services.model.JsonBodyBuilder;
 
 
-public class CommonFunctions implements JsonBodyBuilder<ConsumerDmaapModel> {
+public class CommonFunctions {
 
     private static Gson gson = new GsonBuilder().serializeNulls().create();
 
-    public  String createJsonBody(ConsumerDmaapModel consumerDmaapModel) {
+    private CommonFunctions() {}
+
+    public static String createJsonBody(ConsumerDmaapModel consumerDmaapModel) {
         return gson.toJson(consumerDmaapModel);
     }
 }

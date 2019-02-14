@@ -20,13 +20,14 @@ package org.onap.dcaegen2.collectors.datafile.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 public class FileWrapper implements IFile {
     private File file;
 
     @Override
-    public void setPath(String path) {
-        file = new File(path);
+    public void setPath(Path path) {
+        file = path.toFile();
     }
 
     @Override

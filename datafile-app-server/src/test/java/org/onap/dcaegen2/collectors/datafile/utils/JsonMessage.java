@@ -78,7 +78,6 @@ public class JsonMessage {
                 + "\"version\":3"
                 + "},"
                 + "\"notificationFields\":{"
-        // @formatter:on
                 + getAsStringIfParameterIsSet("changeIdentifier", changeIdentifier,
                         changeType != null || notificationFieldsVersion != null || arrayOfAdditionalFields.size() > 0)
                 + getAsStringIfParameterIsSet("changeType", changeType,
@@ -86,6 +85,7 @@ public class JsonMessage {
                 + getAsStringIfParameterIsSet("notificationFieldsVersion", notificationFieldsVersion,
                         arrayOfAdditionalFields.size() > 0)
                 + additionalFieldsString.toString() + "}" + "}" + "}";
+        // @formatter:on
     }
 
     private JsonMessage(final JsonMessageBuilder builder) {
