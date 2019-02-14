@@ -18,9 +18,9 @@ package org.onap.dcaegen2.collectors.datafile.ftp;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
+import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 
 public interface IFTPSClient {
     public void setNeedClientAuth(boolean isNeedClientAuth);
@@ -51,7 +51,7 @@ public interface IFTPSClient {
 
     public void execPROT(String prot) throws IOException;
 
-    public boolean retrieveFile(String remote, OutputStream local) throws IOException;
+    public void retrieveFile(String remote, OutputStream local) throws DatafileTaskException;
 
     void setTimeout(Integer t);
 }
