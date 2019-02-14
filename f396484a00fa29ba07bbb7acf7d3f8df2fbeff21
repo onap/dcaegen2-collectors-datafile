@@ -144,6 +144,30 @@
     },
     {
       "key": {
+        "uuid": "a85a939f_223cfb54",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileData.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T14:05:20Z",
+      "side": 1,
+      "message": "I fixed this in patchset 3.",
+      "parentUuid": "3a150a3b_d3fc21d1",
+      "range": {
+        "startLine": 70,
+        "startChar": 17,
+        "endLine": 70,
+        "endChar": 36
+      },
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "35d1fc47_847163de",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileData.java",
         "patchSetId": 1
