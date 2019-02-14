@@ -36,7 +36,7 @@ class CommonFunctionsTest {
             .fileFormatType("org.3GPP.32.435#measCollec")
             .fileFormatVersion("V10")
             .build();
-    
+
     private static final String EXPECTED_RESULT =
              "{\"productName\":\"NrRadio\","
             + "\"vendorName\":\"Ericsson\","
@@ -53,6 +53,6 @@ class CommonFunctionsTest {
     // @formatter:on
     @Test
     void createJsonBody_shouldReturnJsonInString() {
-        assertEquals(EXPECTED_RESULT, new CommonFunctions().createJsonBody(model));
+        assertEquals(EXPECTED_RESULT, CommonFunctions.createJsonBody(model));
     }
 }

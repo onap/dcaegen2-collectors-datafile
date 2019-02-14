@@ -18,10 +18,11 @@ package org.onap.dcaegen2.collectors.datafile.io;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 
 public interface IFileSystemResource {
 
-    public void setPath(String filePath);
+    public void setPath(Path filePath);
 
     public InputStream getInputStream() throws IOException;
 }
