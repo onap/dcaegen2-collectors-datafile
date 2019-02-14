@@ -20,7 +20,6 @@ import java.io.File;
 import java.net.URI;
 
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
-import org.onap.dcaegen2.collectors.datafile.configuration.Config;
 import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
 import org.onap.dcaegen2.collectors.datafile.ftp.FileCollectClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.FileCollectResult;
@@ -48,7 +47,7 @@ public class XnfCollectorTaskImpl implements XnfCollectorTask {
     private static final String FTPS = "ftps";
     private static final String SFTP = "sftp";
     private static final Logger logger = LoggerFactory.getLogger(XnfCollectorTaskImpl.class);
-    private Config datafileAppConfig;
+    private AppConfig datafileAppConfig;
     private final FtpsClient ftpsClient;
     private final SftpClient sftpClient;
     private RetryTimer retryTimer;

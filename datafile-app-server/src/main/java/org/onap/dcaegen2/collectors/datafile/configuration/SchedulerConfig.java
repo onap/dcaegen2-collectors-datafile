@@ -40,7 +40,7 @@ import reactor.core.publisher.Mono;
  */
 @Configuration
 @EnableScheduling
-public class SchedulerConfig extends DatafileAppConfig {
+public class SchedulerConfig {
 
     private static final int SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS = 15;
     private static final int SCHEDULING_REQUEST_FOR_CONFIGURATION_DELAY = 5;

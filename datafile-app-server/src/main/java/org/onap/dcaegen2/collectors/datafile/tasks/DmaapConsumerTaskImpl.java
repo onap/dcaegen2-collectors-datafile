@@ -18,7 +18,6 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 
 
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
-import org.onap.dcaegen2.collectors.datafile.configuration.Config;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.service.DmaapConsumerJsonParser;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
@@ -40,7 +39,7 @@ public class DmaapConsumerTaskImpl extends DmaapConsumerTask {
 
     private static final Logger logger = LoggerFactory.getLogger(DmaapConsumerTaskImpl.class);
 
-    private Config datafileAppConfig;
+    private AppConfig datafileAppConfig;
     private DmaapConsumerJsonParser dmaapConsumerJsonParser;
     private DMaaPConsumerReactiveHttpClient dmaaPConsumerReactiveHttpClient;
 

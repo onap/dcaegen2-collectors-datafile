@@ -20,14 +20,21 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapConsumerConfiguration;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import java.io.*;
+import java.util.ServiceLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
-import java.util.function.Predicate;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.TypeAdapterFactory;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 3/23/18
@@ -35,199 +42,95 @@ import java.util.function.Predicate;
  */
 
 @Component
-@Configuration
-public class AppConfig extends DatafileAppConfig {
+@EnableConfigurationProperties
+@ConfigurationProperties("app")
+public class AppConfig {
 
-    private static Predicate<String> isEmpty = String::isEmpty;
-    @Value("${dmaap.dmaapConsumerConfiguration.dmaapHostName:}")
-    public String consumerDmaapHostName;
+    private static final String CONFIG = "configs";
+    private static final String DMAAP = "dmaap";
+    private static final String DMAAP_PRODUCER = "dmaapProducerConfiguration";
+    private static final String DMAAP_CONSUMER = "dmaapConsumerConfiguration";
+    private static final String FTP = "ftp";
+    private static final String FTPES_CONFIGURATION = "ftpesConfiguration";
+    private static final String SECURITY = "security";
+    private static final Logger logger = LoggerFactory.getLogger(AppConfig.class);
 
-    @Value("${dmaap.dmaapConsumerConfiguration.dmaapPortNumber:}")
-    public Integer consumerDmaapPortNumber;
+    DmaapConsumerConfiguration dmaapConsumerConfiguration;
 
-    @Value("${dmaap.dmaapConsumerConfiguration.dmaapTopicName:}")
-    public String consumerDmaapTopicName;
+    DmaapPublisherConfiguration dmaapPublisherConfiguration;
 
-    @Value("${dmaap.dmaapConsumerConfiguration.dmaapProtocol:}")
-    public String consumerDmaapProtocol;
+    FtpesConfig ftpesConfig;
 
-    @Value("${dmaap.dmaapConsumerConfiguration.dmaapUserName:}")
-    public String consumerDmaapUserName;
+    @NotEmpty
+    private String filepath;
 
-    @Value("${dmaap.dmaapConsumerConfiguration.dmaapUserPassword:}")
-    public String consumerDmaapUserPassword;
-
-    @Value("${dmaap.dmaapConsumerConfiguration.dmaapContentType:}")
-    public String consumerDmaapContentType;
-
-    @Value("${dmaap.dmaapConsumerConfiguration.consumerId:}")
-    public String consumerId;
-
-    @Value("${dmaap.dmaapConsumerConfiguration.consumerGroup:}")
-    public String consumerGroup;
-
-    @Value("${dmaap.dmaapConsumerConfiguration.timeoutMs:}")
-    public Integer consumerTimeoutMs;
-
-    @Value("${dmaap.dmaapConsumerConfiguration.message-limit:}")
-    public Integer consumerMessageLimit;
-
-    @Value("${dmaap.dmaapProducerConfiguration.dmaapHostName:}")
-    public String producerDmaapHostName;
-
-    @Value("${dmaap.dmaapProducerConfiguration.dmaapPortNumber:}")
-    public Integer producerDmaapPortNumber;
-
-    @Value("${dmaap.dmaapProducerConfiguration.dmaapTopicName:}")
-    public String producerDmaapTopicName;
-
-    @Value("${dmaap.dmaapProducerConfiguration.dmaapProtocol:}")
-    public String producerDmaapProtocol;
-
-    @Value("${dmaap.dmaapProducerConfiguration.dmaapUserName:}")
-    public String producerDmaapUserName;
-
-    @Value("${dmaap.dmaapProducerConfiguration.dmaapUserPassword:}")
-    public String producerDmaapUserPassword;
-
-    @Value("${dmaap.dmaapProducerConfiguration.dmaapContentType:}")
-    public String producerDmaapContentType;
-
-    @Value("${ftp.ftpesConfiguration.keyCert:}")
-    public String keyCert;
-
-    @Value("${ftp.ftpesConfiguration.keyPassword:}")
-    public String keyPassword;
-
-    @Value("${ftp.ftpesConfiguration.trustedCA:}")
-    public String trustedCA;
-
-    @Value("${ftp.ftpesConfiguration.trustedCAPassword:}")
-    public String trustedCAPassword;
-
-    @Value("${security.trustStorePath:}")
-    public String trustStorePath;
-
-    @Value("${security.trustStorePasswordPath:}")
-    public String trustStorePasswordPath;
-
-    @Value("${security.keyStorePath:}")
-    public String keyStorePath;
-
-    @Value("${security.keyStorePasswordPath:}")
-    public String keyStorePasswordPath;
-
-    @Value("${security.enableDmaapCertAuth:}")
-    public Boolean enableDmaapCertAuth;
-
-    @Override
     public DmaapConsumerConfiguration getDmaapConsumerConfiguration() {
-        return new ImmutableDmaapConsumerConfiguration.Builder()
-                .dmaapUserPassword(
-                        Optional.ofNullable(consumerDmaapUserPassword).filter(isEmpty.negate())
-                                .orElse(dmaapConsumerConfiguration.dmaapUserPassword()))
-                .dmaapUserName(
-                        Optional.ofNullable(consumerDmaapUserName).filter(isEmpty.negate())
-                                .orElse(dmaapConsumerConfiguration.dmaapUserName()))
-                .dmaapHostName(
-                        Optional.ofNullable(consumerDmaapHostName).filter(isEmpty.negate())
-                                .orElse(dmaapConsumerConfiguration.dmaapHostName()))
-                .dmaapPortNumber(
-                        Optional.ofNullable(consumerDmaapPortNumber).filter(p -> !p.toString().isEmpty())
-                                .orElse(dmaapConsumerConfiguration.dmaapPortNumber()))
-                .dmaapProtocol(
-                        Optional.ofNullable(consumerDmaapProtocol).filter(isEmpty.negate())
-                                .orElse(dmaapConsumerConfiguration.dmaapProtocol()))
-                .dmaapContentType(
-                        Optional.ofNullable(consumerDmaapContentType).filter(isEmpty.negate())
-                                .orElse(dmaapConsumerConfiguration.dmaapContentType()))
-                .dmaapTopicName(
-                        Optional.ofNullable(consumerDmaapTopicName).filter(isEmpty.negate())
-                                .orElse(dmaapConsumerConfiguration.dmaapTopicName()))
-                .messageLimit(
-                        Optional.ofNullable(consumerMessageLimit).filter(p -> !p.toString().isEmpty())
-                                .orElse(dmaapConsumerConfiguration.messageLimit()))
-                .timeoutMs(Optional.ofNullable(consumerTimeoutMs).filter(p -> !p.toString().isEmpty())
-                        .orElse(dmaapConsumerConfiguration.timeoutMs()))
-                .consumerGroup(Optional.ofNullable(consumerGroup).filter(isEmpty.negate())
-                        .orElse(dmaapConsumerConfiguration.consumerGroup()))
-                .consumerId(Optional.ofNullable(consumerId).filter(isEmpty.negate())
-                        .orElse(dmaapConsumerConfiguration.consumerId()))
-                .trustStorePath(
-                        Optional.ofNullable(trustStorePath).filter(isEmpty.negate())
-                                .orElse(dmaapConsumerConfiguration.trustStorePath()))
-                .trustStorePasswordPath(
-                        Optional.ofNullable(trustStorePasswordPath).filter(isEmpty.negate())
-                                .orElse(dmaapConsumerConfiguration.trustStorePasswordPath()))
-                .keyStorePath(
-                        Optional.ofNullable(keyStorePath).filter(isEmpty.negate())
-                                .orElse(dmaapConsumerConfiguration.keyStorePath()))
-                .keyStorePasswordPath(
-                        Optional.ofNullable(keyStorePasswordPath).filter(isEmpty.negate())
-                                .orElse(dmaapConsumerConfiguration.keyStorePasswordPath()))
-                .enableDmaapCertAuth(
-                        Optional.ofNullable(enableDmaapCertAuth).filter(p -> !p.toString().isEmpty())
-                                .orElse(dmaapConsumerConfiguration.enableDmaapCertAuth()))
-                .build();
+        return dmaapConsumerConfiguration;
     }
 
-    @Override
     public DmaapPublisherConfiguration getDmaapPublisherConfiguration() {
-        return new ImmutableDmaapPublisherConfiguration.Builder()
-                .dmaapContentType(
-                        Optional.ofNullable(producerDmaapContentType).filter(isEmpty.negate())
-                                .orElse(dmaapPublisherConfiguration.dmaapContentType()))
-                .dmaapHostName(
-                        Optional.ofNullable(producerDmaapHostName).filter(isEmpty.negate())
-                                .orElse(dmaapPublisherConfiguration.dmaapHostName()))
-                .dmaapPortNumber(
-                        Optional.ofNullable(producerDmaapPortNumber).filter(p -> !p.toString().isEmpty())
-                                .orElse(dmaapPublisherConfiguration.dmaapPortNumber()))
-                .dmaapProtocol(
-                        Optional.ofNullable(producerDmaapProtocol).filter(isEmpty.negate())
-                                .orElse(dmaapPublisherConfiguration.dmaapProtocol()))
-                .dmaapTopicName(
-                        Optional.ofNullable(producerDmaapTopicName).filter(isEmpty.negate())
-                                .orElse(dmaapPublisherConfiguration.dmaapTopicName()))
-                .dmaapUserName(
-                        Optional.ofNullable(producerDmaapUserName).filter(isEmpty.negate())
-                                .orElse(dmaapPublisherConfiguration.dmaapUserName()))
-                .dmaapUserPassword(
-                        Optional.ofNullable(producerDmaapUserPassword).filter(isEmpty.negate())
-                                .orElse(dmaapPublisherConfiguration.dmaapUserPassword()))
-                .trustStorePath(
-                        Optional.ofNullable(trustStorePath).filter(isEmpty.negate())
-                                .orElse(dmaapPublisherConfiguration.trustStorePath()))
-                .trustStorePasswordPath(
-                        Optional.ofNullable(trustStorePasswordPath).filter(isEmpty.negate())
-                                .orElse(dmaapPublisherConfiguration.trustStorePasswordPath()))
-                .keyStorePath(
-                        Optional.ofNullable(keyStorePath).filter(isEmpty.negate())
-                                .orElse(dmaapPublisherConfiguration.keyStorePath()))
-                .keyStorePasswordPath(
-                        Optional.ofNullable(keyStorePasswordPath).filter(isEmpty.negate())
-                                .orElse(dmaapPublisherConfiguration.keyStorePasswordPath()))
-                .enableDmaapCertAuth(
-                        Optional.ofNullable(enableDmaapCertAuth).filter(p -> !p.toString().isEmpty())
-                                .orElse(dmaapPublisherConfiguration.enableDmaapCertAuth()))
-                .build();
+        return dmaapPublisherConfiguration;
     }
 
-    @Override
     public FtpesConfig getFtpesConfiguration() {
-        return new ImmutableFtpesConfig.Builder()
-                .keyCert(
-                        Optional.ofNullable(keyCert).filter(isEmpty.negate())
-                                .orElse(ftpesConfig.keyCert()))
-                .keyPassword(
-                        Optional.ofNullable(keyPassword).filter(isEmpty.negate())
-                                .orElse(ftpesConfig.keyPassword()))
-                .trustedCA(
-                        Optional.ofNullable(trustedCA).filter(isEmpty.negate())
-                                .orElse(ftpesConfig.trustedCA()))
-                .trustedCAPassword(
-                        Optional.ofNullable(trustedCAPassword).filter(isEmpty.negate())
-                                .orElse(ftpesConfig.trustedCAPassword()))
-                .build();
+        return ftpesConfig;
     }
+
+    public void initFileStreamReader() {
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        ServiceLoader.load(TypeAdapterFactory.class).forEach(gsonBuilder::registerTypeAdapterFactory);
+        JsonParser parser = new JsonParser();
+        JsonObject jsonObject;
+        try (InputStream inputStream = getInputStream(filepath)) {
+            JsonElement rootElement = getJsonElement(parser, inputStream);
+            if (rootElement.isJsonObject()) {
+                jsonObject = rootElement.getAsJsonObject();
+                ftpesConfig = deserializeType(gsonBuilder,
+                        jsonObject.getAsJsonObject(CONFIG).getAsJsonObject(FTP).getAsJsonObject(FTPES_CONFIGURATION),
+                        FtpesConfig.class);
+                dmaapConsumerConfiguration = deserializeType(gsonBuilder, concatenateJsonObjects(
+                        jsonObject.getAsJsonObject(CONFIG).getAsJsonObject(DMAAP).getAsJsonObject(DMAAP_CONSUMER),
+                        rootElement.getAsJsonObject().getAsJsonObject(CONFIG).getAsJsonObject(SECURITY)),
+                        DmaapConsumerConfiguration.class);
+
+                dmaapPublisherConfiguration = deserializeType(gsonBuilder, concatenateJsonObjects(
+                        jsonObject.getAsJsonObject(CONFIG).getAsJsonObject(DMAAP).getAsJsonObject(DMAAP_PRODUCER),
+                        rootElement.getAsJsonObject().getAsJsonObject(CONFIG).getAsJsonObject(SECURITY)),
+                        DmaapPublisherConfiguration.class);
+            }
+        } catch (IOException e) {
+            logger.error("Problem with file loading, file: {}", filepath, e);
+        } catch (JsonSyntaxException e) {
+            logger.error("Problem with Json deserialization", e);
+        }
+    }
+
+    JsonElement getJsonElement(JsonParser parser, InputStream inputStream) {
+        return parser.parse(new InputStreamReader(inputStream));
+    }
+
+    private <T> T deserializeType(@NotNull GsonBuilder gsonBuilder, @NotNull JsonObject jsonObject,
+                                  @NotNull Class<T> type) {
+        return gsonBuilder.create().fromJson(jsonObject, type);
+    }
+
+    InputStream getInputStream(@NotNull String filepath) throws IOException {
+        return new BufferedInputStream(new FileInputStream(filepath));
+    }
+
+    String getFilepath() {
+        return this.filepath;
+    }
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
+    }
+
+    private JsonObject concatenateJsonObjects(JsonObject target, JsonObject source) {
+        source.entrySet()
+                .forEach(entry -> target.add(entry.getKey(), entry.getValue()));
+        return target;
+    }
+
 }

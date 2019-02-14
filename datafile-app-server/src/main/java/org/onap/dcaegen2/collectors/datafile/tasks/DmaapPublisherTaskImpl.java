@@ -18,7 +18,6 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 
 
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
-import org.onap.dcaegen2.collectors.datafile.configuration.Config;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerReactiveHttpClient;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
@@ -37,7 +36,7 @@ import reactor.core.publisher.Flux;
 public class DmaapPublisherTaskImpl extends DmaapPublisherTask {
 
     private static final Logger logger = LoggerFactory.getLogger(DmaapPublisherTaskImpl.class);
-    private final Config datafileAppConfig;
+    private final AppConfig datafileAppConfig;
 
     @Autowired
     public DmaapPublisherTaskImpl(AppConfig datafileAppConfig) {
