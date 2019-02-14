@@ -120,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "3a150a3b_d3fc21d1",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileData.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T09:59:18Z",
+      "side": 1,
+      "message": "We discussed this. It will be fixed as an own task.\nEach supported FTP protocol has a well known port. \nI agree that it then should be an optional.",
+      "parentUuid": "064c877a_3467dd3d",
+      "range": {
+        "startLine": 70,
+        "startChar": 17,
+        "endLine": 70,
+        "endChar": 36
+      },
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "35d1fc47_847163de",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileData.java",
         "patchSetId": 1
@@ -465,6 +489,24 @@
       "side": 1,
       "message": "OK. Just keep in mind that parallel scheduler is \"Optimized for fast Runnable executions\". If you throw too many blocking operations to it, it can slow down your entire app. Generally speaking it\u0027s recommended not to block parallel scheduler.",
       "parentUuid": "ad40eb8d_0c52ddd1",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f2efd536_a1757bed",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T09:59:18Z",
+      "side": 1,
+      "message": "Yes, we will see. Probably this might change later.",
+      "parentUuid": "832b05fc_2a13b120",
       "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
