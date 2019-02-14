@@ -607,6 +607,24 @@
     },
     {
       "key": {
+        "uuid": "dec16b8e_c2253984",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-02-14T14:50:25Z",
+      "side": 1,
+      "message": "We need to figure out a way to remove files that are \"out of scope\" from this set. Maybe we can use a HashMap with sourceName as key and a list of published files as value instead. Then we can remove any files in the list that are no longer included in the latest message after the message has been handled. That would leave us with a list with about a hundred files per node at the maximum.",
+      "parentUuid": "9e180b5d_9a298804",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1b4ea5a1_c5a2d0ca",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
         "patchSetId": 1
@@ -929,6 +947,24 @@
       "side": 1,
       "message": "There is another commit in the pipe that deal with the pom file.",
       "parentUuid": "700382ab_30c3be33",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "495bad29_548536c1",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-02-14T14:50:25Z",
+      "side": 1,
+      "message": "Yes, in https://gerrit.onap.org/r/#/c/78373/ we step spring to 5.1.4.RELEASE. So in this commit here we should remove the version for reactor-bom since we don\u0027t need to specify the version here.",
+      "parentUuid": "6486d578_84a0e0b1",
       "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
