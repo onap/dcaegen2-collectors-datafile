@@ -1,17 +1,19 @@
-/*
- * ============LICENSE_START======================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
- * ===============================================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
+/*-
+ * ============LICENSE_START=======================================================
+ * Copyright (C) 2018 Nordix Foundation. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- * ============LICENSE_END========================================================================
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
  */
 
 package org.onap.dcaegen2.collectors.datafile.service;
@@ -21,15 +23,19 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
+import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
-import org.onap.dcaegen2.collectors.datafile.model.FileMetaData;
+import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
-import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileMetaData;
+import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileReadyMessage;
+import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
+import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -38,13 +44,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Parses the fileReady event and creates an array of FileData containing the information.
+ * Parses the fileReady event and creates a Flux of FileReadeMessages containing the information.
  *
- * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 5/8/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
-public class DmaapConsumerJsonParser {
-    private static final Logger logger = LoggerFactory.getLogger(DmaapConsumerJsonParser.class);
+public class JsonMessageParser {
+    private static final Logger logger = LoggerFactory.getLogger(JsonMessageParser.class);
 
     private static final String COMMON_EVENT_HEADER = "commonEventHeader";
     private static final String EVENT_NAME = "eventName";
@@ -83,31 +88,8 @@ public class DmaapConsumerJsonParser {
         }
     }
 
-    /**
-     * Extract info from string and create a {@link FileData}.
-     *
-     * @param rawMessage - results from DMaaP
-     * @return reactive Mono with an array of FileData
-     */
-    public Flux<FileData> getJsonObject(Mono<String> rawMessage) {
-        return rawMessage.flatMapMany(this::getJsonParserMessage).flatMap(this::createJsonConsumerModel);
-    }
-
-    private Mono<JsonElement> getJsonParserMessage(String message) {
-        logger.trace("original message from message router: {}", message);
-        return StringUtils.isEmpty(message) ? Mono.empty() : Mono.fromSupplier(() -> new JsonParser().parse(message));
-    }
-
-    private Flux<FileData> createJsonConsumerModel(JsonElement jsonElement) {
-        return jsonElement.isJsonObject() ? create(Flux.defer(() -> Flux.just(jsonElement.getAsJsonObject())))
-                : getFileDataFromJsonArray(jsonElement);
-    }
-
-    private Flux<FileData> getFileDataFromJsonArray(JsonElement jsonElement) {
-        return create(
-                Flux.defer(() -> Flux.fromStream(StreamSupport.stream(jsonElement.getAsJsonArray().spliterator(), false)
-                        .map(jsonElementFromArray -> getJsonObjectFromAnArray(jsonElementFromArray)
-                                .orElseGet(JsonObject::new)))));
+    public Flux<FileReadyMessage> getMessagesFromJson(Mono<String> rawMessage) {
+        return rawMessage.flatMapMany(this::getJsonParserMessage).flatMap(this::createMessageData);
     }
 
     public Optional<JsonObject> getJsonObjectFromAnArray(JsonElement element) {
@@ -117,20 +99,54 @@ public class DmaapConsumerJsonParser {
                         : Optional.of(jsonParser.parse(element.toString()).getAsJsonObject());
     }
 
-    private Flux<FileData> create(Flux<JsonObject> jsonObject) {
-        return jsonObject
-                .flatMap(monoJsonP -> !containsNotificationFields(monoJsonP)
-                        ? logErrorAndReturnEmptyFlux("Incorrect JsonObject - missing header. " + jsonObject)
-                        : transform(monoJsonP));
+    private Flux<FileReadyMessage> getMessagesFromJsonArray(JsonElement jsonElement) {
+        return createMessages(
+                Flux.defer(() -> Flux.fromStream(StreamSupport.stream(jsonElement.getAsJsonArray().spliterator(), false)
+                        .map(jsonElementFromArray -> getJsonObjectFromAnArray(jsonElementFromArray)
+                                .orElseGet(JsonObject::new)))));
     }
 
-    private Flux<FileData> transform(JsonObject message) {
-        Optional<FileMetaData> fileMetaData = getFileMetaData(message);
-        if (fileMetaData.isPresent()) {
+    /**
+     * Extract info from string and create a Flux of {@link FileReadyMessage}.
+     *
+     * @param rawMessage - results from DMaaP
+     * @return reactive Flux of FileReadyMessages
+     */
+    private Flux<FileReadyMessage> createMessageData(JsonElement jsonElement) {
+        return jsonElement.isJsonObject() ? createMessages(Flux.just(jsonElement.getAsJsonObject()))
+                : getMessagesFromJsonArray(jsonElement);
+    }
+
+    private Mono<JsonElement> getJsonParserMessage(String message) {
+        logger.trace("original message from message router: {}", message);
+        return StringUtils.isEmpty(message) ? Mono.empty() : Mono.fromSupplier(() -> new JsonParser().parse(message));
+    }
+
+    private Flux<FileReadyMessage> createMessages(Flux<JsonObject> jsonObject) {
+        return jsonObject.flatMap(monoJsonP -> !containsNotificationFields(monoJsonP)
+                ? logErrorAndReturnEmptyMessageFlux("Incorrect JsonObject - missing header. " + jsonObject)
+                : transformMessages(monoJsonP));
+    }
+
+    private Flux<FileReadyMessage> transformMessages(JsonObject message) {
+        Optional<MessageMetaData> optionalMessageMetaData = getMessageMetaData(message);
+        if (optionalMessageMetaData.isPresent()) {
             JsonObject notificationFields = message.getAsJsonObject(EVENT).getAsJsonObject(NOTIFICATION_FIELDS);
             JsonArray arrayOfNamedHashMap = notificationFields.getAsJsonArray(ARRAY_OF_NAMED_HASH_MAP);
             if (arrayOfNamedHashMap != null) {
-                return getAllFileDataFromJson(fileMetaData.get(), arrayOfNamedHashMap);
+                List<FileData> allFileDataFromJson = getAllFileDataFromJson(arrayOfNamedHashMap);
+                if (!allFileDataFromJson.isEmpty()) {
+                    MessageMetaData messageMetaData = optionalMessageMetaData.get();
+                    // @formatter:off
+                    return Flux.just(ImmutableFileReadyMessage.builder()
+                            .pnfName(messageMetaData.sourceName())
+                            .messageMetaData(messageMetaData)
+                            .files(allFileDataFromJson)
+                            .build());
+                    // @formatter:on
+                } else {
+                    return Flux.empty();
+                }
             }
 
             logger.error("Unable to collect file from xNF. Missing arrayOfNamedHashMap in message. {}", message);
@@ -140,7 +156,7 @@ public class DmaapConsumerJsonParser {
         return Flux.empty();
     }
 
-    private Optional<FileMetaData> getFileMetaData(JsonObject message) {
+    private Optional<MessageMetaData> getMessageMetaData(JsonObject message) {
         List<String> missingValues = new ArrayList<>();
         JsonObject commonEventHeader = message.getAsJsonObject(EVENT).getAsJsonObject(COMMON_EVENT_HEADER);
         String eventName = getValueFromJson(commonEventHeader, EVENT_NAME, missingValues);
@@ -154,7 +170,7 @@ public class DmaapConsumerJsonParser {
         getValueFromJson(notificationFields, NOTIFICATION_FIELDS_VERSION, missingValues);
 
         // @formatter:off
-        FileMetaData fileMetaData = ImmutableFileMetaData.builder()
+        MessageMetaData messageMetaData = ImmutableMessageMetaData.builder()
                 .productName(getDataFromEventName(EventNameDataType.PRODUCT_NAME, eventName, missingValues))
                 .vendorName(getDataFromEventName(EventNameDataType.VENDOR_NAME, eventName, missingValues))
                 .lastEpochMicrosec(getValueFromJson(commonEventHeader, LAST_EPOCH_MICROSEC, missingValues))
@@ -166,7 +182,7 @@ public class DmaapConsumerJsonParser {
                 .build();
         // @formatter:on
         if (missingValues.isEmpty() && isChangeIdentifierCorrect(changeIdentifier) && isChangeTypeCorrect(changeType)) {
-            return Optional.of(fileMetaData);
+            return Optional.of(messageMetaData);
         } else {
             String errorMessage = "Unable to collect file from xNF.";
             if (!missingValues.isEmpty()) {
@@ -189,32 +205,40 @@ public class DmaapConsumerJsonParser {
         return FILE_READY_CHANGE_IDENTIFIER.equals(changeIdentifier);
     }
 
-    private Flux<FileData> getAllFileDataFromJson(FileMetaData fileMetaData, JsonArray arrayOfAdditionalFields) {
+    private List<FileData> getAllFileDataFromJson(JsonArray arrayOfAdditionalFields) {
         List<FileData> res = new ArrayList<>();
         for (int i = 0; i < arrayOfAdditionalFields.size(); i++) {
             JsonObject fileInfo = (JsonObject) arrayOfAdditionalFields.get(i);
-            Optional<FileData> fileData = getFileDataFromJson(fileMetaData, fileInfo);
+            Optional<FileData> fileData = getFileDataFromJson(fileInfo);
 
             if (fileData.isPresent()) {
                 res.add(fileData.get());
             }
         }
-        return Flux.fromIterable(res);
+        return res;
     }
 
-    private Optional<FileData> getFileDataFromJson(FileMetaData fileMetaData, JsonObject fileInfo) {
+    private Optional<FileData> getFileDataFromJson(JsonObject fileInfo) {
         logger.trace("starting to getFileDataFromJson!");
 
         List<String> missingValues = new ArrayList<>();
         JsonObject data = fileInfo.getAsJsonObject(HASH_MAP);
 
+        String location = getValueFromJson(data, LOCATION, missingValues);
+        Scheme scheme;
+        try {
+            scheme = Scheme.getSchemeFromString(URI.create(location).getScheme());
+        } catch (Exception e) {
+            logger.error("Unable to collect file from xNF.", e);
+            return Optional.empty();
+        }
         // @formatter:off
         FileData fileData = ImmutableFileData.builder()
-                .fileMetaData(fileMetaData)
                 .name(getValueFromJson(fileInfo, NAME, missingValues))
                 .fileFormatType(getValueFromJson(data, FILE_FORMAT_TYPE, missingValues))
                 .fileFormatVersion(getValueFromJson(data, FILE_FORMAT_VERSION, missingValues))
-                .location(getValueFromJson(data, LOCATION, missingValues))
+                .location(location)
+                .scheme(scheme)
                 .compression(getValueFromJson(data, COMPRESSION, missingValues))
                 .build();
         // @formatter:on
@@ -260,7 +284,7 @@ public class DmaapConsumerJsonParser {
         return jsonObject.has(EVENT) && jsonObject.getAsJsonObject(EVENT).has(NOTIFICATION_FIELDS);
     }
 
-    private Flux<FileData> logErrorAndReturnEmptyFlux(String errorMessage) {
+    private Flux<FileReadyMessage> logErrorAndReturnEmptyMessageFlux(String errorMessage) {
         logger.error(errorMessage);
         return Flux.empty();
     }

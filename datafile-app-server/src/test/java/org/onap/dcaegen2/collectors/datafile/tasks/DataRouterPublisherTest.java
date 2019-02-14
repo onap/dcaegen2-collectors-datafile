@@ -25,9 +25,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.time.Duration;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
@@ -43,7 +44,7 @@ import reactor.test.StepVerifier;
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 5/17/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
-class DmaapPublisherTaskImplTest {
+class DataRouterPublisherTest {
     private static final String PRODUCT_NAME = "NrRadio";
     private static final String VENDOR_NAME = "Ericsson";
     private static final String LAST_EPOCH_MICROSEC = "8745745764578";
@@ -53,7 +54,7 @@ class DmaapPublisherTaskImplTest {
     private static final String PM_FILE_NAME = "A20161224.1030-1045.bin.gz";
 
     private static ConsumerDmaapModel consumerDmaapModel;
-    private static DmaapPublisherTaskImpl dmaapPublisherTask;
+    private static DataRouterPublisher dmaapPublisherTask;
     private static DmaapProducerReactiveHttpClient dMaaPProducerReactiveHttpClient;
     private static AppConfig appConfig;
     private static DmaapPublisherConfiguration dmaapPublisherConfiguration;
@@ -95,20 +96,44 @@ class DmaapPublisherTaskImplTest {
 
     @Test
     public void whenPassedObjectFits_ReturnsCorrectStatus() {
-        prepareMocksForTests(HttpStatus.OK.value());
+        prepareMocksForTests(Flux.just(HttpStatus.OK));
 
-        StepVerifier.create(dmaapPublisherTask.execute(consumerDmaapModel)).expectNext("200").verifyComplete();
+        StepVerifier.create(dmaapPublisherTask.execute(consumerDmaapModel, 1, Duration.ofSeconds(0)))
+                .expectNext(consumerDmaapModel).verifyComplete();
 
         verify(dMaaPProducerReactiveHttpClient, times(1)).getDmaapProducerResponse(any());
         verifyNoMoreInteractions(dMaaPProducerReactiveHttpClient);
     }
 
-    private void prepareMocksForTests(Integer httpResponseCode) {
+    @Test
+    public void whenPassedObjectFits_firstFailsThenSucceeds() {
+        prepareMocksForTests(Flux.just(HttpStatus.BAD_GATEWAY), Flux.just(HttpStatus.OK));
+
+        StepVerifier.create(dmaapPublisherTask.execute(consumerDmaapModel, 1, Duration.ofSeconds(0)))
+                .expectNext(consumerDmaapModel).verifyComplete();
+
+        verify(dMaaPProducerReactiveHttpClient, times(2)).getDmaapProducerResponse(any());
+        verifyNoMoreInteractions(dMaaPProducerReactiveHttpClient);
+    }
+
+    @Test
+    public void whenPassedObjectFits_firstFailsThenFails() {
+        prepareMocksForTests(Flux.just(HttpStatus.BAD_GATEWAY), Flux.just(HttpStatus.BAD_GATEWAY));
+
+        StepVerifier.create(dmaapPublisherTask.execute(consumerDmaapModel, 1, Duration.ofSeconds(0)))
+                .expectErrorMessage("Retries exhausted: 1/1").verify();
+
+        verify(dMaaPProducerReactiveHttpClient, times(2)).getDmaapProducerResponse(any());
+        verifyNoMoreInteractions(dMaaPProducerReactiveHttpClient);
+    }
+
+    @SafeVarargs
+    final void prepareMocksForTests(Flux<HttpStatus> firstResponse, Flux<HttpStatus>... nextHttpResponses) {
         dMaaPProducerReactiveHttpClient = mock(DmaapProducerReactiveHttpClient.class);
-        when(dMaaPProducerReactiveHttpClient.getDmaapProducerResponse(any()))
-                .thenReturn(Flux.just(httpResponseCode.toString()));
+        when(dMaaPProducerReactiveHttpClient.getDmaapProducerResponse(any())).thenReturn(firstResponse,
+                nextHttpResponses);
         when(appConfig.getDmaapPublisherConfiguration()).thenReturn(dmaapPublisherConfiguration);
-        dmaapPublisherTask = spy(new DmaapPublisherTaskImpl(appConfig));
+        dmaapPublisherTask = spy(new DataRouterPublisher(appConfig));
         when(dmaapPublisherTask.resolveConfiguration()).thenReturn(dmaapPublisherConfiguration);
         doReturn(dMaaPProducerReactiveHttpClient).when(dmaapPublisherTask).resolveClient();
     }

@@ -20,14 +20,14 @@ package org.onap.dcaegen2.collectors.datafile.io;
 
 import java.io.IOException;
 import java.io.InputStream;
-
+import java.nio.file.Path;
 import org.springframework.core.io.FileSystemResource;
 
 public class FileSystemResourceWrapper implements IFileSystemResource {
     private FileSystemResource realResource;
 
     @Override
-    public void setPath(String path) {
+    public void setPath(Path path) {
         realResource = new FileSystemResource(path);
     }
     @Override

@@ -16,6 +16,8 @@
 
 package org.onap.dcaegen2.collectors.datafile.ftp;
 
+import java.util.Optional;
+
 import org.immutables.value.Value;
 
 /**
@@ -27,5 +29,5 @@ public interface FileServerData {
     public String serverAddress();
     public String userId();
     public String password();
-    public int port();
+    public Optional<Integer> port();
 }
