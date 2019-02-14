@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "41fef134_8d8f3a6a",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileData.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 2683
+      },
+      "writtenOn": "2019-02-14T09:53:53Z",
+      "side": 1,
+      "message": "OK. Fine. So port is required \u0026 there is no meaningful default.\n\nIn that case is the URI somehow validated, so we are sure that URI contains all necessary information? If not maybe we should throw exception in @Value.Check annotated method in FileServerData. This way we won\u0027t propagate invalid port number \u003d -1 and wait for Sftp or Ftps client to fail.",
+      "parentUuid": "064c877a_3467dd3d",
+      "range": {
+        "startLine": 70,
+        "startChar": 17,
+        "endLine": 70,
+        "endChar": 36
+      },
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "35d1fc47_847163de",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileData.java",
         "patchSetId": 1
@@ -423,6 +447,24 @@
       "side": 1,
       "message": "We will probably experient more with this when we will test more massive load. \nBut what I want here is a typical thread pool behavior in the sense that if too many items are issued, they should get queued (until there are available execution resources). If the threads are cached or not does probably not matter in this application. \n\nThis is the description of the paralell scheduler: \n\"that hosts a fixed pool of single-threaded ExecutorService-base workers and is suited for parallel work.\"",
       "parentUuid": "a4109add_a7f723ce",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "832b05fc_2a13b120",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 2683
+      },
+      "writtenOn": "2019-02-14T09:53:53Z",
+      "side": 1,
+      "message": "OK. Just keep in mind that parallel scheduler is \"Optimized for fast Runnable executions\". If you throw too many blocking operations to it, it can slow down your entire app. Generally speaking it\u0027s recommended not to block parallel scheduler.",
+      "parentUuid": "ad40eb8d_0c52ddd1",
       "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
