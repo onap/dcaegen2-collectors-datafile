@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "94445248_d6427f62",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileData.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d6b7ed1_d84f6998",
+      "range": {
+        "startLine": 59,
+        "startChar": 25,
+        "endLine": 59,
+        "endChar": 46
+      },
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bbed4962_ed117e3a",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileData.java",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2019-02-14T07:15:17Z",
       "side": 1,
       "message": "Can we handle port with value of -1 (returned by URI.getPort when port is missing)? If not maybe let\u0027s keep it as null or (even better) Option.empty()?",
+      "range": {
+        "startLine": 70,
+        "startChar": 17,
+        "endLine": 70,
+        "endChar": 36
+      },
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "064c877a_3467dd3d",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileData.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "The port is required by the current implementation. If that can be optional, it will be implemented separately.",
+      "parentUuid": "bbed4962_ed117e3a",
       "range": {
         "startLine": 70,
         "startChar": 17,
@@ -65,6 +113,24 @@
     },
     {
       "key": {
+        "uuid": "6870e1df_a65ba3f8",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileData.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35d1fc47_847163de",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dfc7291c_aeb7c6d7",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/JsonMessageParser.java",
         "patchSetId": 1
@@ -82,6 +148,24 @@
     },
     {
       "key": {
+        "uuid": "1e80a2c4_01c93dd1",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/JsonMessageParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "Done, public are first (but the order is not changed).",
+      "parentUuid": "dfc7291c_aeb7c6d7",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6550d417_075b214a",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/JsonMessageParser.java",
         "patchSetId": 1
@@ -93,6 +177,30 @@
       "writtenOn": "2019-02-14T07:15:17Z",
       "side": 1,
       "message": "Flux defer makes sense almost only when preparing the flux in a public API. So if this method were public we should change it to `return Flux.defer(()-\u003e jsonObject ? createMsgs(...) : getMsgsFromArr(...));`. The whole point of using defer is to defer the execution of this code to the moment of subscription, thus making the stream compliant with laziness of rx.\n\nIn this case I believe we can just skip this Flux.defer as this private method is used in getMessagesFromJson in flatMap operator which (as any other such operator) already defers the subscription.",
+      "range": {
+        "startLine": 98,
+        "startChar": 59,
+        "endLine": 98,
+        "endChar": 70
+      },
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "70ed1267_c3c05148",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/JsonMessageParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6550d417_075b214a",
       "range": {
         "startLine": 98,
         "startChar": 59,
@@ -145,6 +253,30 @@
     },
     {
       "key": {
+        "uuid": "6dd4dff6_91d62a90",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/JsonMessageParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "The scheme is not optional. There are too much Optionals and conditions in this code already when exceptions should be used.",
+      "parentUuid": "d4d88105_e8d5ec64",
+      "range": {
+        "startLine": 230,
+        "startChar": 21,
+        "endLine": 230,
+        "endChar": 47
+      },
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1625c1d3_cf9c7747",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/JsonMessageParser.java",
         "patchSetId": 1
@@ -156,6 +288,24 @@
       "writtenOn": "2019-02-14T07:15:17Z",
       "side": 1,
       "message": "BTW. this whole class is growing and has many private methods. Maybe we can split it into few package-scoped classes?",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "393cfb6f_80334853",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/JsonMessageParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "That is a possible future improvement.",
+      "parentUuid": "1625c1d3_cf9c7747",
       "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -185,6 +335,30 @@
     },
     {
       "key": {
+        "uuid": "084881c7_f38d4a60",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "Yes, that is known. There are several places in this component that should return a Mono instead of a Flux. \nThat will be a later change (but then in all places where it can be).",
+      "parentUuid": "5d1d589e_b771f45f",
+      "range": {
+        "startLine": 54,
+        "startChar": 36,
+        "endLine": 54,
+        "endChar": 43
+      },
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5459719c_406832a8",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollector.java",
         "patchSetId": 1
@@ -196,6 +370,24 @@
       "writtenOn": "2019-02-14T07:15:17Z",
       "side": 1,
       "message": "Why are we caching this? Is is to support retry? If so maybe we can move retry logic to collectFile method so it will retry only the thing which needs retry. Just a suggestion.",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c318915c_a28bfd00",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollector.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "The caching is for the retry. \nThe intention is to just to retry this (file collection). \nIt seems to work fine.",
+      "parentUuid": "5459719c_406832a8",
       "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -219,6 +411,24 @@
     },
     {
       "key": {
+        "uuid": "ad40eb8d_0c52ddd1",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "We will probably experient more with this when we will test more massive load. \nBut what I want here is a typical thread pool behavior in the sense that if too many items are issued, they should get queued (until there are available execution resources). If the threads are cached or not does probably not matter in this application. \n\nThis is the description of the paralell scheduler: \n\"that hosts a fixed pool of single-threaded ExecutorService-base workers and is suited for parallel work.\"",
+      "parentUuid": "a4109add_a7f723ce",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ee33005d_d5e9209d",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
         "patchSetId": 1
@@ -236,6 +446,24 @@
     },
     {
       "key": {
+        "uuid": "ab23793e_fdb4ce69",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "Yes, that is better.",
+      "parentUuid": "ee33005d_d5e9209d",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "71248811_aa9ed5f3",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
         "patchSetId": 1
@@ -247,6 +475,24 @@
       "writtenOn": "2019-02-14T07:15:17Z",
       "side": 1,
       "message": "Does this class live for the whole time of running DFC? If so, is this set somehow cleared? Otherwise we have a memory leak.",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9e180b5d_9a298804",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "It is by design. It will remember all files handled by this process. \nIf that is wise can be debated. The XNF will report not only new files but all files collected during the last 24 hours. So for each new file, ~100 already reported files are also included.",
+      "parentUuid": "71248811_aa9ed5f3",
       "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -300,6 +546,30 @@
     },
     {
       "key": {
+        "uuid": "d39fb084_ea7841ac",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "Yes",
+      "parentUuid": "f6d3c371_ef147abb",
+      "range": {
+        "startLine": 111,
+        "startChar": 12,
+        "endLine": 111,
+        "endChar": 48
+      },
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "db8f7d32_c1062a49",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
         "patchSetId": 1
@@ -311,6 +581,24 @@
       "writtenOn": "2019-02-14T07:15:17Z",
       "side": 1,
       "message": "If we expect this list to be big, we can use one of generation methods described in https://projectreactor.io/docs/core/release/reference/#producing. Otherwise, it\u0027s ok.",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e5b9eda4_4a379492",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "Cool, but we only expect the size to be ~100 items.",
+      "parentUuid": "db8f7d32_c1062a49",
       "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -340,6 +628,30 @@
     },
     {
       "key": {
+        "uuid": "7016162b_a31af827",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/utils/JsonMessage.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "I agree. That can be a later thing. Everybody must then to the same reconfiguration.",
+      "parentUuid": "65573953_617a7dd9",
+      "range": {
+        "startLine": 88,
+        "startChar": 11,
+        "endLine": 88,
+        "endChar": 24
+      },
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f4061800_55c62d04",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
         "patchSetId": 1
@@ -351,6 +663,24 @@
       "writtenOn": "2019-02-14T07:15:17Z",
       "side": 1,
       "message": "Is this class a component/service (aka. singleton)? If so I believe this won\u0027t be thread-safe.",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "93b8d050_ee94ca7c",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "No, this class should be OK. \nBut there might be other singletons that must be fixed left after this commit. For instance key store.",
+      "parentUuid": "f4061800_55c62d04",
       "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -374,6 +704,24 @@
     },
     {
       "key": {
+        "uuid": "874cfe29_176d31b8",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "Yes, I heard discussion about it.",
+      "parentUuid": "81403c08_2729cb66",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "44cda281_35cd0548",
         "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/SchemeTest.java",
         "patchSetId": 1
@@ -385,6 +733,24 @@
       "writtenOn": "2019-02-14T07:15:17Z",
       "side": 1,
       "message": "We can just \"throw Exception\" in test method, leaving this check for JUnit framework.",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3252be83_5e1d3636",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/SchemeTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44cda281_35cd0548",
       "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -408,6 +774,24 @@
     },
     {
       "key": {
+        "uuid": "7bd448b9_e64640e2",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/SchemeTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a42e9f63_46f428d6",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "700382ab_30c3be33",
         "filename": "pom.xml",
         "patchSetId": 1
@@ -419,6 +803,24 @@
       "writtenOn": "2019-02-14T07:15:17Z",
       "side": 1,
       "message": "I believe `Californium-SR4` is used in spring 5.1.4.RELEASE.",
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6486d578_84a0e0b1",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T08:57:04Z",
+      "side": 1,
+      "message": "There is another commit in the pipe that deal with the pom file.",
+      "parentUuid": "700382ab_30c3be33",
       "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
