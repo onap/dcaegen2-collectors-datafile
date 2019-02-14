@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1b4ea5a1_c5a2d0ca",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-14T06:37:21Z",
+      "side": 1,
+      "message": "The task counting (currently only used in a trace) needs to be updated to count correctly: \n\n\n .doOnEach(signal -\u003e {if (signal.isOnNext()) taskCounter.inc();})\n\n(and the same for the decrement)",
+      "range": {
+        "startLine": 111,
+        "startChar": 12,
+        "endLine": 111,
+        "endChar": 48
+      },
+      "revId": "f396484a00fa29ba07bbb7acf7d3f8df2fbeff21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
