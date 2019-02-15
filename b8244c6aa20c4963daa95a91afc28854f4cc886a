@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "b3ac8659_f0ba1d5e",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8bebeb8a_b0888b90",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f0b4d7d6_19f4596f",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/DatafileAppConfig.java",
         "patchSetId": 5
@@ -30,6 +48,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "change Nordix to say 2018-2019",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "250c7d40_a11b21c5",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/DatafileAppConfig.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0b4d7d6_19f4596f",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "43bc43b2_7ecb225e",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SchedulerConfig.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99257ccf_4c8ccd39",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5d617bb4_0747b65c",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileData.java",
         "patchSetId": 5
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "6273e8c1_0f6b97bb",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileData.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d617bb4_0747b65c",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "51c1732b_e16a989d",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileReadyMessage.java",
         "patchSetId": 5
@@ -81,6 +153,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "change to say 2018-2019",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "81154933_9307a609",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileReadyMessage.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51c1732b_e16a989d",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -121,6 +211,24 @@
     },
     {
       "key": {
+        "uuid": "6ca15805_13bb7f9d",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/JsonMessageParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be46fec5_84b20c4e",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "09b4b26e_9d0b826b",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
         "patchSetId": 5
@@ -132,6 +240,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "is this file based on another file from Nokia?\nshould you have done a \"git mv\" to rename?\nshould Nordix be 2019 ??",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ea46a833_5dc1f7d6",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09b4b26e_9d0b826b",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -172,6 +298,24 @@
     },
     {
       "key": {
+        "uuid": "a0457425_b083dd7a",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollector.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "For a while there was two very similar implementations where one was probably based on the other .. but by now all lines in it are probably changed.",
+      "parentUuid": "0be0ad84_b8a32af4",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "500ac254_72055ffe",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
         "patchSetId": 5
@@ -189,6 +333,24 @@
     },
     {
       "key": {
+        "uuid": "ac78ac8a_a282a039",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "500ac254_72055ffe",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7b70a025_7cb6a0a3",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/model/FileDataTest.java",
         "patchSetId": 5
@@ -200,6 +362,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "2019?\nif based on previous code from last year, then 2018-2019.\nIf based on code that NOKIA wrote, then include their copyright as well.",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "97d31685_b681cf89",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/model/FileDataTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b70a025_7cb6a0a3",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -240,6 +420,24 @@
     },
     {
       "key": {
+        "uuid": "2ae28c36_0c7d33cf",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DMaaPMessageConsumerTaskImplTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c794940c_cacbd276",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e5538a9d_ecc03b9d",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisherTest.java",
         "patchSetId": 5
@@ -251,6 +449,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "Nordix 2018-2019",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "55b747f2_fe44d84d",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisherTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5538a9d_ecc03b9d",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -274,6 +490,24 @@
     },
     {
       "key": {
+        "uuid": "ad15705a_9409082a",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/XnfCollectorTaskImplTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4679bd8_31f21e7c",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d2a0f8b3_ce5e00b6",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/utils/JsonMessage.java",
         "patchSetId": 5
@@ -285,6 +519,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "Nordix becomes 2018-2019",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "964007b3_a38e7472",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/utils/JsonMessage.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2a0f8b3_ce5e00b6",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -308,6 +560,24 @@
     },
     {
       "key": {
+        "uuid": "8df06432_5354a9a5",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/exceptions/DatafileTaskException.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d21e668_d05064ab",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b20c9770_ee228b16",
         "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/CommonFunctions.java",
         "patchSetId": 5
@@ -319,6 +589,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "Nordix becomes 2018-2019",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7e54d44c_88e2bf9a",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/CommonFunctions.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b20c9770_ee228b16",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -342,6 +630,24 @@
     },
     {
       "key": {
+        "uuid": "24950eea_327f06b2",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/MessageMetaData.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86fa1a62_a5cf5abe",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ac35ebd5_855990d7",
         "filename": "datafile-commons/src/test/java/org/onap/dcaegen2/collectors/datafile/model/CommonFunctionsTest.java",
         "patchSetId": 5
@@ -353,6 +659,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "Nordix becomes 2018-2019",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9934272a_3f828604",
+        "filename": "datafile-commons/src/test/java/org/onap/dcaegen2/collectors/datafile/model/CommonFunctionsTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac35ebd5_855990d7",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -376,6 +700,24 @@
     },
     {
       "key": {
+        "uuid": "1a1b7149_604b9c8b",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FTPSClientWrapper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "913e8443_211d0936",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "73879921_5adbc2ce",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FileServerData.java",
         "patchSetId": 5
@@ -387,6 +729,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "2018-2019",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f9a9dfe2_ed340f96",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FileServerData.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73879921_5adbc2ce",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -410,6 +770,24 @@
     },
     {
       "key": {
+        "uuid": "6426d41b_a5671d96",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClient.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f717fe9_75ea94be",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "994538c0_77aaee13",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/IFTPSClient.java",
         "patchSetId": 5
@@ -421,6 +799,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "2018-2019",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f57d9a9e_4281b34d",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/IFTPSClient.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "994538c0_77aaee13",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -444,6 +840,24 @@
     },
     {
       "key": {
+        "uuid": "3d9cc065_f9deda4f",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/Scheme.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4530cf13_61122012",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3bbc8339_ea2ac64e",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
         "patchSetId": 5
@@ -455,6 +869,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "2018-2019",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e999469_33eaf4fa",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3bbc8339_ea2ac64e",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -478,6 +910,24 @@
     },
     {
       "key": {
+        "uuid": "da8e9702_a7abe8ee",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/io/FileSystemResourceWrapper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5265c69a_99e1ece5",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d4f08daa_36d765ee",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/io/FileWrapper.java",
         "patchSetId": 5
@@ -489,6 +939,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "2018-2019",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "beb7d626_0ceddbdd",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/io/FileWrapper.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4f08daa_36d765ee",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -512,6 +980,24 @@
     },
     {
       "key": {
+        "uuid": "d148f942_c6e53fb8",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/io/IFile.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15229eba_f7fff9b7",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "132861a7_51c01f9e",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/io/IFileSystemResource.java",
         "patchSetId": 5
@@ -523,6 +1009,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "2018-2019",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b6b176b8_923fdaa9",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/io/IFileSystemResource.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "132861a7_51c01f9e",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -546,6 +1050,24 @@
     },
     {
       "key": {
+        "uuid": "21fd9cbb_7ba41fa7",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClient.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7dfbfe5b_65b8efef",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a6bf84ca_6bc70e43",
         "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClientTest.java",
         "patchSetId": 5
@@ -557,6 +1079,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "2018-2019",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "326c5916_f17b4c73",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpsClientTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6bf84ca_6bc70e43",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -580,6 +1120,24 @@
     },
     {
       "key": {
+        "uuid": "e1ebdc0e_47452d42",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/SchemeTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ddec2735_29236261",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "af5b3b9b_590df959",
         "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClientTest.java",
         "patchSetId": 5
@@ -591,6 +1149,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "2018-2019",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fb5a5728_fcb1aa80",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClientTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af5b3b9b_590df959",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -632,6 +1208,24 @@
     },
     {
       "key": {
+        "uuid": "3b59a256_023655ff",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClientTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a8120b8_6b6aa19a",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f4f5b468_c24fd740",
         "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/HttpUtilsTest.java",
         "patchSetId": 5
@@ -643,6 +1237,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "2018-2019",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "98ffefee_b6ccd389",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/HttpUtilsTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4f5b468_c24fd740",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -666,6 +1278,24 @@
     },
     {
       "key": {
+        "uuid": "46a7a75c_bba0cfbd",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClientTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f45d0c3_e871f0aa",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fdefed3e_c19dfae2",
         "filename": "pom.xml",
         "patchSetId": 5
@@ -677,6 +1307,24 @@
       "writtenOn": "2019-02-15T15:21:58Z",
       "side": 1,
       "message": "2018-2019 for Nordix",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "358ae346_dd3575c8",
+        "filename": "pom.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-15T15:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fdefed3e_c19dfae2",
       "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
