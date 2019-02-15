@@ -26,20 +26,20 @@ import org.immutables.value.Value;
  */
 @Value.Immutable
 @Gson.TypeAdapters
-public interface FileMetaData {
-    String productName();
+public interface MessageMetaData {
+    public String productName();
 
-    String vendorName();
+    public String vendorName();
 
-    String lastEpochMicrosec();
+    public String lastEpochMicrosec();
 
-    String sourceName();
+    public String sourceName();
 
-    String startEpochMicrosec();
+    public String startEpochMicrosec();
 
-    String timeZoneOffset();
+    public String timeZoneOffset();
 
-    String changeIdentifier();
+    public String changeIdentifier();
 
-    String changeType();
+    public String changeType();
 }

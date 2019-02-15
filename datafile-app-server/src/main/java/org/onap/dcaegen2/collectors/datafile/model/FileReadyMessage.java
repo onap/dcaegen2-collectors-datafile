@@ -1,6 +1,6 @@
 /*-
  * ============LICENSE_START=======================================================
- * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
+ *  Copyright (C) 2019 Nordix Foundation.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * SPDX-License-Identifier: Apache-2.0
  * ============LICENSE_END=========================================================
  */
 
 package org.onap.dcaegen2.collectors.datafile.model;
+
+import java.util.List;
 
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
@@ -26,20 +30,10 @@ import org.immutables.value.Value;
  */
 @Value.Immutable
 @Gson.TypeAdapters
-public interface FileMetaData {
-    String productName();
+public interface FileReadyMessage {
+    public String pnfName();
 
-    String vendorName();
+    public MessageMetaData messageMetaData();
 
-    String lastEpochMicrosec();
-
-    String sourceName();
-
-    String startEpochMicrosec();
-
-    String timeZoneOffset();
-
-    String changeIdentifier();
-
-    String changeType();
+    public List<FileData> files();
 }

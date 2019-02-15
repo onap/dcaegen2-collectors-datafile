@@ -1,6 +1,6 @@
 /*
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -21,10 +21,13 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-import com.jcraft.jsch.SftpException;
 
-import org.apache.commons.io.FilenameUtils;
-import org.springframework.stereotype.Component;
+import java.nio.file.Path;
+import java.util.Optional;
+
+import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Gets file from xNF with SFTP protocol.
@@ -32,65 +35,52 @@ import org.springframework.stereotype.Component;
  * @author <a href="mailto:martin.c.yan@est.tech">Martin Yan</a>
  *
  */
-@Component
-public class SftpClient extends FileCollectClient {
-    @Override
-    public FileCollectResult retryCollectFile() {
-        logger.trace("retryCollectFile called");
+public class SftpClient implements FileCollectClient {
+    private static final Logger logger = LoggerFactory.getLogger(SftpClient.class);
+    private final FileServerData fileServerData;
 
-        FileCollectResult result;
-        Session session = setUpSession(fileServerData);
-
-        if (session != null) {
-            ChannelSftp sftpChannel = getChannel(session, fileServerData);
-            if (sftpChannel != null) {
-                try {
-                    sftpChannel.get(remoteFile, localFile);
-                    result = new FileCollectResult();
-                    logger.debug("File {} Download Successfull from xNF", FilenameUtils.getName(localFile));
-                } catch (SftpException e) {
-                    addError("Unable to get file from xNF. Data: " + fileServerData, e);
-                    result = new FileCollectResult(errorData);
-                }
-
-                sftpChannel.exit();
-            } else {
-                result = new FileCollectResult(errorData);
-            }
-            session.disconnect();
-        } else {
-            result = new FileCollectResult(errorData);
-        }
-        logger.trace("retryCollectFile left with result: {}", result);
-        return result;
+    public SftpClient(FileServerData fileServerData) {
+        this.fileServerData = fileServerData;
     }
 
-    private Session setUpSession(FileServerData fileServerData) {
+    @Override
+    public void collectFile(String remoteFile, Path localFile) throws DatafileTaskException {
+        logger.trace("collectFile called");
+
+        try {
+            Session session = setUpSession(fileServerData);
+            ChannelSftp sftpChannel = getChannel(session);
+            sftpChannel.get(remoteFile, localFile.toString());
+            logger.debug("File {} Download Successfull from xNF", localFile.getFileName());
+            sftpChannel.exit();
+            session.disconnect();
+        } catch (Exception e) {
+            throw new DatafileTaskException("Unable to get file from xNF. Data: " + fileServerData + e);
+        }
+
+        logger.trace("collectFile OK");
+
+    }
+
+    private int getPort(Optional<Integer> port) {
+        final int FTPS_DEFAULT_PORT = 22;
+        return port.isPresent() ? port.get() : FTPS_DEFAULT_PORT;
+    }
+
+    private Session setUpSession(FileServerData fileServerData) throws JSchException {
         JSch jsch = new JSch();
 
-        Session session = null;
-        try {
-            session = jsch.getSession(fileServerData.userId(), fileServerData.serverAddress(), fileServerData.port());
-            session.setConfig("StrictHostKeyChecking", "no");
-            session.setPassword(fileServerData.password());
-            session.connect();
-        } catch (JSchException e) {
-            addError("Unable to set up SFTP connection to xNF. Data: " + fileServerData, e);
-            session = null;
-        }
+        Session session =
+                jsch.getSession(fileServerData.userId(), fileServerData.serverAddress(), getPort(fileServerData.port()));
+        session.setConfig("StrictHostKeyChecking", "no");
+        session.setPassword(fileServerData.password());
+        session.connect();
         return session;
     }
 
-    private ChannelSftp getChannel(Session session, FileServerData fileServerData) {
-        ChannelSftp sftpChannel = null;
-        try {
-            Channel channel;
-            channel = session.openChannel("sftp");
-            channel.connect();
-            sftpChannel = (ChannelSftp) channel;
-        } catch (JSchException e) {
-            addError("Unable to get sftp channel to xNF. Data: " + fileServerData, e);
-        }
-        return sftpChannel;
+    private ChannelSftp getChannel(Session session) throws JSchException {
+        Channel channel = session.openChannel("sftp");
+        channel.connect();
+        return (ChannelSftp) channel;
     }
 }

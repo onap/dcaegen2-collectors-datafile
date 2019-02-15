@@ -1,6 +1,6 @@
 /*
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -23,6 +23,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.Future;
 
 import javax.net.ssl.SSLContext;
@@ -36,17 +41,16 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.http.ssl.SSLContextBuilder;
-
 import org.onap.dcaegen2.collectors.datafile.io.FileSystemResourceWrapper;
 import org.onap.dcaegen2.collectors.datafile.io.IFileSystemResource;
 import org.onap.dcaegen2.collectors.datafile.model.CommonFunctions;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
-import org.onap.dcaegen2.collectors.datafile.service.HttpUtils;
 import org.onap.dcaegen2.collectors.datafile.web.PublishRedirectStrategy;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import reactor.core.publisher.Flux;
@@ -73,7 +77,7 @@ public class DmaapProducerReactiveHttpClient {
     private final String user;
     private final String pwd;
 
-    private IFileSystemResource fileResource;
+    private IFileSystemResource fileResource = new FileSystemResourceWrapper();
     private CloseableHttpAsyncClient webClient;
 
     /**
@@ -97,10 +101,10 @@ public class DmaapProducerReactiveHttpClient {
      * @param consumerDmaapModel - object which will be sent to DMaaP DataRouter
      * @return status code of operation
      */
-    public Flux<String> getDmaapProducerResponse(ConsumerDmaapModel consumerDmaapModel) {
+    public Flux<HttpStatus> getDmaapProducerResponse(ConsumerDmaapModel consumerDmaapModel) {
         logger.trace("Entering getDmaapProducerResponse with {}", consumerDmaapModel);
         try {
-            logger.trace("Starting to publish to DR");
+            logger.trace("Starting to publish to DR {}",  consumerDmaapModel.getInternalLocation());
 
             webClient = getWebClient();
             webClient.start();
@@ -114,20 +118,10 @@ public class DmaapProducerReactiveHttpClient {
             HttpResponse response = future.get();
             logger.trace(response.toString());
             webClient.close();
-            handleHttpResponse(response);
-            return Flux.just(response.toString());
+            return Flux.just(HttpStatus.valueOf(response.getStatusLine().getStatusCode()));
         } catch (Exception e) {
-            logger.error("Unable to send file to DataRouter. Data: {}", consumerDmaapModel, e);
-            return Flux.empty();
-        }
-    }
-
-    private void handleHttpResponse(HttpResponse response) {
-        int statusCode = response.getStatusLine().getStatusCode();
-        if (HttpUtils.isSuccessfulResponseCode(statusCode)) {
-            logger.trace("Publish to DR successful!");
-        } else {
-            logger.error("Publish to DR unsuccessful, response code: " + statusCode);
+            logger.error("Unable to send file to DataRouter. Data: {}", consumerDmaapModel.getInternalLocation(), e);
+            return Flux.error(e);
         }
     }
 
@@ -142,28 +136,20 @@ public class DmaapProducerReactiveHttpClient {
 
     private void prepareHead(ConsumerDmaapModel model, HttpPut put) {
         put.addHeader(HttpHeaders.CONTENT_TYPE, dmaapContentType);
-        JsonElement metaData = new JsonParser().parse(new CommonFunctions().createJsonBody(model));
+        JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(model));
         String name = metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
         metaData.getAsJsonObject().remove(INTERNAL_LOCATION_JSON_TAG);
         put.addHeader(X_DMAAP_DR_META, metaData.toString());
         put.setURI(getUri(name));
     }
 
-    private void prepareBody(ConsumerDmaapModel model, HttpPut put) {
-        String fileLocation = model.getInternalLocation();
-        IFileSystemResource fileSystemResource = getFileSystemResource();
-        fileSystemResource.setPath(fileLocation);
-        InputStream fileInputStream = null;
-        try {
-            fileInputStream = fileSystemResource.getInputStream();
-        } catch (IOException e) {
-            logger.error("Unable to get stream from filesystem.", e);
-        }
-        try {
-            put.setEntity(new ByteArrayEntity(IOUtils.toByteArray(fileInputStream)));
-        } catch (IOException e) {
-            logger.error("Unable to set put request body from ByteArray.", e);
-        }
+    private void prepareBody(ConsumerDmaapModel model, HttpPut put) throws IOException {
+        Path fileLocation = Paths.get(model.getInternalLocation());
+        this.fileResource.setPath(fileLocation);
+        InputStream fileInputStream = fileResource.getInputStream();
+
+        put.setEntity(new ByteArrayEntity(IOUtils.toByteArray(fileInputStream)));
+
     }
 
     private URI getUri(String fileName) {
@@ -172,27 +158,19 @@ public class DmaapProducerReactiveHttpClient {
                 .path(path).build();
     }
 
-    private IFileSystemResource getFileSystemResource() {
-        if (fileResource == null) {
-            fileResource = new FileSystemResourceWrapper();
-        }
-        return fileResource;
-    }
-
-    protected void setFileSystemResource(IFileSystemResource fileSystemResource) {
+    void setFileSystemResource(IFileSystemResource fileSystemResource) {
         fileResource = fileSystemResource;
     }
 
-    protected CloseableHttpAsyncClient getWebClient() {
+    protected CloseableHttpAsyncClient getWebClient()
+            throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
         if (webClient != null) {
             return webClient;
         }
         SSLContext sslContext = null;
-        try {
-            sslContext = new SSLContextBuilder().loadTrustMaterial(null, (certificate, authType) -> true).build();
-        } catch (Exception e) {
-            logger.trace("Unable to get sslContext.", e);
-        }
+
+        sslContext = new SSLContextBuilder().loadTrustMaterial(null, (certificate, authType) -> true).build();
+
         //@formatter:off
         return HttpAsyncClients.custom()
                 .setSSLContext(sslContext)

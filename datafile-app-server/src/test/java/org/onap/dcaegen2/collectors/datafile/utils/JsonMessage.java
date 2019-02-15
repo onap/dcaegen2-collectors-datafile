@@ -1,6 +1,6 @@
 /*
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -78,7 +78,6 @@ public class JsonMessage {
                 + "\"version\":3"
                 + "},"
                 + "\"notificationFields\":{"
-        // @formatter:on
                 + getAsStringIfParameterIsSet("changeIdentifier", changeIdentifier,
                         changeType != null || notificationFieldsVersion != null || arrayOfAdditionalFields.size() > 0)
                 + getAsStringIfParameterIsSet("changeType", changeType,
@@ -86,6 +85,7 @@ public class JsonMessage {
                 + getAsStringIfParameterIsSet("notificationFieldsVersion", notificationFieldsVersion,
                         arrayOfAdditionalFields.size() > 0)
                 + additionalFieldsString.toString() + "}" + "}" + "}";
+        // @formatter:on
     }
 
     private JsonMessage(final JsonMessageBuilder builder) {

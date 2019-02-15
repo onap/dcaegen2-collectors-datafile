@@ -1,17 +1,21 @@
-/*
- * ============LICENSE_START======================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
- * ===============================================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
+/*-
+ * ============LICENSE_START=======================================================
+ *  Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- * ============LICENSE_END========================================================================
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ * ============LICENSE_END=========================================================
  */
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
@@ -29,33 +33,32 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
-import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapEmptyResponseException;
+import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
-import org.onap.dcaegen2.collectors.datafile.model.FileMetaData;
+import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
-import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileMetaData;
-import org.onap.dcaegen2.collectors.datafile.service.DmaapConsumerJsonParser;
-
+import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileReadyMessage;
+import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
+import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
+import org.onap.dcaegen2.collectors.datafile.service.JsonMessageParser;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
-
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapConsumerConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.service.consumer.DMaaPConsumerReactiveHttpClient;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 /**
- * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 5/17/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
-class DmaapConsumerTaskImplTest {
+public class DMaaPMessageConsumerTaskImplTest {
     private static final String NR_RADIO_ERICSSON_EVENT_NAME = "Noti_NrRadio-Ericsson_FileReady";
     private static final String PRODUCT_NAME = "NrRadio";
     private static final String VENDOR_NAME = "Ericsson";
@@ -82,14 +85,16 @@ class DmaapConsumerTaskImplTest {
 
     private static AppConfig appConfig;
     private static DmaapConsumerConfiguration dmaapConsumerConfiguration;
-    private DmaapConsumerTaskImpl dmaapConsumerTask;
+    private DMaaPMessageConsumerTask messageConsumerTask;
     private DMaaPConsumerReactiveHttpClient dmaapConsumerReactiveHttpClient;
 
-    private static String ftpesMessage;
+    private static String ftpesMessageString;
     private static FileData ftpesFileData;
+    private static FileReadyMessage expectedFtpesMessage;
 
-    private static String sftpMessage;
+    private static String sftpMessageString;
     private static FileData sftpFileData;
+    private static FileReadyMessage expectedSftpMessage;
 
     @BeforeAll
     public static void setUp() {
@@ -129,8 +134,8 @@ class DmaapConsumerTaskImplTest {
                 .addAdditionalField(ftpesAdditionalField)
                 .build();
 
-        ftpesMessage = ftpesJsonMessage.toString();
-        FileMetaData fileMetaData = ImmutableFileMetaData.builder()
+        ftpesMessageString = ftpesJsonMessage.toString();
+        MessageMetaData messageMetaData = ImmutableMessageMetaData.builder()
                 .productName(PRODUCT_NAME)
                 .vendorName(VENDOR_NAME)
                 .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
@@ -141,12 +146,20 @@ class DmaapConsumerTaskImplTest {
                 .changeType(FILE_READY_CHANGE_TYPE)
                 .build();
         ftpesFileData = ImmutableFileData.builder()
-                .fileMetaData(fileMetaData)
                 .name(PM_FILE_NAME)
                 .location(FTPES_LOCATION)
+                .scheme(Scheme.FTPS)
                 .compression(GZIP_COMPRESSION)
                 .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
                 .fileFormatVersion(FILE_FORMAT_VERSION)
+                .build();
+
+        List<FileData> files = new ArrayList<>();
+        files.add(ftpesFileData);
+        expectedFtpesMessage = ImmutableFileReadyMessage.builder()
+                .pnfName(SOURCE_NAME)
+                .messageMetaData(messageMetaData)
+                .files(files)
                 .build();
 
         AdditionalField sftpAdditionalField = new JsonMessage.AdditionalFieldBuilder()
@@ -162,16 +175,15 @@ class DmaapConsumerTaskImplTest {
                 .notificationFieldsVersion("1.0")
                 .addAdditionalField(sftpAdditionalField)
                 .build();
-        sftpMessage = sftpJsonMessage.toString();
+        sftpMessageString = sftpJsonMessage.toString();
         sftpFileData = ImmutableFileData.builder()
-                .fileMetaData(fileMetaData)
                 .name(PM_FILE_NAME)
                 .location(SFTP_LOCATION)
+                .scheme(Scheme.FTPS)
                 .compression(GZIP_COMPRESSION)
                 .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
                 .fileFormatVersion(FILE_FORMAT_VERSION)
                 .build();
-
 
         ImmutableConsumerDmaapModel consumerDmaapModel = ImmutableConsumerDmaapModel.builder()
                 .productName(PRODUCT_NAME)
@@ -188,6 +200,14 @@ class DmaapConsumerTaskImplTest {
                 .fileFormatVersion(FILE_FORMAT_VERSION)
                 .build();
         listOfConsumerDmaapModel.add(consumerDmaapModel);
+
+        files = new ArrayList<>();
+        files.add(sftpFileData);
+        expectedSftpMessage = ImmutableFileReadyMessage.builder()
+                .pnfName(SOURCE_NAME)
+                .messageMetaData(messageMetaData)
+                .files(files)
+                .build();
         //@formatter:on
     }
 
@@ -195,17 +215,17 @@ class DmaapConsumerTaskImplTest {
     public void whenPassedObjectDoesntFit_ThrowsDatafileTaskException() {
         prepareMocksForDmaapConsumer("", null);
 
-        StepVerifier.create(dmaapConsumerTask.execute("Sample input")).expectSubscription()
-                .expectError(DmaapEmptyResponseException.class).verify();
+        StepVerifier.create(messageConsumerTask.execute()).expectSubscription()
+                .expectError(DatafileTaskException.class).verify();
 
         verify(dmaapConsumerReactiveHttpClient, times(1)).getDMaaPConsumerResponse();
     }
 
     @Test
     public void whenFtpes_ReturnsCorrectResponse() throws DatafileTaskException {
-        prepareMocksForDmaapConsumer(ftpesMessage, ftpesFileData);
+        prepareMocksForDmaapConsumer(ftpesMessageString, expectedFtpesMessage);
 
-        StepVerifier.create(dmaapConsumerTask.execute(ftpesMessage)).expectNext(ftpesFileData).verifyComplete();
+        StepVerifier.create(messageConsumerTask.execute()).expectNext(expectedFtpesMessage).verifyComplete();
 
         verify(dmaapConsumerReactiveHttpClient, times(1)).getDMaaPConsumerResponse();
         verifyNoMoreInteractions(dmaapConsumerReactiveHttpClient);
@@ -213,30 +233,31 @@ class DmaapConsumerTaskImplTest {
 
     @Test
     public void whenSftp_ReturnsCorrectResponse() throws DatafileTaskException {
-        prepareMocksForDmaapConsumer(sftpMessage, sftpFileData);
+        prepareMocksForDmaapConsumer(sftpMessageString, expectedSftpMessage);
 
-        StepVerifier.create(dmaapConsumerTask.execute(ftpesMessage)).expectNext(sftpFileData).verifyComplete();
+        StepVerifier.create(messageConsumerTask.execute()).expectNext(expectedSftpMessage).verifyComplete();
 
         verify(dmaapConsumerReactiveHttpClient, times(1)).getDMaaPConsumerResponse();
         verifyNoMoreInteractions(dmaapConsumerReactiveHttpClient);
     }
 
-    private void prepareMocksForDmaapConsumer(String message, FileData fileDataAfterConsume) {
+    private void prepareMocksForDmaapConsumer(String message, FileReadyMessage fileReadyMessageAfterConsume) {
         Mono<String> messageAsMono = Mono.just(message);
-        DmaapConsumerJsonParser dmaapConsumerJsonParserMock = mock(DmaapConsumerJsonParser.class);
+        JsonMessageParser jsonMessageParserMock = mock(JsonMessageParser.class);
         dmaapConsumerReactiveHttpClient = mock(DMaaPConsumerReactiveHttpClient.class);
         when(dmaapConsumerReactiveHttpClient.getDMaaPConsumerResponse()).thenReturn(messageAsMono);
 
         if (!message.isEmpty()) {
-            when(dmaapConsumerJsonParserMock.getJsonObject(messageAsMono)).thenReturn(Flux.just(fileDataAfterConsume));
+            when(jsonMessageParserMock.getMessagesFromJson(messageAsMono))
+                    .thenReturn(Flux.just(fileReadyMessageAfterConsume));
         } else {
-            when(dmaapConsumerJsonParserMock.getJsonObject(messageAsMono))
-                    .thenReturn(Flux.error(new DmaapEmptyResponseException()));
+            when(jsonMessageParserMock.getMessagesFromJson(messageAsMono))
+                    .thenReturn(Flux.error(new DatafileTaskException("problemas")));
         }
 
-        dmaapConsumerTask =
-                spy(new DmaapConsumerTaskImpl(appConfig, dmaapConsumerReactiveHttpClient, dmaapConsumerJsonParserMock));
-        when(dmaapConsumerTask.resolveConfiguration()).thenReturn(dmaapConsumerConfiguration);
-        doReturn(dmaapConsumerReactiveHttpClient).when(dmaapConsumerTask).resolveClient();
+        messageConsumerTask =
+                spy(new DMaaPMessageConsumerTask(appConfig, dmaapConsumerReactiveHttpClient, jsonMessageParserMock));
+        when(messageConsumerTask.resolveConfiguration()).thenReturn(dmaapConsumerConfiguration);
+        doReturn(dmaapConsumerReactiveHttpClient).when(messageConsumerTask).resolveClient();
     }
 }

@@ -1,6 +1,6 @@
 /*
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -41,7 +42,6 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import org.onap.dcaegen2.collectors.datafile.io.IFileSystemResource;
 import org.onap.dcaegen2.collectors.datafile.model.CommonFunctions;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
@@ -49,6 +49,7 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.service.HttpUtils;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import reactor.test.StepVerifier;
@@ -122,17 +123,17 @@ class DmaapProducerReactiveHttpClientTest {
     void getHttpResponse_Success() throws Exception {
         mockWebClientDependantObject(true);
 
-        URI expectedUri = new DefaultUriBuilderFactory().builder().scheme(HTTPS_SCHEME).host(HOST).port(PORT)
-                .path(PUBLISH_TOPIC + URI_SEPARATOR + DEFAULT_FEED_ID + URI_SEPARATOR + FILE_NAME).build();
-
         HttpPut httpPut = new HttpPut();
         httpPut.addHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_OCTET_STREAM_CONTENT_TYPE);
 
-        JsonElement metaData = new JsonParser().parse(new CommonFunctions().createJsonBody(consumerDmaapModel));
+        URI expectedUri = new DefaultUriBuilderFactory().builder().scheme(HTTPS_SCHEME).host(HOST).port(PORT)
+                .path(PUBLISH_TOPIC + URI_SEPARATOR + DEFAULT_FEED_ID + URI_SEPARATOR + FILE_NAME).build();
+        httpPut.setURI(expectedUri);
+
+        JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(consumerDmaapModel));
         metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
         metaData.getAsJsonObject().remove(INTERNAL_LOCATION_JSON_TAG);
         httpPut.addHeader(X_DMAAP_DR_META, metaData.toString());
-        httpPut.setURI(expectedUri);
 
         String plainCreds = "dradmin" + ":" + "dradmin";
         byte[] plainCredsBytes = plainCreds.getBytes(StandardCharsets.ISO_8859_1);
@@ -142,9 +143,9 @@ class DmaapProducerReactiveHttpClientTest {
 
         fileStream.reset();
         StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel))
-        .expectNext(responseMock.toString()).verifyComplete();
+        .expectNext(HttpStatus.OK).verifyComplete();
 
-        verify(fileSystemResourceMock).setPath("target/" + FILE_NAME);
+        verify(fileSystemResourceMock).setPath(Paths.get("target/" + FILE_NAME));
         InputStream fileInputStream = fileSystemResourceMock.getInputStream();
         httpPut.setEntity(new ByteArrayEntity(IOUtils.toByteArray(fileInputStream)));
     }
@@ -153,7 +154,8 @@ class DmaapProducerReactiveHttpClientTest {
     void getHttpResponse_Fail() throws Exception {
         mockWebClientDependantObject(false);
         StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel))
-                .verifyComplete();
+        .expectError()
+        .verify();
     }
 
     private void mockWebClientDependantObject(boolean success)

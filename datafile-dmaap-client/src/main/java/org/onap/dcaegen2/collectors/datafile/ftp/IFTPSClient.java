@@ -1,6 +1,6 @@
 /*
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -18,9 +18,9 @@ package org.onap.dcaegen2.collectors.datafile.ftp;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
+import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 
 public interface IFTPSClient {
     public void setNeedClientAuth(boolean isNeedClientAuth);
@@ -51,7 +51,7 @@ public interface IFTPSClient {
 
     public void execPROT(String prot) throws IOException;
 
-    public boolean retrieveFile(String remote, OutputStream local) throws IOException;
+    public void retrieveFile(String remote, OutputStream local) throws DatafileTaskException;
 
     void setTimeout(Integer t);
 }

@@ -1,6 +1,6 @@
 /*
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ public class DatafileTaskException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
-    public DatafileTaskException() {
-        super();
+    public DatafileTaskException(Exception e) {
+        super(e);
     }
 
     public DatafileTaskException(String message) {

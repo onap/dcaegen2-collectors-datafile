@@ -1,6 +1,6 @@
 /*
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,14 @@ package org.onap.dcaegen2.collectors.datafile.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 public class FileWrapper implements IFile {
     private File file;
 
     @Override
-    public void setPath(String path) {
-        file = new File(path);
+    public void setPath(Path path) {
+        file = path.toFile();
     }
 
     @Override
