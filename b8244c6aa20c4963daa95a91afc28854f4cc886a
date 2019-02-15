@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a8120b8_6b6aa19a",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClientTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-02-15T13:18:57Z",
+      "side": 1,
+      "message": "Please add \"target/\" to the path so the collected file ends up in a folder that is ignored by git.",
+      "revId": "b8244c6aa20c4963daa95a91afc28854f4cc886a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
