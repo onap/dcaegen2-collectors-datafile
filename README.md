@@ -1,7 +1,7 @@
 # DFC (DataFile Collector)
 
-Physical Network Function Registration Handler is responsible for registration of PNF (Physical Network Function) to
-ONAP (Open Network Automation Platform) in plug and play manner.
+Datafile Collector is responsible for collecting PM counter files from PNF (Physical Network Function) and
+then publish these files to Dmaap DataRouter.
 
 ## Introduction
 
