@@ -22,7 +22,6 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 
 
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
-import org.onap.dcaegen2.collectors.datafile.configuration.Config;
 import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
 import org.onap.dcaegen2.collectors.datafile.service.DmaapReactiveWebClient;
 import org.onap.dcaegen2.collectors.datafile.service.JsonMessageParser;
@@ -31,9 +30,8 @@ import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.service.consume
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 /**
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
@@ -41,7 +39,7 @@ import reactor.core.publisher.Mono;
 public class DMaaPMessageConsumerTask {
     private static final Logger logger = LoggerFactory.getLogger(DMaaPMessageConsumerTask.class);
 
-    private Config datafileAppConfig;
+    private AppConfig datafileAppConfig;
     private JsonMessageParser jsonMessageParser;
     private DMaaPConsumerReactiveHttpClient dmaaPConsumerReactiveHttpClient;
 
