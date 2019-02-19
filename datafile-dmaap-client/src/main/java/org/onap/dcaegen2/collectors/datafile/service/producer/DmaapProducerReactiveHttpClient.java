@@ -53,7 +53,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 7/4/18
@@ -101,7 +101,7 @@ public class DmaapProducerReactiveHttpClient {
      * @param consumerDmaapModel - object which will be sent to DMaaP DataRouter
      * @return status code of operation
      */
-    public Flux<HttpStatus> getDmaapProducerResponse(ConsumerDmaapModel consumerDmaapModel) {
+    public Mono<HttpStatus> getDmaapProducerResponse(ConsumerDmaapModel consumerDmaapModel) {
         logger.trace("Entering getDmaapProducerResponse with {}", consumerDmaapModel);
         try {
             logger.trace("Starting to publish to DR {}",  consumerDmaapModel.getInternalLocation());
@@ -118,10 +118,10 @@ public class DmaapProducerReactiveHttpClient {
             HttpResponse response = future.get();
             logger.trace(response.toString());
             webClient.close();
-            return Flux.just(HttpStatus.valueOf(response.getStatusLine().getStatusCode()));
+            return Mono.just(HttpStatus.valueOf(response.getStatusLine().getStatusCode()));
         } catch (Exception e) {
             logger.error("Unable to send file to DataRouter. Data: {}", consumerDmaapModel.getInternalLocation(), e);
-            return Flux.error(e);
+            return Mono.error(e);
         }
     }
 
