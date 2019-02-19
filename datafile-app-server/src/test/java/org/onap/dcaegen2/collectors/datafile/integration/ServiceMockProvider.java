@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * PROJECT
  * ================================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018-2019 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ package org.onap.dcaegen2.collectors.datafile.integration;
 
 import static org.mockito.Mockito.mock;
 
-import org.onap.dcaegen2.collectors.datafile.configuration.DatafileAppConfig;
+import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,8 +34,8 @@ import org.springframework.context.annotation.Configuration;
 class ServiceMockProvider {
 
     @Bean
-    public DatafileAppConfig getDatafileAppConfig() {
-        return mock(DatafileAppConfig.class);
+    public AppConfig getDatafileAppConfig() {
+        return mock(AppConfig.class);
     }
 
     @Bean

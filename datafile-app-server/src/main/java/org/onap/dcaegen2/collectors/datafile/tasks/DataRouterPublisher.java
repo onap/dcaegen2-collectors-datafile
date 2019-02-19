@@ -19,7 +19,6 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 import java.time.Duration;
 
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
-import org.onap.dcaegen2.collectors.datafile.configuration.Config;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.service.HttpUtils;
 import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerReactiveHttpClient;
@@ -37,7 +36,7 @@ import reactor.core.publisher.Flux;
 public class DataRouterPublisher {
 
     private static final Logger logger = LoggerFactory.getLogger(DataRouterPublisher.class);
-    private final Config datafileAppConfig;
+    private final AppConfig datafileAppConfig;
 
     public DataRouterPublisher(AppConfig datafileAppConfig) {
         this.datafileAppConfig = datafileAppConfig;

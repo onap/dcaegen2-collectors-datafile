@@ -20,7 +20,6 @@ import java.nio.file.Path;
 import java.time.Duration;
 
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
-import org.onap.dcaegen2.collectors.datafile.configuration.Config;
 import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.ftp.FileCollectClient;
@@ -41,7 +40,7 @@ import reactor.core.publisher.Mono;
 public class FileCollector {
 
     private static final Logger logger = LoggerFactory.getLogger(FileCollector.class);
-    private Config datafileAppConfig;
+    private AppConfig datafileAppConfig;
     private final FtpsClient ftpsClient;
     private final SftpClient sftpClient;
 
