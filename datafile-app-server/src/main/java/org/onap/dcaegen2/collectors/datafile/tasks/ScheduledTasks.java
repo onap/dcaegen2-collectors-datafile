@@ -20,11 +20,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
@@ -56,7 +58,7 @@ public class ScheduledTasks {
     private class FileCollectionData {
         final FileData fileData;
         final FileCollector collectorTask; // Same object, ftp session etc. can be used for each file in one VES
-                                                  // event
+                                           // event
         final MessageMetaData metaData;
 
         FileCollectionData(FileData fd, FileCollector collectorTask, MessageMetaData metaData) {
@@ -69,7 +71,11 @@ public class ScheduledTasks {
     private static final Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);
     private final AppConfig applicationConfiguration;
     private final AtomicInteger taskCounter = new AtomicInteger();
-    private final Set<Path> alreadyPublishedFiles = Collections.synchronizedSet(new HashSet<Path>());
+    /**
+     * A cache of all files that already has been published. Key is the local file path and the value is
+     * a time stamp, when the key was last used.
+     */
+    final Map<Path, Instant> alreadyPublishedFiles = Collections.synchronizedMap(new HashMap<Path, Instant>());
 
     /**
      * Constructor for task registration in Datafile Workflow.
@@ -84,7 +90,7 @@ public class ScheduledTasks {
     }
 
     /**
-     * Main function for scheduling Datafile Workflow.
+     * Main function for scheduling for the file collection Workflow.
      */
     public void scheduleMainDatafileEventTask() {
         logger.trace("Execution of tasks was registered");
@@ -105,6 +111,23 @@ public class ScheduledTasks {
         //@formatter:on
     }
 
+    /**
+     * called in regular intervals to remove out-dated cached information
+     */
+    public void purgeCachedInformation(Instant now) {
+        for (Iterator<Map.Entry<Path, Instant>> it = alreadyPublishedFiles.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<Path, Instant> pair = it.next();
+            if (isCachedPublishedFileOutdated(now, pair.getValue())) {
+                it.remove();
+            }
+        } ;
+    }
+
+    private boolean isCachedPublishedFileOutdated(Instant now, Instant then) {
+        final int timeToKeepInfoInSeconds = 60 * 60 * 24;
+        return now.getEpochSecond() - then.getEpochSecond() > timeToKeepInfoInSeconds;
+    }
+
     private void onComplete() {
         logger.info("Datafile tasks have been completed");
     }
@@ -121,15 +144,15 @@ public class ScheduledTasks {
         List<FileCollectionData> fileCollects = new ArrayList<>();
 
         for (FileData fileData : availableFiles.files()) {
-            FileCollector task = new FileCollector(applicationConfiguration,
-                    new FtpsClient(fileData.fileServerData()), new SftpClient(fileData.fileServerData()));
+            FileCollector task = new FileCollector(applicationConfiguration, new FtpsClient(fileData.fileServerData()),
+                    new SftpClient(fileData.fileServerData()));
             fileCollects.add(new FileCollectionData(fileData, task, availableFiles.messageMetaData()));
         }
         return Flux.fromIterable(fileCollects);
     }
 
     private boolean shouldBePublished(FileCollectionData task) {
-        return alreadyPublishedFiles.add(task.fileData.getLocalFileName());
+        return alreadyPublishedFiles.put(task.fileData.getLocalFileName(), Instant.now()) == null;
     }
 
     private Mono<ConsumerDmaapModel> collectFileFromXnf(FileCollectionData fileCollect) {
@@ -157,7 +180,6 @@ public class ScheduledTasks {
 
         return publisherTask.execute(model, maxNumberOfRetries, initialRetryTimeout)
                 .onErrorResume(exception -> handlePublishFailure(model, exception));
-
     }
 
     private Flux<ConsumerDmaapModel> handlePublishFailure(ConsumerDmaapModel model, Throwable exception) {
@@ -178,8 +200,7 @@ public class ScheduledTasks {
 
         final DMaaPMessageConsumerTask messageConsumerTask =
                 new DMaaPMessageConsumerTask(this.applicationConfiguration);
-        return messageConsumerTask.execute()
-                .onErrorResume(exception -> handleConsumeMessageFailure(exception));
+        return messageConsumerTask.execute().onErrorResume(this::handleConsumeMessageFailure);
     }
 
     private Flux<FileReadyMessage> handleConsumeMessageFailure(Throwable exception) {
