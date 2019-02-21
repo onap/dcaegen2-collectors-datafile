@@ -41,6 +41,7 @@ import org.springframework.stereotype.Component;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 /**
@@ -50,13 +51,12 @@ import reactor.core.scheduler.Schedulers;
 @Component
 public class ScheduledTasks {
 
-    private static final int MAX_NUMBER_OF_CONCURRENT_TASKS = 200;
+    private static final int MAX_NUMBER_OF_CONCURRENT_TASKS = 100;
 
     /** Data needed for fetching of files from one PNF */
     private class FileCollectionData {
         final FileData fileData;
-        final FileCollector collectorTask; // Same object, ftp session etc. can be used for each file in one VES
-                                                  // event
+        final FileCollector collectorTask;
         final MessageMetaData metaData;
 
         FileCollectionData(FileData fd, FileCollector collectorTask, MessageMetaData metaData) {
@@ -68,8 +68,9 @@ public class ScheduledTasks {
 
     private static final Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);
     private final AppConfig applicationConfiguration;
-    private final AtomicInteger taskCounter = new AtomicInteger();
+    private final AtomicInteger currentNumberOfTasks = new AtomicInteger();
     private final Set<Path> alreadyPublishedFiles = Collections.synchronizedSet(new HashSet<Path>());
+    private final Scheduler scheduler = Schedulers.newElastic("DataFileCollector", 10); // name, time to live in seconds
 
     /**
      * Constructor for task registration in Datafile Workflow.
@@ -91,18 +92,26 @@ public class ScheduledTasks {
         applicationConfiguration.initFileStreamReader();
         //@formatter:off
         consumeMessagesFromDmaap()
-            .parallel() // Each FileReadyMessage in a separate thread
-            .runOn(Schedulers.parallel())
+            .parallel(getParallelism()) // Each FileReadyMessage in a separate thread
+            .runOn(scheduler)
             .flatMap(this::createFileCollectionTask)
             .filter(this::shouldBePublished)
-            .doOnNext(fileData -> taskCounter.incrementAndGet())
+            .doOnNext(fileData -> currentNumberOfTasks.incrementAndGet())
             .flatMap(this::collectFileFromXnf)
             .flatMap(this::publishToDataRouter)
             .flatMap(model -> deleteFile(Paths.get(model.getInternalLocation())))
-            .doOnNext(model -> taskCounter.decrementAndGet())
+            .doOnNext(model -> currentNumberOfTasks.decrementAndGet())
             .sequential()
             .subscribe(this::onSuccess, this::onError, this::onComplete);
         //@formatter:on
+    }
+
+    private int getParallelism() {
+        if (MAX_NUMBER_OF_CONCURRENT_TASKS - currentNumberOfTasks.get() > 0) {
+            return MAX_NUMBER_OF_CONCURRENT_TASKS - currentNumberOfTasks.get();
+        } else {
+            return 1; // We need at least one rail/thread
+        }
     }
 
     private void onComplete() {
@@ -121,8 +130,8 @@ public class ScheduledTasks {
         List<FileCollectionData> fileCollects = new ArrayList<>();
 
         for (FileData fileData : availableFiles.files()) {
-            FileCollector task = new FileCollector(applicationConfiguration,
-                    new FtpsClient(fileData.fileServerData()), new SftpClient(fileData.fileServerData()));
+            FileCollector task = new FileCollector(applicationConfiguration, new FtpsClient(fileData.fileServerData()),
+                    new SftpClient(fileData.fileServerData()));
             fileCollects.add(new FileCollectionData(fileData, task, availableFiles.messageMetaData()));
         }
         return Flux.fromIterable(fileCollects);
@@ -145,7 +154,7 @@ public class ScheduledTasks {
         logger.error("File fetching failed: {}, reason: {}", fileData.name(), exception.getMessage());
         deleteFile(fileData.getLocalFileName());
         alreadyPublishedFiles.remove(fileData.getLocalFileName());
-        taskCounter.decrementAndGet();
+        currentNumberOfTasks.decrementAndGet();
         return Mono.empty();
     }
 
@@ -157,7 +166,6 @@ public class ScheduledTasks {
 
         return publisherTask.execute(model, maxNumberOfRetries, initialRetryTimeout)
                 .onErrorResume(exception -> handlePublishFailure(model, exception));
-
     }
 
     private Flux<ConsumerDmaapModel> handlePublishFailure(ConsumerDmaapModel model, Throwable exception) {
@@ -165,21 +173,19 @@ public class ScheduledTasks {
         Path internalFileName = Paths.get(model.getInternalLocation());
         deleteFile(internalFileName);
         alreadyPublishedFiles.remove(internalFileName);
-        taskCounter.decrementAndGet();
+        currentNumberOfTasks.decrementAndGet();
         return Flux.empty();
     }
 
     private Flux<FileReadyMessage> consumeMessagesFromDmaap() {
-        final int currentNumberOfTasks = taskCounter.get();
         logger.trace("Consuming new file ready messages, current number of tasks: {}", currentNumberOfTasks);
-        if (currentNumberOfTasks > MAX_NUMBER_OF_CONCURRENT_TASKS) {
+        if (currentNumberOfTasks.get() > MAX_NUMBER_OF_CONCURRENT_TASKS) {
             return Flux.empty();
         }
 
         final DMaaPMessageConsumerTask messageConsumerTask =
                 new DMaaPMessageConsumerTask(this.applicationConfiguration);
-        return messageConsumerTask.execute()
-                .onErrorResume(exception -> handleConsumeMessageFailure(exception));
+        return messageConsumerTask.execute().onErrorResume(exception -> handleConsumeMessageFailure(exception));
     }
 
     private Flux<FileReadyMessage> handleConsumeMessageFailure(Throwable exception) {
