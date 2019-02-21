@@ -22,6 +22,30 @@
       "revId": "bd59a3d3dc045904474930819c9f06f27e9c30e2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5061db3d_ac338b48",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 4411
+      },
+      "writtenOn": "2019-02-21T17:30:25Z",
+      "side": 1,
+      "message": "Some info: https://stackoverflow.com/questions/1820908/how-to-turn-off-the-eclipse-code-formatter-for-certain-sections-of-java-code",
+      "parentUuid": "fa578d74_a9c3c453",
+      "range": {
+        "startLine": 82,
+        "startChar": 78,
+        "endLine": 82,
+        "endChar": 80
+      },
+      "revId": "bd59a3d3dc045904474930819c9f06f27e9c30e2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
