@@ -47,7 +47,7 @@ import org.onap.dcaegen2.collectors.datafile.integration.junit5.mockito.MockitoE
  */
 @ExtendWith({MockitoExtension.class})
 class AppConfigTest {
-    
+
     private static final String DATAFILE_ENDPOINTS = "datafile_endpoints.json";
     private static final boolean CORRECT_JSON = true;
     private static final boolean INCORRECT_JSON = false;
@@ -55,8 +55,8 @@ class AppConfigTest {
     private static AppConfig appConfigUnderTest;
 
 
-    private static String filePath = Objects
-            .requireNonNull(AppConfigTest.class.getClassLoader().getResource(DATAFILE_ENDPOINTS)).getFile();
+    private static String filePath =
+            Objects.requireNonNull(AppConfigTest.class.getClassLoader().getResource(DATAFILE_ENDPOINTS)).getFile();
 
     @BeforeEach
     public void setUp() {

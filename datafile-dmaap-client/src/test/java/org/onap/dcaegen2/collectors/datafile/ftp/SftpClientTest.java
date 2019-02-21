@@ -17,7 +17,6 @@
 package org.onap.dcaegen2.collectors.datafile.ftp;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-
 import static org.apache.commons.io.IOUtils.toByteArray;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,14 +51,21 @@ public class SftpClientTest {
     public final FakeSftpServerRule sftpServer = new FakeSftpServerRule().addUser(USERNAME, PASSWORD);
 
     @Test
-    public void collectFile_withOKresponse() throws DatafileTaskException, IOException, JSchException, SftpException, Exception {
-        FileServerData expectedFileServerData = ImmutableFileServerData.builder().serverAddress("127.0.0.1")
-                .userId(USERNAME).password(PASSWORD).port(sftpServer.getPort()).build();
+    public void collectFile_withOKresponse()
+            throws DatafileTaskException, IOException, JSchException, SftpException, Exception {
+        FileServerData expectedFileServerData = ImmutableFileServerData.builder() //
+                .serverAddress("127.0.0.1") //
+                .userId(USERNAME) //
+                .password(PASSWORD) //
+                .port(sftpServer.getPort()) //
+                .build();
+
         SftpClient sftpClient = new SftpClient(expectedFileServerData);
         sftpServer.putFile(REMOTE_DUMMY_FILE, DUMMY_CONTENT, UTF_8);
         byte[] file = downloadFile(sftpServer, REMOTE_DUMMY_FILE);
 
         sftpClient.collectFile(REMOTE_DUMMY_FILE, LOCAL_DUMMY_FILE);
+
         byte[] localFile = Files.readAllBytes(LOCAL_DUMMY_FILE.toFile().toPath());
         assertThat(new String(file, UTF_8)).isEqualTo(DUMMY_CONTENT);
         assertThat(new String(localFile, UTF_8)).isEqualTo(DUMMY_CONTENT);
@@ -67,8 +73,13 @@ public class SftpClientTest {
 
     @Test
     public void collectFile_withWrongUserName_shouldFail() throws IOException, JSchException, SftpException {
-        FileServerData expectedFileServerData = ImmutableFileServerData.builder().serverAddress("127.0.0.1")
-                .userId("Wrong").password(PASSWORD).port(sftpServer.getPort()).build();
+        FileServerData expectedFileServerData = ImmutableFileServerData.builder() //
+                .serverAddress("127.0.0.1") //
+                .userId("Wrong") //
+                .password(PASSWORD) //
+                .port(sftpServer.getPort()) //
+                .build();
+
         SftpClient sftpClient = new SftpClient(expectedFileServerData);
         sftpServer.putFile(REMOTE_DUMMY_FILE, DUMMY_CONTENT, UTF_8);
 
@@ -84,8 +95,13 @@ public class SftpClientTest {
 
     @Test
     public void collectFile_withWrongFileName_shouldFail() throws IOException, JSchException, SftpException {
-        FileServerData expectedFileServerData = ImmutableFileServerData.builder().serverAddress("127.0.0.1")
-                .userId(USERNAME).password(PASSWORD).port(sftpServer.getPort()).build();
+        FileServerData expectedFileServerData = ImmutableFileServerData.builder() //
+                .serverAddress("127.0.0.1") //
+                .userId(USERNAME) //
+                .password(PASSWORD) //
+                .port(sftpServer.getPort()) //
+                .build();
+
         SftpClient sftpClient = new SftpClient(expectedFileServerData);
         sftpServer.putFile(REMOTE_DUMMY_FILE, DUMMY_CONTENT, UTF_8);
 

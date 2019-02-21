@@ -16,6 +16,8 @@
 
 package org.onap.dcaegen2.collectors.datafile.ftp;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,11 +30,6 @@ import java.util.Optional;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPReply;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
-import org.onap.dcaegen2.collectors.datafile.io.FileSystemResourceWrapper;
-import org.onap.dcaegen2.collectors.datafile.io.FileWrapper;
-import org.onap.dcaegen2.collectors.datafile.io.IFile;
-import org.onap.dcaegen2.collectors.datafile.io.IFileSystemResource;
-import org.onap.dcaegen2.collectors.datafile.io.IOutputStream;
 import org.onap.dcaegen2.collectors.datafile.ssl.IKeyManagerUtils;
 import org.onap.dcaegen2.collectors.datafile.ssl.IKeyManagerUtils.KeyManagerException;
 import org.onap.dcaegen2.collectors.datafile.ssl.IKeyStore;
@@ -42,6 +39,7 @@ import org.onap.dcaegen2.collectors.datafile.ssl.KeyStoreWrapper;
 import org.onap.dcaegen2.collectors.datafile.ssl.TrustManagerFactoryWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.FileSystemResource;
 
 /**
  * Gets file from xNF with FTPS protocol.
@@ -59,9 +57,6 @@ public class FtpsClient implements FileCollectClient {
     private IKeyManagerUtils keyManagerUtils = new KeyManagerUtilsWrapper();
     private IKeyStore keyStore;
     private ITrustManagerFactory trustManagerFactory;
-    private IFile localFile = new FileWrapper();
-    private IFileSystemResource fileSystemResource = new FileSystemResourceWrapper();
-    private IOutputStream outputStream;
     private boolean keyManagerSet = false;
     private boolean trustManagerSet = false;
     private final FileServerData fileServerData;
@@ -108,12 +103,9 @@ public class FtpsClient implements FileCollectClient {
         if (trustManagerSet) {
             logger.trace("trustManager already set!");
         } else {
-            try {
-                fileSystemResource.setPath(trustedCAPath);
-                InputStream fis = fileSystemResource.getInputStream();
+            try (InputStream fis = createInputStream(trustedCAPath)) {
                 IKeyStore ks = getKeyStore();
                 ks.load(fis, trustedCAPassword.toCharArray());
-                fis.close();
                 ITrustManagerFactory tmf = getTrustManagerFactory();
                 tmf.init(ks.getKeyStore());
                 ftps.setTrustManager(tmf.getTrustManagers()[0]);
@@ -159,15 +151,11 @@ public class FtpsClient implements FileCollectClient {
             throws IOException, DatafileTaskException {
         logger.trace("starting to getFile");
 
-        this.localFile.setPath(localFileName);
-        this.localFile.createNewFile();
-
-        OutputStream output = this.outputStream.getOutputStream(this.localFile.getFile());
-        logger.trace("begin to retrieve from xNF.");
-        ftps.retrieveFile(remoteFileName, output);
-        logger.trace("end retrieve from xNF.");
-        output.close();
-        logger.debug("File {} Download Successfull from xNF", localFileName);
+        try (OutputStream output = createOutputStream(localFileName)) {
+            logger.trace("begin to retrieve from xNF.");
+            ftps.retrieveFile(remoteFileName, output);
+            logger.debug("File {} Download Successfull from xNF", localFileName);
+        }
     }
 
 
@@ -236,15 +224,16 @@ public class FtpsClient implements FileCollectClient {
         trustManagerFactory = tmf;
     }
 
-    void setFile(IFile file) {
-        localFile = file;
+    InputStream createInputStream(Path filePath) throws IOException {
+        FileSystemResource realResource = new FileSystemResource(filePath);
+        return realResource.getInputStream();
     }
 
-    void setOutputStream(IOutputStream outputStream) {
-        this.outputStream = outputStream;
-    }
-
-    void setFileSystemResource(IFileSystemResource fileSystemResource) {
-        this.fileSystemResource = fileSystemResource;
+    OutputStream createOutputStream(Path localFileName) throws IOException {
+        File file = localFileName.toFile();
+        if (!file.createNewFile()) {
+            logger.warn("File already existing {}", localFileName);
+        }
+        return new FileOutputStream(file, false);
     }
 }
