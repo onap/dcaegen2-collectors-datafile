@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa578d74_a9c3c453",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 4439
+      },
+      "writtenOn": "2019-02-21T17:19:17Z",
+      "side": 1,
+      "message": "are these supposed to be here? I see them all over the code review, just wondering if they\u0027re part of a convention you guys have.",
+      "range": {
+        "startLine": 82,
+        "startChar": 78,
+        "endLine": 82,
+        "endChar": 80
+      },
+      "revId": "bd59a3d3dc045904474930819c9f06f27e9c30e2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
