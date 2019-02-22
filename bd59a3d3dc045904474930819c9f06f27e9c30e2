@@ -46,6 +46,30 @@
       "revId": "bd59a3d3dc045904474930819c9f06f27e9c30e2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e5162934_a6271546",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-02-22T07:51:21Z",
+      "side": 1,
+      "message": "Yes, to make the code more readable, in our opinion at least, we want to format it so that each method call is on its own row. First we used the \n// @formatter:off\n...\n// @formatter:on\ntags, but it was brought to our attention that this is Eclipse specific. So we found this other way that is IDE agnostic, and decided to use that instead.",
+      "parentUuid": "5061db3d_ac338b48",
+      "range": {
+        "startLine": 82,
+        "startChar": 78,
+        "endLine": 82,
+        "endChar": 80
+      },
+      "revId": "bd59a3d3dc045904474930819c9f06f27e9c30e2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
