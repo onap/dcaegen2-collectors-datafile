@@ -22,6 +22,53 @@
       "revId": "958f0b0896f0ee9e5876ef885bf2125dd4c2ad53",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8d3ed14e_69f6bd44",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-02-22T17:45:05Z",
+      "side": 1,
+      "message": "Missed to noticed the tagging are done later; ignore this comment.",
+      "parentUuid": "020e9c50_e1f51872",
+      "range": {
+        "startLine": 62,
+        "startChar": 16,
+        "endLine": 62,
+        "endChar": 33
+      },
+      "revId": "958f0b0896f0ee9e5876ef885bf2125dd4c2ad53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "44e14f3f_7350704f",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-02-22T17:45:05Z",
+      "side": 1,
+      "message": "This should be either removed or changed to x.y.z-KEYWORD format",
+      "range": {
+        "startLine": 94,
+        "startChar": 1,
+        "endLine": 98,
+        "endChar": 28
+      },
+      "revId": "958f0b0896f0ee9e5876ef885bf2125dd4c2ad53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
