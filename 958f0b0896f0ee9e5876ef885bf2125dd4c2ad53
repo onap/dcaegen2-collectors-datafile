@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "7905d77a_8b364d7d",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-02-22T18:04:55Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "8d3ed14e_69f6bd44",
+      "range": {
+        "startLine": 62,
+        "startChar": 16,
+        "endLine": 62,
+        "endChar": 33
+      },
+      "revId": "958f0b0896f0ee9e5876ef885bf2125dd4c2ad53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "44e14f3f_7350704f",
         "filename": "datafile-app-server/pom.xml",
         "patchSetId": 1
@@ -60,6 +84,30 @@
       "writtenOn": "2019-02-22T17:45:05Z",
       "side": 1,
       "message": "This should be either removed or changed to x.y.z-KEYWORD format",
+      "range": {
+        "startLine": 94,
+        "startChar": 1,
+        "endLine": 98,
+        "endChar": 28
+      },
+      "revId": "958f0b0896f0ee9e5876ef885bf2125dd4c2ad53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "25ba5ab3_ec488f22",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-02-22T18:04:55Z",
+      "side": 1,
+      "message": "\"${project.version}\" in line 96 translates to \"1.1.1-SNAPSHOT\" (see line 27)\n\n\nSo, I guess your comment is already addressed.",
+      "parentUuid": "44e14f3f_7350704f",
       "range": {
         "startLine": 94,
         "startChar": 1,
