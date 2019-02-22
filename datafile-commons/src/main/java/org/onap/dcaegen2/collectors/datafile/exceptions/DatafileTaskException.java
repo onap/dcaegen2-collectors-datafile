@@ -32,4 +32,8 @@ public class DatafileTaskException extends Exception {
     public DatafileTaskException(String message) {
         super(message);
     }
+
+    public DatafileTaskException(String message, Exception e) {
+        super(message + e);
+    }
 }

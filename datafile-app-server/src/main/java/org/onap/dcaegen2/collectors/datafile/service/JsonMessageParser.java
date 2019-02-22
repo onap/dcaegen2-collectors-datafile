@@ -123,12 +123,11 @@ public class JsonMessageParser {
     }
 
     private Flux<FileReadyMessage> createMessages(Flux<JsonObject> jsonObject) {
-        return jsonObject.flatMap(monoJsonP -> !containsNotificationFields(monoJsonP)
-                ? logErrorAndReturnEmptyMessageFlux("Incorrect JsonObject - missing header. " + jsonObject)
-                : transformMessages(monoJsonP));
+        return jsonObject.flatMap(monoJsonP -> containsNotificationFields(monoJsonP) ? transformMessages(monoJsonP)
+                : logErrorAndReturnEmptyMessageFlux("Incorrect JsonObject - missing header. " + jsonObject));
     }
 
-    private Flux<FileReadyMessage> transformMessages(JsonObject message) {
+    private Mono<FileReadyMessage> transformMessages(JsonObject message) {
         Optional<MessageMetaData> optionalMessageMetaData = getMessageMetaData(message);
         if (optionalMessageMetaData.isPresent()) {
             JsonObject notificationFields = message.getAsJsonObject(EVENT).getAsJsonObject(NOTIFICATION_FIELDS);
@@ -138,22 +137,22 @@ public class JsonMessageParser {
                 if (!allFileDataFromJson.isEmpty()) {
                     MessageMetaData messageMetaData = optionalMessageMetaData.get();
                     // @formatter:off
-                    return Flux.just(ImmutableFileReadyMessage.builder()
+                    return Mono.just(ImmutableFileReadyMessage.builder()
                             .pnfName(messageMetaData.sourceName())
                             .messageMetaData(messageMetaData)
                             .files(allFileDataFromJson)
                             .build());
                     // @formatter:on
                 } else {
-                    return Flux.empty();
+                    return Mono.empty();
                 }
             }
 
             logger.error("Unable to collect file from xNF. Missing arrayOfNamedHashMap in message. {}", message);
-            return Flux.empty();
+            return Mono.empty();
         }
         logger.error("Unable to collect file from xNF. FileReady event has incorrect JsonObject. {}", message);
-        return Flux.empty();
+        return Mono.empty();
     }
 
     private Optional<MessageMetaData> getMessageMetaData(JsonObject message) {

@@ -17,11 +17,13 @@
 package org.onap.dcaegen2.collectors.datafile.ftp;
 
 import java.nio.file.Path;
+
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 
 /**
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
+@FunctionalInterface
 public interface FileCollectClient {
     public void collectFile(String remoteFile, Path localFile) throws DatafileTaskException;
 }
