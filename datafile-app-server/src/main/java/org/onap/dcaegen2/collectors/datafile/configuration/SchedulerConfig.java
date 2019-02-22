@@ -21,7 +21,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
+
 import javax.annotation.PostConstruct;
+
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +31,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
 import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Mono;
 
@@ -39,8 +42,9 @@ import reactor.core.publisher.Mono;
 @EnableScheduling
 public class SchedulerConfig {
 
-    private static final int SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS = 15;
-    private static final int SCHEDULING_REQUEST_FOR_CONFIGURATION_DELAY = 5;
+    private static final Duration SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS = Duration.ofSeconds(15);
+    private static final Duration SCHEDULING_REQUEST_FOR_CONFIGURATION_DELAY = Duration.ofMinutes(5);
+    private static final Duration SCHEDULING_DELAY_FOR_DATAFILE_PURGE_CACHE = Duration.ofHours(1);
     private static volatile List<ScheduledFuture<?>> scheduledFutureList = new ArrayList<>();
 
     private final TaskScheduler taskScheduler;
@@ -77,11 +81,13 @@ public class SchedulerConfig {
     @ApiOperation(value = "Start task if possible")
     public synchronized boolean tryToStartTask() {
         if (scheduledFutureList.isEmpty()) {
-            scheduledFutureList.add(taskScheduler
-                .scheduleAtFixedRate(cloudConfiguration::runTask, Instant.now(),
-                    Duration.ofMinutes(SCHEDULING_REQUEST_FOR_CONFIGURATION_DELAY)));
+            scheduledFutureList.add(taskScheduler.scheduleAtFixedRate(cloudConfiguration::runTask, Instant.now(),
+                    SCHEDULING_REQUEST_FOR_CONFIGURATION_DELAY));
             scheduledFutureList.add(taskScheduler.scheduleWithFixedDelay(scheduledTask::scheduleMainDatafileEventTask,
-                Duration.ofSeconds(SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS)));
+                    SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS));
+            scheduledFutureList.add(taskScheduler.scheduleWithFixedDelay(() -> scheduledTask.purgeCachedInformation(Instant.now()),
+                   SCHEDULING_DELAY_FOR_DATAFILE_PURGE_CACHE));
+
             return true;
         } else {
             return false;
