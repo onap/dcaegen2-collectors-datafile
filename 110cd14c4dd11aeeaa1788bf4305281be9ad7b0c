@@ -34,6 +34,24 @@
       "revId": "110cd14c4dd11aeeaa1788bf4305281be9ad7b0c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dd343190_ddbce408",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-02-22T11:16:58Z",
+      "side": 1,
+      "message": "Ah, yes I see that now.\nMaybe it would be clearer if the work is done in the if clause if the number of current tasks is lower than the maximum, instead of returning here?",
+      "parentUuid": "3001ae97_574a236b",
+      "revId": "110cd14c4dd11aeeaa1788bf4305281be9ad7b0c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
