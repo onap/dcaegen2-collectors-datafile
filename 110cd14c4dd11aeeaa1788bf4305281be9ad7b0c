@@ -16,6 +16,24 @@
       "revId": "110cd14c4dd11aeeaa1788bf4305281be9ad7b0c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3001ae97_574a236b",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-22T10:45:03Z",
+      "side": 1,
+      "message": "No, this is where messages are fetched. So if the collector is \"too busy\" it will not fetch any new messages. \n\nI think the name of this and many other functions can be improved. I think we should try to get rid of aberiviations (like Dmaap, which does not add much value here).",
+      "parentUuid": "a755c919_2541b243",
+      "revId": "110cd14c4dd11aeeaa1788bf4305281be9ad7b0c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
