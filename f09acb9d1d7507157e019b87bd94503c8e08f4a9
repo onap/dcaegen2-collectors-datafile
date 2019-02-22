@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "47c3f98a_632e88cb",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-02-22T10:00:54Z",
+      "side": 1,
+      "message": "Sonar says \"Replace this lambda with a method reference.\"",
+      "revId": "f09acb9d1d7507157e019b87bd94503c8e08f4a9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
