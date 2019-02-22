@@ -37,7 +37,7 @@ import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPub
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
 import org.springframework.http.HttpStatus;
 
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 /**
@@ -96,7 +96,7 @@ class DataRouterPublisherTest {
 
     @Test
     public void whenPassedObjectFits_ReturnsCorrectStatus() {
-        prepareMocksForTests(Flux.just(HttpStatus.OK));
+        prepareMocksForTests(Mono.just(HttpStatus.OK));
 
         StepVerifier.create(dmaapPublisherTask.execute(consumerDmaapModel, 1, Duration.ofSeconds(0)))
                 .expectNext(consumerDmaapModel).verifyComplete();
@@ -107,7 +107,7 @@ class DataRouterPublisherTest {
 
     @Test
     public void whenPassedObjectFits_firstFailsThenSucceeds() {
-        prepareMocksForTests(Flux.just(HttpStatus.BAD_GATEWAY), Flux.just(HttpStatus.OK));
+        prepareMocksForTests(Mono.just(HttpStatus.BAD_GATEWAY), Mono.just(HttpStatus.OK));
 
         StepVerifier.create(dmaapPublisherTask.execute(consumerDmaapModel, 1, Duration.ofSeconds(0)))
                 .expectNext(consumerDmaapModel).verifyComplete();
@@ -118,7 +118,7 @@ class DataRouterPublisherTest {
 
     @Test
     public void whenPassedObjectFits_firstFailsThenFails() {
-        prepareMocksForTests(Flux.just(HttpStatus.BAD_GATEWAY), Flux.just(HttpStatus.BAD_GATEWAY));
+        prepareMocksForTests(Mono.just(HttpStatus.BAD_GATEWAY), Mono.just(HttpStatus.BAD_GATEWAY));
 
         StepVerifier.create(dmaapPublisherTask.execute(consumerDmaapModel, 1, Duration.ofSeconds(0)))
                 .expectErrorMessage("Retries exhausted: 1/1").verify();
@@ -128,7 +128,7 @@ class DataRouterPublisherTest {
     }
 
     @SafeVarargs
-    final void prepareMocksForTests(Flux<HttpStatus> firstResponse, Flux<HttpStatus>... nextHttpResponses) {
+    final void prepareMocksForTests(Mono<HttpStatus> firstResponse, Mono<HttpStatus>... nextHttpResponses) {
         dMaaPProducerReactiveHttpClient = mock(DmaapProducerReactiveHttpClient.class);
         when(dMaaPProducerReactiveHttpClient.getDmaapProducerResponse(any())).thenReturn(firstResponse,
                 nextHttpResponses);
