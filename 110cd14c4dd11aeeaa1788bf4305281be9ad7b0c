@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a755c919_2541b243",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-02-22T10:09:52Z",
+      "side": 1,
+      "message": "Will this behaviour not loose messages? We have collected them from MR so we will not get them again. And we do not handle them here, so they will be lost. To not loose messages, the ones not handled here must be stored in some way and handled before the new ones collected from MR when there are threads available again.",
+      "revId": "110cd14c4dd11aeeaa1788bf4305281be9ad7b0c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
