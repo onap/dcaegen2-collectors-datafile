@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ ============LICENSE_START=======================================================
-  ~ Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
+  ~ Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
   ~ ================================================================================ 
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@
   <packaging>jar</packaging>
 
   <properties>
+    <dockerfile.maven.version>1.4.10</dockerfile.maven.version>
     <docker.image.name>onap/${project.groupId}.${project.artifactId}</docker.image.name>
     <maven.build.timestamp.format>yyyyMMdd'T'HHmmss</maven.build.timestamp.format>
   </properties>
@@ -54,31 +55,15 @@
       </plugin>
       <plugin>
         <groupId>com.spotify</groupId>
-        <artifactId>docker-maven-plugin</artifactId>
+        <artifactId>dockerfile-maven-plugin</artifactId>
+        <version>${dockerfile.maven.version}</version>
         <configuration>
-          <serverId>${onap.nexus.dockerregistry.daily}</serverId>
-          <imageName>${docker.image.name}</imageName>
-          <imageTags>
-            <tag>latest</tag>
-          </imageTags>
-          <baseImage>openjdk:8-jre-alpine</baseImage>
-          <resources>
-            <resource>
-              <directory>${project.build.directory}</directory>
-              <include>${project.artifactId}.jar</include>
-              <targetPath>/target</targetPath>
-            </resource>
-            <resource>
-              <targetPath>/config</targetPath>
-              <directory>${project.basedir}/config</directory>
-              <include>*</include>
-            </resource>
-          </resources>
-          <exposes>
-            <expose>8100</expose>
-            <expose>8433</expose>
-          </exposes>
-          <cmd>["java", "-jar", "/target/${project.artifactId}.jar"]</cmd>
+          <repository>${onap.nexus.dockerregistry.daily}/${docker.image.name}</repository>
+          <tag>${project.version}</tag>
+          <dockerfile>${project.build.outputDirectory}/Dockerfile</dockerfile>
+          <buildArgs>
+            <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+          </buildArgs>
         </configuration>
         <executions>
           <execution>
