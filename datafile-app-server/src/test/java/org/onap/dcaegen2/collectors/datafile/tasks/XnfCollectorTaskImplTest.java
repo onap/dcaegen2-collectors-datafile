@@ -67,7 +67,12 @@ public class XnfCollectorTaskImplTest {
     private static final String PWD = "pwd";
     private static final String FTPES_LOCATION =
             FTPES_SCHEME + USER + ":" + PWD + "@" + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
+
+    private static final String FTPES_LOCATION_NO_PORT =
+            FTPES_SCHEME + USER + ":" + PWD + "@" + SERVER_ADDRESS + REMOTE_FILE_LOCATION;
     private static final String SFTP_LOCATION = SFTP_SCHEME + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
+    private static final String SFTP_LOCATION_NO_PORT = SFTP_SCHEME + SERVER_ADDRESS +  REMOTE_FILE_LOCATION;
+
     private static final String GZIP_COMPRESSION = "gzip";
     private static final String MEAS_COLLECT_FILE_FORMAT_TYPE = "org.3GPP.32.435#measCollec";
     private static final String FILE_FORMAT_VERSION = "V10";
@@ -100,11 +105,11 @@ public class XnfCollectorTaskImplTest {
         // @formatter:on
     }
 
-    private FileData createFileData() {
+    private FileData createFileData(String location) {
         // @formatter:off
         return  ImmutableFileData.builder()
             .name(PM_FILE_NAME)
-            .location(FTPES_LOCATION)
+            .location(location)
             .compression(GZIP_COMPRESSION)
             .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
             .fileFormatVersion(FILE_FORMAT_VERSION)
@@ -113,7 +118,7 @@ public class XnfCollectorTaskImplTest {
         // @formatter:on
     }
 
-    private ConsumerDmaapModel createExpectedConsumerDmaapModel() {
+    private ConsumerDmaapModel createExpectedConsumerDmaapModel(String location) {
         // @formatter:off
         return ImmutableConsumerDmaapModel.builder()
             .productName(PRODUCT_NAME)
@@ -123,7 +128,7 @@ public class XnfCollectorTaskImplTest {
             .startEpochMicrosec(START_EPOCH_MICROSEC)
             .timeZoneOffset(TIME_ZONE_OFFSET)
             .name(PM_FILE_NAME)
-            .location(FTPES_LOCATION)
+            .location(location)
             .internalLocation(LOCAL_FILE_LOCATION.toString())
             .compression(GZIP_COMPRESSION)
             .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
@@ -146,9 +151,9 @@ public class XnfCollectorTaskImplTest {
         FileCollector collectorUndetTest =
                 new FileCollector(appConfigMock, ftpsClientMock, sftpClientMock);
 
-        FileData fileData = createFileData();
+        FileData fileData = createFileData(FTPES_LOCATION_NO_PORT);
 
-        ConsumerDmaapModel expectedConsumerDmaapModel = createExpectedConsumerDmaapModel();
+        ConsumerDmaapModel expectedConsumerDmaapModel = createExpectedConsumerDmaapModel(FTPES_LOCATION_NO_PORT);
 
         StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0)))
                 .expectNext(expectedConsumerDmaapModel).verifyComplete();
@@ -168,7 +173,7 @@ public class XnfCollectorTaskImplTest {
         // @formatter:off
         FileData fileData = ImmutableFileData.builder()
                 .name(PM_FILE_NAME)
-                .location(SFTP_LOCATION)
+                .location(SFTP_LOCATION_NO_PORT)
                 .compression(GZIP_COMPRESSION)
                 .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
                 .fileFormatVersion(FILE_FORMAT_VERSION)
@@ -183,7 +188,7 @@ public class XnfCollectorTaskImplTest {
                 .startEpochMicrosec(START_EPOCH_MICROSEC)
                 .timeZoneOffset(TIME_ZONE_OFFSET)
                 .name(PM_FILE_NAME)
-                .location(SFTP_LOCATION)
+                .location(SFTP_LOCATION_NO_PORT)
                 .internalLocation(LOCAL_FILE_LOCATION.toString())
                 .compression(GZIP_COMPRESSION)
                 .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
@@ -202,7 +207,7 @@ public class XnfCollectorTaskImplTest {
     public void whenFtpesFileAlwaysFail_retryAndFail() throws Exception {
         FileCollector collectorUndetTest =
                 new FileCollector(appConfigMock, ftpsClientMock, sftpClientMock);
-        FileData fileData = createFileData();
+        FileData fileData = createFileData(FTPES_LOCATION);
         doThrow(new DatafileTaskException("Unable to collect file.")).when(ftpsClientMock)
                 .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
@@ -219,9 +224,9 @@ public class XnfCollectorTaskImplTest {
         doThrow(new DatafileTaskException("Unable to collect file.")).doNothing().when(ftpsClientMock)
                 .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
-        ConsumerDmaapModel expectedConsumerDmaapModel = createExpectedConsumerDmaapModel();
+        ConsumerDmaapModel expectedConsumerDmaapModel = createExpectedConsumerDmaapModel(FTPES_LOCATION_NO_PORT);
 
-        FileData fileData = createFileData();
+        FileData fileData = createFileData(FTPES_LOCATION_NO_PORT);
         StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0)))
                 .expectNext(expectedConsumerDmaapModel).verifyComplete();
 

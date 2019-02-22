@@ -17,7 +17,6 @@
 package org.onap.dcaegen2.collectors.datafile.ftp;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-
 import static org.apache.commons.io.IOUtils.toByteArray;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -68,7 +67,7 @@ public class SftpClientTest {
     @Test
     public void collectFile_withWrongUserName_shouldFail() throws IOException, JSchException, SftpException {
         FileServerData expectedFileServerData = ImmutableFileServerData.builder().serverAddress("127.0.0.1")
-                .userId("Wrong").password(PASSWORD).port(sftpServer.getPort()).build();
+                .userId("Wrong").password(PASSWORD).build();
         SftpClient sftpClient = new SftpClient(expectedFileServerData);
         sftpServer.putFile(REMOTE_DUMMY_FILE, DUMMY_CONTENT, UTF_8);
 
