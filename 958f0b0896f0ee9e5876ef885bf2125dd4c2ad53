@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "020e9c50_e1f51872",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-02-22T17:34:21Z",
+      "side": 1,
+      "message": "Change to x.y.z-KEYWORD-yyyymmddThhmmssZ format.\nX.Y.Z follows the Semantic Versioning KEYWORD: SNAPSHOT or STAGING",
+      "range": {
+        "startLine": 62,
+        "startChar": 16,
+        "endLine": 62,
+        "endChar": 33
+      },
+      "revId": "958f0b0896f0ee9e5876ef885bf2125dd4c2ad53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
