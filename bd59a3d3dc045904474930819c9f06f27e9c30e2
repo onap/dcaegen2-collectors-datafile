@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "73230a89_a037cf6a",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-25T10:49:29Z",
+      "side": 1,
+      "message": "A detail, we can fix it in a later commit;\nThere is no reason to have attributes for storing information that only lives for one function call (in this case execute).",
+      "range": {
+        "startLine": 60,
+        "startChar": 3,
+        "endLine": 60,
+        "endChar": 76
+      },
+      "revId": "bd59a3d3dc045904474930819c9f06f27e9c30e2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fa578d74_a9c3c453",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
         "patchSetId": 1
