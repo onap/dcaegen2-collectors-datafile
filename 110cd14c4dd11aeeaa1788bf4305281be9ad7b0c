@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "b656c258_0c0f1273",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-25T13:09:29Z",
+      "side": 1,
+      "message": "I do not want to remove the counter. Its purpose is prevent an excessive queue of events to process in this process. \nAs long as this process has \"enough\" ongoing tasks, it will not fetch any new events (which is done by polling, in function consumeMessagesFromDmaap).",
+      "parentUuid": "5ac6af4f_ff7027c2",
+      "revId": "110cd14c4dd11aeeaa1788bf4305281be9ad7b0c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a755c919_2541b243",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
         "patchSetId": 1
