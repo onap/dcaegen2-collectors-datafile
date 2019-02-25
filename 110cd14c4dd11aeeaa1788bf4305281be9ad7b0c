@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "2558a7a5_7c23b557",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 2683
+      },
+      "writtenOn": "2019-02-25T11:04:28Z",
+      "side": 1,
+      "message": "I\u0027m not sure if this will work in case of error in the flux. doOnNext won\u0027t be called in such scenario and we can loose one \"virtual slot\" in the scheduler. You are handling some of these errors (handle*Error methods) but it won\u0027t be hard to introduce an invalid code in the future versions of this code.\n\nI can see a few solutions here:\n* Use Schedulers.newParallel(parallelism) instead of newElastic, if you think it\u0027s OK here. Then we can omit this manual counting altogether.\n* Maybe Reactor resource management (by means of Flux.using method) can be utilized here.\n* Decrement only in onSuccess and onError methods.\n* Use doFinally instead of manually decrementing the counter in every case. Will need to monitor for negative numbers as filter on shouldBePublished can remove some entries.",
+      "revId": "110cd14c4dd11aeeaa1788bf4305281be9ad7b0c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a755c919_2541b243",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
         "patchSetId": 1
