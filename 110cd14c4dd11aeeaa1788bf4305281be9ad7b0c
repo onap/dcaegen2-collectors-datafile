@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5ac6af4f_ff7027c2",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-25T13:01:04Z",
+      "side": 1,
+      "message": "It is true that onNext is not invoked when there is an error. \n\nThere are two other cases that can fail, which is handled by .onErrorResume (see collectFileFromXnf and publishToDataRouter). \nSo when the retrying of these tasks has given up, the counter is decreased and an empty flux is returned (by the onErrorResume handler), to remove with the next.\n\nIn these two cases the counter is also decreased (see handleCollectFailure resp. handlePublishFailure). \n\nAs far as I have been able to test so far this works fine. \n\nI was thinking about having the two .onErrorResume in this function to make that more clear but I figured that it was more readable to put the error handling in the collectFileFromXnf resp. publishToDataRouter functions instead.",
+      "parentUuid": "2558a7a5_7c23b557",
+      "revId": "110cd14c4dd11aeeaa1788bf4305281be9ad7b0c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a755c919_2541b243",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
         "patchSetId": 1
