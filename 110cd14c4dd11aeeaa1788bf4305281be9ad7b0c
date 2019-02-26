@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "770742f9_e9b87836",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 2683
+      },
+      "writtenOn": "2019-02-26T06:56:39Z",
+      "side": 1,
+      "message": "My point is that it may work and looks pretty OK, but is not very maintainable. Someone in the future might not test it so thoroughly as you did.\n\nAfter rethinking, I came to another conclusion.\n\nIn rx you usually just subscribe to the events and reactor does stream \"throttling\" for you, keeping the threads busy. So you create a Flux emitting events consumed from DMaaP, then parallelize it, collect files and push back to DMaaP finally subscribing. Rx requests new events only if downstream subscribers can process them (backpressure mechanism). That is the precise problem which reactive streams tries to solve, see http://www.reactive-streams.org/ \"Problem\" section. So generally speaking, if done correctly (no blocking, single flow), the reactor framework should handle resource utilization for you. As an additional benefit we would get rid of this counting and (as a result) of handling error cases separately.\n\nWhat do you think? Can we refactor the code in this MR?",
+      "parentUuid": "b656c258_0c0f1273",
+      "revId": "110cd14c4dd11aeeaa1788bf4305281be9ad7b0c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a755c919_2541b243",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
         "patchSetId": 1
