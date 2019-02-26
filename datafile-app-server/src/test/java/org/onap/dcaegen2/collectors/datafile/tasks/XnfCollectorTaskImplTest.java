@@ -86,52 +86,49 @@ public class XnfCollectorTaskImplTest {
 
 
     private MessageMetaData createMessageMetaData() {
-        // @formatter:off
-        return ImmutableMessageMetaData.builder()
-                .productName(PRODUCT_NAME)
-                .vendorName(VENDOR_NAME)
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
-                .sourceName(SOURCE_NAME)
-                .startEpochMicrosec(START_EPOCH_MICROSEC)
-                .timeZoneOffset(TIME_ZONE_OFFSET)
-                .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER)
-                .changeType(FILE_READY_CHANGE_TYPE)
+        return ImmutableMessageMetaData.builder() //
+                .productName(PRODUCT_NAME) //
+                .vendorName(VENDOR_NAME) //
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+                .sourceName(SOURCE_NAME) //
+                .startEpochMicrosec(START_EPOCH_MICROSEC) //
+                .timeZoneOffset(TIME_ZONE_OFFSET) //
+                .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER) //
+                .changeType(FILE_READY_CHANGE_TYPE) //
                 .build();
-        // @formatter:on
     }
 
     private FileData createFileData() {
-        // @formatter:off
-        return  ImmutableFileData.builder()
-            .name(PM_FILE_NAME)
-            .location(FTPES_LOCATION)
-            .compression(GZIP_COMPRESSION)
-            .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
-            .fileFormatVersion(FILE_FORMAT_VERSION)
-            .scheme(Scheme.FTPS)
+        return  ImmutableFileData.builder() //
+            .name(PM_FILE_NAME) //
+            .location(FTPES_LOCATION) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .scheme(Scheme.FTPS) //
             .build();
-        // @formatter:on
     }
 
     private ConsumerDmaapModel createExpectedConsumerDmaapModel() {
-        // @formatter:off
-        return ImmutableConsumerDmaapModel.builder()
-            .productName(PRODUCT_NAME)
-            .vendorName(VENDOR_NAME)
-            .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
-            .sourceName(SOURCE_NAME)
-            .startEpochMicrosec(START_EPOCH_MICROSEC)
-            .timeZoneOffset(TIME_ZONE_OFFSET)
-            .name(PM_FILE_NAME)
-            .location(FTPES_LOCATION)
-            .internalLocation(LOCAL_FILE_LOCATION.toString())
-            .compression(GZIP_COMPRESSION)
-            .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
-            .fileFormatVersion(FILE_FORMAT_VERSION)
+        return ImmutableConsumerDmaapModel.builder() //
+            .productName(PRODUCT_NAME) //
+            .vendorName(VENDOR_NAME) //
+            .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+            .sourceName(SOURCE_NAME) //
+            .startEpochMicrosec(START_EPOCH_MICROSEC) //
+            .timeZoneOffset(TIME_ZONE_OFFSET) //
+            .name(PM_FILE_NAME) //
+            .location(FTPES_LOCATION) //
+            .internalLocation(LOCAL_FILE_LOCATION) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
             .build();
-      // @formatter:on
     }
 
+    /**
+     * Sets up data for tests.
+     */
     @BeforeAll
     public static void setUpConfiguration() {
         when(appConfigMock.getFtpesConfiguration()).thenReturn(ftpesConfigMock);
@@ -143,15 +140,15 @@ public class XnfCollectorTaskImplTest {
 
     @Test
     public void whenFtpesFile_returnCorrectResponse() throws Exception {
-        FileCollector collectorUndetTest =
-                new FileCollector(appConfigMock, ftpsClientMock, sftpClientMock);
+        FileCollector collectorUndetTest = new FileCollector(appConfigMock, ftpsClientMock, sftpClientMock);
 
         FileData fileData = createFileData();
 
         ConsumerDmaapModel expectedConsumerDmaapModel = createExpectedConsumerDmaapModel();
 
-        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0)))
-                .expectNext(expectedConsumerDmaapModel).verifyComplete();
+        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0))) //
+                .expectNext(expectedConsumerDmaapModel) //
+                .verifyComplete();
 
         verify(ftpsClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
         verify(ftpsClientMock).setKeyCertPath(FTP_KEY_PATH);
@@ -163,36 +160,34 @@ public class XnfCollectorTaskImplTest {
 
     @Test
     public void whenSftpFile_returnCorrectResponse() throws Exception {
-        FileCollector collectorUndetTest =
-                new FileCollector(appConfigMock, ftpsClientMock, sftpClientMock);
-        // @formatter:off
-        FileData fileData = ImmutableFileData.builder()
-                .name(PM_FILE_NAME)
-                .location(SFTP_LOCATION)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
-                .scheme(Scheme.SFTP)
+        FileCollector collectorUndetTest = new FileCollector(appConfigMock, ftpsClientMock, sftpClientMock);
+        FileData fileData = ImmutableFileData.builder() //
+                .name(PM_FILE_NAME) //
+                .location(SFTP_LOCATION) //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
+                .scheme(Scheme.SFTP) //
                 .build();
 
         ConsumerDmaapModel expectedConsumerDmaapModel = ImmutableConsumerDmaapModel.builder()
-                .productName(PRODUCT_NAME)
-                .vendorName(VENDOR_NAME)
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
-                .sourceName(SOURCE_NAME)
-                .startEpochMicrosec(START_EPOCH_MICROSEC)
-                .timeZoneOffset(TIME_ZONE_OFFSET)
-                .name(PM_FILE_NAME)
-                .location(SFTP_LOCATION)
-                .internalLocation(LOCAL_FILE_LOCATION.toString())
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+                .productName(PRODUCT_NAME) //
+                .vendorName(VENDOR_NAME) //
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+                .sourceName(SOURCE_NAME) //
+                .startEpochMicrosec(START_EPOCH_MICROSEC) //
+                .timeZoneOffset(TIME_ZONE_OFFSET) //
+                .name(PM_FILE_NAME) //
+                .location(SFTP_LOCATION) //
+                .internalLocation(LOCAL_FILE_LOCATION) //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
-        // @formatter:on
 
-        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0)))
-                .expectNext(expectedConsumerDmaapModel).verifyComplete();
+        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0))) //
+                .expectNext(expectedConsumerDmaapModel) //
+                .verifyComplete();
 
         verify(sftpClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
         verifyNoMoreInteractions(sftpClientMock);
@@ -200,32 +195,31 @@ public class XnfCollectorTaskImplTest {
 
     @Test
     public void whenFtpesFileAlwaysFail_retryAndFail() throws Exception {
-        FileCollector collectorUndetTest =
-                new FileCollector(appConfigMock, ftpsClientMock, sftpClientMock);
+        FileCollector collectorUndetTest = new FileCollector(appConfigMock, ftpsClientMock, sftpClientMock);
         FileData fileData = createFileData();
         doThrow(new DatafileTaskException("Unable to collect file.")).when(ftpsClientMock)
                 .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
-        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0)))
-                .expectErrorMessage("Retries exhausted: 3/3").verify();
+        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0))) //
+                .expectErrorMessage("Retries exhausted: 3/3") //
+                .verify();
 
         verify(ftpsClientMock, times(4)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
     }
 
     @Test
     public void whenFtpesFileFailOnce_retryAndReturnCorrectResponse() throws Exception {
-        FileCollector collectorUndetTest =
-                new FileCollector(appConfigMock, ftpsClientMock, sftpClientMock);
+        FileCollector collectorUndetTest = new FileCollector(appConfigMock, ftpsClientMock, sftpClientMock);
         doThrow(new DatafileTaskException("Unable to collect file.")).doNothing().when(ftpsClientMock)
                 .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
         ConsumerDmaapModel expectedConsumerDmaapModel = createExpectedConsumerDmaapModel();
 
         FileData fileData = createFileData();
-        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0)))
-                .expectNext(expectedConsumerDmaapModel).verifyComplete();
+        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0))) //
+                .expectNext(expectedConsumerDmaapModel) //
+                .verifyComplete();
 
         verify(ftpsClientMock, times(2)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
     }
-
 }

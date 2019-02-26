@@ -17,14 +17,15 @@
 package org.onap.dcaegen2.collectors.datafile.ftp;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -42,9 +43,6 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
-import org.onap.dcaegen2.collectors.datafile.io.IFile;
-import org.onap.dcaegen2.collectors.datafile.io.IFileSystemResource;
-import org.onap.dcaegen2.collectors.datafile.io.IOutputStream;
 import org.onap.dcaegen2.collectors.datafile.ssl.IKeyManagerUtils;
 import org.onap.dcaegen2.collectors.datafile.ssl.IKeyStore;
 import org.onap.dcaegen2.collectors.datafile.ssl.ITrustManagerFactory;
@@ -71,56 +69,50 @@ public class FtpsClientTest {
     private KeyStore keyStoreMock = mock(KeyStore.class);
     private ITrustManagerFactory trustManagerFactoryMock = mock(ITrustManagerFactory.class);
     private TrustManager trustManagerMock = mock(TrustManager.class);
-    private IFile localFileMock = mock(IFile.class);
-    private IFileSystemResource fileResourceMock = mock(IFileSystemResource.class);
-    private IOutputStream outputStreamMock = mock(IOutputStream.class);
+    private OutputStream outputStreamMock = mock(OutputStream.class);
     private InputStream inputStreamMock = mock(InputStream.class);
 
-    FtpsClient clientUnderTest = new FtpsClient(createFileServerData());
+    FtpsClient clientUnderTestSpy = spy(new FtpsClient(createFileServerData()));
 
 
     private ImmutableFileServerData createFileServerData() {
-        return ImmutableFileServerData.builder().serverAddress(XNF_ADDRESS)
-                .userId(USERNAME).password(PASSWORD).port(PORT).build();
+        return ImmutableFileServerData.builder() //
+                .serverAddress(XNF_ADDRESS) //
+                .userId(USERNAME) //
+                .password(PASSWORD) //
+                .port(PORT) //
+                .build();
     }
-
 
     @BeforeEach
     protected void setUp() throws Exception {
-        clientUnderTest.setFtpsClient(ftpsClientMock);
-        clientUnderTest.setKeyManagerUtils(keyManagerUtilsMock);
-        clientUnderTest.setKeyStore(keyStoreWrapperMock);
-        clientUnderTest.setTrustManagerFactory(trustManagerFactoryMock);
-        clientUnderTest.setFile(localFileMock);
-        clientUnderTest.setFileSystemResource(fileResourceMock);
-        clientUnderTest.setOutputStream(outputStreamMock);
+        clientUnderTestSpy.setFtpsClient(ftpsClientMock);
+        clientUnderTestSpy.setKeyManagerUtils(keyManagerUtilsMock);
+        clientUnderTestSpy.setKeyStore(keyStoreWrapperMock);
+        clientUnderTestSpy.setTrustManagerFactory(trustManagerFactoryMock);
 
-        clientUnderTest.setKeyCertPath(FTP_KEY_PATH);
-        clientUnderTest.setKeyCertPassword(FTP_KEY_PASSWORD);
-        clientUnderTest.setTrustedCAPath(TRUSTED_CA_PATH.toString());
-        clientUnderTest.setTrustedCAPassword(TRUSTED_CA_PASSWORD);
+        doReturn(outputStreamMock).when(clientUnderTestSpy).createOutputStream(LOCAL_FILE_PATH);
+        clientUnderTestSpy.setKeyCertPath(FTP_KEY_PATH);
+        clientUnderTestSpy.setKeyCertPassword(FTP_KEY_PASSWORD);
+        clientUnderTestSpy.setTrustedCAPath(TRUSTED_CA_PATH.toString());
+        clientUnderTestSpy.setTrustedCAPassword(TRUSTED_CA_PASSWORD);
+        doReturn(inputStreamMock).when(clientUnderTestSpy).createInputStream(TRUSTED_CA_PATH);
     }
 
     @Test
     public void collectFile_allOk() throws Exception {
         when(keyManagerUtilsMock.getClientKeyManager()).thenReturn(keyManagerMock);
-        when(fileResourceMock.getInputStream()).thenReturn(inputStreamMock);
         when(keyStoreWrapperMock.getKeyStore()).thenReturn(keyStoreMock);
         when(trustManagerFactoryMock.getTrustManagers()).thenReturn(new TrustManager[] {trustManagerMock});
         when(ftpsClientMock.login(USERNAME, PASSWORD)).thenReturn(true);
         when(ftpsClientMock.getReplyCode()).thenReturn(HttpStatus.OK.value());
-        File fileMock = mock(File.class);
-        when(localFileMock.getFile()).thenReturn(fileMock);
-        OutputStream osMock = mock(OutputStream.class);
-        when(outputStreamMock.getOutputStream(fileMock)).thenReturn(osMock);
         when(ftpsClientMock.isConnected()).thenReturn(false, true);
 
-        clientUnderTest.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH);
+        clientUnderTestSpy.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH);
 
         verify(ftpsClientMock).setNeedClientAuth(true);
         verify(keyManagerUtilsMock).setCredentials(FTP_KEY_PATH, FTP_KEY_PASSWORD);
         verify(ftpsClientMock).setKeyManager(keyManagerMock);
-        verify(fileResourceMock).setPath(TRUSTED_CA_PATH);
         verify(keyStoreWrapperMock).load(inputStreamMock, TRUSTED_CA_PASSWORD.toCharArray());
         verify(inputStreamMock, times(1)).close();
         verify(trustManagerFactoryMock).init(keyStoreMock);
@@ -133,10 +125,8 @@ public class FtpsClientTest {
         verify(ftpsClientMock).execPROT("P");
         verify(ftpsClientMock).setFileType(FTP.BINARY_FILE_TYPE);
         verify(ftpsClientMock).setBufferSize(1024 * 1024);
-        verify(localFileMock).setPath(LOCAL_FILE_PATH);
-        verify(localFileMock, times(1)).createNewFile();
-        verify(ftpsClientMock).retrieveFile(REMOTE_FILE_PATH, osMock);
-        verify(osMock, times(1)).close();
+        verify(ftpsClientMock).retrieveFile(REMOTE_FILE_PATH, outputStreamMock);
+        verify(outputStreamMock, times(1)).close();
         verify(ftpsClientMock, times(1)).logout();
         verify(ftpsClientMock, times(1)).disconnect();
         verify(ftpsClientMock, times(2)).isConnected();
@@ -149,8 +139,9 @@ public class FtpsClientTest {
                 .setCredentials(FTP_KEY_PATH, FTP_KEY_PASSWORD);
         when(ftpsClientMock.isConnected()).thenReturn(false);
 
-        assertThatThrownBy(() -> clientUnderTest.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH))
-            .hasMessage("org.onap.dcaegen2.collectors.datafile.ssl.IKeyManagerUtils$KeyManagerException: java.security.GeneralSecurityException");
+        assertThatThrownBy(() -> clientUnderTestSpy.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH))
+                .hasMessage("org.onap.dcaegen2.collectors.datafile.ssl.IKeyManagerUtils$KeyManagerException: "
+                        + "java.security.GeneralSecurityException");
 
         verify(ftpsClientMock).setNeedClientAuth(true);
         verify(keyManagerUtilsMock).setCredentials(FTP_KEY_PATH, FTP_KEY_PASSWORD);
@@ -161,30 +152,27 @@ public class FtpsClientTest {
     @Test
     public void collectFileFaultTrustedCA_shouldFail() throws Exception {
         when(keyManagerUtilsMock.getClientKeyManager()).thenReturn(keyManagerMock);
-        when(fileResourceMock.getInputStream()).thenReturn(inputStreamMock);
         when(keyStoreWrapperMock.getKeyStore()).thenReturn(keyStoreMock);
 
         doThrow(new KeyStoreException()).when(trustManagerFactoryMock).init(keyStoreMock);
 
-        assertThatThrownBy(() -> clientUnderTest.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH))
-            .hasMessage("Unable to trust xNF's CA, trustedCAPath java.security.KeyStoreException");
+        assertThatThrownBy(() -> clientUnderTestSpy.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH))
+                .hasMessage("Unable to trust xNF's CA, trustedCAPath java.security.KeyStoreException");
     }
 
     @Test
     public void collectFileFaultyLogin_shouldFail() throws Exception {
         when(keyManagerUtilsMock.getClientKeyManager()).thenReturn(keyManagerMock);
-        when(fileResourceMock.getInputStream()).thenReturn(inputStreamMock);
         when(keyStoreWrapperMock.getKeyStore()).thenReturn(keyStoreMock);
         when(trustManagerFactoryMock.getTrustManagers()).thenReturn(new TrustManager[] {trustManagerMock});
         when(ftpsClientMock.login(USERNAME, PASSWORD)).thenReturn(false);
 
-        assertThatThrownBy(() -> clientUnderTest.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH))
+        assertThatThrownBy(() -> clientUnderTestSpy.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH))
                 .hasMessage("Unable to log in to xNF. 127.0.0.1");
 
         verify(ftpsClientMock).setNeedClientAuth(true);
         verify(keyManagerUtilsMock).setCredentials(FTP_KEY_PATH, FTP_KEY_PASSWORD);
         verify(ftpsClientMock).setKeyManager(keyManagerMock);
-        verify(fileResourceMock).setPath(TRUSTED_CA_PATH);
         verify(keyStoreWrapperMock).load(inputStreamMock, TRUSTED_CA_PASSWORD.toCharArray());
         verify(inputStreamMock, times(1)).close();
         verify(trustManagerFactoryMock).init(keyStoreMock);
@@ -196,19 +184,17 @@ public class FtpsClientTest {
     @Test
     public void collectFileBadRequestResponse_shouldFail() throws Exception {
         when(keyManagerUtilsMock.getClientKeyManager()).thenReturn(keyManagerMock);
-        when(fileResourceMock.getInputStream()).thenReturn(inputStreamMock);
         when(keyStoreWrapperMock.getKeyStore()).thenReturn(keyStoreMock);
         when(trustManagerFactoryMock.getTrustManagers()).thenReturn(new TrustManager[] {trustManagerMock});
         when(ftpsClientMock.login(USERNAME, PASSWORD)).thenReturn(true);
         when(ftpsClientMock.getReplyCode()).thenReturn(FTPReply.BAD_COMMAND_SEQUENCE);
 
-        assertThatThrownBy(() -> clientUnderTest.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH))
-            .hasMessage("Unable to connect to xNF. 127.0.0.1 xNF reply code: 503");
+        assertThatThrownBy(() -> clientUnderTestSpy.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH))
+                .hasMessage("Unable to connect to xNF. 127.0.0.1 xNF reply code: 503");
 
         verify(ftpsClientMock).setNeedClientAuth(true);
         verify(keyManagerUtilsMock).setCredentials(FTP_KEY_PATH, FTP_KEY_PASSWORD);
         verify(ftpsClientMock).setKeyManager(keyManagerMock);
-        verify(fileResourceMock).setPath(TRUSTED_CA_PATH);
         verify(keyStoreWrapperMock).load(inputStreamMock, TRUSTED_CA_PASSWORD.toCharArray());
         verify(inputStreamMock, times(1)).close();
         verify(trustManagerFactoryMock).init(keyStoreMock);
@@ -223,19 +209,17 @@ public class FtpsClientTest {
     @Test
     public void collectFileFaultyConnection_shouldFail() throws Exception {
         when(keyManagerUtilsMock.getClientKeyManager()).thenReturn(keyManagerMock);
-        when(fileResourceMock.getInputStream()).thenReturn(inputStreamMock);
         when(keyStoreWrapperMock.getKeyStore()).thenReturn(keyStoreMock);
         when(trustManagerFactoryMock.getTrustManagers()).thenReturn(new TrustManager[] {trustManagerMock});
 
         doThrow(new IOException()).when(ftpsClientMock).connect(XNF_ADDRESS, PORT);
 
-        assertThatThrownBy(() -> clientUnderTest.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH))
-            .hasMessage("Could not open connection: java.io.IOException");
+        assertThatThrownBy(() -> clientUnderTestSpy.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH))
+                .hasMessage("Could not open connection: java.io.IOException");
 
         verify(ftpsClientMock).setNeedClientAuth(true);
         verify(keyManagerUtilsMock).setCredentials(FTP_KEY_PATH, FTP_KEY_PASSWORD);
         verify(ftpsClientMock).setKeyManager(keyManagerMock);
-        verify(fileResourceMock).setPath(TRUSTED_CA_PATH);
         verify(keyStoreWrapperMock).load(inputStreamMock, TRUSTED_CA_PASSWORD.toCharArray());
         verify(inputStreamMock, times(1)).close();
         verify(trustManagerFactoryMock).init(keyStoreMock);
@@ -248,40 +232,34 @@ public class FtpsClientTest {
     @Test
     public void collectFileFailingFileCollect_shouldFail() throws Exception {
         when(keyManagerUtilsMock.getClientKeyManager()).thenReturn(keyManagerMock);
-        when(fileResourceMock.getInputStream()).thenReturn(inputStreamMock);
         when(keyStoreWrapperMock.getKeyStore()).thenReturn(keyStoreMock);
         when(trustManagerFactoryMock.getTrustManagers()).thenReturn(new TrustManager[] {trustManagerMock});
         when(ftpsClientMock.login(USERNAME, PASSWORD)).thenReturn(true);
         when(ftpsClientMock.getReplyCode()).thenReturn(HttpStatus.OK.value());
 
-        doThrow(new IOException()).when(localFileMock).createNewFile();
+        doThrow(new IOException()).when(clientUnderTestSpy).createOutputStream(LOCAL_FILE_PATH);
 
-        assertThatThrownBy(() -> clientUnderTest.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH))
-            .hasMessage("Could not open connection: java.io.IOException");
-
+        assertThatThrownBy(() -> clientUnderTestSpy.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH))
+                .hasMessage("Could not open connection: java.io.IOException");
     }
 
     @Test
     public void collectFileFailingFileRetrieve_shouldFail() throws Exception {
         when(keyManagerUtilsMock.getClientKeyManager()).thenReturn(keyManagerMock);
-        when(fileResourceMock.getInputStream()).thenReturn(inputStreamMock);
         when(keyStoreWrapperMock.getKeyStore()).thenReturn(keyStoreMock);
         when(trustManagerFactoryMock.getTrustManagers()).thenReturn(new TrustManager[] {trustManagerMock});
         when(ftpsClientMock.login(USERNAME, PASSWORD)).thenReturn(true);
         when(ftpsClientMock.getReplyCode()).thenReturn(HttpStatus.OK.value());
-        File fileMock = mock(File.class);
-        when(localFileMock.getFile()).thenReturn(fileMock);
-        OutputStream osMock = mock(OutputStream.class);
-        when(outputStreamMock.getOutputStream(fileMock)).thenReturn(osMock);
-        doThrow(new DatafileTaskException("problemas")).when(ftpsClientMock).retrieveFile(REMOTE_FILE_PATH, osMock);
 
-        assertThatThrownBy(() -> clientUnderTest.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH))
-            .hasMessage("problemas");
+        doThrow(new DatafileTaskException("problemas")).when(ftpsClientMock).retrieveFile(REMOTE_FILE_PATH,
+                outputStreamMock);
+
+        assertThatThrownBy(() -> clientUnderTestSpy.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH))
+                .hasMessage("problemas");
 
         verify(ftpsClientMock).setNeedClientAuth(true);
         verify(keyManagerUtilsMock).setCredentials(FTP_KEY_PATH, FTP_KEY_PASSWORD);
         verify(ftpsClientMock).setKeyManager(keyManagerMock);
-        verify(fileResourceMock).setPath(TRUSTED_CA_PATH);
         verify(keyStoreWrapperMock).load(inputStreamMock, TRUSTED_CA_PASSWORD.toCharArray());
         verify(inputStreamMock, times(1)).close();
         verify(trustManagerFactoryMock).init(keyStoreMock);
@@ -294,9 +272,7 @@ public class FtpsClientTest {
         verify(ftpsClientMock).execPROT("P");
         verify(ftpsClientMock).setFileType(FTP.BINARY_FILE_TYPE);
         verify(ftpsClientMock).setBufferSize(1024 * 1024);
-        verify(localFileMock).setPath(LOCAL_FILE_PATH);
-        verify(localFileMock, times(1)).createNewFile();
-        verify(ftpsClientMock).retrieveFile(REMOTE_FILE_PATH, osMock);
+        verify(ftpsClientMock).retrieveFile(REMOTE_FILE_PATH, outputStreamMock);
         verify(ftpsClientMock, times(2)).isConnected();
         verifyNoMoreInteractions(ftpsClientMock);
     }
