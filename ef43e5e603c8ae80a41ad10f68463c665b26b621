@@ -16,6 +16,24 @@
       "revId": "ef43e5e603c8ae80a41ad10f68463c665b26b621",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d82c2086_d637df50",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/service/PublishedFileCacheTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-27T14:20:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8cfd947c_cd8919d7",
+      "revId": "ef43e5e603c8ae80a41ad10f68463c665b26b621",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
