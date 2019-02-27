@@ -1,0 +1,153 @@
+tosca_definitions_version: tosca_simple_yaml_1_0_0
+metadata:
+  template_name: dcaegen2.collectors.datafile.datafile-app-server_translate
+imports:
+- schema: schema.yaml
+topology_template:
+  inputs:
+    buscontroller_feed_publishing_endpoint:
+      type: string
+    cpu_period:
+      type: integer
+      default: 10000
+    cpu_quota:
+      type: integer
+      default: 30000
+    cpu_shares:
+      type: integer
+      default: 256
+    datafile.policy:
+      type: string
+    dmaap_dr_feed_id:
+      type: string
+    image:
+      type: string
+    location_id:
+      type: string
+    mem_limit:
+      type: string
+      default: 500m
+    restart_policy.Name:
+      type: string
+      default: on-failure
+    restart_policy.max_retry_counts:
+      type: integer
+      default: 3
+    service_component_type:
+      type: string
+    service_name:
+      type: string
+    streams_consumer.datafile_consume_mr.message_router_topic:
+      type: string
+  substitution_mappings:
+    node_type: tosca.dcae.nodes.dockerApp.dcaegen2.collectors.datafile.datafile-app-server
+    capabilities: {}
+    requirements:
+      host:
+      - dcaegen2.collectors.datafile.datafile-app-server
+      - host
+      policy:
+      - dcaegen2.collectors.datafile.datafile-app-server
+      - policy
+      stream_publish_0:
+      - dcaegen2.collectors.datafile.datafile-app-server
+      - stream_publish_0
+      stream_subscribe_0:
+      - dcaegen2.collectors.datafile.datafile-app-server
+      - stream_subscribe_0
+  node_templates:
+    dcaegen2.collectors.datafile.datafile-app-server:
+      type: dcae.nodes.DockerContainerForComponentsUsingDmaap
+      properties:
+        application_config:
+          buscontroller_feed_publishing_endpoint:
+            get_input: buscontroller_feed_publishing_endpoint
+          datafile.policy:
+            get_input: datafile.policy
+          dmaap_dr_feed_id:
+            get_input: dmaap_dr_feed_id
+          service_name:
+            get_input: service_name
+          services_calls: {}
+          streams_consumer.datafile_consume_mr.message_router_topic:
+            get_input: streams_consumer.datafile_consume_mr.message_router_topic
+          streams_publishes:
+            datafile_publish_dr:
+              dmaap_info:
+                concat:
+                - '<<'
+                - get_property:
+                  - SELF
+                  - stream_publish_0
+                  - node_name
+                - '>>'
+              type: data_router
+          streams_subscribes:
+            datafile_subscribe_mr:
+              aaf_password:
+                get_property:
+                - SELF
+                - stream_subscribe_0
+                - aaf_password
+              aaf_username:
+                get_property:
+                - SELF
+                - stream_subscribe_0
+                - aaf_username
+              dmaap_info:
+                concat:
+                - '<<'
+                - get_property:
+                  - SELF
+                  - stream_subscribe_0
+                  - node_name
+                - '>>'
+              type: message_router
+        docker_config:
+          healthcheck:
+            endpoint: /heartbeat
+            interval: 15s
+            timeout: 1s
+            type: http
+        image: nexus3.onap.org:10001/onap/org.onap.dcaegen2.collectors.datafile.datafile-app-server:latest
+        location_id:
+          get_input: location_id
+        service_component_type: dcaegen2.collectors.datafile.datafile-app-server
+        streams_publishes:
+        - location:
+            get_property:
+            - SELF
+            - stream_publish_0
+            - location
+          name:
+            get_property:
+            - SELF
+            - stream_publish_0
+            - node_name
+          type: data_router
+        streams_subscribes:
+        - client_role:
+            get_property:
+            - SELF
+            - stream_subscribe_0
+            - client_role
+          location:
+            get_property:
+            - SELF
+            - stream_subscribe_0
+            - location
+          name:
+            get_property:
+            - SELF
+            - stream_subscribe_0
+            - node_name
+          type: message_router
+      interfaces:
+        cloudify.interfaces.lifecycle:
+          type: tosca.interfaces.Root
+          start:
+            inputs:
+              host_config: null
+          stop:
+            inputs:
+              cleanup_image: null
