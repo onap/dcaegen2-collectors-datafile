@@ -19,6 +19,7 @@ package org.onap.dcaegen2.collectors.datafile.ftp;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.commons.io.IOUtils.toByteArray;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.github.stefanbirkner.fakesftpserver.rule.FakeSftpServerRule;
@@ -72,14 +73,9 @@ public class SftpClientTest {
         SftpClient sftpClient = new SftpClient(expectedFileServerData);
         sftpServer.putFile(REMOTE_DUMMY_FILE, DUMMY_CONTENT, UTF_8);
 
-        String errorMessage = "";
-        try {
-            sftpClient.collectFile(REMOTE_DUMMY_FILE, LOCAL_DUMMY_FILE);
-        } catch (Exception e) {
-            errorMessage = e.getMessage();
-        }
 
-        assertTrue(errorMessage.contains("Auth fail"));
+        assertThatThrownBy(() -> sftpClient.collectFile(REMOTE_DUMMY_FILE, LOCAL_DUMMY_FILE))
+                .hasMessageContaining("Unable to get file from xNF");
     }
 
     @Test
