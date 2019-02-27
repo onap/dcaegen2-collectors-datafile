@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "524d48f5_ede8606e",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-02-27T13:56:41Z",
+      "side": 1,
+      "message": "In some previous systems I have been working with, it would would have been a parameter that can be changed during system integration without rebuilding any binary. \n\nIn this SW these kind of parameters are so far hard coded. \nMax number of threads, this parameter, how often new VES events are polled etc.\nThis particular parameter has not big impact (I assume).\n\nI think this is a general question. What is your view?",
+      "parentUuid": "a1d469a6_26fba709",
+      "revId": "110cd14c4dd11aeeaa1788bf4305281be9ad7b0c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2558a7a5_7c23b557",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
         "patchSetId": 1
