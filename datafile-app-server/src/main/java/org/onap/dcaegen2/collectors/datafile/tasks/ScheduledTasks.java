@@ -98,7 +98,7 @@ public class ScheduledTasks {
             .doOnNext(fileData -> taskCounter.incrementAndGet())
             .flatMap(this::collectFileFromXnf)
             .flatMap(this::publishToDataRouter)
-            .flatMap(model -> deleteFile(Paths.get(model.getInternalLocation())))
+            .doOnNext(model -> deleteFile(Paths.get(model.getInternalLocation())))
             .doOnNext(model -> taskCounter.decrementAndGet())
             .sequential()
             .subscribe(this::onSuccess, this::onError, this::onComplete);
@@ -109,8 +109,8 @@ public class ScheduledTasks {
         logger.info("Datafile tasks have been completed");
     }
 
-    private void onSuccess(Path localFile) {
-        logger.info("Datafile consumed tasks." + localFile);
+    private void onSuccess(ConsumerDmaapModel model) {
+        logger.info("Datafile consumed tasks {}", model.getInternalLocation());
     }
 
     private void onError(Throwable throwable) {
@@ -138,18 +138,19 @@ public class ScheduledTasks {
 
         return fileCollect.collectorTask
                 .execute(fileCollect.fileData, fileCollect.metaData, maxNUmberOfRetries, initialRetryTimeout)
-                .onErrorResume(exception -> handleCollectFailure(fileCollect.fileData, exception));
+                .onErrorResume(exception -> handleCollectFailure(fileCollect.fileData));
     }
 
-    private Mono<ConsumerDmaapModel> handleCollectFailure(FileData fileData, Throwable exception) {
-        logger.error("File fetching failed: {}, reason: {}", fileData.name(), exception.getMessage());
-        deleteFile(fileData.getLocalFileName());
-        alreadyPublishedFiles.remove(fileData.getLocalFileName());
+    private Mono<ConsumerDmaapModel> handleCollectFailure(FileData fileData) {
+        Path localFileName = fileData.getLocalFileName();
+        logger.error("File fetching failed: {}", localFileName);
+        deleteFile(localFileName);
+        alreadyPublishedFiles.remove(localFileName);
         taskCounter.decrementAndGet();
         return Mono.empty();
     }
 
-    private Flux<ConsumerDmaapModel> publishToDataRouter(ConsumerDmaapModel model) {
+    private Mono<ConsumerDmaapModel> publishToDataRouter(ConsumerDmaapModel model) {
         final long maxNumberOfRetries = 3;
         final Duration initialRetryTimeout = Duration.ofSeconds(5);
 
@@ -160,13 +161,13 @@ public class ScheduledTasks {
 
     }
 
-    private Flux<ConsumerDmaapModel> handlePublishFailure(ConsumerDmaapModel model, Throwable exception) {
+    private Mono<ConsumerDmaapModel> handlePublishFailure(ConsumerDmaapModel model, Throwable exception) {
         logger.error("File publishing failed: {}, exception: {}", model.getName(), exception);
         Path internalFileName = Paths.get(model.getInternalLocation());
         deleteFile(internalFileName);
         alreadyPublishedFiles.remove(internalFileName);
         taskCounter.decrementAndGet();
-        return Flux.empty();
+        return Mono.empty();
     }
 
     private Flux<FileReadyMessage> consumeMessagesFromDmaap() {
@@ -179,7 +180,7 @@ public class ScheduledTasks {
         final DMaaPMessageConsumerTask messageConsumerTask =
                 new DMaaPMessageConsumerTask(this.applicationConfiguration);
         return messageConsumerTask.execute()
-                .onErrorResume(exception -> handleConsumeMessageFailure(exception));
+                .onErrorResume(this::handleConsumeMessageFailure);
     }
 
     private Flux<FileReadyMessage> handleConsumeMessageFailure(Throwable exception) {
@@ -187,13 +188,12 @@ public class ScheduledTasks {
         return Flux.empty();
     }
 
-    private Flux<Path> deleteFile(Path localFile) {
+    private void deleteFile(Path localFile) {
         logger.trace("Deleting file: {}", localFile);
         try {
             Files.delete(localFile);
         } catch (Exception e) {
             logger.warn("Could not delete file: {}, {}", localFile, e);
         }
-        return Flux.just(localFile);
     }
 }

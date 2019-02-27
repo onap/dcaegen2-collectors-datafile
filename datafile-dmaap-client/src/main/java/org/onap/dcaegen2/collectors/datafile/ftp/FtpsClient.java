@@ -16,6 +16,8 @@
 
 package org.onap.dcaegen2.collectors.datafile.ftp;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -27,12 +29,10 @@ import java.util.Optional;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPReply;
+import org.apache.commons.net.ftp.FTPSClient;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.io.FileSystemResourceWrapper;
-import org.onap.dcaegen2.collectors.datafile.io.FileWrapper;
-import org.onap.dcaegen2.collectors.datafile.io.IFile;
 import org.onap.dcaegen2.collectors.datafile.io.IFileSystemResource;
-import org.onap.dcaegen2.collectors.datafile.io.IOutputStream;
 import org.onap.dcaegen2.collectors.datafile.ssl.IKeyManagerUtils;
 import org.onap.dcaegen2.collectors.datafile.ssl.IKeyManagerUtils.KeyManagerException;
 import org.onap.dcaegen2.collectors.datafile.ssl.IKeyStore;
@@ -55,13 +55,11 @@ public class FtpsClient implements FileCollectClient {
     private Path trustedCAPath;
     private String trustedCAPassword;
 
-    private IFTPSClient realFtpsClient = new FTPSClientWrapper();
+    private FTPSClient realFtpsClient = new FTPSClient();
     private IKeyManagerUtils keyManagerUtils = new KeyManagerUtilsWrapper();
     private IKeyStore keyStore;
     private ITrustManagerFactory trustManagerFactory;
-    private IFile localFile = new FileWrapper();
     private IFileSystemResource fileSystemResource = new FileSystemResourceWrapper();
-    private IOutputStream outputStream;
     private boolean keyManagerSet = false;
     private boolean trustManagerSet = false;
     private final FileServerData fileServerData;
@@ -83,7 +81,7 @@ public class FtpsClient implements FileCollectClient {
             getFileFromxNF(realFtpsClient, remoteFile, localFile);
         } catch (IOException e) {
             logger.trace("", e);
-            throw new DatafileTaskException("Could not open connection: " + e);
+            throw new DatafileTaskException("Could not open connection: ", e);
         } catch (KeyManagerException e) {
             logger.trace("", e);
             throw new DatafileTaskException(e);
@@ -93,7 +91,7 @@ public class FtpsClient implements FileCollectClient {
         logger.trace("collectFile fetched: {}", localFile);
     }
 
-    private void setUpKeyManager(IFTPSClient ftps) throws KeyManagerException {
+    private void setUpKeyManager(FTPSClient ftps) throws KeyManagerException {
         if (keyManagerSet) {
             logger.trace("keyManager already set!");
         } else {
@@ -104,7 +102,7 @@ public class FtpsClient implements FileCollectClient {
         logger.trace("complete setUpKeyManager");
     }
 
-    private void setUpTrustedCA(IFTPSClient ftps) throws DatafileTaskException {
+    private void setUpTrustedCA(FTPSClient ftps) throws DatafileTaskException {
         if (trustManagerSet) {
             logger.trace("trustManager already set!");
         } else {
@@ -130,7 +128,7 @@ public class FtpsClient implements FileCollectClient {
         return port.isPresent() ? port.get() : FTPS_DEFAULT_PORT;
     }
 
-    private void setUpConnection(IFTPSClient ftps) throws DatafileTaskException, IOException {
+    private void setUpConnection(FTPSClient ftps) throws DatafileTaskException, IOException {
         if (!ftps.isConnected()) {
             ftps.connect(fileServerData.serverAddress(), getPort(fileServerData.port()));
             logger.trace("after ftp connect");
@@ -155,23 +153,26 @@ public class FtpsClient implements FileCollectClient {
         logger.trace("setUpConnection successfully!");
     }
 
-    private void getFileFromxNF(IFTPSClient ftps, String remoteFileName, Path localFileName)
-            throws IOException, DatafileTaskException {
+    private void getFileFromxNF(FTPSClient ftps, String remoteFileName, Path localFileName)
+            throws IOException {
         logger.trace("starting to getFile");
 
-        this.localFile.setPath(localFileName);
-        this.localFile.createNewFile();
-
-        OutputStream output = this.outputStream.getOutputStream(this.localFile.getFile());
+        File localFile = localFileName.toFile();
+        if (localFile.createNewFile()) {
+            logger.warn("Local file {} already created", localFileName);
+        }
+        OutputStream output = new FileOutputStream(localFile);
         logger.trace("begin to retrieve from xNF.");
-        ftps.retrieveFile(remoteFileName, output);
+        if (!ftps.retrieveFile(remoteFileName, output)) {
+            throw new IOException("Could not retrieve file");
+        }
         logger.trace("end retrieve from xNF.");
         output.close();
         logger.debug("File {} Download Successfull from xNF", localFileName);
     }
 
 
-    private void closeDownConnection(IFTPSClient ftps) {
+    private void closeDownConnection(FTPSClient ftps) {
         logger.trace("starting to closeDownConnection");
         if (ftps != null && ftps.isConnected()) {
             try {
@@ -220,7 +221,7 @@ public class FtpsClient implements FileCollectClient {
         return keyStore;
     }
 
-    void setFtpsClient(IFTPSClient ftpsClient) {
+    void setFtpsClient(FTPSClient ftpsClient) {
         this.realFtpsClient = ftpsClient;
     }
 
@@ -234,14 +235,6 @@ public class FtpsClient implements FileCollectClient {
 
     void setTrustManagerFactory(ITrustManagerFactory tmf) {
         trustManagerFactory = tmf;
-    }
-
-    void setFile(IFile file) {
-        localFile = file;
-    }
-
-    void setOutputStream(IOutputStream outputStream) {
-        this.outputStream = outputStream;
     }
 
     void setFileSystemResource(IFileSystemResource fileSystemResource) {

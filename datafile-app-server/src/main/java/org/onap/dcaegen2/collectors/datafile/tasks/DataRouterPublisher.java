@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/13/18
@@ -50,27 +50,27 @@ public class DataRouterPublisher {
      * @param firstBackoffTimeout the time to delay the first retry
      * @return the HTTP response status as a string
      */
-    public Flux<ConsumerDmaapModel> execute(ConsumerDmaapModel model, long numRetries, Duration firstBackoff) {
+    public Mono<ConsumerDmaapModel> execute(ConsumerDmaapModel model, long numRetries, Duration firstBackoff) {
         logger.trace("Method called with arg {}", model);
         DmaapProducerReactiveHttpClient dmaapProducerReactiveHttpClient = resolveClient();
 
         //@formatter:off
-        return Flux.just(model)
-                .cache(1)
+        return Mono.just(model)
+                .cache()
                 .flatMap(dmaapProducerReactiveHttpClient::getDmaapProducerResponse)
                 .flatMap(httpStatus -> handleHttpResponse(httpStatus, model))
                 .retryBackoff(numRetries, firstBackoff);
         //@formatter:on
     }
 
-    private Flux<ConsumerDmaapModel> handleHttpResponse(HttpStatus response, ConsumerDmaapModel model) {
+    private Mono<ConsumerDmaapModel> handleHttpResponse(HttpStatus response, ConsumerDmaapModel model) {
 
         if (HttpUtils.isSuccessfulResponseCode(response.value())) {
             logger.trace("Publish to DR successful!");
-            return Flux.just(model);
+            return Mono.just(model);
         } else {
-            logger.warn("Publish to DR unsuccessful, response code: " + response);
-            return Flux.error(new Exception("Publish to DR unsuccessful, response code: " + response));
+            logger.warn("Publish to DR unsuccessful, response code: {}", response);
+            return Mono.error(new Exception("Publish to DR unsuccessful, response code: " + response));
         }
     }
 
