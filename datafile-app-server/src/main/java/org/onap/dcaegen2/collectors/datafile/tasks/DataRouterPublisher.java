@@ -16,15 +16,29 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.nio.file.Path;
 import java.time.Duration;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.ByteArrayEntity;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
+import org.onap.dcaegen2.collectors.datafile.model.CommonFunctions;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.service.HttpUtils;
 import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerReactiveHttpClient;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 import reactor.core.publisher.Mono;
@@ -34,9 +48,16 @@ import reactor.core.publisher.Mono;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 public class DataRouterPublisher {
+    private static final String X_DMAAP_DR_META = "X-DMAAP-DR-META";
+    private static final String CONTENT_TYPE = "application/octet-stream";
+    private static final String NAME_JSON_TAG = "name";
+    private static final String INTERNAL_LOCATION_JSON_TAG = "internalLocation";
+    private static final String PUBLISH_TOPIC = "publish";
+    private static final String DEFAULT_FEED_ID = "1";
 
     private static final Logger logger = LoggerFactory.getLogger(DataRouterPublisher.class);
     private final AppConfig datafileAppConfig;
+    private DmaapProducerReactiveHttpClient dmaapProducerReactiveHttpClient;
 
     public DataRouterPublisher(AppConfig datafileAppConfig) {
         this.datafileAppConfig = datafileAppConfig;
@@ -45,6 +66,7 @@ public class DataRouterPublisher {
 
     /**
      * Publish one file
+     *
      * @param consumerDmaapModel information about the file to publish
      * @param maxNumberOfRetries the maximal number of retries if the publishing fails
      * @param firstBackoffTimeout the time to delay the first retry
@@ -52,15 +74,53 @@ public class DataRouterPublisher {
      */
     public Mono<ConsumerDmaapModel> execute(ConsumerDmaapModel model, long numRetries, Duration firstBackoff) {
         logger.trace("Method called with arg {}", model);
-        DmaapProducerReactiveHttpClient dmaapProducerReactiveHttpClient = resolveClient();
+        dmaapProducerReactiveHttpClient = resolveClient();
 
-        //@formatter:off
         return Mono.just(model)
                 .cache()
-                .flatMap(dmaapProducerReactiveHttpClient::getDmaapProducerResponse)
-                .flatMap(httpStatus -> handleHttpResponse(httpStatus, model))
+                .flatMap(this::publishFile) //
+                .flatMap(httpStatus -> handleHttpResponse(httpStatus, model)) //
                 .retryBackoff(numRetries, firstBackoff);
-        //@formatter:on
+    }
+
+    private Mono<HttpStatus> publishFile(ConsumerDmaapModel consumerDmaapModel) {
+        logger.trace("Entering publishFile with {}", consumerDmaapModel);
+        try {
+            HttpPut put = new HttpPut();
+            prepareHead(consumerDmaapModel, put);
+            prepareBody(consumerDmaapModel, put);
+            dmaapProducerReactiveHttpClient.addUserCredentialsToHead(put);
+
+            HttpResponse response = dmaapProducerReactiveHttpClient.getDmaapProducerResponseWithRedirect(put);
+            logger.trace(response.toString());
+            return Mono.just(HttpStatus.valueOf(response.getStatusLine().getStatusCode()));
+        } catch (Exception e) {
+            logger.error("Unable to send file to DataRouter. Data: {}", consumerDmaapModel.getInternalLocation(), e);
+            return Mono.error(e);
+        }
+    }
+
+    private void prepareHead(ConsumerDmaapModel model, HttpPut put) {
+        put.addHeader(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE);
+        JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(model));
+        metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
+        metaData.getAsJsonObject().remove(INTERNAL_LOCATION_JSON_TAG);
+        put.addHeader(X_DMAAP_DR_META, metaData.toString());
+        put.setURI(getPublishUri(model.getInternalLocation().getFileName().toString()));
+    }
+
+    private void prepareBody(ConsumerDmaapModel model, HttpPut put) throws IOException {
+        Path fileLocation = model.getInternalLocation();
+        try (InputStream fileInputStream = createInputStream(fileLocation)) {
+            put.setEntity(new ByteArrayEntity(IOUtils.toByteArray(fileInputStream)));
+        }
+    }
+
+    private URI getPublishUri(String fileName) {
+        return dmaapProducerReactiveHttpClient.getBaseUri() //
+                .pathSegment(PUBLISH_TOPIC) //
+                .pathSegment(DEFAULT_FEED_ID) //
+                .pathSegment(fileName).build();
     }
 
     private Mono<ConsumerDmaapModel> handleHttpResponse(HttpStatus response, ConsumerDmaapModel model) {
@@ -74,6 +134,10 @@ public class DataRouterPublisher {
         }
     }
 
+    InputStream createInputStream(Path filePath) throws IOException {
+        FileSystemResource realResource = new FileSystemResource(filePath);
+        return realResource.getInputStream();
+    }
 
     DmaapPublisherConfiguration resolveConfiguration() {
         return datafileAppConfig.getDmaapPublisherConfiguration();

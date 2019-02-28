@@ -31,8 +31,6 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPSClient;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
-import org.onap.dcaegen2.collectors.datafile.io.FileSystemResourceWrapper;
-import org.onap.dcaegen2.collectors.datafile.io.IFileSystemResource;
 import org.onap.dcaegen2.collectors.datafile.ssl.IKeyManagerUtils;
 import org.onap.dcaegen2.collectors.datafile.ssl.IKeyManagerUtils.KeyManagerException;
 import org.onap.dcaegen2.collectors.datafile.ssl.IKeyStore;
@@ -42,6 +40,7 @@ import org.onap.dcaegen2.collectors.datafile.ssl.KeyStoreWrapper;
 import org.onap.dcaegen2.collectors.datafile.ssl.TrustManagerFactoryWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.FileSystemResource;
 
 /**
  * Gets file from xNF with FTPS protocol.
@@ -59,7 +58,6 @@ public class FtpsClient implements FileCollectClient {
     private IKeyManagerUtils keyManagerUtils = new KeyManagerUtilsWrapper();
     private IKeyStore keyStore;
     private ITrustManagerFactory trustManagerFactory;
-    private IFileSystemResource fileSystemResource = new FileSystemResourceWrapper();
     private boolean keyManagerSet = false;
     private boolean trustManagerSet = false;
     private final FileServerData fileServerData;
@@ -106,12 +104,9 @@ public class FtpsClient implements FileCollectClient {
         if (trustManagerSet) {
             logger.trace("trustManager already set!");
         } else {
-            try {
-                fileSystemResource.setPath(trustedCAPath);
-                InputStream fis = fileSystemResource.getInputStream();
+            try (InputStream fis = createInputStream(trustedCAPath)) {
                 IKeyStore ks = getKeyStore();
                 ks.load(fis, trustedCAPassword.toCharArray());
-                fis.close();
                 ITrustManagerFactory tmf = getTrustManagerFactory();
                 tmf.init(ks.getKeyStore());
                 ftps.setTrustManager(tmf.getTrustManagers()[0]);
@@ -153,22 +148,14 @@ public class FtpsClient implements FileCollectClient {
         logger.trace("setUpConnection successfully!");
     }
 
-    private void getFileFromxNF(FTPSClient ftps, String remoteFileName, Path localFileName)
-            throws IOException {
+    private void getFileFromxNF(FTPSClient ftps, String remoteFileName, Path localFileName) throws IOException {
         logger.trace("starting to getFile");
 
-        File localFile = localFileName.toFile();
-        if (localFile.createNewFile()) {
-            logger.warn("Local file {} already created", localFileName);
+        try (OutputStream output = createOutputStream(localFileName)) {
+            logger.trace("begin to retrieve from xNF.");
+            ftps.retrieveFile(remoteFileName, output);
+            logger.debug("File {} Download Successfull from xNF", localFileName);
         }
-        OutputStream output = new FileOutputStream(localFile);
-        logger.trace("begin to retrieve from xNF.");
-        if (!ftps.retrieveFile(remoteFileName, output)) {
-            throw new IOException("Could not retrieve file");
-        }
-        logger.trace("end retrieve from xNF.");
-        output.close();
-        logger.debug("File {} Download Successfull from xNF", localFileName);
     }
 
 
@@ -237,7 +224,16 @@ public class FtpsClient implements FileCollectClient {
         trustManagerFactory = tmf;
     }
 
-    void setFileSystemResource(IFileSystemResource fileSystemResource) {
-        this.fileSystemResource = fileSystemResource;
+    InputStream createInputStream(Path filePath) throws IOException {
+        FileSystemResource realResource = new FileSystemResource(filePath);
+        return realResource.getInputStream();
+    }
+
+    OutputStream createOutputStream(Path localFileName) throws IOException {
+        File file = localFileName.toFile();
+        if (!file.createNewFile()) {
+            logger.warn("File already existing {}", localFileName);
+        }
+        return new FileOutputStream(file, false);
     }
 }

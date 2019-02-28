@@ -18,7 +18,6 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -55,8 +54,8 @@ public class ScheduledTasks {
     private class FileCollectionData {
         final FileData fileData;
         final FileCollector collectorTask; // Same object, ftp session etc. can be used for each
-                                           // file in one VES
-                                           // event
+                                           // file in one VES event
+
         final MessageMetaData metaData;
 
         FileCollectionData(FileData fd, FileCollector collectorTask, MessageMetaData metaData) {
@@ -67,7 +66,9 @@ public class ScheduledTasks {
     }
 
     private static final Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);
+
     private final AppConfig applicationConfiguration;
+
     private final AtomicInteger taskCounter = new AtomicInteger();
 
     PublishedFileCache alreadyPublishedFiles = new PublishedFileCache();
@@ -76,8 +77,6 @@ public class ScheduledTasks {
      * Constructor for task registration in Datafile Workflow.
      *
      * @param applicationConfiguration - application configuration
-     * @param xnfCollectorTask - second task
-     * @param dmaapPublisherTask - third task
      */
     @Autowired
     public ScheduledTasks(AppConfig applicationConfiguration) {
@@ -90,20 +89,18 @@ public class ScheduledTasks {
     public void scheduleMainDatafileEventTask() {
         logger.trace("Execution of tasks was registered");
         applicationConfiguration.initFileStreamReader();
-        //@formatter:off
-        consumeMessagesFromDmaap()
-            .parallel() // Each FileReadyMessage in a separate thread
-            .runOn(Schedulers.parallel())
-            .flatMap(this::createFileCollectionTask)
-            .filter(this::shouldBePublished)
-            .doOnNext(fileData -> taskCounter.incrementAndGet())
-            .flatMap(this::collectFileFromXnf)
-            .flatMap(this::publishToDataRouter)
-            .doOnNext(model -> deleteFile(Paths.get(model.getInternalLocation())))
-            .doOnNext(model -> taskCounter.decrementAndGet())
-            .sequential()
-            .subscribe(this::onSuccess, this::onError, this::onComplete);
-        //@formatter:on
+        consumeMessagesFromDmaap() //
+                .parallel() // Each FileReadyMessage in a separate thread
+                .runOn(Schedulers.parallel()) //
+                .flatMap(this::createFileCollectionTask) //
+                .filter(this::shouldBePublished) //
+                .doOnNext(fileData -> taskCounter.incrementAndGet()) //
+                .flatMap(this::collectFileFromXnf) //
+                .flatMap(this::publishToDataRouter) //
+                .doOnNext(model -> deleteFile(model.getInternalLocation())) //
+                .doOnNext(model -> taskCounter.decrementAndGet()) //
+                .sequential() //
+                .subscribe(this::onSuccess, this::onError, this::onComplete);
     }
 
     /**
@@ -137,7 +134,12 @@ public class ScheduledTasks {
     }
 
     private boolean shouldBePublished(FileCollectionData task) {
-        return alreadyPublishedFiles.put(task.fileData.getLocalFileName()) == null;
+        boolean result = false;
+        Path localFileName = task.fileData.getLocalFileName();
+        if (alreadyPublishedFiles.put(localFileName) == null) {
+            result = createPublishedChecker().execute(localFileName.getFileName().toString());
+        }
+        return result;
     }
 
     private Mono<ConsumerDmaapModel> collectFileFromXnf(FileCollectionData fileCollect) {
@@ -162,15 +164,13 @@ public class ScheduledTasks {
         final long maxNumberOfRetries = 3;
         final Duration initialRetryTimeout = Duration.ofSeconds(5);
 
-        DataRouterPublisher publisherTask = new DataRouterPublisher(applicationConfiguration);
-
-        return publisherTask.execute(model, maxNumberOfRetries, initialRetryTimeout)
+        return createDataRouterPublisher().execute(model, maxNumberOfRetries, initialRetryTimeout)
                 .onErrorResume(exception -> handlePublishFailure(model, exception));
     }
 
     private Mono<ConsumerDmaapModel> handlePublishFailure(ConsumerDmaapModel model, Throwable exception) {
         logger.error("File publishing failed: {}, exception: {}", model.getName(), exception);
-        Path internalFileName = Paths.get(model.getInternalLocation());
+        Path internalFileName = model.getInternalLocation();
         deleteFile(internalFileName);
         alreadyPublishedFiles.remove(internalFileName);
         taskCounter.decrementAndGet();
@@ -202,5 +202,13 @@ public class ScheduledTasks {
         } catch (Exception e) {
             logger.warn("Could not delete file: {}, {}", localFile, e);
         }
+    }
+
+    PublishedChecker createPublishedChecker() {
+        return new PublishedChecker(applicationConfiguration);
+    }
+
+    DataRouterPublisher createDataRouterPublisher() {
+        return new DataRouterPublisher(applicationConfiguration);
     }
 }
