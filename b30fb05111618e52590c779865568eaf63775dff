@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f8a20d50_ceed9156",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/controllers/ScheduleController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-01T12:44:10Z",
+      "side": 1,
+      "message": "SHouldn\u0027t X_ONAP_REQUEST_ID and X_INVOCATION_ID be removed from MDC in this method? Or are they \"global\" for ever?",
+      "revId": "b30fb05111618e52590c779865568eaf63775dff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04b9abc1_47989f73",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-01T12:44:10Z",
+      "side": 1,
+      "message": "Since no real changes have been made in this file, it might be best to remove it from the commit.",
+      "revId": "b30fb05111618e52590c779865568eaf63775dff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d8604eca_ff144cd1",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-01T12:44:10Z",
+      "side": 1,
+      "message": "I haven\u0027t really understood this new way of logging. But to me it seems a bit strange to set the MdcContectMap in all methods. Isn\u0027t it enough to set it here?",
+      "revId": "b30fb05111618e52590c779865568eaf63775dff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "badda14b_7cb3f598",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/integration/ScheduledXmlContextITest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-01T12:44:10Z",
+      "side": 1,
+      "message": "It is good to use static import here, import static org.mockito.Mockito.any;. THen you can use just any().",
+      "revId": "b30fb05111618e52590c779865568eaf63775dff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "12852252_545b149e",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapReactiveWebClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-01T12:44:10Z",
+      "side": 1,
+      "message": "Here a variable is put in MDC. But in DmaapProducerReactiveHttpClient another approach is is used, logger.trace(INVOKE. Why not use the same approach in both?",
+      "revId": "b30fb05111618e52590c779865568eaf63775dff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
