@@ -18,13 +18,12 @@ package org.onap.dcaegen2.collectors.datafile.integration;
 
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.onap.dcaegen2.collectors.datafile.integration.junit5.mockito.MockitoExtension;
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +56,6 @@ class ScheduledXmlContextITest extends AbstractTestNGSpringContextTests {
     }
 
     private void verifyDmaapConsumerTask() {
-        verify(scheduledTask, atLeast(1)).scheduleMainDatafileEventTask();
+        verify(scheduledTask, atLeast(1)).scheduleMainDatafileEventTask(Mockito.any());
     }
 }

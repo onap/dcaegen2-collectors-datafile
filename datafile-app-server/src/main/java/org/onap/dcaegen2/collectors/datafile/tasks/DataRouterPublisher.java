@@ -17,7 +17,6 @@
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import java.time.Duration;
-
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.service.HttpUtils;
@@ -26,7 +25,6 @@ import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPub
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-
 import reactor.core.publisher.Mono;
 
 /**
