@@ -16,9 +16,11 @@
 
 package org.onap.dcaegen2.collectors.datafile.service.producer;
 
+import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.REQUEST_ID;
+import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_INVOCATION_ID;
+import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_ONAP_REQUEST_ID;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -28,10 +30,9 @@ import java.nio.file.Paths;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 import java.util.concurrent.Future;
-
 import javax.net.ssl.SSLContext;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -49,10 +50,12 @@ import org.onap.dcaegen2.collectors.datafile.web.PublishRedirectStrategy;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.util.DefaultUriBuilderFactory;
-
 import reactor.core.publisher.Mono;
 
 /**
@@ -66,6 +69,8 @@ public class DmaapProducerReactiveHttpClient {
     private static final String INTERNAL_LOCATION_JSON_TAG = "internalLocation";
     private static final String URI_SEPARATOR = "/";
     private static final String DEFAULT_FEED_ID = "1";
+    private static final Marker INVOKE = MarkerFactory.getMarker("INVOKE");
+    private static final Marker INVOKE_RETURN = MarkerFactory.getMarker("INVOKE_RETURN");
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -104,8 +109,6 @@ public class DmaapProducerReactiveHttpClient {
     public Mono<HttpStatus> getDmaapProducerResponse(ConsumerDmaapModel consumerDmaapModel) {
         logger.trace("Entering getDmaapProducerResponse with {}", consumerDmaapModel);
         try {
-            logger.trace("Starting to publish to DR {}",  consumerDmaapModel.getInternalLocation());
-
             webClient = getWebClient();
             webClient.start();
 
@@ -114,9 +117,10 @@ public class DmaapProducerReactiveHttpClient {
             prepareBody(consumerDmaapModel, put);
             addUserCredentialsToHead(put);
 
+            logger.trace(INVOKE, "Starting to publish to DR {}", consumerDmaapModel.getInternalLocation());
             Future<HttpResponse> future = webClient.execute(put, null);
             HttpResponse response = future.get();
-            logger.trace("{}", response);
+            logger.trace(INVOKE_RETURN, "Response from DR {}", response.toString());
             webClient.close();
             return Mono.just(HttpStatus.valueOf(response.getStatusLine().getStatusCode()));
         } catch (Exception e) {
@@ -141,6 +145,11 @@ public class DmaapProducerReactiveHttpClient {
         metaData.getAsJsonObject().remove(INTERNAL_LOCATION_JSON_TAG);
         put.addHeader(X_DMAAP_DR_META, metaData.toString());
         put.setURI(getUri(name));
+
+        String requestID = MDC.get(REQUEST_ID);
+        put.addHeader(X_ONAP_REQUEST_ID, requestID);
+        String invocationID = UUID.randomUUID().toString();
+        put.addHeader(X_INVOCATION_ID, invocationID);
     }
 
     private void prepareBody(ConsumerDmaapModel model, HttpPut put) throws IOException {
