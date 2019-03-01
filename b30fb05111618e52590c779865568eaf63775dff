@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "20de2c19_2b5f8d52",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/controllers/ScheduleController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-03-01T13:20:04Z",
+      "side": 1,
+      "message": "Yes, they are removed using \"MDC.clear()\" in \"schedulerConfig.getResponseFromCancellationOfTasks()\" (line 87 in this file).",
+      "parentUuid": "f8a20d50_ceed9156",
+      "revId": "b30fb05111618e52590c779865568eaf63775dff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "04b9abc1_47989f73",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2019-03-01T12:44:10Z",
       "side": 1,
       "message": "Since no real changes have been made in this file, it might be best to remove it from the commit.",
+      "revId": "b30fb05111618e52590c779865568eaf63775dff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2a343ba8_c9e3732c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-03-01T13:20:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04b9abc1_47989f73",
       "revId": "b30fb05111618e52590c779865568eaf63775dff",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "7c858333_d4b012f9",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-03-01T13:20:04Z",
+      "side": 1,
+      "message": "The MDC is associated with a thread. Whenever a new thread is executed, we need to copy the MDC from current thread, and pass it on to the new thread.\nIn a single-threaded application, of course we don\u0027t need to set the MdcContextMap again. But here we are using multiple threads.",
+      "parentUuid": "d8604eca_ff144cd1",
+      "revId": "b30fb05111618e52590c779865568eaf63775dff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "badda14b_7cb3f598",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/integration/ScheduledXmlContextITest.java",
         "patchSetId": 1
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "e995d6c7_e35b5089",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/integration/ScheduledXmlContextITest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-03-01T13:20:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "badda14b_7cb3f598",
+      "revId": "b30fb05111618e52590c779865568eaf63775dff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "12852252_545b149e",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapReactiveWebClient.java",
         "patchSetId": 1
@@ -81,6 +153,24 @@
       "writtenOn": "2019-03-01T12:44:10Z",
       "side": 1,
       "message": "Here a variable is put in MDC. But in DmaapProducerReactiveHttpClient another approach is is used, logger.trace(INVOKE. Why not use the same approach in both?",
+      "revId": "b30fb05111618e52590c779865568eaf63775dff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5f8b19f7_cf048dca",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapReactiveWebClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-03-01T13:20:04Z",
+      "side": 1,
+      "message": "Here I am using MDC, while in the second file INVOKE is a marker. MDCs contain name-value pairs, while markers contain just the name (or tag).\nINVOKE marker is used when invoking another ONAP component via REST. In our case, we are invoking DMaaP to publish the collected file.",
+      "parentUuid": "12852252_545b149e",
       "revId": "b30fb05111618e52590c779865568eaf63775dff",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
