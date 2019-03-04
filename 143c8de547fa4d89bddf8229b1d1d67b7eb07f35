@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "96e5945b_855b45e8",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SchedulerConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-03-04T13:15:23Z",
+      "side": 1,
+      "message": "This is assigned the MDC values of current thread (line 106) when the Datafile workflow is started",
+      "parentUuid": "3cb9201f_6683ec05",
+      "range": {
+        "startLine": 60,
+        "startChar": 3,
+        "endLine": 60,
+        "endChar": 43
+      },
+      "revId": "143c8de547fa4d89bddf8229b1d1d67b7eb07f35",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d0d6b485_f77cfcb9",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SchedulerConfig.java",
         "patchSetId": 2
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "fbcd9670_0a94c7b4",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SchedulerConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-03-04T13:15:23Z",
+      "side": 1,
+      "message": "In a real environment, the request ID will be passed on to DFC from higher layers. However, we need to generate one when doing DFC testing locally. \nThe value of request ID is unique for each time the DFC workflow is called, so it does not use the ID from previous runs.",
+      "parentUuid": "d0d6b485_f77cfcb9",
+      "range": {
+        "startLine": 99,
+        "startChar": 5,
+        "endLine": 101,
+        "endChar": 9
+      },
+      "revId": "143c8de547fa4d89bddf8229b1d1d67b7eb07f35",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7b85ac5a_69a40101",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapReactiveWebClient.java",
         "patchSetId": 2
@@ -59,6 +107,30 @@
       "writtenOn": "2019-03-04T12:22:26Z",
       "side": 1,
       "message": "I do not understand what this adds. The status code is logged anyway?",
+      "range": {
+        "startLine": 72,
+        "startChar": 7,
+        "endLine": 74,
+        "endChar": 38
+      },
+      "revId": "143c8de547fa4d89bddf8229b1d1d67b7eb07f35",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2b18cf01_9960f05c",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapReactiveWebClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-03-04T13:15:23Z",
+      "side": 1,
+      "message": "The whole idea about ONAP logging specification is to make it machine-readable. It helps to track a request through the whole workflow. The log entries are then indexed by logging framework (Kibana) automatically and thus help to generate different statistics.\nWhenever we have a log entry with RESPONSE_CODE in the MDC, it helps Kibana to automatically understand the status of a request (whereas a request is identified by requestID and invocationID). Of course, we log the status code anyway but that does not make it machine-readable without using MDC.",
+      "parentUuid": "7b85ac5a_69a40101",
       "range": {
         "startLine": 72,
         "startChar": 7,
