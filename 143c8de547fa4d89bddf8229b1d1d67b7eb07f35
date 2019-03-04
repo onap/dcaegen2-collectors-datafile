@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3cb9201f_6683ec05",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SchedulerConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-04T12:22:26Z",
+      "side": 1,
+      "message": "I cannot see that this map is created anywhere, so how can this work?",
+      "range": {
+        "startLine": 60,
+        "startChar": 3,
+        "endLine": 60,
+        "endChar": 43
+      },
+      "revId": "143c8de547fa4d89bddf8229b1d1d67b7eb07f35",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d0d6b485_f77cfcb9",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SchedulerConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-04T12:22:26Z",
+      "side": 1,
+      "message": "So, if the parameters are not set, a random number is generated. \n\nShould this call generate a new ID or not? In which cases should the function reuse the ID from previous runs and in which case should it not?",
+      "range": {
+        "startLine": 99,
+        "startChar": 5,
+        "endLine": 101,
+        "endChar": 9
+      },
+      "revId": "143c8de547fa4d89bddf8229b1d1d67b7eb07f35",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7b85ac5a_69a40101",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/DmaapReactiveWebClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-04T12:22:26Z",
+      "side": 1,
+      "message": "I do not understand what this adds. The status code is logged anyway?",
+      "range": {
+        "startLine": 72,
+        "startChar": 7,
+        "endLine": 74,
+        "endChar": 38
+      },
+      "revId": "143c8de547fa4d89bddf8229b1d1d67b7eb07f35",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
