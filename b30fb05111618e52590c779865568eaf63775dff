@@ -107,6 +107,24 @@
     },
     {
       "key": {
+        "uuid": "f0d2a642_3a4f2177",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-04T07:29:45Z",
+      "side": 1,
+      "message": "Ok. But we only start a new thread for each message, we don\u0027t start a new thread when we download or publish a file, if I understand it correctly. So wouldn\u0027t it be enough to set the MdcContextMap once, after the .parallel() call?",
+      "parentUuid": "7c858333_d4b012f9",
+      "revId": "b30fb05111618e52590c779865568eaf63775dff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "badda14b_7cb3f598",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/integration/ScheduledXmlContextITest.java",
         "patchSetId": 1
