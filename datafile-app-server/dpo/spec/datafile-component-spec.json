@@ -1,0 +1,96 @@
+{
+  "self": {
+    "name": "dcaegen2.collectors.datafile.datafile-app-server",
+    "version": "1.0.0",
+    "description": "Docker application to collect log file from PNF",
+    "component_type": "docker"
+  },
+  "streams": {
+    "subscribes": [
+      {
+        "type": "message_router",
+        "config_key": "datafile_subscribe_mr",
+        "format": "VES_specification",
+        "version": "7.30.1"
+      }
+    ],
+    "publishes": [
+      {
+        "type": "data_router",
+        "config_key": "datafile_publish_dr",
+        "format": "3GPP_XML",
+        "version": "1.0.0"
+      }
+    ]
+  },
+  "services": {
+    "calls": [],
+    "provides": []
+  },
+  "auxilary": {
+    "healthcheck": {
+      "type": "http",
+      "interval": "15s",
+      "timeout": "1s",
+      "endpoint": "/heartbeat"
+    }
+  },
+  "artifacts": [
+    {
+      "uri": "nexus3.onap.org:10001/onap/org.onap.dcaegen2.collectors.datafile.datafile-app-server:latest",
+      "type": "docker image"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "service_name",
+      "value": "datafile",
+      "description": "Name of the service",
+      "designer_editable": true,
+      "sourced_at_deployment": false,
+      "policy_editable": false,
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "buscontroller_feed_publishing_endpoint",
+      "value": "http://dmaap-bc.onap.svc.cluster.local:8080/webapi/feeds",
+      "description": "DMAAP Bus Controller feed endpoint",
+      "designer_editable": true,
+      "sourced_at_deployment": false,
+      "policy_editable": true,
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "dmaap_dr_feed_id",
+      "value": "bulk_pm_feed",
+      "description": "ID of the data router feed that the datafile collector will publish",
+      "designer_editable": true,
+      "sourced_at_deployment": false,
+      "policy_editable": false,
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "streams_consumer.datafile_consume_mr.message_router_topic",
+      "value": "/events/unauthenticated.VES_NOTIFICATION_OUTPUT",
+      "description": "datafile collector consume VES event to message router topic ",
+      "designer_editable": true,
+      "sourced_at_deployment": false,
+      "policy_editable": false,
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "datafile.policy",
+      "value": "",
+      "description": "datafile Policy JSON as string",
+      "designer_editable": false,
+      "sourced_at_deployment": false,
+      "policy_editable": true,
+      "type": "string",
+      "required": true
+    }
+  ]
+}
