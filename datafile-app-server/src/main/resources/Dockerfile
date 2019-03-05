@@ -22,8 +22,7 @@ FROM openjdk:8-jre-alpine
 WORKDIR /opt/app/datafile
 RUN mkdir -p /var/log/ONAP
 
-ARG JAR_FILE
-ADD /target/${JAR_FILE} /opt/app/datafile/datafile-app-server.jar
+ADD /target/datafile-app-server.jar /opt/app/datafile/
 
 ADD /config/application.yaml /opt/app/datafile/config/
 ADD /config/cacerts /opt/app/datafile/config/

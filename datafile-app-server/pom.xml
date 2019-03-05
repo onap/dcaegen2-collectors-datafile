@@ -59,11 +59,10 @@
         <version>${dockerfile.maven.version}</version>
         <configuration>
           <repository>${onap.nexus.dockerregistry.daily}/${docker.image.name}</repository>
-          <tag>${project.version}</tag>
           <dockerfile>${project.build.outputDirectory}/Dockerfile</dockerfile>
-          <buildArgs>
-            <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-          </buildArgs>
+          <imageTags>
+            <tag>latest</tag>
+          </imageTags>
         </configuration>
         <executions>
           <execution>
@@ -78,11 +77,10 @@
             <phase>deploy</phase>
             <goals>
               <goal>tag</goal>
+              <goal>push</goal>
             </goals>
             <configuration>
-              <image>${docker.image.name}:latest</image>
-              <newName>${onap.nexus.dockerregistry.daily}/${docker.image.name}:latest</newName>
-              <pushImage>true</pushImage>
+              <image>${onap.nexus.dockerregistry.daily}/${docker.image.name}:latest</image>
             </configuration>
           </execution>
           <execution>
@@ -90,11 +88,11 @@
             <phase>deploy</phase>
             <goals>
               <goal>tag</goal>
+              <goal>push</goal>
             </goals>
             <configuration>
-              <image>${docker.image.name}:latest</image>
+              <image>${onap.nexus.dockerregistry.daily}/${docker.image.name}:latest</image>
               <newName>${onap.nexus.dockerregistry.daily}/${docker.image.name}:${project.version}</newName>
-              <pushImage>true</pushImage>
             </configuration>
           </execution>
           <execution>
@@ -102,11 +100,11 @@
             <phase>deploy</phase>
             <goals>
               <goal>tag</goal>
+              <goal>push</goal>
             </goals>
             <configuration>
-              <image>${docker.image.name}:latest</image>
+              <image>${onap.nexus.dockerregistry.daily}/${docker.image.name}:latest</image>
               <newName>${onap.nexus.dockerregistry.daily}/${docker.image.name}:${project.version}-${maven.build.timestamp}Z</newName>
-              <pushImage>true</pushImage>
             </configuration>
           </execution>
         </executions>
