@@ -59,11 +59,17 @@
         <version>${dockerfile.maven.version}</version>
         <configuration>
           <repository>${onap.nexus.dockerregistry.daily}/${docker.image.name}</repository>
+          <tag>latest</tag>
           <dockerfile>${project.build.outputDirectory}/Dockerfile</dockerfile>
-          <imageTags>
-            <tag>latest</tag>
-          </imageTags>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>com.spotify</groupId>
+            <artifactId>docker-client</artifactId>
+            <classifier>shaded</classifier>
+            <version>8.10.0</version>
+          </dependency>
+        </dependencies>
         <executions>
           <execution>
             <id>build-image</id>
