@@ -1,0 +1,103 @@
+tosca_definitions_version: tosca_simple_yaml_1_0_0
+metadata:
+  template_name: dcaegen2.collectors.datafile.datafile-app-server
+imports:
+- schema: schema.yaml
+topology_template:
+  inputs:
+    topic0_aaf_password:
+      type: string
+    topic0_aaf_username:
+      type: string
+    topic0_client_role:
+      type: string
+  node_templates:
+    dcaegen2.collectors.datafile.datafile-app-server:
+      type: tosca.dcae.nodes.dockerApp.dcaegen2.collectors.datafile.datafile-app-server
+      properties:
+        buscontroller_feed_publishing_endpoint: http://dmaap-bc.onap.svc.cluster.local:8080/webapi/feeds
+        datafile.policy: ''
+        dmaap_dr_feed_id: bulk_pm_feed
+        location_id:
+          get_property:
+          - SELF
+          - composition
+          - location_id
+        service_name: datafile
+        streams_consumer.datafile_consume_mr.message_router_topic: /events/unauthenticated.VES_NOTIFICATION_OUTPUT
+      requirements:
+      - stream_subscribe_0: topic0
+      - stream_publish_0: feed1
+      - policy: policy_0
+    feed1:
+      type: tosca.dcae.nodes.dmaap.feed
+      properties:
+        feed_name: ''
+        location:
+          get_property:
+          - SELF
+          - composition
+          - location_id
+        node_name: __GET_NODE_NAME__
+      capabilities:
+        feed:
+          properties:
+            feed_name:
+              get_property:
+              - SELF
+              - feed_name
+            location:
+              get_property:
+              - SELF
+              - location
+            node_name:
+              get_property:
+              - SELF
+              - node_name
+    policy_0:
+      type: tosca.dcae.nodes.policy
+      properties:
+        policy_name: policy.nodes.dcaegen2.collectors.datafile.datafile-app-server
+    topic0:
+      type: tosca.dcae.nodes.dmaap.topic
+      properties:
+        aaf_password:
+          get_input: topic0_aaf_password
+        aaf_username:
+          get_input: topic0_aaf_username
+        client_role:
+          get_input: topic0_client_role
+        location:
+          get_property:
+          - SELF
+          - composition
+          - location_id
+        node_name: __GET_NODE_NAME__
+        topic_name: ''
+      capabilities:
+        topic:
+          properties:
+            aaf_password:
+              get_property:
+              - SELF
+              - aaf_password
+            aaf_username:
+              get_property:
+              - SELF
+              - aaf_username
+            client_role:
+              get_property:
+              - SELF
+              - client_role
+            location:
+              get_property:
+              - SELF
+              - location
+            node_name:
+              get_property:
+              - SELF
+              - node_name
+            topic_name:
+              get_property:
+              - SELF
+              - topic_name
