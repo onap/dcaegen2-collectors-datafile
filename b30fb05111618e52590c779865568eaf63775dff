@@ -125,6 +125,24 @@
     },
     {
       "key": {
+        "uuid": "08dad26f_2720ba0b",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-03-07T07:42:23Z",
+      "side": 1,
+      "message": "Tested with MR/DR simulator scripts to understand the threading behavior and found that the file collection/publishing is done in the same thread. However, when collection/publishing is retried in case of a problem, a new thread handles the retry. Hence, we need to pass the contextMap to file collection and publishing as well, so that the retry can be logged with the same requestID, invocationID (that are passed to DFC when datafile workflow is started)",
+      "parentUuid": "f0d2a642_3a4f2177",
+      "revId": "b30fb05111618e52590c779865568eaf63775dff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "badda14b_7cb3f598",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/integration/ScheduledXmlContextITest.java",
         "patchSetId": 1
