@@ -190,6 +190,10 @@
       <artifactId>testng</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
 
     <!--REQUIRED TO GENERATE DOCUMENTATION -->
     <dependency>

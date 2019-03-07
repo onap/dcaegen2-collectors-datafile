@@ -18,7 +18,7 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import java.nio.file.Path;
 import java.time.Duration;
-
+import java.util.Map;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
@@ -29,9 +29,9 @@ import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
+import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import reactor.core.publisher.Mono;
 
 /**
@@ -52,14 +52,15 @@ public class FileCollector {
     }
 
     public Mono<ConsumerDmaapModel> execute(FileData fileData, MessageMetaData metaData, long maxNumberOfRetries,
-            Duration firstBackoffTimeout) {
+            Duration firstBackoffTimeout, Map<String, String> contextMap) {
+        MdcVariables.setMdcContextMap(contextMap);
         logger.trace("Entering execute with {}", fileData);
         resolveKeyStore();
 
         //@formatter:off
         return Mono.just(fileData)
             .cache()
-            .flatMap(fd -> collectFile(fileData, metaData))
+            .flatMap(fd -> collectFile(fileData, metaData, contextMap))
             .retryBackoff(maxNumberOfRetries, firstBackoffTimeout);
         //@formatter:on
     }
@@ -76,7 +77,9 @@ public class FileCollector {
         ftpsClient.setTrustedCAPassword(ftpesConfig.trustedCAPassword());
     }
 
-    private Mono<ConsumerDmaapModel> collectFile(FileData fileData, MessageMetaData metaData) {
+    private Mono<ConsumerDmaapModel> collectFile(FileData fileData, MessageMetaData metaData,
+            Map<String, String> contextMap) {
+        MdcVariables.setMdcContextMap(contextMap);
         logger.trace("starting to collectFile");
 
         final String remoteFile = fileData.remoteFilePath();

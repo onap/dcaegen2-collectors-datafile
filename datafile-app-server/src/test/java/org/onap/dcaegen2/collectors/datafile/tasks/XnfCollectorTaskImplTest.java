@@ -22,10 +22,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-
 import java.nio.file.Path;
 import java.time.Duration;
-
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
@@ -40,7 +40,6 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
-
 import reactor.test.StepVerifier;
 
 /**
@@ -155,7 +154,8 @@ public class XnfCollectorTaskImplTest {
 
         ConsumerDmaapModel expectedConsumerDmaapModel = createExpectedConsumerDmaapModel(FTPES_LOCATION_NO_PORT);
 
-        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0)))
+        Map<String, String> contextMap = new HashMap<>();
+        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0), contextMap))
                 .expectNext(expectedConsumerDmaapModel).verifyComplete();
 
         verify(ftpsClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
@@ -196,7 +196,8 @@ public class XnfCollectorTaskImplTest {
                 .build();
         // @formatter:on
 
-        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0)))
+        Map<String, String> contextMap = new HashMap<>();
+        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0), contextMap))
                 .expectNext(expectedConsumerDmaapModel).verifyComplete();
 
         verify(sftpClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
@@ -211,7 +212,8 @@ public class XnfCollectorTaskImplTest {
         doThrow(new DatafileTaskException("Unable to collect file.")).when(ftpsClientMock)
                 .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
-        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0)))
+        Map<String, String> contextMap = new HashMap<>();
+        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0), contextMap))
                 .expectErrorMessage("Retries exhausted: 3/3").verify();
 
         verify(ftpsClientMock, times(4)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
@@ -227,7 +229,8 @@ public class XnfCollectorTaskImplTest {
         ConsumerDmaapModel expectedConsumerDmaapModel = createExpectedConsumerDmaapModel(FTPES_LOCATION_NO_PORT);
 
         FileData fileData = createFileData(FTPES_LOCATION_NO_PORT);
-        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0)))
+        Map<String, String> contextMap = new HashMap<>();
+        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0), contextMap))
                 .expectNext(expectedConsumerDmaapModel).verifyComplete();
 
         verify(ftpsClientMock, times(2)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
