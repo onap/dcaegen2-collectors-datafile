@@ -32,7 +32,6 @@
   <packaging>jar</packaging>
 
   <properties>
-    <dockerfile.maven.version>1.4.10</dockerfile.maven.version>
     <docker.image.name>onap/${project.groupId}.${project.artifactId}</docker.image.name>
     <maven.build.timestamp.format>yyyyMMdd'T'HHmmss</maven.build.timestamp.format>
   </properties>
@@ -55,21 +54,27 @@
       </plugin>
       <plugin>
         <groupId>com.spotify</groupId>
-        <artifactId>dockerfile-maven-plugin</artifactId>
-        <version>${dockerfile.maven.version}</version>
+        <artifactId>docker-maven-plugin</artifactId>
         <configuration>
-          <repository>${onap.nexus.dockerregistry.daily}/${docker.image.name}</repository>
-          <tag>latest</tag>
-          <dockerfile>${project.build.outputDirectory}/Dockerfile</dockerfile>
+          <serverId>${onap.nexus.dockerregistry.daily}</serverId>
+          <imageName>${docker.image.name}</imageName>
+          <imageTags>
+            <tag>latest</tag>
+          </imageTags>
+          <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+          <resources>
+            <resource>
+              <directory>${project.build.directory}</directory>
+              <include>${project.artifactId}.jar</include>
+              <targetPath>/target</targetPath>
+            </resource>
+            <resource>
+              <targetPath>/config</targetPath>
+              <directory>${project.basedir}/config</directory>
+              <include>*</include>
+            </resource>
+          </resources>
         </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>com.spotify</groupId>
-            <artifactId>docker-client</artifactId>
-            <classifier>shaded</classifier>
-            <version>8.10.0</version>
-          </dependency>
-        </dependencies>
         <executions>
           <execution>
             <id>build-image</id>
@@ -83,10 +88,11 @@
             <phase>deploy</phase>
             <goals>
               <goal>tag</goal>
-              <goal>push</goal>
             </goals>
             <configuration>
-              <image>${onap.nexus.dockerregistry.daily}/${docker.image.name}:latest</image>
+              <image>${docker.image.name}:latest</image>
+              <newName>${onap.nexus.dockerregistry.daily}/${docker.image.name}:latest</newName>
+              <pushImage>true</pushImage>
             </configuration>
           </execution>
           <execution>
@@ -94,11 +100,11 @@
             <phase>deploy</phase>
             <goals>
               <goal>tag</goal>
-              <goal>push</goal>
             </goals>
             <configuration>
-              <image>${onap.nexus.dockerregistry.daily}/${docker.image.name}:latest</image>
+              <image>${docker.image.name}:latest</image>
               <newName>${onap.nexus.dockerregistry.daily}/${docker.image.name}:${project.version}</newName>
+              <pushImage>true</pushImage>
             </configuration>
           </execution>
           <execution>
@@ -106,11 +112,11 @@
             <phase>deploy</phase>
             <goals>
               <goal>tag</goal>
-              <goal>push</goal>
             </goals>
             <configuration>
-              <image>${onap.nexus.dockerregistry.daily}/${docker.image.name}:latest</image>
+              <image>${docker.image.name}:latest</image>
               <newName>${onap.nexus.dockerregistry.daily}/${docker.image.name}:${project.version}-${maven.build.timestamp}Z</newName>
+              <pushImage>true</pushImage>
             </configuration>
           </execution>
         </executions>
