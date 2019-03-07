@@ -47,7 +47,7 @@ import org.onap.dcaegen2.collectors.datafile.integration.junit5.mockito.MockitoE
  */
 @ExtendWith({MockitoExtension.class})
 class AppConfigTest {
-    
+
     private static final String DATAFILE_ENDPOINTS = "datafile_endpoints.json";
     private static final boolean CORRECT_JSON = true;
     private static final boolean INCORRECT_JSON = false;
@@ -194,9 +194,9 @@ class AppConfigTest {
         dmaapConfigs.add("dmaapProducerConfiguration", dmaapProducerConfigData);
 
         JsonObject ftpesConfigData = new JsonObject();
-        ftpesConfigData.addProperty("keyCert", "config/ftpKey.jks");
+        ftpesConfigData.addProperty("keyCert", "config/dfc.jks");
         ftpesConfigData.addProperty("keyPassword", "secret");
-        ftpesConfigData.addProperty("trustedCA", "config/cacerts");
+        ftpesConfigData.addProperty("trustedCA", "config/ftp.jks");
         ftpesConfigData.addProperty("trustedCAPassword", "secret");
 
         JsonObject security = new JsonObject();

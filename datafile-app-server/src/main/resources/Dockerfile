@@ -26,10 +26,9 @@ ARG JAR_FILE
 ADD /target/${JAR_FILE} /opt/app/datafile/datafile-app-server.jar
 
 ADD /config/application.yaml /opt/app/datafile/config/
-ADD /config/cacerts /opt/app/datafile/config/
 ADD /config/datafile_endpoints.json /opt/app/datafile/config/
-ADD /config/ftpKey.jks /opt/app/datafile/config/
-ADD /config/keystore /opt/app/datafile/config/
+ADD /config/dfc.jks /opt/app/datafile/config/
+ADD /config/ftp.jks /opt/app/datafile/config/
 
 EXPOSE 8100 8433
 
