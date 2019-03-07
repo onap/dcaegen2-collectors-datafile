@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "40109db9_759ee0bb",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-07T16:12:25Z",
+      "side": 1,
+      "message": "It is to get each function on a new line, \nPreviously the eclipsen specific directive \n\u0027@formatter off\u0027 was used. \n\nThe team decided to change to this method instead, which should work for any IDE.",
+      "parentUuid": "b8663b1f_89453251",
+      "revId": "48a7efa90d60ede798632ae146b944d576c6ddca",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "218e5ff7_04b117af",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisherTest.java",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2019-03-07T15:36:34Z",
       "side": 1,
       "message": "what is the purpose of these empty comments?",
+      "revId": "48a7efa90d60ede798632ae146b944d576c6ddca",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "419f09ba_dce8db0d",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisherTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-07T16:12:25Z",
+      "side": 1,
+      "message": "See previous answer.",
+      "parentUuid": "218e5ff7_04b117af",
       "revId": "48a7efa90d60ede798632ae146b944d576c6ddca",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
