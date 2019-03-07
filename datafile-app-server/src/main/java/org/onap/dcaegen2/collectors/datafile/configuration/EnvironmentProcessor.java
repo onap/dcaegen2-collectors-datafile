@@ -18,9 +18,11 @@
 
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import org.onap.dcaegen2.collectors.datafile.exceptions.EnvironmentLoaderException;
+import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.ImmutableEnvProperties;
 import org.slf4j.Logger;
@@ -38,7 +40,8 @@ class EnvironmentProcessor {
     private EnvironmentProcessor() {
     }
 
-    static Mono<EnvProperties> evaluate(Properties systemEnvironment) {
+    static Mono<EnvProperties> evaluate(Properties systemEnvironment, Map<String, String> contextMap) {
+        MdcVariables.setMdcContextMap(contextMap);
         logger.info("Loading configuration from system environment variables");
         EnvProperties envProperties;
         try {
