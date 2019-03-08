@@ -82,6 +82,7 @@ class DmaapProducerReactiveHttpClientTest {
     private IFileSystemResource fileSystemResourceMock = mock(IFileSystemResource.class);
     private CloseableHttpAsyncClient clientMock;
     private HttpResponse responseMock = mock(HttpResponse.class);
+    @SuppressWarnings("unchecked")
     private Future<HttpResponse> futureMock = mock(Future.class);
     private StatusLine statusLine = mock(StatusLine.class);
     private InputStream fileStream;

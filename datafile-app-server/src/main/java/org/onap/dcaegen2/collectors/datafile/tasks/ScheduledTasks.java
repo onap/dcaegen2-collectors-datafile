@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
-import org.onap.dcaegen2.collectors.datafile.ftp.FtpsClient;
-import org.onap.dcaegen2.collectors.datafile.ftp.SftpClient;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
@@ -56,12 +54,10 @@ public class ScheduledTasks {
     /** Data needed for fetching of one file */
     private class FileCollectionData {
         final FileData fileData;
-        final FileCollector collectorTask;
         final MessageMetaData metaData;
 
-        FileCollectionData(FileData fd, FileCollector collectorTask, MessageMetaData metaData) {
+        FileCollectionData(FileData fd, MessageMetaData metaData) {
             this.fileData = fd;
-            this.collectorTask = collectorTask;
             this.metaData = metaData;
         }
     }
@@ -88,7 +84,7 @@ public class ScheduledTasks {
      */
     public void scheduleMainDatafileEventTask() {
         logger.trace("Execution of tasks was registered");
-        applicationConfiguration.initFileStreamReader();
+        applicationConfiguration.loadConfigurationFromFile();
         createMainTask().subscribe(this::onSuccess, this::onError, this::onComplete);
     }
 
@@ -137,8 +133,7 @@ public class ScheduledTasks {
         List<FileCollectionData> fileCollects = new ArrayList<>();
 
         for (FileData fileData : availableFiles.files()) {
-            fileCollects.add(
-                    new FileCollectionData(fileData, createFileCollector(fileData), availableFiles.messageMetaData()));
+            fileCollects.add(new FileCollectionData(fileData, availableFiles.messageMetaData()));
         }
         return Flux.fromIterable(fileCollects);
     }
@@ -151,7 +146,7 @@ public class ScheduledTasks {
         final long maxNUmberOfRetries = 3;
         final Duration initialRetryTimeout = Duration.ofSeconds(5);
 
-        return fileCollect.collectorTask
+        return createFileCollector()
                 .execute(fileCollect.fileData, fileCollect.metaData, maxNUmberOfRetries, initialRetryTimeout)
                 .onErrorResume(exception -> handleCollectFailure(fileCollect.fileData));
     }
@@ -220,9 +215,8 @@ public class ScheduledTasks {
         return new DMaaPMessageConsumerTask(this.applicationConfiguration);
     }
 
-    FileCollector createFileCollector(FileData fileData) {
-        return new FileCollector(applicationConfiguration, new FtpsClient(fileData.fileServerData()),
-                new SftpClient(fileData.fileServerData()));
+    FileCollector createFileCollector() {
+        return new FileCollector(applicationConfiguration);
     }
 
     DataRouterPublisher createDataRouterPublisher() {

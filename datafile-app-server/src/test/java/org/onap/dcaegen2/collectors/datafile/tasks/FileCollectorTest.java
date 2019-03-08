@@ -16,8 +16,11 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -47,7 +50,7 @@ import reactor.test.StepVerifier;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  *
  */
-public class XnfCollectorTaskImplTest {
+public class FileCollectorTest {
     private static final String PRODUCT_NAME = "NrRadio";
     private static final String VENDOR_NAME = "Ericsson";
     private static final String LAST_EPOCH_MICROSEC = "8745745764578";
@@ -71,7 +74,7 @@ public class XnfCollectorTaskImplTest {
     private static final String FTPES_LOCATION_NO_PORT =
             FTPES_SCHEME + USER + ":" + PWD + "@" + SERVER_ADDRESS + REMOTE_FILE_LOCATION;
     private static final String SFTP_LOCATION = SFTP_SCHEME + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
-    private static final String SFTP_LOCATION_NO_PORT = SFTP_SCHEME + SERVER_ADDRESS +  REMOTE_FILE_LOCATION;
+    private static final String SFTP_LOCATION_NO_PORT = SFTP_SCHEME + SERVER_ADDRESS + REMOTE_FILE_LOCATION;
 
     private static final String GZIP_COMPRESSION = "gzip";
     private static final String MEAS_COLLECT_FILE_FORMAT_TYPE = "org.3GPP.32.435#measCollec";
@@ -105,7 +108,7 @@ public class XnfCollectorTaskImplTest {
         // @formatter:on
     }
 
-    private FileData createFileData(String location) {
+    private FileData createFileData(String location, Scheme scheme) {
         // @formatter:off
         return  ImmutableFileData.builder()
             .name(PM_FILE_NAME)
@@ -113,7 +116,7 @@ public class XnfCollectorTaskImplTest {
             .compression(GZIP_COMPRESSION)
             .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
             .fileFormatVersion(FILE_FORMAT_VERSION)
-            .scheme(Scheme.FTPS)
+            .scheme(scheme)
             .build();
         // @formatter:on
     }
@@ -148,10 +151,10 @@ public class XnfCollectorTaskImplTest {
 
     @Test
     public void whenFtpesFile_returnCorrectResponse() throws Exception {
-        FileCollector collectorUndetTest =
-                new FileCollector(appConfigMock, ftpsClientMock, sftpClientMock);
+        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock));
+        doReturn(ftpsClientMock).when(collectorUndetTest).createFtpsClient(any());
 
-        FileData fileData = createFileData(FTPES_LOCATION_NO_PORT);
+        FileData fileData = createFileData(FTPES_LOCATION_NO_PORT, Scheme.FTPS);
 
         ConsumerDmaapModel expectedConsumerDmaapModel = createExpectedConsumerDmaapModel(FTPES_LOCATION_NO_PORT);
 
@@ -159,55 +162,42 @@ public class XnfCollectorTaskImplTest {
                 .expectNext(expectedConsumerDmaapModel).verifyComplete();
 
         verify(ftpsClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
-        verify(ftpsClientMock).setKeyCertPath(FTP_KEY_PATH);
-        verify(ftpsClientMock).setKeyCertPassword(FTP_KEY_PASSWORD);
-        verify(ftpsClientMock).setTrustedCAPath(TRUSTED_CA_PATH);
-        verify(ftpsClientMock).setTrustedCAPassword(TRUSTED_CA_PASSWORD);
+        verify(ftpsClientMock, times(1)).close();
+
         verifyNoMoreInteractions(ftpsClientMock);
     }
 
     @Test
     public void whenSftpFile_returnCorrectResponse() throws Exception {
-        FileCollector collectorUndetTest =
-                new FileCollector(appConfigMock, ftpsClientMock, sftpClientMock);
-        // @formatter:off
-        FileData fileData = ImmutableFileData.builder()
-                .name(PM_FILE_NAME)
-                .location(SFTP_LOCATION_NO_PORT)
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
-                .scheme(Scheme.SFTP)
-                .build();
+        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock));
+        doReturn(sftpClientMock).when(collectorUndetTest).createSftpClient(any());
 
-        ConsumerDmaapModel expectedConsumerDmaapModel = ImmutableConsumerDmaapModel.builder()
-                .productName(PRODUCT_NAME)
-                .vendorName(VENDOR_NAME)
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
-                .sourceName(SOURCE_NAME)
-                .startEpochMicrosec(START_EPOCH_MICROSEC)
-                .timeZoneOffset(TIME_ZONE_OFFSET)
-                .name(PM_FILE_NAME)
-                .location(SFTP_LOCATION_NO_PORT)
-                .internalLocation(LOCAL_FILE_LOCATION.toString())
-                .compression(GZIP_COMPRESSION)
-                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
-                .build();
-        // @formatter:on
+        FileData fileData = createFileData(SFTP_LOCATION_NO_PORT, Scheme.SFTP);
+        ConsumerDmaapModel expectedConsumerDmaapModel = createExpectedConsumerDmaapModel(SFTP_LOCATION_NO_PORT);
 
         StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0)))
-                .expectNext(expectedConsumerDmaapModel).verifyComplete();
+                .expectNext(expectedConsumerDmaapModel) //
+                .verifyComplete();
 
-        verify(sftpClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+        // The same again, but with port
+        fileData = createFileData(SFTP_LOCATION, Scheme.SFTP);
+        expectedConsumerDmaapModel = createExpectedConsumerDmaapModel(SFTP_LOCATION);
+
+        StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0)))
+                .expectNext(expectedConsumerDmaapModel) //
+                .verifyComplete();
+
+        verify(sftpClientMock, times(2)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+        verify(sftpClientMock, times(2)).close();
         verifyNoMoreInteractions(sftpClientMock);
     }
 
     @Test
     public void whenFtpesFileAlwaysFail_retryAndFail() throws Exception {
-        FileCollector collectorUndetTest =
-                new FileCollector(appConfigMock, ftpsClientMock, sftpClientMock);
-        FileData fileData = createFileData(FTPES_LOCATION);
+        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock));
+        doReturn(ftpsClientMock).when(collectorUndetTest).createFtpsClient(any());
+
+        FileData fileData = createFileData(FTPES_LOCATION, Scheme.FTPS);
         doThrow(new DatafileTaskException("Unable to collect file.")).when(ftpsClientMock)
                 .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
@@ -219,14 +209,14 @@ public class XnfCollectorTaskImplTest {
 
     @Test
     public void whenFtpesFileFailOnce_retryAndReturnCorrectResponse() throws Exception {
-        FileCollector collectorUndetTest =
-                new FileCollector(appConfigMock, ftpsClientMock, sftpClientMock);
+        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock));
+        doReturn(ftpsClientMock).when(collectorUndetTest).createFtpsClient(any());
         doThrow(new DatafileTaskException("Unable to collect file.")).doNothing().when(ftpsClientMock)
                 .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
         ConsumerDmaapModel expectedConsumerDmaapModel = createExpectedConsumerDmaapModel(FTPES_LOCATION_NO_PORT);
 
-        FileData fileData = createFileData(FTPES_LOCATION_NO_PORT);
+        FileData fileData = createFileData(FTPES_LOCATION_NO_PORT, Scheme.FTPS);
         StepVerifier.create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0)))
                 .expectNext(expectedConsumerDmaapModel).verifyComplete();
 

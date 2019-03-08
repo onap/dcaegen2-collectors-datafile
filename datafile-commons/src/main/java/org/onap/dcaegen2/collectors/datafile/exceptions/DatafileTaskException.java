@@ -25,10 +25,6 @@ public class DatafileTaskException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
-    public DatafileTaskException(Exception e) {
-        super(e);
-    }
-
     public DatafileTaskException(String message) {
         super(message);
     }
