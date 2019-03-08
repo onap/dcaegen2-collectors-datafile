@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "c9d3afda_0072ed1f",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfiguration.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-03-08T19:17:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6f56a7c_af8486e7",
+      "revId": "4108490f3ed5823e5840a2a3a97195b011b2bdad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f3b1f96a_dbb1891f",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/EnvironmentProcessor.java",
         "patchSetId": 7
@@ -30,6 +48,24 @@
       "writtenOn": "2019-03-08T18:35:18Z",
       "side": 1,
       "message": "add copyright for nordix",
+      "revId": "4108490f3ed5823e5840a2a3a97195b011b2bdad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "de75620b_f7a4ecb3",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/EnvironmentProcessor.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-03-08T19:17:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3b1f96a_dbb1891f",
       "revId": "4108490f3ed5823e5840a2a3a97195b011b2bdad",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "d60e66d8_d3496a23",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SchedulerConfig.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-03-08T19:17:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d475c6be_f15dbc9f",
+      "revId": "4108490f3ed5823e5840a2a3a97195b011b2bdad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "164797e7_d75789cb",
         "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/logging/MdcVariables.java",
         "patchSetId": 7
@@ -64,6 +118,24 @@
       "writtenOn": "2019-03-08T18:35:18Z",
       "side": 1,
       "message": "since this is a new file, NOKIA should probably not be listed\n\nUNLESS this is based on a file from elsewhere that DID have that listed",
+      "revId": "4108490f3ed5823e5840a2a3a97195b011b2bdad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e3990e20_40c21197",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/logging/MdcVariables.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-03-08T19:17:33Z",
+      "side": 1,
+      "message": "Actually, this file is based on a file from PRH where NOKIA has been listed.",
+      "parentUuid": "164797e7_d75789cb",
       "revId": "4108490f3ed5823e5840a2a3a97195b011b2bdad",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
