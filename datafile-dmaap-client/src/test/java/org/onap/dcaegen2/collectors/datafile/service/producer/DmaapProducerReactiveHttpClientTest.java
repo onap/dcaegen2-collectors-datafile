@@ -20,19 +20,18 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -51,7 +50,6 @@ import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPub
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.util.DefaultUriBuilderFactory;
-
 import reactor.test.StepVerifier;
 
 /**
@@ -142,7 +140,8 @@ class DmaapProducerReactiveHttpClientTest {
         httpPut.addHeader("Authorization", "Basic " + base64Creds);
 
         fileStream.reset();
-        StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel))
+        Map<String, String> contextMap = new HashMap<>();
+        StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel, contextMap))
         .expectNext(HttpStatus.OK).verifyComplete();
 
         verify(fileSystemResourceMock).setPath(Paths.get("target/" + FILE_NAME));
@@ -153,7 +152,7 @@ class DmaapProducerReactiveHttpClientTest {
     @Test
     void getHttpResponse_Fail() throws Exception {
         mockWebClientDependantObject(false);
-        StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel))
+        StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel, any()))
         .expectError()
         .verify();
     }
