@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b6f56a7c_af8486e7",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfiguration.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-03-08T18:35:18Z",
+      "side": 1,
+      "message": "change to 2018-2019",
+      "revId": "4108490f3ed5823e5840a2a3a97195b011b2bdad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f3b1f96a_dbb1891f",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/EnvironmentProcessor.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-03-08T18:35:18Z",
+      "side": 1,
+      "message": "add copyright for nordix",
+      "revId": "4108490f3ed5823e5840a2a3a97195b011b2bdad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d475c6be_f15dbc9f",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SchedulerConfig.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-03-08T18:35:18Z",
+      "side": 1,
+      "message": "this needs to be \"logger\" per our coding standards",
+      "revId": "4108490f3ed5823e5840a2a3a97195b011b2bdad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "164797e7_d75789cb",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/logging/MdcVariables.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-03-08T18:35:18Z",
+      "side": 1,
+      "message": "since this is a new file, NOKIA should probably not be listed\n\nUNLESS this is based on a file from elsewhere that DID have that listed",
+      "revId": "4108490f3ed5823e5840a2a3a97195b011b2bdad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
