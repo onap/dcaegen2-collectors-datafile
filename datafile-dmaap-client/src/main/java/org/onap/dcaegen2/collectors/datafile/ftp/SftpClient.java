@@ -38,6 +38,8 @@ import org.slf4j.LoggerFactory;
 public class SftpClient implements FileCollectClient {
     private static final Logger logger = LoggerFactory.getLogger(SftpClient.class);
     private final FileServerData fileServerData;
+    private Session session = null;
+    private ChannelSftp sftpChannel = null;
 
     public SftpClient(FileServerData fileServerData) {
         this.fileServerData = fileServerData;
@@ -48,18 +50,37 @@ public class SftpClient implements FileCollectClient {
         logger.trace("collectFile called");
 
         try {
-            Session session = setUpSession(fileServerData);
-            ChannelSftp sftpChannel = getChannel(session);
             sftpChannel.get(remoteFile, localFile.toString());
             logger.debug("File {} Download Successfull from xNF", localFile.getFileName());
-            sftpChannel.exit();
-            session.disconnect();
         } catch (Exception e) {
-            throw new DatafileTaskException("Unable to get file from xNF. Data: " + fileServerData + e);
+            throw new DatafileTaskException("Unable to get file from xNF. Data: " + fileServerData, e);
         }
 
         logger.trace("collectFile OK");
+    }
 
+    @Override
+    public void close() {
+        logger.trace("close");
+        if (sftpChannel != null) {
+            sftpChannel.exit();
+            sftpChannel = null;
+        }
+        if (session != null) {
+            session.disconnect();
+            session = null;
+        }
+    }
+
+    public void open() throws DatafileTaskException {
+        try {
+            if (session == null) {
+                session = setUpSession(fileServerData);
+                sftpChannel = getChannel(session);
+            }
+        } catch (JSchException e) {
+            throw new DatafileTaskException("Could not open Sftp client", e);
+        }
     }
 
     private int getPort(Optional<Integer> port) {
@@ -70,12 +91,12 @@ public class SftpClient implements FileCollectClient {
     private Session setUpSession(FileServerData fileServerData) throws JSchException {
         JSch jsch = new JSch();
 
-        Session session =
-                jsch.getSession(fileServerData.userId(), fileServerData.serverAddress(), getPort(fileServerData.port()));
-        session.setConfig("StrictHostKeyChecking", "no");
-        session.setPassword(fileServerData.password());
-        session.connect();
-        return session;
+        Session newSession = jsch.getSession(fileServerData.userId(), fileServerData.serverAddress(),
+                getPort(fileServerData.port()));
+        newSession.setConfig("StrictHostKeyChecking", "no");
+        newSession.setPassword(fileServerData.password());
+        newSession.connect();
+        return newSession;
     }
 
     private ChannelSftp getChannel(Session session) throws JSchException {

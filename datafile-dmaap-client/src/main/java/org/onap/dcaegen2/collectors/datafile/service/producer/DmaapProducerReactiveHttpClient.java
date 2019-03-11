@@ -102,8 +102,7 @@ public class DmaapProducerReactiveHttpClient {
      * @return status code of operation
      */
     public Mono<HttpStatus> getDmaapProducerResponse(ConsumerDmaapModel consumerDmaapModel) {
-        logger.trace("Entering getDmaapProducerResponse with {}", consumerDmaapModel);
-        try {
+       try {
             logger.trace("Starting to publish to DR {}",  consumerDmaapModel.getInternalLocation());
 
             webClient = getWebClient();

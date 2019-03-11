@@ -21,11 +21,10 @@ import com.google.gson.JsonObject;
 import java.util.Optional;
 import java.util.Properties;
 
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
-
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.providers.ReactiveCloudConfigurationProvider;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +58,7 @@ public class CloudConfiguration extends AppConfig {
     private Properties systemEnvironment;
 
     @Autowired
-    public void setThreadPoolTaskScheduler(ReactiveCloudConfigurationProvider reactiveCloudConfigurationProvider) {
+    public synchronized void setThreadPoolTaskScheduler(ReactiveCloudConfigurationProvider reactiveCloudConfigurationProvider) {
         this.reactiveCloudConfigurationProvider = reactiveCloudConfigurationProvider;
     }
 
@@ -83,7 +82,7 @@ public class CloudConfiguration extends AppConfig {
                 .subscribe(this::parseCloudConfig, this::cloudConfigError);
     }
 
-    private void parseCloudConfig(JsonObject jsonObject) {
+    private synchronized void parseCloudConfig(JsonObject jsonObject) {
         logger.info("Received application configuration: {}", jsonObject);
         CloudConfigParser cloudConfigParser = new CloudConfigParser(jsonObject);
         dmaapPublisherCloudConfiguration = cloudConfigParser.getDmaapPublisherConfig();
@@ -92,17 +91,17 @@ public class CloudConfiguration extends AppConfig {
     }
 
     @Override
-    public DmaapPublisherConfiguration getDmaapPublisherConfiguration() {
+    public synchronized DmaapPublisherConfiguration getDmaapPublisherConfiguration() {
         return Optional.ofNullable(dmaapPublisherCloudConfiguration).orElse(super.getDmaapPublisherConfiguration());
     }
 
     @Override
-    public DmaapConsumerConfiguration getDmaapConsumerConfiguration() {
+    public synchronized DmaapConsumerConfiguration getDmaapConsumerConfiguration() {
         return Optional.ofNullable(dmaapConsumerCloudConfiguration).orElse(super.getDmaapConsumerConfiguration());
     }
 
     @Override
-    public FtpesConfig getFtpesConfiguration() {
+    public synchronized FtpesConfig getFtpesConfiguration() {
         return Optional.ofNullable(ftpesCloudConfiguration).orElse(super.getFtpesConfiguration());
     }
 }

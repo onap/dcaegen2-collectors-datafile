@@ -47,16 +47,15 @@ import org.onap.dcaegen2.collectors.datafile.integration.junit5.mockito.MockitoE
  */
 @ExtendWith({MockitoExtension.class})
 class AppConfigTest {
-    
+
     private static final String DATAFILE_ENDPOINTS = "datafile_endpoints.json";
     private static final boolean CORRECT_JSON = true;
     private static final boolean INCORRECT_JSON = false;
 
     private static AppConfig appConfigUnderTest;
 
-
-    private static String filePath = Objects
-            .requireNonNull(AppConfigTest.class.getClassLoader().getResource(DATAFILE_ENDPOINTS)).getFile();
+    private static String filePath =
+            Objects.requireNonNull(AppConfigTest.class.getClassLoader().getResource(DATAFILE_ENDPOINTS)).getFile();
 
     @BeforeEach
     public void setUp() {
@@ -70,7 +69,7 @@ class AppConfigTest {
 
         // Then
         verify(appConfigUnderTest, times(1)).setFilepath(anyString());
-        verify(appConfigUnderTest, times(0)).initFileStreamReader();
+        verify(appConfigUnderTest, times(0)).loadConfigurationFromFile();
         Assertions.assertEquals(filePath, appConfigUnderTest.getFilepath());
     }
 
@@ -82,15 +81,12 @@ class AppConfigTest {
 
         // When
         appConfigUnderTest.setFilepath(filePath);
-        doReturn(inputStream).when(appConfigUnderTest).getInputStream(any());
-        appConfigUnderTest.initFileStreamReader();
-        appConfigUnderTest.dmaapConsumerConfiguration = appConfigUnderTest.getDmaapConsumerConfiguration();
-        appConfigUnderTest.dmaapPublisherConfiguration = appConfigUnderTest.getDmaapPublisherConfiguration();
-        appConfigUnderTest.ftpesConfig = appConfigUnderTest.getFtpesConfiguration();
+        doReturn(inputStream).when(appConfigUnderTest).createInputStream(any());
+        appConfigUnderTest.loadConfigurationFromFile();
 
         // Then
         verify(appConfigUnderTest, times(1)).setFilepath(anyString());
-        verify(appConfigUnderTest, times(1)).initFileStreamReader();
+        verify(appConfigUnderTest, times(1)).loadConfigurationFromFile();
         Assertions.assertNotNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         Assertions.assertNotNull(appConfigUnderTest.getDmaapPublisherConfiguration());
         Assertions.assertEquals(appConfigUnderTest.getDmaapPublisherConfiguration(),
@@ -98,7 +94,6 @@ class AppConfigTest {
         Assertions.assertEquals(appConfigUnderTest.getDmaapConsumerConfiguration(),
                 appConfigUnderTest.getDmaapConsumerConfiguration());
         Assertions.assertEquals(appConfigUnderTest.getFtpesConfiguration(), appConfigUnderTest.getFtpesConfiguration());
-
     }
 
     @Test
@@ -108,11 +103,11 @@ class AppConfigTest {
         appConfigUnderTest.setFilepath(filePath);
 
         // When
-        appConfigUnderTest.initFileStreamReader();
+        appConfigUnderTest.loadConfigurationFromFile();
 
         // Then
         verify(appConfigUnderTest, times(1)).setFilepath(anyString());
-        verify(appConfigUnderTest, times(1)).initFileStreamReader();
+        verify(appConfigUnderTest, times(1)).loadConfigurationFromFile();
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         Assertions.assertNull(appConfigUnderTest.getDmaapPublisherConfiguration());
         Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
@@ -127,15 +122,15 @@ class AppConfigTest {
 
         // When
         appConfigUnderTest.setFilepath(filePath);
-        doReturn(inputStream).when(appConfigUnderTest).getInputStream(any());
-        appConfigUnderTest.initFileStreamReader();
+        doReturn(inputStream).when(appConfigUnderTest).createInputStream(any());
+        appConfigUnderTest.loadConfigurationFromFile();
 
         // Then
         verify(appConfigUnderTest, times(1)).setFilepath(anyString());
-        verify(appConfigUnderTest, times(1)).initFileStreamReader();
-        Assertions.assertNotNull(appConfigUnderTest.getDmaapConsumerConfiguration());
+        verify(appConfigUnderTest, times(1)).loadConfigurationFromFile();
+        Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         Assertions.assertNull(appConfigUnderTest.getDmaapPublisherConfiguration());
-        Assertions.assertNotNull(appConfigUnderTest.getFtpesConfiguration());
+        Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
 
     }
 
@@ -147,18 +142,15 @@ class AppConfigTest {
                 new ByteArrayInputStream((getJsonConfig(CORRECT_JSON).getBytes(StandardCharsets.UTF_8)));
         // When
         appConfigUnderTest.setFilepath(filePath);
-        doReturn(inputStream).when(appConfigUnderTest).getInputStream(any());
+        doReturn(inputStream).when(appConfigUnderTest).createInputStream(any());
         JsonElement jsonElement = mock(JsonElement.class);
         when(jsonElement.isJsonObject()).thenReturn(false);
         doReturn(jsonElement).when(appConfigUnderTest).getJsonElement(any(JsonParser.class), any(InputStream.class));
-        appConfigUnderTest.initFileStreamReader();
-        appConfigUnderTest.dmaapConsumerConfiguration = appConfigUnderTest.getDmaapConsumerConfiguration();
-        appConfigUnderTest.dmaapPublisherConfiguration = appConfigUnderTest.getDmaapPublisherConfiguration();
-        appConfigUnderTest.ftpesConfig = appConfigUnderTest.getFtpesConfiguration();
+        appConfigUnderTest.loadConfigurationFromFile();
 
         // Then
         verify(appConfigUnderTest, times(1)).setFilepath(anyString());
-        verify(appConfigUnderTest, times(1)).initFileStreamReader();
+        verify(appConfigUnderTest, times(1)).loadConfigurationFromFile();
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         Assertions.assertNull(appConfigUnderTest.getDmaapPublisherConfiguration());
         Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
