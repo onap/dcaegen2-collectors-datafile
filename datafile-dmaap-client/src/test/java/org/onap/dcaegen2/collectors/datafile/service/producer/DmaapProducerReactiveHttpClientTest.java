@@ -16,43 +16,39 @@
 
 package org.onap.dcaegen2.collectors.datafile.service.producer;
 
+import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.net.ssl.SSLContext;
+
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.IOUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.onap.dcaegen2.collectors.datafile.io.IFileSystemResource;
-import org.onap.dcaegen2.collectors.datafile.model.CommonFunctions;
-import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
-import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
-import org.onap.dcaegen2.collectors.datafile.service.HttpUtils;
+import org.mockito.ArgumentCaptor;
+import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.onap.dcaegen2.collectors.datafile.http.IHttpAsyncClientBuilder;
+import org.onap.dcaegen2.collectors.datafile.web.PublishRedirectStrategy;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.util.DefaultUriBuilderFactory;
-
-import reactor.test.StepVerifier;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 7/4/18
@@ -60,116 +56,133 @@ import reactor.test.StepVerifier;
  */
 class DmaapProducerReactiveHttpClientTest {
 
-    private static final String FILE_NAME = "A20161224.1030-1045.bin.gz";
-    private static final String INTERNAL_LOCATION_JSON_TAG = "internalLocation";
-    private static final String NAME_JSON_TAG = "name";
-    private static final String X_DMAAP_DR_META = "X-DMAAP-DR-META";
-
     private static final String HOST = "54.45.33.2";
     private static final String HTTPS_SCHEME = "https";
     private static final int PORT = 1234;
-    private static final String APPLICATION_OCTET_STREAM_CONTENT_TYPE = "application/octet-stream";
-    private static final String URI_SEPARATOR = "/";
-    private static final String PUBLISH_TOPIC = "publish";
-    private static final String DEFAULT_FEED_ID = "1";
-    private static final String FILE_CONTENT = "Just a string.";
+    private static final String USER_NAME = "dradmin";
 
-    private DmaapProducerReactiveHttpClient dmaapProducerReactiveHttpClient;
+    private DmaapProducerReactiveHttpClient producerClientUnderTestSpy;
 
     private DmaapPublisherConfiguration dmaapPublisherConfigurationMock = mock(DmaapPublisherConfiguration.class);
-    private ConsumerDmaapModel consumerDmaapModel;
 
-    private IFileSystemResource fileSystemResourceMock = mock(IFileSystemResource.class);
+    private IHttpAsyncClientBuilder clientBuilderMock;
     private CloseableHttpAsyncClient clientMock;
-    private HttpResponse responseMock = mock(HttpResponse.class);
+    @SuppressWarnings("unchecked")
     private Future<HttpResponse> futureMock = mock(Future.class);
-    private StatusLine statusLine = mock(StatusLine.class);
-    private InputStream fileStream;
 
     @BeforeEach
     void setUp() {
         when(dmaapPublisherConfigurationMock.dmaapHostName()).thenReturn(HOST);
         when(dmaapPublisherConfigurationMock.dmaapProtocol()).thenReturn(HTTPS_SCHEME);
         when(dmaapPublisherConfigurationMock.dmaapPortNumber()).thenReturn(PORT);
-        when(dmaapPublisherConfigurationMock.dmaapUserName()).thenReturn("dradmin");
-        when(dmaapPublisherConfigurationMock.dmaapUserPassword()).thenReturn("dradmin");
-        when(dmaapPublisherConfigurationMock.dmaapContentType()).thenReturn(APPLICATION_OCTET_STREAM_CONTENT_TYPE);
-        when(dmaapPublisherConfigurationMock.dmaapTopicName()).thenReturn(PUBLISH_TOPIC);
+        when(dmaapPublisherConfigurationMock.dmaapUserName()).thenReturn(USER_NAME);
+        when(dmaapPublisherConfigurationMock.dmaapUserPassword()).thenReturn(USER_NAME);
 
-        // @formatter:off
-        consumerDmaapModel = ImmutableConsumerDmaapModel.builder()
-                .productName("NrRadio")
-                .vendorName("Ericsson")
-                .lastEpochMicrosec("8745745764578")
-                .sourceName("oteNB5309")
-                .startEpochMicrosec("8745745764578")
-                .timeZoneOffset("UTC+05:00")
-                .name("A20161224.1030-1045.bin.gz")
-                .location("ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1145.bin.gz")
-                .internalLocation("target/A20161224.1030-1045.bin.gz")
-                .compression("gzip")
-                .fileFormatType("org.3GPP.32.435#measCollec")
-                .fileFormatVersion("V10")
-                .build();
-        //formatter:on
-
-        dmaapProducerReactiveHttpClient = new DmaapProducerReactiveHttpClient(dmaapPublisherConfigurationMock);
-        dmaapProducerReactiveHttpClient.setFileSystemResource(fileSystemResourceMock);
+        producerClientUnderTestSpy = spy(new DmaapProducerReactiveHttpClient(dmaapPublisherConfigurationMock));
+        clientBuilderMock = mock(IHttpAsyncClientBuilder.class);
         clientMock = mock(CloseableHttpAsyncClient.class);
-        dmaapProducerReactiveHttpClient.setWebClient(clientMock);
     }
 
     @Test
-    void getHttpResponse_Success() throws Exception {
-        mockWebClientDependantObject(true);
+    void getHttpResponseWithRederict_Success() throws Exception {
+        doReturn(clientBuilderMock).when(producerClientUnderTestSpy).getHttpClientBuilder();
+        when(clientBuilderMock.setSSLContext(any(SSLContext.class))).thenReturn(clientBuilderMock);
+        when(clientBuilderMock.setSSLHostnameVerifier(any(NoopHostnameVerifier.class))).thenReturn(clientBuilderMock);
+        when(clientBuilderMock.build()).thenReturn(clientMock);
+        when(clientMock.execute(any(HttpUriRequest.class), any())).thenReturn(futureMock);
+        HttpResponse responseMock = mock(HttpResponse.class);
+        when(futureMock.get()).thenReturn(responseMock);
 
-        HttpPut httpPut = new HttpPut();
-        httpPut.addHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_OCTET_STREAM_CONTENT_TYPE);
+        HttpGet request = new HttpGet();
+        producerClientUnderTestSpy.getDmaapProducerResponseWithRedirect(request);
 
-        URI expectedUri = new DefaultUriBuilderFactory().builder().scheme(HTTPS_SCHEME).host(HOST).port(PORT)
-                .path(PUBLISH_TOPIC + URI_SEPARATOR + DEFAULT_FEED_ID + URI_SEPARATOR + FILE_NAME).build();
-        httpPut.setURI(expectedUri);
+        verify(clientBuilderMock).setSSLContext(any(SSLContext.class));
+        verify(clientBuilderMock).setSSLHostnameVerifier(any(NoopHostnameVerifier.class));
+        verify(clientBuilderMock).setRedirectStrategy(PublishRedirectStrategy.INSTANCE);
+        verify(clientBuilderMock).build();
+        verifyNoMoreInteractions(clientBuilderMock);
 
-        JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(consumerDmaapModel));
-        metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
-        metaData.getAsJsonObject().remove(INTERNAL_LOCATION_JSON_TAG);
-        httpPut.addHeader(X_DMAAP_DR_META, metaData.toString());
+        verify(clientMock).start();
+        verify(clientMock).close();
 
-        String plainCreds = "dradmin" + ":" + "dradmin";
+        verify(futureMock).get();
+        verifyNoMoreInteractions(futureMock);
+    }
+
+    @Test
+    void getHttpResponseWithCustomTimeout_Success() throws Exception {
+        doReturn(clientBuilderMock).when(producerClientUnderTestSpy).getHttpClientBuilder();
+        when(clientBuilderMock.setSSLContext(any(SSLContext.class))).thenReturn(clientBuilderMock);
+        when(clientBuilderMock.setDefaultRequestConfig(any(RequestConfig.class))).thenReturn(clientBuilderMock);
+        when(clientBuilderMock.build()).thenReturn(clientMock);
+        when(clientMock.execute(any(HttpUriRequest.class), any())).thenReturn(futureMock);
+        HttpResponse responseMock = mock(HttpResponse.class);
+        when(futureMock.get()).thenReturn(responseMock);
+
+        HttpGet request = new HttpGet();
+        producerClientUnderTestSpy.getDmaapProducerResponseWithCustomTimeout(request, 2000);
+
+        ArgumentCaptor<RequestConfig> requestConfigCaptor = ArgumentCaptor.forClass(RequestConfig.class);
+        verify(clientBuilderMock).setSSLContext(any(SSLContext.class));
+        verify(clientBuilderMock).setSSLHostnameVerifier(any(NoopHostnameVerifier.class));
+        verify(clientBuilderMock).setDefaultRequestConfig(requestConfigCaptor.capture());
+        RequestConfig requestConfig = requestConfigCaptor.getValue();
+        assertEquals(2000, requestConfig.getSocketTimeout());
+        assertEquals(2000, requestConfig.getConnectTimeout());
+        assertEquals(2000, requestConfig.getConnectionRequestTimeout());
+        verify(clientBuilderMock).build();
+        verifyNoMoreInteractions(clientBuilderMock);
+
+        verify(clientMock).start();
+        verify(clientMock).close();
+
+        verify(futureMock).get();
+        verifyNoMoreInteractions(futureMock);
+    }
+
+    @Test
+    public void getResponseWithException_throwsException() throws Exception {
+        doReturn(clientBuilderMock).when(producerClientUnderTestSpy).getHttpClientBuilder();
+        when(clientBuilderMock.setDefaultRequestConfig(any(RequestConfig.class))).thenReturn(clientBuilderMock);
+        when(clientBuilderMock.setSSLContext(any(SSLContext.class))).thenReturn(clientBuilderMock);
+        when(clientBuilderMock.build()).thenReturn(clientMock);
+        HttpPut request = new HttpPut();
+        when(clientMock.execute(any(HttpPut.class), any())).thenReturn(futureMock);
+
+        try {
+            when(futureMock.get()).thenThrow(new InterruptedException("Interrupted"));
+
+            producerClientUnderTestSpy.getDmaapProducerResponseWithCustomTimeout(request, 2000);
+
+            fail("Should have got an exception.");
+        } catch (DatafileTaskException e) {
+            assertTrue(e.getCause() instanceof InterruptedException);
+            assertEquals("Interrupted", e.getCause().getMessage());
+        } catch (Exception e) {
+            fail("Wrong exception");
+        }
+
+        verify(clientMock).start();
+        verify(clientMock).close();
+    }
+
+    @Test
+    public void addCredentialsToHead_success() {
+        HttpPut request = new HttpPut();
+
+        producerClientUnderTestSpy.addUserCredentialsToHead(request);
+
+        String plainCreds = USER_NAME + ":" + USER_NAME;
         byte[] plainCredsBytes = plainCreds.getBytes(StandardCharsets.ISO_8859_1);
         byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
-        String base64Creds = new String(base64CredsBytes);
-        httpPut.addHeader("Authorization", "Basic " + base64Creds);
-
-        fileStream.reset();
-        StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel))
-        .expectNext(HttpStatus.OK).verifyComplete();
-
-        verify(fileSystemResourceMock).setPath(Paths.get("target/" + FILE_NAME));
-        InputStream fileInputStream = fileSystemResourceMock.getInputStream();
-        httpPut.setEntity(new ByteArrayEntity(IOUtils.toByteArray(fileInputStream)));
+        String base64Creds = "Basic " + new String(base64CredsBytes);
+        Header[] authorizationHeaders = request.getHeaders("Authorization");
+        assertEquals(base64Creds, authorizationHeaders[0].getValue());
     }
 
     @Test
-    void getHttpResponse_Fail() throws Exception {
-        mockWebClientDependantObject(false);
-        StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel))
-        .expectError()
-        .verify();
-    }
-
-    private void mockWebClientDependantObject(boolean success)
-            throws IOException, InterruptedException, ExecutionException {
-        fileStream = new ByteArrayInputStream(FILE_CONTENT.getBytes());
-        when(fileSystemResourceMock.getInputStream()).thenReturn(fileStream);
-        if (success) {
-            when(clientMock.execute(any(HttpPut.class), any())).thenReturn(futureMock);
-            when(futureMock.get()).thenReturn(responseMock);
-            when(responseMock.getStatusLine()).thenReturn(statusLine);
-            when(statusLine.getStatusCode()).thenReturn(HttpUtils.SC_OK);
-        } else {
-            when(clientMock.execute(any(HttpPut.class), any())).thenReturn(futureMock);
-            when(futureMock.get()).thenThrow(new InterruptedException());
-        }
+    public void getBaseUri_success() {
+        URI uri = producerClientUnderTestSpy.getBaseUri().build();
+        assertEquals(HTTPS_SCHEME + "://" + HOST + ":" + PORT, uri.toString());
     }
 }

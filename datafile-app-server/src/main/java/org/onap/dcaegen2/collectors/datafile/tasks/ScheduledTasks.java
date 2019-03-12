@@ -18,7 +18,6 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ public class ScheduledTasks {
     private static final int MAX_NUMBER_OF_CONCURRENT_TASKS = 200;
     private static final int MAX_ILDLE_THREAD_TIME_TO_LIVE_SECONDS = 10;
 
-    /** Data needed for fetching of one file */
+    /** Data needed for fetching of one file. */
     private class FileCollectionData {
         final FileData fileData;
         final FileCollector collectorTask;
@@ -67,6 +66,7 @@ public class ScheduledTasks {
     }
 
     private static final Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);
+
     private final AppConfig applicationConfiguration;
     private final AtomicInteger currentNumberOfTasks = new AtomicInteger();
     private final Scheduler scheduler =
@@ -101,13 +101,13 @@ public class ScheduledTasks {
                 .doOnNext(fileData -> currentNumberOfTasks.incrementAndGet()) //
                 .flatMap(this::collectFileFromXnf) //
                 .flatMap(this::publishToDataRouter) //
-                .doOnNext(model -> deleteFile(Paths.get(model.getInternalLocation()))) //
+                .doOnNext(model -> deleteFile(model.getInternalLocation())) //
                 .doOnNext(model -> currentNumberOfTasks.decrementAndGet()) //
                 .sequential();
     }
 
     /**
-     * called in regular intervals to remove out-dated cached information
+     * called in regular intervals to remove out-dated cached information.
      */
     public void purgeCachedInformation(Instant now) {
         alreadyPublishedFiles.purge(now);
@@ -144,7 +144,12 @@ public class ScheduledTasks {
     }
 
     private boolean shouldBePublished(FileCollectionData task) {
-        return alreadyPublishedFiles.put(task.fileData.getLocalFileName()) == null;
+        boolean result = false;
+        Path localFileName = task.fileData.getLocalFileName();
+        if (alreadyPublishedFiles.put(localFileName) == null) {
+            result = createPublishedChecker().execute(localFileName.getFileName().toString());
+        }
+        return result;
     }
 
     private Mono<ConsumerDmaapModel> collectFileFromXnf(FileCollectionData fileCollect) {
@@ -169,15 +174,13 @@ public class ScheduledTasks {
         final long maxNumberOfRetries = 3;
         final Duration initialRetryTimeout = Duration.ofSeconds(5);
 
-        DataRouterPublisher publisherTask = createDataRouterPublisher();
-
-        return publisherTask.execute(model, maxNumberOfRetries, initialRetryTimeout)
+        return createDataRouterPublisher().execute(model, maxNumberOfRetries, initialRetryTimeout)
                 .onErrorResume(exception -> handlePublishFailure(model, exception));
     }
 
     private Mono<ConsumerDmaapModel> handlePublishFailure(ConsumerDmaapModel model, Throwable exception) {
         logger.error("File publishing failed: {}, exception: {}", model.getName(), exception);
-        Path internalFileName = Paths.get(model.getInternalLocation());
+        Path internalFileName = model.getInternalLocation();
         deleteFile(internalFileName);
         alreadyPublishedFiles.remove(internalFileName);
         currentNumberOfTasks.decrementAndGet();
@@ -210,6 +213,10 @@ public class ScheduledTasks {
         } catch (Exception e) {
             logger.trace("Could not delete file: {}", localFile);
         }
+    }
+
+    PublishedChecker createPublishedChecker() {
+        return new PublishedChecker(applicationConfiguration);
     }
 
     int getCurrentNumberOfTasks() {
