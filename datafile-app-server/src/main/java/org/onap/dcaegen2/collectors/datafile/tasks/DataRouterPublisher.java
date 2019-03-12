@@ -17,16 +17,16 @@
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import java.time.Duration;
-
+import java.util.Map;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
+import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
 import org.onap.dcaegen2.collectors.datafile.service.HttpUtils;
 import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerReactiveHttpClient;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-
 import reactor.core.publisher.Mono;
 
 /**
@@ -50,21 +50,24 @@ public class DataRouterPublisher {
      * @param firstBackoffTimeout the time to delay the first retry
      * @return the HTTP response status as a string
      */
-    public Mono<ConsumerDmaapModel> execute(ConsumerDmaapModel model, long numRetries, Duration firstBackoff) {
+    public Mono<ConsumerDmaapModel> execute(ConsumerDmaapModel model, long numRetries, Duration firstBackoff,
+            Map<String, String> contextMap) {
+        MdcVariables.setMdcContextMap(contextMap);
         logger.trace("Method called with arg {}", model);
         DmaapProducerReactiveHttpClient dmaapProducerReactiveHttpClient = resolveClient();
 
         //@formatter:off
         return Mono.just(model)
                 .cache()
-                .flatMap(dmaapProducerReactiveHttpClient::getDmaapProducerResponse)
-                .flatMap(httpStatus -> handleHttpResponse(httpStatus, model))
+                .flatMap(m -> dmaapProducerReactiveHttpClient.getDmaapProducerResponse(m, contextMap))
+                .flatMap(httpStatus -> handleHttpResponse(httpStatus, model, contextMap))
                 .retryBackoff(numRetries, firstBackoff);
         //@formatter:on
     }
 
-    private Mono<ConsumerDmaapModel> handleHttpResponse(HttpStatus response, ConsumerDmaapModel model) {
-
+    private Mono<ConsumerDmaapModel> handleHttpResponse(HttpStatus response, ConsumerDmaapModel model,
+            Map<String, String> contextMap) {
+        MdcVariables.setMdcContextMap(contextMap);
         if (HttpUtils.isSuccessfulResponseCode(response.value())) {
             logger.trace("Publish to DR successful!");
             return Mono.just(model);
