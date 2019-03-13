@@ -111,8 +111,7 @@ public class DmaapProducerReactiveHttpClient {
     public Mono<HttpStatus> getDmaapProducerResponse(ConsumerDmaapModel consumerDmaapModel,
             Map<String, String> contextMap) {
         MdcVariables.setMdcContextMap(contextMap);
-        logger.trace("Entering getDmaapProducerResponse with {}", consumerDmaapModel);
-        try {
+       try {
             webClient = getWebClient();
             webClient.start();
 
