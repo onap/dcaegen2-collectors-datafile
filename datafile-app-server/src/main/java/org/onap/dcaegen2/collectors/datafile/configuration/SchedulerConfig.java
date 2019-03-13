@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
@@ -36,7 +36,10 @@ import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Mono;
 
 /**
+ * Api for starting and stopping DFC.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 6/13/18
+ * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 @Configuration
 @EnableScheduling
@@ -51,11 +54,18 @@ public class SchedulerConfig {
     private final ScheduledTasks scheduledTask;
     private final CloudConfiguration cloudConfiguration;
 
+    /**
+     * Constructor.
+     *
+     * @param taskScheduler The scheduler used to schedule the tasks.
+     * @param scheduledTasks The scheduler that will actually handle the tasks.
+     * @param cloudConfiguration The DFC configuration.
+     */
     @Autowired
-    public SchedulerConfig(TaskScheduler taskScheduler, ScheduledTasks scheduledTask,
-        CloudConfiguration cloudConfiguration) {
+    public SchedulerConfig(TaskScheduler taskScheduler, ScheduledTasks scheduledTasks,
+            CloudConfiguration cloudConfiguration) {
         this.taskScheduler = taskScheduler;
-        this.scheduledTask = scheduledTask;
+        this.scheduledTask = scheduledTasks;
         this.cloudConfiguration = cloudConfiguration;
     }
 
@@ -69,7 +79,7 @@ public class SchedulerConfig {
         scheduledFutureList.forEach(x -> x.cancel(false));
         scheduledFutureList.clear();
         return Mono.defer(() -> Mono
-            .just(new ResponseEntity<>("Datafile Service has already been stopped!", HttpStatus.CREATED)));
+                .just(new ResponseEntity<>("Datafile Service has already been stopped!", HttpStatus.CREATED)));
     }
 
     /**
@@ -85,8 +95,9 @@ public class SchedulerConfig {
                     SCHEDULING_REQUEST_FOR_CONFIGURATION_DELAY));
             scheduledFutureList.add(taskScheduler.scheduleWithFixedDelay(scheduledTask::scheduleMainDatafileEventTask,
                     SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS));
-            scheduledFutureList.add(taskScheduler.scheduleWithFixedDelay(() -> scheduledTask.purgeCachedInformation(Instant.now()),
-                   SCHEDULING_DELAY_FOR_DATAFILE_PURGE_CACHE));
+            scheduledFutureList
+                    .add(taskScheduler.scheduleWithFixedDelay(() -> scheduledTask.purgeCachedInformation(Instant.now()),
+                            SCHEDULING_DELAY_FOR_DATAFILE_PURGE_CACHE));
 
             return true;
         } else {

@@ -56,12 +56,10 @@ public class FileCollector {
         logger.trace("Entering execute with {}", fileData);
         resolveKeyStore();
 
-        //@formatter:off
-        return Mono.just(fileData)
-            .cache()
-            .flatMap(fd -> collectFile(fileData, metaData))
-            .retryBackoff(maxNumberOfRetries, firstBackoffTimeout);
-        //@formatter:on
+        return Mono.just(fileData) //
+                .cache() //
+                .flatMap(fd -> collectFile(fileData, metaData)) //
+                .retryBackoff(maxNumberOfRetries, firstBackoffTimeout);
     }
 
     private FtpesConfig resolveConfiguration() {
@@ -109,21 +107,19 @@ public class FileCollector {
     private ConsumerDmaapModel getConsumerDmaapModel(FileData fileData, MessageMetaData metaData, Path localFile) {
         String location = fileData.location();
 
-        // @formatter:off
-        return ImmutableConsumerDmaapModel.builder()
-                .productName(metaData.productName())
-                .vendorName(metaData.vendorName())
-                .lastEpochMicrosec(metaData.lastEpochMicrosec())
-                .sourceName(metaData.sourceName())
-                .startEpochMicrosec(metaData.startEpochMicrosec())
-                .timeZoneOffset(metaData.timeZoneOffset())
-                .name(fileData.name())
-                .location(location)
-                .internalLocation(localFile.toString())
-                .compression(fileData.compression())
-                .fileFormatType(fileData.fileFormatType())
-                .fileFormatVersion(fileData.fileFormatVersion())
+        return ImmutableConsumerDmaapModel.builder() //
+                .productName(metaData.productName()) //
+                .vendorName(metaData.vendorName()) //
+                .lastEpochMicrosec(metaData.lastEpochMicrosec()) //
+                .sourceName(metaData.sourceName()) //
+                .startEpochMicrosec(metaData.startEpochMicrosec()) //
+                .timeZoneOffset(metaData.timeZoneOffset()) //
+                .name(fileData.name()) //
+                .location(location) //
+                .internalLocation(localFile) //
+                .compression(fileData.compression()) //
+                .fileFormatType(fileData.fileFormatType()) //
+                .fileFormatVersion(fileData.fileFormatVersion()) //
                 .build();
-        // @formatter:on
     }
 }
