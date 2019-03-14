@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "66ce15f8_52e21042",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-14T13:39:30Z",
+      "side": 1,
+      "message": "here is another resource leak. The web client is not closed when exceptions are thrown.",
+      "range": {
+        "startLine": 114,
+        "startChar": 6,
+        "endLine": 116,
+        "endChar": 30
+      },
+      "revId": "7a83b7d12f01171387d6fae6831ca6c6a881d8c5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
