@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9f5eabf2_6b3ed9b5",
+        "filename": "datafile-app-server/dpo/policy.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 57
+      },
+      "writtenOn": "2019-03-14T15:09:54Z",
+      "side": 1,
+      "message": "Sorry I wasn\u0027t clear - not up in this position. but below the\nonap.policies.monitoring.dcaegen2.collectors.datafile.datafile-app-server\n\nline\n\nso you now have a version for your model itself, and you derive from a specific onap.policies.Monitoring version.\n\n:)",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 16
+      },
+      "revId": "d220de3c1d9c5a7455c18ecf7e2f7483fe13fff8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
