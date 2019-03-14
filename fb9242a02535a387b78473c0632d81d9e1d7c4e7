@@ -22,6 +22,30 @@
       "revId": "fb9242a02535a387b78473c0632d81d9e1d7c4e7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cf071d4c_6cab590e",
+        "filename": "datafile-app-server/dpo/policy.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-03-14T15:06:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab229eaf_7905114e",
+      "range": {
+        "startLine": 7,
+        "startChar": 2,
+        "endLine": 7,
+        "endChar": 76
+      },
+      "revId": "fb9242a02535a387b78473c0632d81d9e1d7c4e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
