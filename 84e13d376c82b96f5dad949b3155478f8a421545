@@ -71,6 +71,30 @@
     },
     {
       "key": {
+        "uuid": "3f54f6d4_4d920dcf",
+        "filename": "datafile-app-server/dpo/spec/datafile-component-spec.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-03-14T20:14:37Z",
+      "side": 1,
+      "message": "It is not possible to add these configuration in the config_key. Because in the steams, the dr/mr parameters are only username, password, deliver url and deliver id. if more parameters are defined in the streams in the dmaap.json. The files cannot be validated. \n\nIn the current code, dfc needs more parameter than defined in the dmmap connection object. \n\nInstead, define the configuration in the component specs, the configbinding services can get all the configurations and our code can parse the all the parameters.",
+      "parentUuid": "690401ee_8190e268",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 134,
+        "endChar": 6
+      },
+      "revId": "84e13d376c82b96f5dad949b3155478f8a421545",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "94943895_ea99fb9c",
         "filename": "datafile-app-server/dpo/spec/datafile-component-spec.json",
         "patchSetId": 6
