@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d44c7986_bdfa70f3",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-14T20:03:49Z",
+      "side": 1,
+      "message": "shouldn\u0027t these be removed and moved to stream_publish and stream_subcribes?",
+      "range": {
+        "startLine": 101,
+        "startChar": 1,
+        "endLine": 118,
+        "endChar": 85
+      },
+      "revId": "84e13d376c82b96f5dad949b3155478f8a421545",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "81c345b4_03128cf1",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-14T20:03:49Z",
+      "side": 1,
+      "message": "should match to structure defined here - https://wiki.onap.org/display/DW/MicroServices+Onboarding+in+ONAP#MicroServicesOnboardinginONAP-SampleDRconfigurationstructure",
+      "range": {
+        "startLine": 148,
+        "startChar": 13,
+        "endLine": 149,
+        "endChar": 18
+      },
+      "revId": "84e13d376c82b96f5dad949b3155478f8a421545",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "690401ee_8190e268",
+        "filename": "datafile-app-server/dpo/spec/datafile-component-spec.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-14T20:03:49Z",
+      "side": 1,
+      "message": "The topic configuration cannot be added as application config. Instead the config_key defined in the streams, should be used for determining the target topic/dr details.",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 134,
+        "endChar": 6
+      },
+      "revId": "84e13d376c82b96f5dad949b3155478f8a421545",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "94943895_ea99fb9c",
+        "filename": "datafile-app-server/dpo/spec/datafile-component-spec.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-14T20:03:49Z",
+      "side": 1,
+      "message": "same comment as earlier",
+      "range": {
+        "startLine": 175,
+        "startChar": 3,
+        "endLine": 234,
+        "endChar": 6
+      },
+      "revId": "84e13d376c82b96f5dad949b3155478f8a421545",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4766d4f0_b5b17834",
+        "filename": "datafile-app-server/dpo/spec/datafile-component-spec.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-14T20:03:49Z",
+      "side": 1,
+      "message": "same comment as before.. These are valid application parameters.",
+      "range": {
+        "startLine": 335,
+        "startChar": 1,
+        "endLine": 404,
+        "endChar": 6
+      },
+      "revId": "84e13d376c82b96f5dad949b3155478f8a421545",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1cad9067_8686210a",
+        "filename": "datafile-app-server/dpo/tosca_models/schema.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-14T20:03:49Z",
+      "side": 1,
+      "message": "spec should be updated and this file regenerated",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 634,
+        "endChar": 20
+      },
+      "revId": "84e13d376c82b96f5dad949b3155478f8a421545",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1e228730_dbb5b6a5",
+        "filename": "datafile-app-server/dpo/tosca_models/template.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-14T20:03:49Z",
+      "side": 1,
+      "message": "spec should be updated and this file regenerated",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 136,
+        "endChar": 26
+      },
+      "revId": "84e13d376c82b96f5dad949b3155478f8a421545",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dce73403_f51ccc30",
+        "filename": "datafile-app-server/dpo/tosca_models/translate.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-14T20:03:49Z",
+      "side": 1,
+      "message": "spec should be updated and this file regenerated",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 285,
+        "endChar": 33
+      },
+      "revId": "84e13d376c82b96f5dad949b3155478f8a421545",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
