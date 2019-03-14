@@ -1,21 +1,11 @@
 tosca_definitions_version: tosca_simple_yaml_1_0_0
-node_types:
-  policy.nodes.Root:
-    derived_from: tosca.nodes.Root
-    properties:
-      policyDescription:
-        required: false
-        type: string
-      policyName:
-        required: true
-        type: string
-      policyScope:
-        required: true
-        type: string
-      policyVersion:
-        required: true
-        type: string
-  policy.nodes.dcaegen2.collectors.datafile.datafile-app-server:
+policy_types:
+  onap.policies.Monitoring:
+    derived_from: tosca.policies.Root
+    description: a base policy type for all policies that govern monitoring provision
+    version: 1.0.0
+  onap.policies.monitoring.dcaegen2.collectors.datafile.datafile-app-server:
+    version: 1.0.0
     derived_from: policy.nodes.Root
     properties:
       buscontroller_feed_publishing_endpoint:

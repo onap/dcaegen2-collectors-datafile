@@ -17,12 +17,45 @@ topology_template:
       properties:
         buscontroller_feed_publishing_endpoint: http://dmaap-bc.onap.svc.cluster.local:8080/webapi/feeds
         datafile.policy: ''
+        dmaap.dmaapBusControllerConfiguration.dmaapContentType: application/json
+        dmaap.dmaapBusControllerConfiguration.dmaapDrFeedName: bulk_pm_feed
+        dmaap.dmaapBusControllerConfiguration.dmaapHostName: localhost
+        dmaap.dmaapBusControllerConfiguration.dmaapPortNumber: '6666'
+        dmaap.dmaapBusControllerConfiguration.dmaapProtocol: https
+        dmaap.dmaapBusControllerConfiguration.dmaapTopicName: webapis/feeds
+        dmaap.dmaapBusControllerConfiguration.dmaapUserName: dbcadmin
+        dmaap.dmaapBusControllerConfiguration.dmaapUserPassword: dbcadmin
+        dmaap.dmaapConsumerConfiguration.consumerGroup: OpenDcae-c12
+        dmaap.dmaapConsumerConfiguration.consumerId: C12
+        dmaap.dmaapConsumerConfiguration.dmaapContentType: application/json
+        dmaap.dmaapConsumerConfiguration.dmaapHostName: localhost
+        dmaap.dmaapConsumerConfiguration.dmaapPortNumber: '2222'
+        dmaap.dmaapConsumerConfiguration.dmaapProtocol: http
+        dmaap.dmaapConsumerConfiguration.dmaapTopicName: /events/unauthenticated.VES_NOTIFICATION_OUTPUT
+        dmaap.dmaapConsumerConfiguration.messageLimit: '1'
+        dmaap.dmaapConsumerConfiguration.timeoutMs: '-1'
+        dmaap.dmaapProducerConfiguration.dmaapContentType: application/octet-stream
+        dmaap.dmaapProducerConfiguration.dmaapHostName: localhost
+        dmaap.dmaapProducerConfiguration.dmaapPortNumber: '3907'
+        dmaap.dmaapProducerConfiguration.dmaapProtocol: https
+        dmaap.dmaapProducerConfiguration.dmaapTopicName: publish
+        dmaap.dmaapProducerConfiguration.dmaapUserName: dradmin
+        dmaap.dmaapProducerConfiguration.dmaapUserPassword: dradmin
         dmaap_dr_feed_id: bulk_pm_feed
+        ftp.ftpesConfiguration.keyCert: config/dfc.jks
+        ftp.ftpesConfiguration.keyPassword: secret
+        ftp.ftpesConfiguration.trustedCA: config/ftp.jks
+        ftp.ftpesConfiguration.trustedCAPassword: secret
         location_id:
           get_property:
           - SELF
           - composition
           - location_id
+        security.enableDmaapCertAuth: 'False'
+        security.keyStorePasswordPath: /opt/app/datafile/etc/cert/key.pass
+        security.keyStorePath: /opt/app/datafile/etc/cert/key.p12
+        security.trustStorePasswordPath: /opt/app/datafile/etc/cert/trust.pass
+        security.trustStorePath: /opt/app/datafile/etc/cert/trust.jks
         service_name: datafile
         streams_consumer.datafile_consume_mr.message_router_topic: /events/unauthenticated.VES_NOTIFICATION_OUTPUT
       requirements:
