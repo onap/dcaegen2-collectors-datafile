@@ -19,8 +19,10 @@ package org.onap.dcaegen2.collectors.datafile.service.producer;
 import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.REQUEST_ID;
 import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_INVOCATION_ID;
 import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_ONAP_REQUEST_ID;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -33,7 +35,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Future;
+
 import javax.net.ssl.SSLContext;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -58,6 +62,7 @@ import org.slf4j.MarkerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.util.DefaultUriBuilderFactory;
+
 import reactor.core.publisher.Mono;
 
 /**
@@ -85,7 +90,6 @@ public class DmaapProducerReactiveHttpClient {
     private final String pwd;
 
     private IFileSystemResource fileResource = new FileSystemResourceWrapper();
-    private CloseableHttpAsyncClient webClient;
 
     /**
      * Constructor DmaapProducerReactiveHttpClient.
@@ -111,10 +115,7 @@ public class DmaapProducerReactiveHttpClient {
     public Mono<HttpStatus> getDmaapProducerResponse(ConsumerDmaapModel consumerDmaapModel,
             Map<String, String> contextMap) {
         MdcVariables.setMdcContextMap(contextMap);
-        logger.trace("Entering getDmaapProducerResponse with {}", consumerDmaapModel);
-        try {
-            webClient = getWebClient();
-            webClient.start();
+       try (CloseableHttpAsyncClient webClient = createWebClient()) {
 
             HttpPut put = new HttpPut();
             prepareHead(consumerDmaapModel, put);
@@ -124,8 +125,7 @@ public class DmaapProducerReactiveHttpClient {
             logger.trace(INVOKE, "Starting to publish to DR {}", consumerDmaapModel.getInternalLocation());
             Future<HttpResponse> future = webClient.execute(put, null);
             HttpResponse response = future.get();
-            logger.trace(INVOKE_RETURN, "Response from DR {}", response.toString());
-            webClient.close();
+            logger.trace(INVOKE_RETURN, "Response from DR {}", response);
             return Mono.just(HttpStatus.valueOf(response.getStatusLine().getStatusCode()));
         } catch (Exception e) {
             logger.error("Unable to send file to DataRouter. Data: {}", consumerDmaapModel.getInternalLocation(), e);
@@ -175,25 +175,20 @@ public class DmaapProducerReactiveHttpClient {
         fileResource = fileSystemResource;
     }
 
-    protected CloseableHttpAsyncClient getWebClient()
+    protected CloseableHttpAsyncClient createWebClient()
             throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
-        if (webClient != null) {
-            return webClient;
-        }
-        SSLContext sslContext = null;
 
-        sslContext = new SSLContextBuilder().loadTrustMaterial(null, (certificate, authType) -> true).build();
-
-        //@formatter:off
-        return HttpAsyncClients.custom()
-                .setSSLContext(sslContext)
-                .setSSLHostnameVerifier(new NoopHostnameVerifier())
-                .setRedirectStrategy(PublishRedirectStrategy.INSTANCE)
+        SSLContext sslContext = new SSLContextBuilder() //
+                .loadTrustMaterial(null, (certificate, authType) -> true) //
                 .build();
-        //@formatter:on
+
+        CloseableHttpAsyncClient webClient =  HttpAsyncClients.custom() //
+                .setSSLContext(sslContext) //
+                .setSSLHostnameVerifier(new NoopHostnameVerifier()) //
+                .setRedirectStrategy(PublishRedirectStrategy.INSTANCE) //
+                .build();
+        webClient.start();
+        return webClient;
     }
 
-    protected void setWebClient(CloseableHttpAsyncClient client) {
-        this.webClient = client;
-    }
 }
