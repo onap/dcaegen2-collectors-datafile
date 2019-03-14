@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "3d6242ba_8beec854",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-03-14T20:17:37Z",
+      "side": 1,
+      "message": "https://docs.onap.org/en/latest/submodules/dcaegen2.git/docs/sections/components/component-specification/dmaap-connection-objects.html\n\nreferring to the link, the parameters is limited. in the current code of DFC, we need more parameters. if more parameters are added in the streams, file validation will fail.",
+      "parentUuid": "d44c7986_bdfa70f3",
+      "range": {
+        "startLine": 101,
+        "startChar": 1,
+        "endLine": 118,
+        "endChar": 85
+      },
+      "revId": "84e13d376c82b96f5dad949b3155478f8a421545",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "81c345b4_03128cf1",
         "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
         "patchSetId": 6
