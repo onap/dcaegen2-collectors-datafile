@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab229eaf_7905114e",
+        "filename": "datafile-app-server/dpo/policy.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 57
+      },
+      "writtenOn": "2019-03-14T14:51:35Z",
+      "side": 1,
+      "message": "Can you add a version for the policy type itself?\nthe above version aplies to onap.policies.Monitoring\n\njust add \n   version: 1.0.0",
+      "range": {
+        "startLine": 7,
+        "startChar": 2,
+        "endLine": 7,
+        "endChar": 76
+      },
+      "revId": "fb9242a02535a387b78473c0632d81d9e1d7c4e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
