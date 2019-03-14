@@ -17,6 +17,9 @@
 package org.onap.dcaegen2.collectors.datafile.model;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.nio.file.Path;
+
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 import org.onap.dcaegen2.services.sdk.rest.services.model.DmaapModel;
@@ -55,7 +58,7 @@ public interface ConsumerDmaapModel extends DmaapModel {
     String getLocation();
 
     @SerializedName("internalLocation")
-    String getInternalLocation();
+    Path getInternalLocation();
 
     @SerializedName("compression")
     String getCompression();

@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
@@ -13,6 +13,7 @@
  * the License.
  * ============LICENSE_END========================================================================
  */
+
 package org.onap.dcaegen2.collectors.datafile.service;
 
 import java.nio.file.Path;
@@ -23,20 +24,40 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * A cache of all files that already has been published. Key is the local file path and the value is
- * a time stamp, when the key was last used.
+ * A cache of all files that already have been published.
  */
 public class PublishedFileCache {
     private final Map<Path, Instant> publishedFiles = Collections.synchronizedMap(new HashMap<Path, Instant>());
 
-    public Instant put(Path path) {
-        return publishedFiles.put(path, Instant.now());
+    /**
+     * Adds a file to the cache.
+     *
+     * @param path the name of the file to add.
+     * @return true if the file is in the cache, or false otherwise.
+     */
+    public boolean put(Path path) {
+        boolean isPublished = true;
+        if (!publishedFiles.containsKey(path)) {
+            publishedFiles.put(path, Instant.now());
+            isPublished = false;
+        }
+        return isPublished;
     }
 
+    /**
+     * Removes a file from the cache.
+     *
+     * @param localFileName name of the file to remove.
+     */
     public void remove(Path localFileName) {
         publishedFiles.remove(localFileName);
     }
 
+    /**
+     * Removes files 24 hours older than the given instant.
+     *
+     * @param now the instant that files older than 24 hours of will be removed.
+     */
     public void purge(Instant now) {
         for (Iterator<Map.Entry<Path, Instant>> it = publishedFiles.entrySet().iterator(); it.hasNext();) {
             Map.Entry<Path, Instant> pair = it.next();
@@ -46,7 +67,7 @@ public class PublishedFileCache {
         }
     }
 
-    public int size() {
+    int size() {
         return publishedFiles.size();
     }
 
