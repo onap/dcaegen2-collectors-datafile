@@ -29,16 +29,15 @@ import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.ftp.FtpsClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.SftpClient;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
+import org.onap.dcaegen2.collectors.datafile.model.FeedData;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
-import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
 import org.onap.dcaegen2.collectors.datafile.service.PublishedFileCache;
+import org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -48,8 +47,10 @@ import reactor.core.scheduler.Schedulers;
 /**
  * This implements the main flow of the data file collector. Fetch file ready events from the message router, fetch new
  * files from the PNF publish these in the data router.
+ *
+ * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 3/23/18
+ * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
-@Component
 public class ScheduledTasks {
 
     private static final int MAX_NUMBER_OF_CONCURRENT_TASKS = 200;
@@ -68,33 +69,40 @@ public class ScheduledTasks {
         }
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final AppConfig applicationConfiguration;
+    private final FeedData drFeedData;
+
     private final AtomicInteger currentNumberOfTasks = new AtomicInteger();
     private final Scheduler scheduler =
             Schedulers.newElastic("DataFileCollector", MAX_ILDLE_THREAD_TIME_TO_LIVE_SECONDS);
     PublishedFileCache alreadyPublishedFiles = new PublishedFileCache();
 
+
     /**
      * Constructor for task registration in Datafile Workflow.
      *
      * @param applicationConfiguration - application configuration
+     * @param feedData the URLs to use to communicate with the DataRouter.
      */
-    @Autowired
-    public ScheduledTasks(AppConfig applicationConfiguration) {
+    public ScheduledTasks(AppConfig applicationConfiguration, FeedData feedData) {
         this.applicationConfiguration = applicationConfiguration;
+        this.drFeedData = feedData;
     }
 
     /**
      * Main function for scheduling for the file collection Workflow.
+     *
+     * @param contextMap context for logging.
      */
     public void scheduleMainDatafileEventTask(Map<String, String> contextMap) {
         MdcVariables.setMdcContextMap(contextMap);
         logger.trace("Execution of tasks was registered");
         applicationConfiguration.initFileStreamReader();
-        createMainTask(contextMap).subscribe(model -> onSuccess(model, contextMap), thr -> onError(thr, contextMap),
-                () -> onComplete(contextMap));
+        createMainTask(contextMap) //
+                .subscribe(model -> onSuccess(model, contextMap), thr -> onError(thr, contextMap),
+                        () -> onComplete(contextMap));
     }
 
     Flux<ConsumerDmaapModel> createMainTask(Map<String, String> contextMap) {
@@ -112,7 +120,9 @@ public class ScheduledTasks {
     }
 
     /**
-     * called in regular intervals to remove out-dated cached information.
+     * Called at regular intervals to remove out-dated cached information.
+     *
+     * @param now the time of the purge.
      */
     public void purgeCachedInformation(Instant now) {
         alreadyPublishedFiles.purge(now);
@@ -155,7 +165,7 @@ public class ScheduledTasks {
         boolean result = false;
         Path localFileName = task.fileData.getLocalFileName();
         if (!alreadyPublishedFiles.put(localFileName)) {
-            result = !createPublishedChecker().execute(localFileName.getFileName().toString(), contextMap);
+            result = !createPublishedChecker().execute(localFileName.getFileName().toString(), drFeedData, contextMap);
         }
         return result;
     }
@@ -187,7 +197,8 @@ public class ScheduledTasks {
 
 
         MdcVariables.setMdcContextMap(contextMap);
-        return createDataRouterPublisher().execute(model, maxNumberOfRetries, initialRetryTimeout, contextMap)
+        return createDataRouterPublisher()
+                .execute(model, drFeedData, maxNumberOfRetries, initialRetryTimeout, contextMap)
                 .onErrorResume(exception -> handlePublishFailure(model, exception, contextMap));
     }
 
@@ -229,12 +240,8 @@ public class ScheduledTasks {
         try {
             Files.delete(localFile);
         } catch (Exception e) {
-            logger.trace("Could not delete file: {}", localFile);
+            logger.trace("Could not delete file: {}", localFile, e);
         }
-    }
-
-    PublishedChecker createPublishedChecker() {
-        return new PublishedChecker(applicationConfiguration);
     }
 
     int getCurrentNumberOfTasks() {
@@ -245,13 +252,16 @@ public class ScheduledTasks {
         return new DMaaPMessageConsumerTask(this.applicationConfiguration);
     }
 
+    PublishedChecker createPublishedChecker() {
+        return new PublishedChecker();
+    }
+
+    DataRouterPublisher createDataRouterPublisher() {
+        return new DataRouterPublisher();
+    }
+
     FileCollector createFileCollector(FileData fileData) {
         return new FileCollector(applicationConfiguration, new FtpsClient(fileData.fileServerData()),
                 new SftpClient(fileData.fileServerData()));
     }
-
-    DataRouterPublisher createDataRouterPublisher() {
-        return new DataRouterPublisher(applicationConfiguration);
-    }
-
 }

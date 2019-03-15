@@ -22,6 +22,16 @@
                 "dmaapUserName": "dradmin",
                 "dmaapUserPassword": "dradmin",
                 "dmaapContentType": "application/octet-stream"
+            },
+            "dmaapBusControllerConfiguration": {
+                "dmaapHostName": "localhost",
+                "dmaapPortNumber": 6666,
+                "dmaapTopicName": "webapis/feeds",
+                "dmaapDrFeedName": "bulk_pm_feed",
+                "dmaapProtocol": "https",
+                "dmaapUserName": "dbcadmin",
+                "dmaapUserPassword": "dbcadmin",
+                "dmaapContentType": "application/json"
             }
         },
         "ftp": {
@@ -31,6 +41,13 @@
                 "trustedCA": "config/cacerts",
                 "trustedCAPassword": "secret"
             }
+        },
+        "security": {
+            "trustStorePath" : "change it",
+            "trustStorePasswordPath" : "change it",
+            "keyStorePath" : "change it",
+            "keyStorePasswordPath" : "change it",
+            "enableDmaapCertAuth" : "false"
         }
     }
 }

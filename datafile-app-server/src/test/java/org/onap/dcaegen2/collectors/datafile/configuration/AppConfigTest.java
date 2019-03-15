@@ -86,6 +86,7 @@ class AppConfigTest {
         appConfigUnderTest.initFileStreamReader();
         appConfigUnderTest.dmaapConsumerConfiguration = appConfigUnderTest.getDmaapConsumerConfiguration();
         appConfigUnderTest.dmaapPublisherConfiguration = appConfigUnderTest.getDmaapPublisherConfiguration();
+        appConfigUnderTest.dmaapBusControllerConfiguration = appConfigUnderTest.getDmaapBusControllerConfiguration();
         appConfigUnderTest.ftpesConfig = appConfigUnderTest.getFtpesConfiguration();
 
         // Then
@@ -93,10 +94,13 @@ class AppConfigTest {
         verify(appConfigUnderTest, times(1)).initFileStreamReader();
         Assertions.assertNotNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         Assertions.assertNotNull(appConfigUnderTest.getDmaapPublisherConfiguration());
+        Assertions.assertNotNull(appConfigUnderTest.getDmaapBusControllerConfiguration());
         Assertions.assertEquals(appConfigUnderTest.getDmaapPublisherConfiguration(),
                 appConfigUnderTest.getDmaapPublisherConfiguration());
         Assertions.assertEquals(appConfigUnderTest.getDmaapConsumerConfiguration(),
                 appConfigUnderTest.getDmaapConsumerConfiguration());
+        Assertions.assertEquals(appConfigUnderTest.getDmaapBusControllerConfiguration(),
+                appConfigUnderTest.getDmaapBusControllerConfiguration());
         Assertions.assertEquals(appConfigUnderTest.getFtpesConfiguration(), appConfigUnderTest.getFtpesConfiguration());
 
     }
@@ -115,6 +119,7 @@ class AppConfigTest {
         verify(appConfigUnderTest, times(1)).initFileStreamReader();
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         Assertions.assertNull(appConfigUnderTest.getDmaapPublisherConfiguration());
+        Assertions.assertNull(appConfigUnderTest.getDmaapBusControllerConfiguration());
         Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
 
     }
@@ -135,6 +140,7 @@ class AppConfigTest {
         verify(appConfigUnderTest, times(1)).initFileStreamReader();
         Assertions.assertNotNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         Assertions.assertNull(appConfigUnderTest.getDmaapPublisherConfiguration());
+        Assertions.assertNull(appConfigUnderTest.getDmaapBusControllerConfiguration());
         Assertions.assertNotNull(appConfigUnderTest.getFtpesConfiguration());
 
     }
@@ -161,6 +167,7 @@ class AppConfigTest {
         verify(appConfigUnderTest, times(1)).initFileStreamReader();
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         Assertions.assertNull(appConfigUnderTest.getDmaapPublisherConfiguration());
+        Assertions.assertNull(appConfigUnderTest.getDmaapBusControllerConfiguration());
         Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
     }
 
@@ -189,9 +196,21 @@ class AppConfigTest {
             dmaapProducerConfigData.addProperty("dmaapContentType", "application/octet-stream");
         }
 
+        JsonObject dmaapBusControllerConfigurationData = new JsonObject();
+        dmaapBusControllerConfigurationData.addProperty("dmaapHostName", "localhost");
+        dmaapBusControllerConfigurationData.addProperty("dmaapPortNumber", 6666);
+        dmaapBusControllerConfigurationData.addProperty("dmaapTopicName", "webapis/feeds");
+        dmaapBusControllerConfigurationData.addProperty("dmaapDrFeedName", "bulk_pm_feed");
+        dmaapBusControllerConfigurationData.addProperty("dmaapProtocol", "https");
+        dmaapBusControllerConfigurationData.addProperty("dmaapUserName", "dbcadmin");
+        dmaapBusControllerConfigurationData.addProperty("dmaapUserPassword", "dbcdmin");
+        dmaapBusControllerConfigurationData.addProperty("dmaapContentType", "application/json");
+
+
         JsonObject dmaapConfigs = new JsonObject();
         dmaapConfigs.add("dmaapConsumerConfiguration", dmaapConsumerConfigData);
         dmaapConfigs.add("dmaapProducerConfiguration", dmaapProducerConfigData);
+        dmaapConfigs.add("dmaapBusControllerConfiguration", dmaapBusControllerConfigurationData);
 
         JsonObject ftpesConfigData = new JsonObject();
         ftpesConfigData.addProperty("keyCert", "config/ftpKey.jks");

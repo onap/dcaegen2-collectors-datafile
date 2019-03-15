@@ -16,8 +16,8 @@
 
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.INVOCATION_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.REQUEST_ID;
+import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.INVOCATION_ID;
+import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.REQUEST_ID;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -30,8 +30,10 @@ import java.util.concurrent.ScheduledFuture;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
-import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
+import org.onap.dcaegen2.collectors.datafile.model.FeedData;
+import org.onap.dcaegen2.collectors.datafile.tasks.FeedCreator;
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
+import org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -56,33 +58,35 @@ import reactor.core.publisher.Mono;
 @Configuration
 @EnableScheduling
 public class SchedulerConfig {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private static final Duration SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS = Duration.ofSeconds(15);
     private static final Duration SCHEDULING_REQUEST_FOR_CONFIGURATION_DELAY = Duration.ofMinutes(5);
     private static final Duration SCHEDULING_DELAY_FOR_DATAFILE_PURGE_CACHE = Duration.ofHours(1);
-    private static final Logger logger = LoggerFactory.getLogger(SchedulerConfig.class);
     private static final Marker ENTRY = MarkerFactory.getMarker("ENTRY");
     private static final Marker EXIT = MarkerFactory.getMarker("EXIT");
     private static volatile List<ScheduledFuture<?>> scheduledFutureList = new ArrayList<>();
     private Map<String, String> contextMap;
 
     private final TaskScheduler taskScheduler;
-    private final ScheduledTasks scheduledTask;
     private final CloudConfiguration cloudConfiguration;
+    private final FeedCreator feedCreator;
+
+    private ScheduledTasks scheduledTasks;
 
     /**
      * Constructor.
      *
-     * @param taskScheduler The scheduler used to schedule the tasks.
-     * @param scheduledTasks The scheduler that will actually handle the tasks.
-     * @param cloudConfiguration The DFC configuration.
+     * @param taskScheduler scheduler.
+     * @param cloudConfiguration the DFC cloud configuration.
+     * @param feedCreator creates the feed in DataRouter.
      */
     @Autowired
-    public SchedulerConfig(TaskScheduler taskScheduler, ScheduledTasks scheduledTasks,
-            CloudConfiguration cloudConfiguration) {
+    public SchedulerConfig(TaskScheduler taskScheduler, CloudConfiguration cloudConfiguration,
+            FeedCreator feedCreator) {
         this.taskScheduler = taskScheduler;
-        this.scheduledTask = scheduledTasks;
         this.cloudConfiguration = cloudConfiguration;
+        this.feedCreator = feedCreator;
     }
 
     /**
@@ -108,7 +112,7 @@ public class SchedulerConfig {
      */
     @PostConstruct
     @ApiOperation(value = "Start task if possible")
-    public synchronized boolean tryToStartTask() {
+    public synchronized HttpStatus tryToStartTask() {
         String requestId = MDC.get(REQUEST_ID);
         if (StringUtils.isBlank(requestId)) {
             MDC.put(REQUEST_ID, UUID.randomUUID().toString());
@@ -120,19 +124,34 @@ public class SchedulerConfig {
         contextMap = MDC.getCopyOfContextMap();
         logger.info(ENTRY, "Start scheduling Datafile workflow");
         if (scheduledFutureList.isEmpty()) {
-            scheduledFutureList.add(taskScheduler.scheduleAtFixedRate(() -> cloudConfiguration.runTask(contextMap),
-                    Instant.now(), SCHEDULING_REQUEST_FOR_CONFIGURATION_DELAY));
-            scheduledFutureList.add(
-                    taskScheduler.scheduleWithFixedDelay(() -> scheduledTask.scheduleMainDatafileEventTask(contextMap),
-                            SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS));
-            scheduledFutureList
-                    .add(taskScheduler.scheduleWithFixedDelay(() -> scheduledTask.purgeCachedInformation(Instant.now()),
-                            SCHEDULING_DELAY_FOR_DATAFILE_PURGE_CACHE));
+            try {
+                FeedData feedData = feedCreator.execute(10, Duration.ofSeconds(5)).block();
+                scheduledTasks = createScheduledTasks(feedData);
 
-            return true;
+                scheduledFutureList.add(taskScheduler.scheduleAtFixedRate(() -> cloudConfiguration.runTask(contextMap),
+                        Instant.now(), SCHEDULING_REQUEST_FOR_CONFIGURATION_DELAY));
+                scheduledFutureList.add(taskScheduler.scheduleWithFixedDelay(
+                        () -> scheduledTasks.scheduleMainDatafileEventTask(contextMap),
+                        SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS));
+                scheduledFutureList.add(
+                        taskScheduler.scheduleWithFixedDelay(() -> scheduledTasks.purgeCachedInformation(Instant.now()),
+                                SCHEDULING_DELAY_FOR_DATAFILE_PURGE_CACHE));
+
+                return HttpStatus.OK;
+            } catch (RuntimeException e) {
+                logger.error("Unable to create feed.", e);
+                return HttpStatus.BAD_REQUEST;
+            }
         } else {
-            return false;
+            return HttpStatus.NOT_ACCEPTABLE;
         }
+    }
 
+    static void setScheduledFutureList(List<ScheduledFuture<?>> scheduledFutureList) {
+        SchedulerConfig.scheduledFutureList = scheduledFutureList;
+    }
+
+    ScheduledTasks createScheduledTasks(FeedData feedData) {
+        return new ScheduledTasks(cloudConfiguration, feedData);
     }
 }
