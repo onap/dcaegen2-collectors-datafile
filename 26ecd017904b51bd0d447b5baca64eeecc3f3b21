@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "48daf7b1_3880c5f6",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-15T14:20:11Z",
+      "side": 1,
+      "message": "what does .schedule mean? \n(fyi, I renamed the function in an other pending commit, readConfigurationFromFile())\nThis comment is not needed if the name of the function indicates what it does.",
+      "range": {
+        "startLine": 89,
+        "startChar": 40,
+        "endLine": 89,
+        "endChar": 49
+      },
+      "revId": "26ecd017904b51bd0d447b5baca64eeecc3f3b21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6aa464e4_ac429b53",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/JsonMessageParser.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-15T14:20:11Z",
+      "side": 1,
+      "message": "should we really have these kind of comments? Does it add any information?\nThis is more of a general question. I just saw a comment saying \"constructor\" in the constructor (and that is often taken as an example of comments that does not add any information).",
+      "range": {
+        "startLine": 91,
+        "startChar": 3,
+        "endLine": 96,
+        "endChar": 7
+      },
+      "revId": "26ecd017904b51bd0d447b5baca64eeecc3f3b21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "598a9b6f_c4f5c06b",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/PublishedFileCache.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-15T14:20:11Z",
+      "side": 1,
+      "message": "why is this changed? 5 lines that does the same as the 1 line that was there. \nThe reason for returning an Instant was that this is the java standard for how a Map behaves (and that a Java programmer should be familiar with this). \nI think that it is less intuitive that a function called put() returns a boolean.",
+      "range": {
+        "startLine": 38,
+        "startChar": 3,
+        "endLine": 45,
+        "endChar": 5
+      },
+      "revId": "26ecd017904b51bd0d447b5baca64eeecc3f3b21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0f0bf9bf_5b9355cf",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollectorTest.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-15T14:20:11Z",
+      "side": 1,
+      "message": "It would have been better to rename the file with \u0027git mv\u0027 than to delete it and create a new one.\nIt is impossible to review if there are any changes in the file.",
+      "range": {
+        "startLine": 1,
+        "startChar": 1,
+        "endLine": 19,
+        "endChar": 3
+      },
+      "revId": "26ecd017904b51bd0d447b5baca64eeecc3f3b21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
