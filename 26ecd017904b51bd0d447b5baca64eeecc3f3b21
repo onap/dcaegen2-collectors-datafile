@@ -143,6 +143,23 @@
     },
     {
       "key": {
+        "uuid": "0605211d_84981d20",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfigTest.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-15T14:40:00Z",
+      "side": 1,
+      "message": "I used Refactor -\u003e Rename for this name change also, but for this one Git/Gerrit seems to bea ble to get that it has been renamed. I don\u0027t know why it doesn\u0027t always work.",
+      "revId": "26ecd017904b51bd0d447b5baca64eeecc3f3b21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0f0bf9bf_5b9355cf",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollectorTest.java",
         "patchSetId": 8
