@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bee701d6_da35d8ac",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-03-15T23:28:14Z",
+      "side": 1,
+      "message": "Good question, I add this url because once BC is integrated with DFC, a publish url is needed when creating the feed used to publish files in DataRouter",
+      "parentUuid": "4f5b4fdd_69282d81",
+      "range": {
+        "startLine": 101,
+        "startChar": 9,
+        "endLine": 103,
+        "endChar": 91
+      },
+      "revId": "38f67ce72773adc1ae5b2a5590c051d43c7c745f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "be5ba29b_39a2419b",
         "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2019-03-15T20:43:54Z",
       "side": 1,
       "message": "wouldn\u0027t this align to \"publisher_id\" in the dmaap feed structure (documented here - https://wiki.onap.org/display/DW/MicroServices+Onboarding+in+ONAP#MicroServicesOnboardinginONAP-SampleDRconfigurationstructure)?",
+      "range": {
+        "startLine": 104,
+        "startChar": 7,
+        "endLine": 105,
+        "endChar": 37
+      },
+      "revId": "38f67ce72773adc1ae5b2a5590c051d43c7c745f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cdeb8692_27948961",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-03-15T23:28:14Z",
+      "side": 1,
+      "message": "https://docs.onap.org/en/latest/submodules/dcaegen2.git/docs/sections/components/component-specification/dmaap-connection-objects.html\n\npublisher_id is the Publisher id in Data Router.\n\nMeanwhile this dmaap_dr_feed_id is the feed id that is created by sending a POST request to the data-router provisioning server\n\nI think they are different concept. \n\nCorrect me if I have misunderstanding.",
+      "parentUuid": "be5ba29b_39a2419b",
       "range": {
         "startLine": 104,
         "startChar": 7,
