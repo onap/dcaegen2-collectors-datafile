@@ -27,16 +27,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
 import javax.net.ssl.SSLContext;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
@@ -50,7 +46,6 @@ import org.mockito.ArgumentCaptor;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.http.IHttpAsyncClientBuilder;
 import org.onap.dcaegen2.collectors.datafile.web.PublishRedirectStrategy;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 7/4/18
@@ -58,16 +53,9 @@ import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPub
  */
 class DmaapProducerReactiveHttpClientTest {
 
-    private static final String HOST = "54.45.33.2";
-    private static final String HTTPS_SCHEME = "https";
-    private static final int PORT = 1234;
-    private static final String USER_NAME = "dradmin";
-
     private static final Map<String, String> CONTEXT_MAP = new HashMap<>();
 
     private DmaapProducerReactiveHttpClient producerClientUnderTestSpy;
-
-    private DmaapPublisherConfiguration dmaapPublisherConfigurationMock = mock(DmaapPublisherConfiguration.class);
 
     private IHttpAsyncClientBuilder clientBuilderMock;
     private CloseableHttpAsyncClient clientMock;
@@ -76,13 +64,7 @@ class DmaapProducerReactiveHttpClientTest {
 
     @BeforeEach
     void setUp() {
-        when(dmaapPublisherConfigurationMock.dmaapHostName()).thenReturn(HOST);
-        when(dmaapPublisherConfigurationMock.dmaapProtocol()).thenReturn(HTTPS_SCHEME);
-        when(dmaapPublisherConfigurationMock.dmaapPortNumber()).thenReturn(PORT);
-        when(dmaapPublisherConfigurationMock.dmaapUserName()).thenReturn(USER_NAME);
-        when(dmaapPublisherConfigurationMock.dmaapUserPassword()).thenReturn(USER_NAME);
-
-        producerClientUnderTestSpy = spy(new DmaapProducerReactiveHttpClient(dmaapPublisherConfigurationMock));
+        producerClientUnderTestSpy = spy(new DmaapProducerReactiveHttpClient());
         clientBuilderMock = mock(IHttpAsyncClientBuilder.class);
         clientMock = mock(CloseableHttpAsyncClient.class);
     }
@@ -168,25 +150,5 @@ class DmaapProducerReactiveHttpClientTest {
 
         verify(clientMock).start();
         verify(clientMock).close();
-    }
-
-    @Test
-    public void addCredentialsToHead_success() {
-        HttpPut request = new HttpPut();
-
-        producerClientUnderTestSpy.addUserCredentialsToHead(request);
-
-        String plainCreds = USER_NAME + ":" + USER_NAME;
-        byte[] plainCredsBytes = plainCreds.getBytes(StandardCharsets.ISO_8859_1);
-        byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
-        String base64Creds = "Basic " + new String(base64CredsBytes);
-        Header[] authorizationHeaders = request.getHeaders("Authorization");
-        assertEquals(base64Creds, authorizationHeaders[0].getValue());
-    }
-
-    @Test
-    public void getBaseUri_success() {
-        URI uri = producerClientUnderTestSpy.getBaseUri().build();
-        assertEquals(HTTPS_SCHEME + "://" + HOST + ":" + PORT, uri.toString());
     }
 }

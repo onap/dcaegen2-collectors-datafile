@@ -30,13 +30,15 @@ import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
-import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
+import org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import reactor.core.publisher.Mono;
 
 /**
+ * Collects a file from a PNF.
+ *
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 public class FileCollector {
@@ -46,15 +48,32 @@ public class FileCollector {
     private final FtpsClient ftpsClient;
     private final SftpClient sftpClient;
 
-
+    /**
+     * Constructor.
+     *
+     * @param datafileAppConfig application configuration
+     * @param ftpsClient client to use for ftps connections to the PNF.
+     * @param sftpClient client to use for sftp connections to the PNF.
+     */
     public FileCollector(AppConfig datafileAppConfig, FtpsClient ftpsClient, SftpClient sftpClient) {
         this.datafileAppConfig = datafileAppConfig;
         this.ftpsClient = ftpsClient;
         this.sftpClient = sftpClient;
     }
 
-    public Mono<ConsumerDmaapModel> execute(FileData fileData, MessageMetaData metaData, long maxNumberOfRetries,
-            Duration firstBackoffTimeout, Map<String, String> contextMap) {
+    /**
+     * Collects a file from the PNF and stores it in the local file system.
+     *
+     * @param fileData data about the file to collect.
+     * @param metaData message meta data.
+     * @param numRetries the number of retries if the publishing fails
+     * @param firstBackoff the time to delay the first retry
+     * @param contextMap context for logging.
+     *
+     * @return the data needed to publish the file.
+     */
+    public Mono<ConsumerDmaapModel> execute(FileData fileData, MessageMetaData metaData, long numRetries,
+            Duration firstBackoff, Map<String, String> contextMap) {
         MdcVariables.setMdcContextMap(contextMap);
         logger.trace("Entering execute with {}", fileData);
         resolveKeyStore();
@@ -62,7 +81,7 @@ public class FileCollector {
         return Mono.just(fileData) //
                 .cache() //
                 .flatMap(fd -> collectFile(fileData, metaData, contextMap)) //
-                .retryBackoff(maxNumberOfRetries, firstBackoffTimeout);
+                .retryBackoff(numRetries, firstBackoff);
     }
 
     private FtpesConfig resolveConfiguration() {

@@ -44,7 +44,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Component;
 
 /**
- * Holds all configuration for the DFC.
+ * The DFC application configuration.
  *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 3/23/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
@@ -59,6 +59,7 @@ public class AppConfig {
     private static final String DMAAP = "dmaap";
     private static final String DMAAP_PRODUCER = "dmaapProducerConfiguration";
     private static final String DMAAP_CONSUMER = "dmaapConsumerConfiguration";
+    private static final String DMAAP_BUSCONTROLLER = "dmaapBusControllerConfiguration";
     private static final String FTP = "ftp";
     private static final String FTPES_CONFIGURATION = "ftpesConfiguration";
     private static final String SECURITY = "security";
@@ -67,6 +68,8 @@ public class AppConfig {
     DmaapConsumerConfiguration dmaapConsumerConfiguration;
 
     DmaapPublisherConfiguration dmaapPublisherConfiguration;
+
+    DmaapBusControllerConfiguration dmaapBusControllerConfiguration;
 
     FtpesConfig ftpesConfig;
 
@@ -81,12 +84,16 @@ public class AppConfig {
         return dmaapPublisherConfiguration;
     }
 
+    public DmaapBusControllerConfiguration getDmaapBusControllerConfiguration() {
+        return dmaapBusControllerConfiguration;
+    }
+
     public FtpesConfig getFtpesConfiguration() {
         return ftpesConfig;
     }
 
     /**
-     * Reads the configuration from file.schedule
+     * Reads the configuration from file.
      */
     public void initFileStreamReader() {
 
@@ -110,6 +117,11 @@ public class AppConfig {
                         jsonObject.getAsJsonObject(CONFIG).getAsJsonObject(DMAAP).getAsJsonObject(DMAAP_PRODUCER),
                         rootElement.getAsJsonObject().getAsJsonObject(CONFIG).getAsJsonObject(SECURITY)),
                         DmaapPublisherConfiguration.class);
+
+                dmaapBusControllerConfiguration = deserializeType(gsonBuilder, concatenateJsonObjects(
+                        jsonObject.getAsJsonObject(CONFIG).getAsJsonObject(DMAAP).getAsJsonObject(DMAAP_BUSCONTROLLER),
+                        rootElement.getAsJsonObject().getAsJsonObject(CONFIG).getAsJsonObject(SECURITY)),
+                        DmaapBusControllerConfiguration.class);
             }
         } catch (IOException e) {
             logger.error("Problem with file loading, file: {}", filepath, e);

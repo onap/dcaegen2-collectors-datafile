@@ -21,6 +21,14 @@ services:
       --dmaap.dmaapProducerConfiguration.dmaapUserName=dradmin
       --dmaap.dmaapProducerConfiguration.dmaapUserPassword=dradmin
       --dmaap.dmaapProducerConfiguration.dmaapContentType=application/octet-stream
+      --dmaap.dmaapBusControllerConfiguration.dmaapHostName=<HOST-TO-SET-DMAAP-DR>
+      --dmaap.dmaapBusControllerConfiguration.dmaapPortNumber=8443
+      --dmaap.dmaapBusControllerConfiguration.dmaapTopicName=publish
+      --dmaap.dmaapBusControllerConfiguration.dmaapDrFeedName=bulk_pm_feed
+      --dmaap.dmaapBusControllerConfiguration.dmaapProtocol=https
+      --dmaap.dmaapBusControllerConfiguration.dmaapUserName=dradmin
+      --dmaap.dmaapBusControllerConfiguration.dmaapUserPassword=dradmin
+      --dmaap.dmaapBusControllerConfiguration.dmaapContentType=application/octet-stream
       --dmaap.ftpesConfig.keyCert=config/ftpKey.jks
       --dmaap.ftpesConfig.keyPassword=secret
       --dmaap.ftpesConfig.trustedCA=config/cacerts

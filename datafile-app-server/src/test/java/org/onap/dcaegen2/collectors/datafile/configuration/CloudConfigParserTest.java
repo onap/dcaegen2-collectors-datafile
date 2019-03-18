@@ -54,7 +54,7 @@ class CloudConfigParserTest {
                     .dmaapUserPassword("dradmin") //
                     .dmaapPortNumber(3907) //
                     .dmaapProtocol("https") //
-                    .dmaapContentType("application/json") //
+                    .dmaapContentType("application/octet-stream") //
                     .dmaapHostName("message-router.onap.svc.cluster.local") //
                     .dmaapUserName("dradmin") //
                     .trustStorePath("trustStorePath") //
@@ -63,6 +63,23 @@ class CloudConfigParserTest {
                     .keyStorePasswordPath("keyStorePasswordPath") //
                     .enableDmaapCertAuth(true) //
                     .build();
+
+    private static final ImmutableDmaapBusControllerConfiguration CORRECT_DMAAP_BUSCONTROLLER_CONFIG =
+            new ImmutableDmaapBusControllerConfiguration.Builder() //
+                    .dmaapTopicName("webapis/feeds") //
+                    .dmaapDrFeedName("bulk_pm_feed") //
+                    .dmaapUserPassword("dbcadmin") //
+                    .dmaapPortNumber(6666) //
+                    .dmaapProtocol("https") //
+                    .dmaapContentType("application/json") //
+                    .dmaapHostName("message-router.onap.svc.cluster.local") //
+                    .dmaapUserName("dbcadmin") //
+                    .trustStorePath("trustStorePath") //
+                    .trustStorePasswordPath("trustStorePasswordPath") //
+                    .keyStorePath("keyStorePath") //
+                    .keyStorePasswordPath("keyStorePasswordPath") //
+                    .enableDmaapCertAuth(true) //
+                    .build(); //
 
     private static final ImmutableFtpesConfig CORRECT_FTPES_CONFIGURATION = //
             new ImmutableFtpesConfig.Builder() //
@@ -91,6 +108,14 @@ class CloudConfigParserTest {
     }
 
     @Test
+    public void shouldCreateDmaapBusControllerConfigurationCorrectly() {
+        DmaapBusControllerConfiguration dmaapBusControllerConfig = cloudConfigParser.getDmaapBusControllerConfig();
+
+        assertThat(dmaapBusControllerConfig).isNotNull();
+        assertThat(dmaapBusControllerConfig).isEqualToComparingFieldByField(CORRECT_DMAAP_BUSCONTROLLER_CONFIG);
+    }
+
+    @Test
     public void shouldCreateFtpesConfigurationCorrectly() {
         FtpesConfig ftpesConfig = cloudConfigParser.getFtpesConfig();
 
@@ -112,13 +137,25 @@ class CloudConfigParserTest {
         config.addProperty("dmaap.dmaapConsumerConfiguration.dmaapProtocol", "http");
         config.addProperty("dmaap.dmaapConsumerConfiguration.consumerId", "C12");
         config.addProperty("dmaap.dmaapConsumerConfiguration.consumerGroup", "OpenDCAE-c12");
+
         config.addProperty("dmaap.dmaapProducerConfiguration.dmaapTopicName", "publish");
         config.addProperty("dmaap.dmaapProducerConfiguration.dmaapProtocol", "https");
-        config.addProperty("dmaap.dmaapProducerConfiguration.dmaapContentType", "application/json");
+        config.addProperty("dmaap.dmaapProducerConfiguration.dmaapContentType", "application/octet-stream");
         config.addProperty("dmaap.dmaapProducerConfiguration.dmaapHostName", "message-router.onap.svc.cluster.local");
         config.addProperty("dmaap.dmaapProducerConfiguration.dmaapPortNumber", 3907);
         config.addProperty("dmaap.dmaapProducerConfiguration.dmaapUserName", "dradmin");
         config.addProperty("dmaap.dmaapProducerConfiguration.dmaapUserPassword", "dradmin");
+
+        config.addProperty("dmaap.dmaapBusControllerConfiguration.dmaapTopicName", "webapis/feeds");
+        config.addProperty("dmaap.dmaapBusControllerConfiguration.dmaapDrFeedName", "bulk_pm_feed");
+        config.addProperty("dmaap.dmaapBusControllerConfiguration.dmaapProtocol", "https");
+        config.addProperty("dmaap.dmaapBusControllerConfiguration.dmaapContentType", "application/json");
+        config.addProperty("dmaap.dmaapBusControllerConfiguration.dmaapHostName",
+                "message-router.onap.svc.cluster.local");
+        config.addProperty("dmaap.dmaapBusControllerConfiguration.dmaapPortNumber", 6666);
+        config.addProperty("dmaap.dmaapBusControllerConfiguration.dmaapUserName", "dbcadmin");
+        config.addProperty("dmaap.dmaapBusControllerConfiguration.dmaapUserPassword", "dbcadmin");
+
         config.addProperty("dmaap.ftpesConfig.keyCert", "/config/ftpKey.jks");
         config.addProperty("dmaap.ftpesConfig.keyPassword", "secret");
         config.addProperty("dmaap.ftpesConfig.trustedCA", "config/cacerts");
