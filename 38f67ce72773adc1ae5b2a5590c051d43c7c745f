@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "5b8dec5f_c5c3c206",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-03-18T14:07:37Z",
+      "side": 1,
+      "message": "just double check, And I agree with you. I will remove this publish endpoint",
+      "parentUuid": "bee701d6_da35d8ac",
+      "range": {
+        "startLine": 101,
+        "startChar": 9,
+        "endLine": 103,
+        "endChar": 91
+      },
+      "revId": "38f67ce72773adc1ae5b2a5590c051d43c7c745f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "be5ba29b_39a2419b",
         "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
         "patchSetId": 1
