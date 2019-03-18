@@ -19,6 +19,7 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -26,9 +27,12 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
@@ -43,6 +47,7 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -56,6 +61,7 @@ public class ScheduledTasksTest {
 
     private int uniqueValue = 0;
     private DMaaPMessageConsumerTask consumerMock;
+    private PublishedChecker publishedCheckerMock;
     private FileCollector fileCollectorMock;
     private DataRouterPublisher dataRouterMock;
 
@@ -75,13 +81,15 @@ public class ScheduledTasksTest {
                 .keyStorePasswordPath("keyStorePasswordPath") //
                 .enableDmaapCertAuth(true) //
                 .build(); //
+        doReturn(dmaapPublisherConfiguration).when(appConfig).getDmaapPublisherConfiguration();
 
         consumerMock = mock(DMaaPMessageConsumerTask.class);
+        publishedCheckerMock = mock(PublishedChecker.class);
         fileCollectorMock = mock(FileCollector.class);
         dataRouterMock = mock(DataRouterPublisher.class);
 
-        doReturn(dmaapPublisherConfiguration).when(appConfig).getDmaapPublisherConfiguration();
         doReturn(consumerMock).when(testedObject).createConsumerTask();
+        doReturn(publishedCheckerMock).when(testedObject).createPublishedChecker();
         doReturn(fileCollectorMock).when(testedObject).createFileCollector(notNull());
         doReturn(dataRouterMock).when(testedObject).createDataRouterPublisher();
     }
@@ -146,7 +154,7 @@ public class ScheduledTasksTest {
                 .timeZoneOffset("") //
                 .name("") //
                 .location("") //
-                .internalLocation("internalLocation") //
+                .internalLocation(Paths.get("internalLocation")) //
                 .compression("") //
                 .fileFormatType("") //
                 .fileFormatVersion("") //
@@ -174,6 +182,8 @@ public class ScheduledTasksTest {
         Flux<FileReadyMessage> fileReadyMessages = fileReadyMessageFlux(noOfEvents, noOfFilesPerEvent, true);
         doReturn(fileReadyMessages).when(consumerMock).execute();
 
+        doReturn(false).when(publishedCheckerMock).execute(anyString(), any());
+
         Mono<ConsumerDmaapModel> collectedFile = Mono.just(consumerData());
         doReturn(collectedFile).when(fileCollectorMock).execute(notNull(), notNull(), anyLong(), notNull(), any());
         doReturn(collectedFile).when(dataRouterMock).execute(notNull(), anyLong(), notNull(), any());
@@ -196,6 +206,8 @@ public class ScheduledTasksTest {
     public void consume_fetchFailedOnce() {
         Flux<FileReadyMessage> fileReadyMessages = fileReadyMessageFlux(2, 2, true); // 4 files
         doReturn(fileReadyMessages).when(consumerMock).execute();
+
+        doReturn(false).when(publishedCheckerMock).execute(anyString(), any());
 
         Mono<ConsumerDmaapModel> collectedFile = Mono.just(consumerData());
         Mono<Object> error = Mono.error(new Exception("problem"));
@@ -228,6 +240,8 @@ public class ScheduledTasksTest {
         Flux<FileReadyMessage> fileReadyMessages = fileReadyMessageFlux(2, 2, true); // 4 files
         doReturn(fileReadyMessages).when(consumerMock).execute();
 
+        doReturn(false).when(publishedCheckerMock).execute(anyString(), any());
+
         Mono<ConsumerDmaapModel> collectedFile = Mono.just(consumerData());
         doReturn(collectedFile).when(fileCollectorMock).execute(notNull(), notNull(), anyLong(), notNull(), any());
 
@@ -259,6 +273,8 @@ public class ScheduledTasksTest {
         // 100 files with the same name
         Flux<FileReadyMessage> fileReadyMessages = fileReadyMessageFlux(noOfEvents, noOfFilesPerEvent, false);
         doReturn(fileReadyMessages).when(consumerMock).execute();
+
+        doReturn(false).when(publishedCheckerMock).execute(anyString(), any());
 
         Mono<ConsumerDmaapModel> collectedFile = Mono.just(consumerData());
         doReturn(collectedFile).when(fileCollectorMock).execute(notNull(), notNull(), anyLong(), notNull(), any());
