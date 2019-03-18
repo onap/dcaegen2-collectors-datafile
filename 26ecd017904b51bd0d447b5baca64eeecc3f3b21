@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "497e7f7d_4375d0d8",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/PublishedFileCache.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-18T07:18:24Z",
+      "side": 1,
+      "message": "The intention with the previous implementation was that it would work like any cache. An entry would remain for a time after anyone has accessed it. \nNot X hours after it was put there.",
+      "parentUuid": "f3cc1c2a_55a4f476",
+      "range": {
+        "startLine": 38,
+        "startChar": 3,
+        "endLine": 45,
+        "endChar": 5
+      },
+      "revId": "26ecd017904b51bd0d447b5baca64eeecc3f3b21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0605211d_84981d20",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfigTest.java",
         "patchSetId": 8
