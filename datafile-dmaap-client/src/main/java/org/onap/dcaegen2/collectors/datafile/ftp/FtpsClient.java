@@ -152,6 +152,7 @@ public class FtpsClient implements FileCollectClient {
 
     private TrustManager createTrustManager(Path trustedCAPath, String trustedCAPassword)
             throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
+        logger.trace("Creating trust manager {}", trustedCAPath);
         try (InputStream fis = createInputStream(trustedCAPath)) {
             KeyStore keyStore = KeyStore.getInstance("JKS");
             keyStore.load(fis, trustedCAPassword.toCharArray());

@@ -37,10 +37,19 @@ import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
 public abstract class FileData {
     private static final String DATAFILE_TMPDIR = "/tmp/onap_datafile/";
 
+    /**
+     * @return the file name with no path
+     */
     public abstract String name();
 
+    /**
+     * @return the URL to use to fetch the file from the PNF
+     */
     public abstract String location();
 
+    /**
+     * @return the file transfer protocol to use for fetching the file
+     */
     public abstract Scheme scheme();
 
     public abstract String compression();
@@ -49,17 +58,23 @@ public abstract class FileData {
 
     public abstract String fileFormatVersion();
 
+    public abstract MessageMetaData messageMetaData();
+
+    public String sourceName() {
+        return messageMetaData().sourceName();
+    }
+
     public String remoteFilePath() {
         return URI.create(location()).getPath();
     }
 
-    public Path getLocalFileName() {
-        URI uri = URI.create(location());
-        return createLocalFileName(uri.getHost(), name());
+
+    public synchronized Path getLocalFileName() {
+       return createLocalFileName(messageMetaData().sourceName(), name());
     }
 
-    public static Path createLocalFileName(String host, String fileName) {
-        return Paths.get(DATAFILE_TMPDIR, host + "_" + fileName);
+    public static Path createLocalFileName(String sourceName, String fileName) {
+        return Paths.get(DATAFILE_TMPDIR, sourceName + "_" + fileName);
     }
 
     public FileServerData fileServerData() {

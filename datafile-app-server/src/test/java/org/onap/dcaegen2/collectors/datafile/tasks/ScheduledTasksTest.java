@@ -26,9 +26,13 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
@@ -43,6 +47,7 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -58,6 +63,7 @@ public class ScheduledTasksTest {
     private DMaaPMessageConsumerTask consumerMock;
     private FileCollector fileCollectorMock;
     private DataRouterPublisher dataRouterMock;
+    private Map<String, String> contextMap = new HashMap<String, String>();
 
     @BeforeEach
     private void setUp() {
@@ -107,6 +113,7 @@ public class ScheduledTasksTest {
                 .location("ftpes://192.168.0.101/ftp/rop/" + PM_FILE_NAME + instanceNumber) //
                 .scheme(Scheme.FTPS) //
                 .compression("") //
+                .messageMetaData(messageMetaData())
                 .build();
     }
 
@@ -122,9 +129,7 @@ public class ScheduledTasksTest {
     }
 
     private FileReadyMessage createFileReadyMessage(int numberOfFiles, boolean uniqueNames) {
-        MessageMetaData md = messageMetaData();
-        return ImmutableFileReadyMessage.builder().pnfName(md.sourceName()).messageMetaData(md)
-                .files(files(numberOfFiles, uniqueNames)).build();
+        return ImmutableFileReadyMessage.builder().files(files(numberOfFiles, uniqueNames)).build();
     }
 
     private Flux<FileReadyMessage> fileReadyMessageFlux(int numberOfEvents, int filesPerEvent, boolean uniqueNames) {
@@ -175,17 +180,17 @@ public class ScheduledTasksTest {
         doReturn(fileReadyMessages).when(consumerMock).execute();
 
         Mono<ConsumerDmaapModel> collectedFile = Mono.just(consumerData());
-        doReturn(collectedFile).when(fileCollectorMock).execute(notNull(), notNull(), anyLong(), notNull(), any());
+        doReturn(collectedFile).when(fileCollectorMock).execute(notNull(), anyLong(), notNull(), notNull());
         doReturn(collectedFile).when(dataRouterMock).execute(notNull(), anyLong(), notNull(), any());
 
-        StepVerifier.create(testedObject.createMainTask(any())).expectSubscription() //
+        StepVerifier.create(testedObject.createMainTask(contextMap)).expectSubscription() //
                 .expectNextCount(noOfFiles) //
                 .expectComplete() //
                 .verify(); //
 
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
         verify(consumerMock, times(1)).execute();
-        verify(fileCollectorMock, times(noOfFiles)).execute(notNull(), notNull(), anyLong(), notNull(), any());
+        verify(fileCollectorMock, times(noOfFiles)).execute(notNull(), anyLong(), notNull(), notNull());
         verify(dataRouterMock, times(noOfFiles)).execute(notNull(), anyLong(), notNull(), any());
         verifyNoMoreInteractions(dataRouterMock);
         verifyNoMoreInteractions(fileCollectorMock);
@@ -203,19 +208,19 @@ public class ScheduledTasksTest {
         // First file collect will fail, 3 will succeed
         doReturn(error, collectedFile, collectedFile, collectedFile) //
                 .when(fileCollectorMock) //
-                .execute(any(FileData.class), any(MessageMetaData.class), anyLong(), any(Duration.class), any());
+                .execute(any(FileData.class), anyLong(), any(Duration.class), notNull());
 
         doReturn(collectedFile).when(dataRouterMock).execute(notNull(), anyLong(), notNull(), any());
         doReturn(collectedFile).when(dataRouterMock).execute(notNull(), anyLong(), notNull(), any());
 
-        StepVerifier.create(testedObject.createMainTask(any())).expectSubscription() //
+        StepVerifier.create(testedObject.createMainTask(contextMap)).expectSubscription() //
                 .expectNextCount(3) //
                 .expectComplete() //
                 .verify(); //
 
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
         verify(consumerMock, times(1)).execute();
-        verify(fileCollectorMock, times(4)).execute(notNull(), notNull(), anyLong(), notNull(), any());
+        verify(fileCollectorMock, times(4)).execute(notNull(), anyLong(), notNull(), notNull());
         verify(dataRouterMock, times(3)).execute(notNull(), anyLong(), notNull(), any());
         verifyNoMoreInteractions(dataRouterMock);
         verifyNoMoreInteractions(fileCollectorMock);
@@ -229,7 +234,7 @@ public class ScheduledTasksTest {
         doReturn(fileReadyMessages).when(consumerMock).execute();
 
         Mono<ConsumerDmaapModel> collectedFile = Mono.just(consumerData());
-        doReturn(collectedFile).when(fileCollectorMock).execute(notNull(), notNull(), anyLong(), notNull(), any());
+        doReturn(collectedFile).when(fileCollectorMock).execute(notNull(), anyLong(), notNull(), notNull());
 
         Mono<Object> error = Mono.error(new Exception("problem"));
         // One publish will fail, the rest will succeed
@@ -237,14 +242,14 @@ public class ScheduledTasksTest {
                 .when(dataRouterMock) //
                 .execute(notNull(), anyLong(), notNull(), any());
 
-        StepVerifier.create(testedObject.createMainTask(any())).expectSubscription() //
+        StepVerifier.create(testedObject.createMainTask(contextMap)).expectSubscription() //
                 .expectNextCount(3) // 3 completed files
                 .expectComplete() //
                 .verify(); //
 
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
         verify(consumerMock, times(1)).execute();
-        verify(fileCollectorMock, times(4)).execute(notNull(), notNull(), anyLong(), notNull(), any());
+        verify(fileCollectorMock, times(4)).execute(notNull(), anyLong(), notNull(), notNull());
         verify(dataRouterMock, times(4)).execute(notNull(), anyLong(), notNull(), any());
         verifyNoMoreInteractions(dataRouterMock);
         verifyNoMoreInteractions(fileCollectorMock);
@@ -261,17 +266,17 @@ public class ScheduledTasksTest {
         doReturn(fileReadyMessages).when(consumerMock).execute();
 
         Mono<ConsumerDmaapModel> collectedFile = Mono.just(consumerData());
-        doReturn(collectedFile).when(fileCollectorMock).execute(notNull(), notNull(), anyLong(), notNull(), any());
+        doReturn(collectedFile).when(fileCollectorMock).execute(notNull(), anyLong(), notNull(), notNull());
         doReturn(collectedFile).when(dataRouterMock).execute(notNull(), anyLong(), notNull(), any());
 
-        StepVerifier.create(testedObject.createMainTask(any())).expectSubscription() //
+        StepVerifier.create(testedObject.createMainTask(contextMap)).expectSubscription() //
                 .expectNextCount(1) // 99 is skipped
                 .expectComplete() //
                 .verify(); //
 
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
         verify(consumerMock, times(1)).execute();
-        verify(fileCollectorMock, times(1)).execute(notNull(), notNull(), anyLong(), notNull(), any());
+        verify(fileCollectorMock, times(1)).execute(notNull(), anyLong(), notNull(), notNull());
         verify(dataRouterMock, times(1)).execute(notNull(), anyLong(), notNull(), any());
         verifyNoMoreInteractions(dataRouterMock);
         verifyNoMoreInteractions(fileCollectorMock);
