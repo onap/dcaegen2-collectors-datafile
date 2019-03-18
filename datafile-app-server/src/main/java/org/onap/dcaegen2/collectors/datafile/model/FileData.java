@@ -1,17 +1,21 @@
-/*
- * ============LICENSE_START======================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
- * ===============================================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
+/*-
+ * ============LICENSE_START=======================================================
+ *  Copyright (C) 2018-2019 Nordix Foundation.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- * ============LICENSE_END========================================================================
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ * ============LICENSE_END=========================================================
  */
 
 package org.onap.dcaegen2.collectors.datafile.model;
@@ -34,35 +38,40 @@ import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
  */
 @Value.Immutable
 @Gson.TypeAdapters
-public abstract class FileData {
-    private static final String DATAFILE_TMPDIR = "/tmp/onap_datafile/";
+public interface FileData {
 
-    public abstract String name();
+    public String name();
 
-    public abstract String location();
+    public String location();
 
-    public abstract Scheme scheme();
+    public Scheme scheme();
 
-    public abstract String compression();
+    public String compression();
 
-    public abstract String fileFormatType();
+    public String fileFormatType();
 
-    public abstract String fileFormatVersion();
+    public String fileFormatVersion();
 
-    public String remoteFilePath() {
+    public default String remoteFilePath() {
         return URI.create(location()).getPath();
     }
 
-    public Path getLocalFileName() {
+    /**
+     * Get the path to the locally stored file.
+     *
+     * @return the path to the locally stored file.
+     */
+    public default Path getLocalFileName() {
         URI uri = URI.create(location());
-        return createLocalFileName(uri.getHost(), name());
+        return Paths.get("/tmp/onap_datafile/" + uri.getHost() + "_" + name());
     }
 
-    public static Path createLocalFileName(String host, String fileName) {
-        return Paths.get(DATAFILE_TMPDIR, host + "_" + fileName);
-    }
-
-    public FileServerData fileServerData() {
+    /**
+     * Get the data about the file server where the file should be collected from.
+     *
+     * @return the data about the file server where the file should be collected from.
+     */
+    public default FileServerData fileServerData() {
         URI uri = URI.create(location());
         Optional<String[]> userInfo = getUserNameAndPasswordIfGiven(uri.getUserInfo());
         // @formatter:off
@@ -77,7 +86,15 @@ public abstract class FileData {
         // @formatter:on
     }
 
-    private Optional<String[]> getUserNameAndPasswordIfGiven(String userInfoString) {
+    /**
+     * Get the user name and password from the user info string.
+     *
+     * @param userInfoString the user info string from the URI.
+     *
+     * @return an <code>Optional</code> with an array with the user name and password if the user info string contained
+     *         them. An empty <code>Optional</code> if not.
+     */
+    default Optional<String[]> getUserNameAndPasswordIfGiven(String userInfoString) {
         if (userInfoString != null) {
             String[] userAndPassword = userInfoString.split(":");
             if (userAndPassword.length == 2) {

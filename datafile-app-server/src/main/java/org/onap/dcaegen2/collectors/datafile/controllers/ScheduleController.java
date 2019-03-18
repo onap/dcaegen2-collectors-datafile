@@ -2,27 +2,27 @@
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  * ============LICENSE_END========================================================================
  */
 
 package org.onap.dcaegen2.collectors.datafile.controllers;
 
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.INVOCATION_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.REQUEST_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_INVOCATION_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_ONAP_REQUEST_ID;
+import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.INVOCATION_ID;
+import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.REQUEST_ID;
+import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.X_INVOCATION_ID;
+import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.X_ONAP_REQUEST_ID;
+
 import java.util.UUID;
+
 import org.apache.commons.lang3.StringUtils;
 import org.onap.dcaegen2.collectors.datafile.configuration.SchedulerConfig;
 import org.slf4j.Logger;
@@ -36,11 +36,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Mono;
 
 /**
+ * The HTTP api to start and stop DFC.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/5/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
@@ -58,11 +61,12 @@ public class ScheduleController {
         this.schedulerConfig = schedulerConfig;
     }
 
-    public Mono<ResponseEntity<String>> startTasks() {
-        logger.trace("Start scheduling worker request");
-        return Mono.fromSupplier(schedulerConfig::tryToStartTask).map(this::createStartTaskResponse);
-    }
-
+    /**
+     * Start the DFC.
+     *
+     * @param headers the request headers.
+     * @return the response.
+     */
     @RequestMapping(value = "start", method = RequestMethod.GET)
     @ApiOperation(value = "Start scheduling worker request")
     public Mono<ResponseEntity<String>> startTasks(@RequestHeader HttpHeaders headers) {
@@ -80,6 +84,11 @@ public class ScheduleController {
         return Mono.fromSupplier(schedulerConfig::tryToStartTask).map(this::createStartTaskResponse);
     }
 
+    /**
+     * Stop the DFC.
+     *
+     * @return the response.
+     */
     @RequestMapping(value = "stopDatafile", method = RequestMethod.GET)
     @ApiOperation(value = "Receiving stop scheduling worker request")
     public Mono<ResponseEntity<String>> stopTask() {
@@ -88,11 +97,14 @@ public class ScheduleController {
     }
 
     @ApiOperation(value = "Sends success or error response on starting task execution")
-    private ResponseEntity<String> createStartTaskResponse(boolean wasScheduled) {
-        if (wasScheduled) {
-            return new ResponseEntity<>("Datafile Service has been started!", HttpStatus.CREATED);
+    private ResponseEntity<String> createStartTaskResponse(HttpStatus startResult) {
+        if (HttpStatus.CREATED.equals(startResult)) {
+            return new ResponseEntity<>("Datafile Service has been started!", startResult);
+        } else if (HttpStatus.NOT_ACCEPTABLE.equals(startResult)) {
+            return new ResponseEntity<>("Datafile Service is still running!", startResult);
         } else {
-            return new ResponseEntity<>("Datafile Service is still running!", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("Datafile Service not started! " //
+                    + "Unable to create the DataRouter feed, see log for details.", startResult);
         }
     }
 }
