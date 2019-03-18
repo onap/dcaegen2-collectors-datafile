@@ -35,8 +35,6 @@ import static org.mockito.Mockito.when;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URI;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,64 +43,56 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.onap.dcaegen2.collectors.datafile.model.FeedData;
+import org.onap.dcaegen2.collectors.datafile.model.ImmutableFeedData;
 import org.onap.dcaegen2.collectors.datafile.service.HttpUtils;
 import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerReactiveHttpClient;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
-import org.springframework.web.util.DefaultUriBuilderFactory;
-import org.springframework.web.util.UriBuilder;
 
 /**
  * @author <a href="mailto:maxime.bonneau@est.tech">Maxime Bonneau</a>
  *
  */
 public class PublishedCheckerTest {
-    private static final String EMPTY_CONTENT = "[]";
     private static final String FEEDLOG_TOPIC = "feedlog";
     private static final String FEED_ID = "1";
     private static final String HTTPS_SCHEME = "https";
     private static final String HOST = "54.45.33.2";
     private static final int PORT = 1234;
+    private static final String USERNAME = "username";
+    private static final String PASSWORD = "password";
+
     private static final String SOURCE_NAME = "oteNB5309";
     private static final String FILE_NAME = "A20161224.1030-1045.bin.gz";
     private static final String LOCAL_FILE_NAME = SOURCE_NAME + "_" + FILE_NAME;
 
     private static final Map<String, String> CONTEXT_MAP = new HashMap<>();
 
-    private static DmaapPublisherConfiguration publisherConfigurationMock = mock(DmaapPublisherConfiguration.class);
-    private static AppConfig appConfigMock;
+    private static final String EMPTY_CONTENT = "[]";
+
+
+    private static final FeedData FEED_DATA = ImmutableFeedData.builder() //
+            .publishedCheckUrl(HTTPS_SCHEME + "://" + HOST + ":" + PORT + "/" + FEEDLOG_TOPIC + "/" + FEED_ID) //
+            .publishUrl("") //
+            .username(USERNAME) //
+            .password(PASSWORD) //
+            .build();
+
     private DmaapProducerReactiveHttpClient httpClientMock = mock(DmaapProducerReactiveHttpClient.class);
 
     private PublishedChecker publishedCheckerUnderTestSpy;
-
-    /**
-     * Sets up data for the tests.
-     */
-    @BeforeAll
-    public static void setUp() {
-        when(publisherConfigurationMock.dmaapHostName()).thenReturn(HOST);
-        when(publisherConfigurationMock.dmaapProtocol()).thenReturn(HTTPS_SCHEME);
-        when(publisherConfigurationMock.dmaapPortNumber()).thenReturn(PORT);
-
-        appConfigMock = mock(AppConfig.class);
-        when(appConfigMock.getDmaapPublisherConfiguration()).thenReturn(publisherConfigurationMock);
-    }
 
     @Test
     public void executeWhenNotPublished_returnsFalse() throws Exception {
         prepareMocksForTests(HttpUtils.SC_OK, EMPTY_CONTENT, null);
 
-        boolean isPublished = publishedCheckerUnderTestSpy.execute(LOCAL_FILE_NAME, CONTEXT_MAP);
+        boolean isPublished = publishedCheckerUnderTestSpy.execute(LOCAL_FILE_NAME, FEED_DATA, CONTEXT_MAP);
 
         assertFalse(isPublished);
 
         ArgumentCaptor<HttpUriRequest> requestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
-        verify(httpClientMock).getBaseUri();
-        verify(httpClientMock).addUserCredentialsToHead(any(HttpUriRequest.class));
         verify(httpClientMock).getDmaapProducerResponseWithCustomTimeout(requestCaptor.capture(), anyInt(), any());
         verifyNoMoreInteractions(httpClientMock);
 
@@ -112,9 +102,7 @@ public class PublishedCheckerTest {
         assertEquals(HTTPS_SCHEME, actualUri.getScheme());
         assertEquals(HOST, actualUri.getHost());
         assertEquals(PORT, actualUri.getPort());
-        Path actualPath = Paths.get(actualUri.getPath());
-        assertTrue(FEEDLOG_TOPIC.equals(actualPath.getName(0).toString()));
-        assertTrue(FEED_ID.equals(actualPath.getName(1).toString()));
+        assertEquals("/" + FEEDLOG_TOPIC + "/" + FEED_ID, actualUri.getPath());
         String actualQuery = actualUri.getQuery();
         assertTrue(actualQuery.contains("type=pub"));
         assertTrue(actualQuery.contains("filename=" + LOCAL_FILE_NAME));
@@ -124,7 +112,7 @@ public class PublishedCheckerTest {
     public void executeWhenDataRouterReturnsNok_returnsFalse() throws Exception {
         prepareMocksForTests(HttpUtils.SC_BAD_REQUEST, EMPTY_CONTENT, null);
 
-        boolean isPublished = publishedCheckerUnderTestSpy.execute(LOCAL_FILE_NAME, CONTEXT_MAP);
+        boolean isPublished = publishedCheckerUnderTestSpy.execute(LOCAL_FILE_NAME, FEED_DATA, CONTEXT_MAP);
 
         assertFalse(isPublished);
     }
@@ -133,7 +121,7 @@ public class PublishedCheckerTest {
     public void executeWhenPublished_returnsTrue() throws Exception {
         prepareMocksForTests(HttpUtils.SC_OK, "[" + LOCAL_FILE_NAME + "]", null);
 
-        boolean isPublished = publishedCheckerUnderTestSpy.execute(LOCAL_FILE_NAME, CONTEXT_MAP);
+        boolean isPublished = publishedCheckerUnderTestSpy.execute(LOCAL_FILE_NAME, FEED_DATA, CONTEXT_MAP);
 
         assertTrue(isPublished);
     }
@@ -142,19 +130,15 @@ public class PublishedCheckerTest {
     public void executeWhenErrorInDataRouter_returnsFalse() throws Exception {
         prepareMocksForTests(HttpUtils.SC_OK, EMPTY_CONTENT, new DatafileTaskException(""));
 
-        boolean isPublished = publishedCheckerUnderTestSpy.execute(LOCAL_FILE_NAME, CONTEXT_MAP);
+        boolean isPublished = publishedCheckerUnderTestSpy.execute(LOCAL_FILE_NAME, FEED_DATA, CONTEXT_MAP);
 
         assertFalse(isPublished);
     }
 
     final void prepareMocksForTests(int responseCode, String content, Exception exception) throws Exception {
-        publishedCheckerUnderTestSpy = spy(new PublishedChecker(appConfigMock));
+        publishedCheckerUnderTestSpy = spy(new PublishedChecker());
 
-        doReturn(publisherConfigurationMock).when(publishedCheckerUnderTestSpy).resolveConfiguration();
-        doReturn(httpClientMock).when(publishedCheckerUnderTestSpy).resolveClient();
-
-        UriBuilder uriBuilder = new DefaultUriBuilderFactory().builder().scheme(HTTPS_SCHEME).host(HOST).port(PORT);
-        when(httpClientMock.getBaseUri()).thenReturn(uriBuilder);
+        doReturn(httpClientMock).when(publishedCheckerUnderTestSpy).createClient();
 
         HttpResponse httpResponseMock = mock(HttpResponse.class);
         if (exception == null) {
