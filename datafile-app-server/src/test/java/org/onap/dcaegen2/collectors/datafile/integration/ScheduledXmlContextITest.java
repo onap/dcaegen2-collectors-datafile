@@ -18,36 +18,26 @@ package org.onap.dcaegen2.collectors.datafile.integration;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.onap.dcaegen2.collectors.datafile.integration.junit5.mockito.MockitoExtension;
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 
 /**
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 3/27/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 
-@Configuration
-@ComponentScan
-@ExtendWith({MockitoExtension.class, SpringExtension.class})
-@ContextConfiguration(locations = {"classpath:scheduled-context.xml"})
-class ScheduledXmlContextITest extends AbstractTestNGSpringContextTests {
+class ScheduledXmlContextITest {
 
     private static final int WAIT_FOR_SCHEDULING = 1;
 
-    @Autowired
-    private ScheduledTasks scheduledTask;
+    private ScheduledTasks scheduledTask = mock(ScheduledTasks.class);
 
     @Test
     void testScheduling() {

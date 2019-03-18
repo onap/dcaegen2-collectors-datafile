@@ -42,6 +42,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.onap.dcaegen2.collectors.datafile.integration.junit5.mockito.MockitoExtension;
 
 /**
+ * Tests the AppConfig.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/9/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
@@ -85,18 +87,18 @@ class AppConfigTest {
         doReturn(inputStream).when(appConfigUnderTest).getInputStream(any());
         appConfigUnderTest.initFileStreamReader();
         appConfigUnderTest.dmaapConsumerConfiguration = appConfigUnderTest.getDmaapConsumerConfiguration();
-        appConfigUnderTest.dmaapPublisherConfiguration = appConfigUnderTest.getDmaapPublisherConfiguration();
+        appConfigUnderTest.dmaapBusControllerConfiguration = appConfigUnderTest.getDmaapBusControllerConfiguration();
         appConfigUnderTest.ftpesConfig = appConfigUnderTest.getFtpesConfiguration();
 
         // Then
         verify(appConfigUnderTest, times(1)).setFilepath(anyString());
         verify(appConfigUnderTest, times(1)).initFileStreamReader();
         Assertions.assertNotNull(appConfigUnderTest.getDmaapConsumerConfiguration());
-        Assertions.assertNotNull(appConfigUnderTest.getDmaapPublisherConfiguration());
-        Assertions.assertEquals(appConfigUnderTest.getDmaapPublisherConfiguration(),
-                appConfigUnderTest.getDmaapPublisherConfiguration());
+        Assertions.assertNotNull(appConfigUnderTest.getDmaapBusControllerConfiguration());
         Assertions.assertEquals(appConfigUnderTest.getDmaapConsumerConfiguration(),
                 appConfigUnderTest.getDmaapConsumerConfiguration());
+        Assertions.assertEquals(appConfigUnderTest.getDmaapBusControllerConfiguration(),
+                appConfigUnderTest.getDmaapBusControllerConfiguration());
         Assertions.assertEquals(appConfigUnderTest.getFtpesConfiguration(), appConfigUnderTest.getFtpesConfiguration());
 
     }
@@ -114,7 +116,7 @@ class AppConfigTest {
         verify(appConfigUnderTest, times(1)).setFilepath(anyString());
         verify(appConfigUnderTest, times(1)).initFileStreamReader();
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
-        Assertions.assertNull(appConfigUnderTest.getDmaapPublisherConfiguration());
+        Assertions.assertNull(appConfigUnderTest.getDmaapBusControllerConfiguration());
         Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
 
     }
@@ -133,8 +135,8 @@ class AppConfigTest {
         // Then
         verify(appConfigUnderTest, times(1)).setFilepath(anyString());
         verify(appConfigUnderTest, times(1)).initFileStreamReader();
-        Assertions.assertNotNull(appConfigUnderTest.getDmaapConsumerConfiguration());
-        Assertions.assertNull(appConfigUnderTest.getDmaapPublisherConfiguration());
+        Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
+        Assertions.assertNull(appConfigUnderTest.getDmaapBusControllerConfiguration());
         Assertions.assertNotNull(appConfigUnderTest.getFtpesConfiguration());
 
     }
@@ -153,14 +155,13 @@ class AppConfigTest {
         doReturn(jsonElement).when(appConfigUnderTest).getJsonElement(any(JsonParser.class), any(InputStream.class));
         appConfigUnderTest.initFileStreamReader();
         appConfigUnderTest.dmaapConsumerConfiguration = appConfigUnderTest.getDmaapConsumerConfiguration();
-        appConfigUnderTest.dmaapPublisherConfiguration = appConfigUnderTest.getDmaapPublisherConfiguration();
         appConfigUnderTest.ftpesConfig = appConfigUnderTest.getFtpesConfiguration();
 
         // Then
         verify(appConfigUnderTest, times(1)).setFilepath(anyString());
         verify(appConfigUnderTest, times(1)).initFileStreamReader();
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
-        Assertions.assertNull(appConfigUnderTest.getDmaapPublisherConfiguration());
+        Assertions.assertNull(appConfigUnderTest.getDmaapBusControllerConfiguration());
         Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
     }
 
@@ -169,29 +170,31 @@ class AppConfigTest {
         dmaapConsumerConfigData.addProperty("dmaapHostName", "localhost");
         dmaapConsumerConfigData.addProperty("dmaapPortNumber", 2222);
         dmaapConsumerConfigData.addProperty("dmaapTopicName", "/events/unauthenticated.VES_NOTIFICATION_OUTPUT");
-        dmaapConsumerConfigData.addProperty("dmaapProtocol", "http");
-        dmaapConsumerConfigData.addProperty("dmaapUserName", "admin");
-        dmaapConsumerConfigData.addProperty("dmaapUserPassword", "admin");
-        dmaapConsumerConfigData.addProperty("dmaapContentType", "application/json");
+        if (correct) {
+            dmaapConsumerConfigData.addProperty("dmaapProtocol", "http");
+            dmaapConsumerConfigData.addProperty("dmaapUserName", "admin");
+            dmaapConsumerConfigData.addProperty("dmaapUserPassword", "admin");
+            dmaapConsumerConfigData.addProperty("dmaapContentType", "application/json");
+        }
         dmaapConsumerConfigData.addProperty("consumerId", "C12");
         dmaapConsumerConfigData.addProperty("consumerGroup", "OpenDcae-c12");
         dmaapConsumerConfigData.addProperty("timeoutMs", -1);
         dmaapConsumerConfigData.addProperty("messageLimit", 1);
 
-        JsonObject dmaapProducerConfigData = new JsonObject();
-        dmaapProducerConfigData.addProperty("dmaapHostName", "localhost");
-        dmaapProducerConfigData.addProperty("dmaapPortNumber", 3907);
-        dmaapProducerConfigData.addProperty("dmaapTopicName", "publish");
-        dmaapProducerConfigData.addProperty("dmaapProtocol", "https");
-        if (correct) {
-            dmaapProducerConfigData.addProperty("dmaapUserName", "dradmin");
-            dmaapProducerConfigData.addProperty("dmaapUserPassword", "dradmin");
-            dmaapProducerConfigData.addProperty("dmaapContentType", "application/octet-stream");
-        }
+        JsonObject dmaapBusControllerConfigurationData = new JsonObject();
+        dmaapBusControllerConfigurationData.addProperty("dmaapHostName", "localhost");
+        dmaapBusControllerConfigurationData.addProperty("dmaapPortNumber", 6666);
+        dmaapBusControllerConfigurationData.addProperty("dmaapTopicName", "webapis/feeds");
+        dmaapBusControllerConfigurationData.addProperty("dmaapDrFeedName", "bulk_pm_feed");
+        dmaapBusControllerConfigurationData.addProperty("dmaapProtocol", "https");
+        dmaapBusControllerConfigurationData.addProperty("dmaapUserName", "dbcadmin");
+        dmaapBusControllerConfigurationData.addProperty("dmaapUserPassword", "dbcdmin");
+        dmaapBusControllerConfigurationData.addProperty("dmaapContentType", "application/json");
+
 
         JsonObject dmaapConfigs = new JsonObject();
         dmaapConfigs.add("dmaapConsumerConfiguration", dmaapConsumerConfigData);
-        dmaapConfigs.add("dmaapProducerConfiguration", dmaapProducerConfigData);
+        dmaapConfigs.add("dmaapBusControllerConfiguration", dmaapBusControllerConfigurationData);
 
         JsonObject ftpesConfigData = new JsonObject();
         ftpesConfigData.addProperty("keyCert", "config/ftpKey.jks");

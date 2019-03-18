@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
@@ -17,13 +17,14 @@
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import com.google.gson.JsonObject;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
+
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.providers.ReactiveCloudConfigurationProvider;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
 /**
+ * The cloud configuration for DFC.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 9/19/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
@@ -48,8 +52,8 @@ import reactor.core.scheduler.Schedulers;
 public class CloudConfiguration extends AppConfig {
     private static final Logger logger = LoggerFactory.getLogger(CloudConfiguration.class);
     private ReactiveCloudConfigurationProvider reactiveCloudConfigurationProvider;
-    private DmaapPublisherConfiguration dmaapPublisherCloudConfiguration;
     private DmaapConsumerConfiguration dmaapConsumerCloudConfiguration;
+    private DmaapBusControllerConfiguration dmaapBusControllerCloudConfiguration;
     private FtpesConfig ftpesCloudConfiguration;
 
     @Value("#{systemEnvironment}")
@@ -62,7 +66,8 @@ public class CloudConfiguration extends AppConfig {
 
 
     protected void runTask(Map<String, String> contextMap) {
-        Flux.defer(() -> EnvironmentProcessor.evaluate(systemEnvironment, contextMap)).subscribeOn(Schedulers.parallel())
+        Flux.defer(() -> EnvironmentProcessor.evaluate(systemEnvironment, contextMap))
+                .subscribeOn(Schedulers.parallel()) //
                 .subscribe(this::parsingConfigSuccess, this::parsingConfigError);
     }
 
@@ -83,23 +88,26 @@ public class CloudConfiguration extends AppConfig {
     private void parseCloudConfig(JsonObject jsonObject) {
         logger.info("Received application configuration: {}", jsonObject);
         CloudConfigParser cloudConfigParser = new CloudConfigParser(jsonObject);
-        dmaapPublisherCloudConfiguration = cloudConfigParser.getDmaapPublisherConfig();
         dmaapConsumerCloudConfiguration = cloudConfigParser.getDmaapConsumerConfig();
+        dmaapBusControllerCloudConfiguration = cloudConfigParser.getDmaapBusControllerConfig();
         ftpesCloudConfiguration = cloudConfigParser.getFtpesConfig();
     }
 
     @Override
-    public DmaapPublisherConfiguration getDmaapPublisherConfiguration() {
-        return Optional.ofNullable(dmaapPublisherCloudConfiguration).orElse(super.getDmaapPublisherConfiguration());
+    public DmaapConsumerConfiguration getDmaapConsumerConfiguration() {
+        return Optional.ofNullable(dmaapConsumerCloudConfiguration) //
+                .orElse(super.getDmaapConsumerConfiguration());
     }
 
     @Override
-    public DmaapConsumerConfiguration getDmaapConsumerConfiguration() {
-        return Optional.ofNullable(dmaapConsumerCloudConfiguration).orElse(super.getDmaapConsumerConfiguration());
+    public DmaapBusControllerConfiguration getDmaapBusControllerConfiguration() {
+        return Optional.ofNullable(dmaapBusControllerCloudConfiguration) //
+                .orElse(super.getDmaapBusControllerConfiguration());
     }
 
     @Override
     public FtpesConfig getFtpesConfiguration() {
-        return Optional.ofNullable(ftpesCloudConfiguration).orElse(super.getFtpesConfiguration());
+        return Optional.ofNullable(ftpesCloudConfiguration) //
+                .orElse(super.getFtpesConfiguration());
     }
 }

@@ -543,20 +543,6 @@ node_types:
         type: string
       dmaap.dmaapConsumerConfiguration.timeoutMs:
         type: string
-      dmaap.dmaapProducerConfiguration.dmaapContentType:
-        type: string
-      dmaap.dmaapProducerConfiguration.dmaapHostName:
-        type: string
-      dmaap.dmaapProducerConfiguration.dmaapPortNumber:
-        type: string
-      dmaap.dmaapProducerConfiguration.dmaapProtocol:
-        type: string
-      dmaap.dmaapProducerConfiguration.dmaapTopicName:
-        type: string
-      dmaap.dmaapProducerConfiguration.dmaapUserName:
-        type: string
-      dmaap.dmaapProducerConfiguration.dmaapUserPassword:
-        type: string
       dmaap_dr_feed_id:
         type: string
       ftp.ftpesConfiguration.keyCert:

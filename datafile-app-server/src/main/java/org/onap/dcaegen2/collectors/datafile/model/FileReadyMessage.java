@@ -26,6 +26,8 @@ import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 
 /**
+ * Contains all the info about a fileReady message.
+ *
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 @Value.Immutable

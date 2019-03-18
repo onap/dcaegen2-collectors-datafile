@@ -36,7 +36,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -44,7 +43,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Component;
 
 /**
- * Holds all configuration for the DFC.
+ * The DFC application configuration.
  *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 3/23/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
@@ -57,8 +56,8 @@ public class AppConfig {
 
     private static final String CONFIG = "configs";
     private static final String DMAAP = "dmaap";
-    private static final String DMAAP_PRODUCER = "dmaapProducerConfiguration";
     private static final String DMAAP_CONSUMER = "dmaapConsumerConfiguration";
+    private static final String DMAAP_BUSCONTROLLER = "dmaapBusControllerConfiguration";
     private static final String FTP = "ftp";
     private static final String FTPES_CONFIGURATION = "ftpesConfiguration";
     private static final String SECURITY = "security";
@@ -66,7 +65,7 @@ public class AppConfig {
 
     DmaapConsumerConfiguration dmaapConsumerConfiguration;
 
-    DmaapPublisherConfiguration dmaapPublisherConfiguration;
+    DmaapBusControllerConfiguration dmaapBusControllerConfiguration;
 
     FtpesConfig ftpesConfig;
 
@@ -77,8 +76,8 @@ public class AppConfig {
         return dmaapConsumerConfiguration;
     }
 
-    public DmaapPublisherConfiguration getDmaapPublisherConfiguration() {
-        return dmaapPublisherConfiguration;
+    public DmaapBusControllerConfiguration getDmaapBusControllerConfiguration() {
+        return dmaapBusControllerConfiguration;
     }
 
     public FtpesConfig getFtpesConfiguration() {
@@ -86,7 +85,7 @@ public class AppConfig {
     }
 
     /**
-     * Reads the configuration from file.schedule
+     * Reads the configuration from file.
      */
     public void initFileStreamReader() {
 
@@ -106,10 +105,10 @@ public class AppConfig {
                         rootElement.getAsJsonObject().getAsJsonObject(CONFIG).getAsJsonObject(SECURITY)),
                         DmaapConsumerConfiguration.class);
 
-                dmaapPublisherConfiguration = deserializeType(gsonBuilder, concatenateJsonObjects(
-                        jsonObject.getAsJsonObject(CONFIG).getAsJsonObject(DMAAP).getAsJsonObject(DMAAP_PRODUCER),
+                dmaapBusControllerConfiguration = deserializeType(gsonBuilder, concatenateJsonObjects(
+                        jsonObject.getAsJsonObject(CONFIG).getAsJsonObject(DMAAP).getAsJsonObject(DMAAP_BUSCONTROLLER),
                         rootElement.getAsJsonObject().getAsJsonObject(CONFIG).getAsJsonObject(SECURITY)),
-                        DmaapPublisherConfiguration.class);
+                        DmaapBusControllerConfiguration.class);
             }
         } catch (IOException e) {
             logger.error("Problem with file loading, file: {}", filepath, e);

@@ -34,13 +34,6 @@ topology_template:
         dmaap.dmaapConsumerConfiguration.dmaapTopicName: /events/unauthenticated.VES_NOTIFICATION_OUTPUT
         dmaap.dmaapConsumerConfiguration.messageLimit: '1'
         dmaap.dmaapConsumerConfiguration.timeoutMs: '-1'
-        dmaap.dmaapProducerConfiguration.dmaapContentType: application/octet-stream
-        dmaap.dmaapProducerConfiguration.dmaapHostName: localhost
-        dmaap.dmaapProducerConfiguration.dmaapPortNumber: '3907'
-        dmaap.dmaapProducerConfiguration.dmaapProtocol: https
-        dmaap.dmaapProducerConfiguration.dmaapTopicName: publish
-        dmaap.dmaapProducerConfiguration.dmaapUserName: dradmin
-        dmaap.dmaapProducerConfiguration.dmaapUserPassword: dradmin
         dmaap_dr_feed_id: bulk_pm_feed
         ftp.ftpesConfiguration.keyCert: config/dfc.jks
         ftp.ftpesConfiguration.keyPassword: secret

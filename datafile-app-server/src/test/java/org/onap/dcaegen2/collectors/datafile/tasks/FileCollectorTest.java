@@ -28,6 +28,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,7 +69,8 @@ public class FileCollectorTest {
     private static final int PORT_22 = 22;
     private static final String PM_FILE_NAME = "A20161224.1030-1045.bin.gz";
     private static final String REMOTE_FILE_LOCATION = "/ftp/rop/" + PM_FILE_NAME;
-    private static final Path LOCAL_FILE_LOCATION = FileData.createLocalFileName(SERVER_ADDRESS, PM_FILE_NAME);
+    private static final Path LOCAL_FILE_LOCATION =
+            Paths.get("/tmp/onap_datafile/", SERVER_ADDRESS + "_" + PM_FILE_NAME);
     private static final String USER = "usr";
     private static final String PWD = "pwd";
     private static final String FTPES_LOCATION =
