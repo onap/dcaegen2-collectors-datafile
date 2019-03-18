@@ -17,6 +17,7 @@
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Map;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
@@ -40,22 +41,16 @@ import reactor.core.publisher.Mono;
 public class FileCollector {
 
     private static final Logger logger = LoggerFactory.getLogger(FileCollector.class);
-    private AppConfig datafileAppConfig;
-    private final FtpsClient ftpsClient;
-    private final SftpClient sftpClient;
+    private final AppConfig datafileAppConfig;
 
-
-    public FileCollector(AppConfig datafileAppConfig, FtpsClient ftpsClient, SftpClient sftpClient) {
+    public FileCollector(AppConfig datafileAppConfig) {
         this.datafileAppConfig = datafileAppConfig;
-        this.ftpsClient = ftpsClient;
-        this.sftpClient = sftpClient;
     }
 
     public Mono<ConsumerDmaapModel> execute(FileData fileData, MessageMetaData metaData, long maxNumberOfRetries,
             Duration firstBackoffTimeout, Map<String, String> contextMap) {
         MdcVariables.setMdcContextMap(contextMap);
         logger.trace("Entering execute with {}", fileData);
-        resolveKeyStore();
 
         //@formatter:off
         return Mono.just(fileData)
@@ -63,18 +58,6 @@ public class FileCollector {
             .flatMap(fd -> collectFile(fileData, metaData, contextMap))
             .retryBackoff(maxNumberOfRetries, firstBackoffTimeout);
         //@formatter:on
-    }
-
-    private FtpesConfig resolveConfiguration() {
-        return datafileAppConfig.getFtpesConfiguration();
-    }
-
-    private void resolveKeyStore() {
-        FtpesConfig ftpesConfig = resolveConfiguration();
-        ftpsClient.setKeyCertPath(ftpesConfig.keyCert());
-        ftpsClient.setKeyCertPassword(ftpesConfig.keyPassword());
-        ftpsClient.setTrustedCAPath(ftpesConfig.trustedCA());
-        ftpsClient.setTrustedCAPassword(ftpesConfig.trustedCAPassword());
     }
 
     private Mono<ConsumerDmaapModel> collectFile(FileData fileData, MessageMetaData metaData,
@@ -85,11 +68,8 @@ public class FileCollector {
         final String remoteFile = fileData.remoteFilePath();
         final Path localFile = fileData.getLocalFileName();
 
-        try {
+        try (FileCollectClient currentClient = createClient(fileData)) {
             localFile.getParent().toFile().mkdir(); // Create parent directories
-
-            FileCollectClient currentClient = selectClient(fileData);
-
             currentClient.collectFile(remoteFile, localFile);
             return Mono.just(getConsumerDmaapModel(fileData, metaData, localFile));
         } catch (Exception throwable) {
@@ -98,12 +78,12 @@ public class FileCollector {
         }
     }
 
-    private FileCollectClient selectClient(FileData fileData) throws DatafileTaskException {
+    private FileCollectClient createClient(FileData fileData) throws DatafileTaskException {
         switch (fileData.scheme()) {
             case SFTP:
-                return sftpClient;
+                return createSftpClient(fileData);
             case FTPS:
-                return ftpsClient;
+                return createFtpsClient(fileData);
             default:
                 throw new DatafileTaskException("Unhandeled protocol: " + fileData.scheme());
         }
@@ -128,5 +108,18 @@ public class FileCollector {
                 .fileFormatVersion(fileData.fileFormatVersion())
                 .build();
         // @formatter:on
+    }
+
+    SftpClient createSftpClient(FileData fileData) throws DatafileTaskException {
+        SftpClient client = new SftpClient(fileData.fileServerData());
+        client.open();
+        return client;
+    }
+
+    FtpsClient createFtpsClient(FileData fileData) throws DatafileTaskException {
+        FtpesConfig config = datafileAppConfig.getFtpesConfiguration();
+        FtpsClient client = new FtpsClient(fileData.fileServerData());
+        client.open(config.keyCert(), config.keyPassword(), Paths.get(config.trustedCA()), config.trustedCAPassword());
+        return client;
     }
 }

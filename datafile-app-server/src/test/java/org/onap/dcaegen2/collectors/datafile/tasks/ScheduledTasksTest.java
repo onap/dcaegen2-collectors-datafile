@@ -82,7 +82,7 @@ public class ScheduledTasksTest {
 
         doReturn(dmaapPublisherConfiguration).when(appConfig).getDmaapPublisherConfiguration();
         doReturn(consumerMock).when(testedObject).createConsumerTask();
-        doReturn(fileCollectorMock).when(testedObject).createFileCollector(notNull());
+        doReturn(fileCollectorMock).when(testedObject).createFileCollector();
         doReturn(dataRouterMock).when(testedObject).createDataRouterPublisher();
     }
 

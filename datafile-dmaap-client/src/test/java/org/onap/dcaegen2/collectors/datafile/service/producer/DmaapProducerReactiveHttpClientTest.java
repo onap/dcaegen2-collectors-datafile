@@ -17,21 +17,30 @@
 package org.onap.dcaegen2.collectors.datafile.service.producer;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -50,6 +59,7 @@ import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPub
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.util.DefaultUriBuilderFactory;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -80,12 +90,13 @@ class DmaapProducerReactiveHttpClientTest {
     private IFileSystemResource fileSystemResourceMock = mock(IFileSystemResource.class);
     private CloseableHttpAsyncClient clientMock;
     private HttpResponse responseMock = mock(HttpResponse.class);
+    @SuppressWarnings("unchecked")
     private Future<HttpResponse> futureMock = mock(Future.class);
     private StatusLine statusLine = mock(StatusLine.class);
     private InputStream fileStream;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
         when(dmaapPublisherConfigurationMock.dmaapHostName()).thenReturn(HOST);
         when(dmaapPublisherConfigurationMock.dmaapProtocol()).thenReturn(HTTPS_SCHEME);
         when(dmaapPublisherConfigurationMock.dmaapPortNumber()).thenReturn(PORT);
@@ -111,15 +122,15 @@ class DmaapProducerReactiveHttpClientTest {
                 .build();
         //formatter:on
 
-        dmaapProducerReactiveHttpClient = new DmaapProducerReactiveHttpClient(dmaapPublisherConfigurationMock);
+        dmaapProducerReactiveHttpClient = spy(new DmaapProducerReactiveHttpClient(dmaapPublisherConfigurationMock));
         dmaapProducerReactiveHttpClient.setFileSystemResource(fileSystemResourceMock);
         clientMock = mock(CloseableHttpAsyncClient.class);
-        dmaapProducerReactiveHttpClient.setWebClient(clientMock);
+        doReturn(clientMock).when(dmaapProducerReactiveHttpClient).createWebClient();
     }
 
     @Test
     void getHttpResponse_Success() throws Exception {
-        mockWebClientDependantObject(true);
+        mockWebClientDependantObject();
 
         HttpPut httpPut = new HttpPut();
         httpPut.addHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_OCTET_STREAM_CONTENT_TYPE);
@@ -151,24 +162,22 @@ class DmaapProducerReactiveHttpClientTest {
 
     @Test
     void getHttpResponse_Fail() throws Exception {
-        mockWebClientDependantObject(false);
-        StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel, any()))
-        .expectError()
-        .verify();
+        Map<String, String> contextMap = new HashMap<>();
+        doReturn(futureMock).when(clientMock).execute(any(), any());
+        doThrow(new InterruptedException()).when(futureMock).get();
+        StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel, contextMap)) //
+           .expectError() //
+           .verify(); //
     }
 
-    private void mockWebClientDependantObject(boolean success)
+    private void mockWebClientDependantObject()
             throws IOException, InterruptedException, ExecutionException {
         fileStream = new ByteArrayInputStream(FILE_CONTENT.getBytes());
         when(fileSystemResourceMock.getInputStream()).thenReturn(fileStream);
-        if (success) {
-            when(clientMock.execute(any(HttpPut.class), any())).thenReturn(futureMock);
-            when(futureMock.get()).thenReturn(responseMock);
-            when(responseMock.getStatusLine()).thenReturn(statusLine);
-            when(statusLine.getStatusCode()).thenReturn(HttpUtils.SC_OK);
-        } else {
-            when(clientMock.execute(any(HttpPut.class), any())).thenReturn(futureMock);
-            when(futureMock.get()).thenThrow(new InterruptedException());
-        }
+        when(clientMock.execute(any(HttpPut.class), any())).thenReturn(futureMock);
+        when(futureMock.get()).thenReturn(responseMock);
+        when(responseMock.getStatusLine()).thenReturn(statusLine);
+        when(statusLine.getStatusCode()).thenReturn(HttpUtils.SC_OK);
+
     }
 }
