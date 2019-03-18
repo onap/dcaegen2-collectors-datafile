@@ -505,59 +505,7 @@ node_types:
   tosca.dcae.nodes.dockerApp.dcaegen2.collectors.datafile.datafile-app-server:
     derived_from: tosca.dcae.nodes.dockerApp
     properties:
-      buscontroller_feed_publishing_endpoint:
-        type: string
       datafile.policy:
-        type: string
-      dmaap.dmaapBusControllerConfiguration.dmaapContentType:
-        type: string
-      dmaap.dmaapBusControllerConfiguration.dmaapDrFeedName:
-        type: string
-      dmaap.dmaapBusControllerConfiguration.dmaapHostName:
-        type: string
-      dmaap.dmaapBusControllerConfiguration.dmaapPortNumber:
-        type: string
-      dmaap.dmaapBusControllerConfiguration.dmaapProtocol:
-        type: string
-      dmaap.dmaapBusControllerConfiguration.dmaapTopicName:
-        type: string
-      dmaap.dmaapBusControllerConfiguration.dmaapUserName:
-        type: string
-      dmaap.dmaapBusControllerConfiguration.dmaapUserPassword:
-        type: string
-      dmaap.dmaapConsumerConfiguration.consumerGroup:
-        type: string
-      dmaap.dmaapConsumerConfiguration.consumerId:
-        type: string
-      dmaap.dmaapConsumerConfiguration.dmaapContentType:
-        type: string
-      dmaap.dmaapConsumerConfiguration.dmaapHostName:
-        type: string
-      dmaap.dmaapConsumerConfiguration.dmaapPortNumber:
-        type: string
-      dmaap.dmaapConsumerConfiguration.dmaapProtocol:
-        type: string
-      dmaap.dmaapConsumerConfiguration.dmaapTopicName:
-        type: string
-      dmaap.dmaapConsumerConfiguration.messageLimit:
-        type: string
-      dmaap.dmaapConsumerConfiguration.timeoutMs:
-        type: string
-      dmaap.dmaapProducerConfiguration.dmaapContentType:
-        type: string
-      dmaap.dmaapProducerConfiguration.dmaapHostName:
-        type: string
-      dmaap.dmaapProducerConfiguration.dmaapPortNumber:
-        type: string
-      dmaap.dmaapProducerConfiguration.dmaapProtocol:
-        type: string
-      dmaap.dmaapProducerConfiguration.dmaapTopicName:
-        type: string
-      dmaap.dmaapProducerConfiguration.dmaapUserName:
-        type: string
-      dmaap.dmaapProducerConfiguration.dmaapUserPassword:
-        type: string
-      dmaap_dr_feed_id:
         type: string
       ftp.ftpesConfiguration.keyCert:
         type: string

@@ -8,7 +8,7 @@
   "datafile_publish_dr": {
     "type": "data_router",
     "dmaap_info": {
-      "publish_url": ""
+      "publish_url": "/publish"
     }
   }
 }
