@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "b72c3786_bebb7bb2",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollector.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-19T14:49:56Z",
+      "side": 1,
+      "message": "I created a work around so that the createXX returns a non open client. Now the warning is gone.",
+      "parentUuid": "6dd2cec4_7d366616",
+      "revId": "43efe86781474e336128348e3f24201f78bd08a9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d34e968c_00dc8737",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollector.java",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2019-03-19T09:51:45Z",
       "side": 1,
       "message": "I get the following warning for this:\nUse try-with-resources or close this \"FtpsClient\" in a \"finally\" clause. SonarLint On-The-Fly Issue\nThis is taken care of when the method createFtpsClient is called, but the warning is still there. So the question is if it is possible to somehow get rid of this warning?  Otherwise this introduces a code smell in Sonar.",
+      "revId": "43efe86781474e336128348e3f24201f78bd08a9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6bd2f26a_2e63ccd7",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollector.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-19T14:49:56Z",
+      "side": 1,
+      "message": "Same thing.",
+      "parentUuid": "d34e968c_00dc8737",
       "revId": "43efe86781474e336128348e3f24201f78bd08a9",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
