@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "af172de2_89376ea5",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollectorTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-19T08:06:34Z",
+      "side": 1,
+      "message": "this might as well be an attribute (instead of created in each class). It is not used for anything in this test.",
+      "range": {
+        "startLine": 164,
+        "startChar": 5,
+        "endLine": 164,
+        "endChar": 57
+      },
+      "revId": "304c85eae21cecf8a6a5a5be9822414f2ac088a4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
