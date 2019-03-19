@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "388691a6_631c81e3",
+        "filename": "datafile-app-server/config/datafile_endpoints.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3997
+      },
+      "writtenOn": "2019-03-19T19:11:17Z",
+      "side": 1,
+      "message": "DR bus controller and DR could be different microservice with different IP, why remove dmaapProducer?",
+      "revId": "166231a9c4d128141d6bd0b480466eb91acf6c57",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
