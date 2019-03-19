@@ -44,6 +44,20 @@ public class FileDataTest {
     private static final String LOCATION_WITHOUT_USER =
             FTPES_SCHEME + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
 
+
+    private MessageMetaData messageMetaData() {
+        return ImmutableMessageMetaData.builder()
+            .productName("PRODUCT_NAME")
+            .vendorName("VENDOR_NAME")
+            .lastEpochMicrosec("LAST_EPOCH_MICROSEC")
+            .sourceName("SOURCE_NAME")
+            .startEpochMicrosec("START_EPOCH_MICROSEC")
+            .timeZoneOffset("TIME_ZONE_OFFSET")
+            .changeIdentifier("PM_MEAS_CHANGE_IDENTIFIER")
+            .changeType("FILE_READY_CHANGE_TYPE")
+            .build();
+    }
+
     private FileData properFileDataWithUser() {
         // @formatter:off
         return ImmutableFileData.builder()
@@ -53,6 +67,7 @@ public class FileDataTest {
          .fileFormatType("type")
          .fileFormatVersion("version")
          .scheme(Scheme.FTPS)
+         .messageMetaData(messageMetaData())
          .build();
         // @formatter:on
     }
@@ -66,6 +81,7 @@ public class FileDataTest {
             .fileFormatType("type")
             .fileFormatVersion("version")
             .scheme(Scheme.FTPS)
+            .messageMetaData(messageMetaData())
             .build();
         // @formatter:on
     }

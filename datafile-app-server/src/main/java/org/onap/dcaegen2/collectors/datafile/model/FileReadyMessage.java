@@ -31,9 +31,5 @@ import org.immutables.value.Value;
 @Value.Immutable
 @Gson.TypeAdapters
 public interface FileReadyMessage {
-    public String pnfName();
-
-    public MessageMetaData messageMetaData();
-
     public List<FileData> files();
 }

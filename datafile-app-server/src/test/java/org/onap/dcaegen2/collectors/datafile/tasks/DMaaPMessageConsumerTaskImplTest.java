@@ -152,13 +152,12 @@ public class DMaaPMessageConsumerTaskImplTest {
                 .compression(GZIP_COMPRESSION)
                 .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
                 .fileFormatVersion(FILE_FORMAT_VERSION)
+                .messageMetaData(messageMetaData)
                 .build();
 
         List<FileData> files = new ArrayList<>();
         files.add(ftpesFileData);
         expectedFtpesMessage = ImmutableFileReadyMessage.builder()
-                .pnfName(SOURCE_NAME)
-                .messageMetaData(messageMetaData)
                 .files(files)
                 .build();
 
@@ -183,6 +182,7 @@ public class DMaaPMessageConsumerTaskImplTest {
                 .compression(GZIP_COMPRESSION)
                 .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE)
                 .fileFormatVersion(FILE_FORMAT_VERSION)
+                .messageMetaData(messageMetaData)
                 .build();
 
         ImmutableConsumerDmaapModel consumerDmaapModel = ImmutableConsumerDmaapModel.builder()
@@ -204,8 +204,6 @@ public class DMaaPMessageConsumerTaskImplTest {
         files = new ArrayList<>();
         files.add(sftpFileData);
         expectedSftpMessage = ImmutableFileReadyMessage.builder()
-                .pnfName(SOURCE_NAME)
-                .messageMetaData(messageMetaData)
                 .files(files)
                 .build();
         //@formatter:on

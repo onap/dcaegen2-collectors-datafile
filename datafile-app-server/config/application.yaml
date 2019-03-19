@@ -15,7 +15,7 @@ logging:
     org.springframework: ERROR
     org.springframework.data: ERROR
     org.springframework.web.reactive.function.client.ExchangeFunctions: ERROR
-    org.onap.dcaegen2.collectors.datafile: ERROR
+    org.onap.dcaegen2.collectors.datafile: WARN
   file: /var/log/ONAP/application.log
 app:
   filepath: /opt/app/datafile/config/datafile_endpoints.json
