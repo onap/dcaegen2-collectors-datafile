@@ -18,39 +18,43 @@ package org.onap.dcaegen2.collectors.datafile.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.junit.jupiter.api.Test;
 
 class CommonFunctionsTest {
-    // @formatter:off
-    private ConsumerDmaapModel model = ImmutableConsumerDmaapModel.builder()
-            .productName("NrRadio")
-            .vendorName("Ericsson")
-            .lastEpochMicrosec("8745745764578")
-            .sourceName("oteNB5309")
-            .startEpochMicrosec("8745745764578")
-            .timeZoneOffset("UTC+05:00")
-            .name("A20161224.1030-1045.bin.gz")
-            .location("ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1145.bin.gz")
-            .internalLocation("target/A20161224.1030-1045.bin.gz")
-            .compression("gzip")
-            .fileFormatType("org.3GPP.32.435#measCollec")
-            .fileFormatVersion("V10")
+    private static final Path INTERNAL_LOCATION = Paths.get("target/A20161224.1030-1045.bin.gz");
+
+    private ConsumerDmaapModel model = ImmutableConsumerDmaapModel.builder() //
+            .productName("NrRadio") //
+            .vendorName("Ericsson") //
+            .lastEpochMicrosec("8745745764578") //
+            .sourceName("oteNB5309") //
+            .startEpochMicrosec("8745745764578") //
+            .timeZoneOffset("UTC+05:00") //
+            .name("A20161224.1030-1045.bin.gz") //
+            .location("ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1145.bin.gz") //
+            .internalLocation(INTERNAL_LOCATION) //
+            .compression("gzip") //
+            .fileFormatType("org.3GPP.32.435#measCollec") //
+            .fileFormatVersion("V10") //
             .build();
 
-    private static final String EXPECTED_RESULT =
-             "{\"productName\":\"NrRadio\","
-            + "\"vendorName\":\"Ericsson\","
-            + "\"lastEpochMicrosec\":\"8745745764578\","
-            + "\"sourceName\":\"oteNB5309\","
-            + "\"startEpochMicrosec\":\"8745745764578\","
-            + "\"timeZoneOffset\":\"UTC+05:00\","
-            + "\"name\":\"A20161224.1030-1045.bin.gz\","
-            + "\"location\":\"ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1145.bin.gz\","
-            + "\"internalLocation\":\"target/A20161224.1030-1045.bin.gz\","
-            + "\"compression\":\"gzip\","
-            + "\"fileFormatType\":\"org.3GPP.32.435#measCollec\","
-            + "\"fileFormatVersion\":\"V10\"}";
-    // @formatter:on
+    private static final String EXPECTED_RESULT = //
+            "{\"productName\":\"NrRadio\"," //
+                    + "\"vendorName\":\"Ericsson\"," + "\"lastEpochMicrosec\":\"8745745764578\"," //
+                    + "\"sourceName\":\"oteNB5309\"," //
+                    + "\"startEpochMicrosec\":\"8745745764578\"," //
+                    + "\"timeZoneOffset\":\"UTC+05:00\"," //
+                    + "\"name\":\"A20161224.1030-1045.bin.gz\"," //
+                    + "\"location\":\"ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1145.bin.gz\"," //
+                    + "\"internalLocation\":\"" + INTERNAL_LOCATION.toString().replace('\\', '/') + "\"," //
+                    // The replacement above is to make the test work in Windows
+                    + "\"compression\":\"gzip\"," //
+                    + "\"fileFormatType\":\"org.3GPP.32.435#measCollec\"," //
+                    + "\"fileFormatVersion\":\"V10\"}";
+
     @Test
     void createJsonBody_shouldReturnJsonInString() {
         assertEquals(EXPECTED_RESULT, CommonFunctions.createJsonBody(model));

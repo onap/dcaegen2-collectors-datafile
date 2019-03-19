@@ -42,6 +42,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Component;
 
 /**
+ * Holds all configuration for the DFC.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 3/23/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
@@ -79,8 +81,10 @@ public class AppConfig {
         return ftpesConfiguration;
     }
 
+    /**
+     * Reads the configuration from file.
+     */
     public void loadConfigurationFromFile() {
-
         GsonBuilder gsonBuilder = new GsonBuilder();
         ServiceLoader.load(TypeAdapterFactory.class).forEach(gsonBuilder::registerTypeAdapterFactory);
         JsonParser parser = new JsonParser();

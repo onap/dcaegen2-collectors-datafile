@@ -67,7 +67,7 @@ public class FtpsClient implements FileCollectClient {
         } catch (DatafileTaskException e) {
             throw e;
         } catch (Exception e) {
-            throw new DatafileTaskException("Could not open connection: ", e);
+            throw new DatafileTaskException("Could not open connection: " + e, e);
         }
     }
 
@@ -100,7 +100,7 @@ public class FtpsClient implements FileCollectClient {
                 throw new DatafileTaskException("Could not retrieve file " + remoteFileName);
             }
         } catch (IOException e) {
-            throw new DatafileTaskException("Could not fetch file: ", e);
+            throw new DatafileTaskException("Could not fetch file: " + e, e);
         }
         logger.trace("collectFile fetched: {}", localFileName);
     }

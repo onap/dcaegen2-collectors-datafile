@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
@@ -18,6 +18,7 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.INVOCATION_ID;
 import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.REQUEST_ID;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -25,7 +26,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ScheduledFuture;
+
 import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang3.StringUtils;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
@@ -40,11 +43,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
 import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Mono;
 
 /**
+ * Api for starting and stopping DFC.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 6/13/18
+ * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 @Configuration
 @EnableScheduling
@@ -63,11 +70,18 @@ public class SchedulerConfig {
     private final ScheduledTasks scheduledTask;
     private final CloudConfiguration cloudConfiguration;
 
+    /**
+     * Constructor.
+     *
+     * @param taskScheduler The scheduler used to schedule the tasks.
+     * @param scheduledTasks The scheduler that will actually handle the tasks.
+     * @param cloudConfiguration The DFC configuration.
+     */
     @Autowired
-    public SchedulerConfig(TaskScheduler taskScheduler, ScheduledTasks scheduledTask,
-        CloudConfiguration cloudConfiguration) {
+    public SchedulerConfig(TaskScheduler taskScheduler, ScheduledTasks scheduledTasks,
+            CloudConfiguration cloudConfiguration) {
         this.taskScheduler = taskScheduler;
-        this.scheduledTask = scheduledTask;
+        this.scheduledTask = scheduledTasks;
         this.cloudConfiguration = cloudConfiguration;
     }
 
@@ -84,7 +98,7 @@ public class SchedulerConfig {
         logger.info(EXIT, "Stopped Datafile workflow");
         MDC.clear();
         return Mono.defer(() -> Mono
-            .just(new ResponseEntity<>("Datafile Service has already been stopped!", HttpStatus.CREATED)));
+                .just(new ResponseEntity<>("Datafile Service has already been stopped!", HttpStatus.CREATED)));
     }
 
     /**
@@ -106,12 +120,14 @@ public class SchedulerConfig {
         contextMap = MDC.getCopyOfContextMap();
         logger.info(ENTRY, "Start scheduling Datafile workflow");
         if (scheduledFutureList.isEmpty()) {
-            scheduledFutureList.add(taskScheduler.scheduleAtFixedRate(() -> cloudConfiguration.runTask(contextMap), Instant.now(),
-                    SCHEDULING_REQUEST_FOR_CONFIGURATION_DELAY));
-            scheduledFutureList.add(taskScheduler.scheduleWithFixedDelay(() -> scheduledTask.scheduleMainDatafileEventTask(contextMap),
-                    SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS));
-            scheduledFutureList.add(taskScheduler.scheduleWithFixedDelay(() -> scheduledTask.purgeCachedInformation(Instant.now()),
-                   SCHEDULING_DELAY_FOR_DATAFILE_PURGE_CACHE));
+            scheduledFutureList.add(taskScheduler.scheduleAtFixedRate(() -> cloudConfiguration.runTask(contextMap),
+                    Instant.now(), SCHEDULING_REQUEST_FOR_CONFIGURATION_DELAY));
+            scheduledFutureList.add(
+                    taskScheduler.scheduleWithFixedDelay(() -> scheduledTask.scheduleMainDatafileEventTask(contextMap),
+                            SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS));
+            scheduledFutureList
+                    .add(taskScheduler.scheduleWithFixedDelay(() -> scheduledTask.purgeCachedInformation(Instant.now()),
+                            SCHEDULING_DELAY_FOR_DATAFILE_PURGE_CACHE));
 
             return true;
         } else {
