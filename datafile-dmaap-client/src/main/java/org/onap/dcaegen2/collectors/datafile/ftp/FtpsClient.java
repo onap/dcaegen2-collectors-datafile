@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 
 /**
- * Gets file from xNF with FTPS protocol.
+ * Gets file from PNF with FTPS protocol.
  *
  * @author <a href="mailto:martin.c.yan@est.tech">Martin Yan</a>
  */
@@ -53,12 +53,22 @@ public class FtpsClient implements FileCollectClient {
     private final FileServerData fileServerData;
     private static TrustManager theTrustManager = null;
 
-    public FtpsClient(FileServerData fileServerData) {
+    private final String keyCertPath;
+    private final String keyCertPassword;
+    private final Path trustedCAPath;
+    private final String trustedCAPassword;
+
+    public FtpsClient(FileServerData fileServerData, String keyCertPath, String keyCertPassword, Path trustedCAPath,
+            String trustedCAPassword) {
         this.fileServerData = fileServerData;
+        this.keyCertPath = keyCertPath;
+        this.keyCertPassword = keyCertPassword;
+        this.trustedCAPath = trustedCAPath;
+        this.trustedCAPassword = trustedCAPassword;
     }
 
-    public void open(String keyCertPath, String keyCertPassword, Path trustedCAPath, String trustedCAPassword)
-            throws DatafileTaskException {
+    @Override
+    public void open() throws DatafileTaskException {
         try {
             realFtpsClient.setNeedClientAuth(true);
             realFtpsClient.setKeyManager(createKeyManager(keyCertPath, keyCertPassword));
@@ -152,6 +162,7 @@ public class FtpsClient implements FileCollectClient {
 
     private TrustManager createTrustManager(Path trustedCAPath, String trustedCAPassword)
             throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
+        logger.trace("Creating trust manager from file: {}", trustedCAPath);
         try (InputStream fis = createInputStream(trustedCAPath)) {
             KeyStore keyStore = KeyStore.getInstance("JKS");
             keyStore.load(fis, trustedCAPassword.toCharArray());

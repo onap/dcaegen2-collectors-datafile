@@ -25,4 +25,5 @@ import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
  */
 public interface FileCollectClient extends AutoCloseable  {
     public void collectFile(String remoteFile, Path localFile) throws DatafileTaskException;
+    public void open() throws DatafileTaskException;
 }

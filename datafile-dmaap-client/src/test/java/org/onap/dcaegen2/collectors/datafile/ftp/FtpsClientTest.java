@@ -73,7 +73,8 @@ public class FtpsClientTest {
 
     @BeforeEach
     protected void setUp() throws Exception {
-        clientUnderTestSpy = spy(new FtpsClient(createFileServerData()));
+        clientUnderTestSpy = spy(new FtpsClient(createFileServerData(), FTP_KEY_PATH, FTP_KEY_PASSWORD, TRUSTED_CA_PATH,
+                TRUSTED_CA_PASSWORD));
         clientUnderTestSpy.realFtpsClient = ftpsClientMock;
     }
 
@@ -104,7 +105,7 @@ public class FtpsClientTest {
         doReturn(true).when(ftpsClientMock).login(USERNAME, PASSWORD);
         doReturn(HttpStatus.OK.value()).when(ftpsClientMock).getReplyCode();
 
-        clientUnderTestSpy.open(FTP_KEY_PATH, FTP_KEY_PASSWORD, TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD);
+        clientUnderTestSpy.open();
 
         doReturn(true).when(ftpsClientMock).retrieveFile(REMOTE_FILE_PATH, outputStreamMock);
         clientUnderTestSpy.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH);
@@ -124,9 +125,8 @@ public class FtpsClientTest {
     public void collectFileFaultyOwnKey_shouldFail() throws Exception {
 
         doReturn(outputStreamMock).when(clientUnderTestSpy).createOutputStream(LOCAL_FILE_PATH);
-        assertThatThrownBy(() -> clientUnderTestSpy.open(FTP_KEY_PATH, FTP_KEY_PASSWORD, TRUSTED_CA_PATH,
-                TRUSTED_CA_PASSWORD)).hasMessageContaining(
-                        "Could not open connection: java.io.FileNotFoundException:");
+        assertThatThrownBy(() -> clientUnderTestSpy.open())
+                .hasMessageContaining("Could not open connection: java.io.FileNotFoundException:");
 
         verify(ftpsClientMock).setNeedClientAuth(true);
 
@@ -142,9 +142,8 @@ public class FtpsClientTest {
         doReturn(keyManagerMock).when(clientUnderTestSpy).createKeyManager(FTP_KEY_PATH, FTP_KEY_PASSWORD);
         doThrow(new IOException("problem")).when(clientUnderTestSpy).createInputStream(TRUSTED_CA_PATH);
 
-        assertThatThrownBy(
-                () -> clientUnderTestSpy.open(FTP_KEY_PATH, FTP_KEY_PASSWORD, TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD))
-                        .hasMessage("Could not open connection: java.io.IOException: problem");
+        assertThatThrownBy(() -> clientUnderTestSpy.open())
+                .hasMessage("Could not open connection: java.io.IOException: problem");
     }
 
     @Test
@@ -153,9 +152,8 @@ public class FtpsClientTest {
         doReturn(keyManagerMock).when(clientUnderTestSpy).createKeyManager(FTP_KEY_PATH, FTP_KEY_PASSWORD);
         doReturn(inputStreamMock).when(clientUnderTestSpy).createInputStream(TRUSTED_CA_PATH);
 
-        assertThatThrownBy(
-                () -> clientUnderTestSpy.open(FTP_KEY_PATH, FTP_KEY_PASSWORD, TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD))
-                        .hasMessage("Could not open connection: java.io.EOFException");
+        assertThatThrownBy(() -> clientUnderTestSpy.open())
+                .hasMessage("Could not open connection: java.io.EOFException");
     }
 
     @Test
@@ -166,9 +164,7 @@ public class FtpsClientTest {
         doReturn(outputStreamMock).when(clientUnderTestSpy).createOutputStream(LOCAL_FILE_PATH);
         doReturn(false).when(ftpsClientMock).login(USERNAME, PASSWORD);
 
-        assertThatThrownBy(
-                () -> clientUnderTestSpy.open(FTP_KEY_PATH, FTP_KEY_PASSWORD, TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD))
-                        .hasMessage("Unable to log in to xNF. 127.0.0.1");
+        assertThatThrownBy(() -> clientUnderTestSpy.open()).hasMessage("Unable to log in to xNF. 127.0.0.1");
 
         verify(ftpsClientMock).setNeedClientAuth(true);
         verify(ftpsClientMock).setKeyManager(keyManagerMock);
@@ -185,9 +181,8 @@ public class FtpsClientTest {
         doReturn(true).when(ftpsClientMock).login(USERNAME, PASSWORD);
         doReturn(503).when(ftpsClientMock).getReplyCode();
 
-        assertThatThrownBy(
-                () -> clientUnderTestSpy.open(FTP_KEY_PATH, FTP_KEY_PASSWORD, TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD))
-                        .hasMessage("Unable to connect to xNF. 127.0.0.1 xNF reply code: 503");
+        assertThatThrownBy(() -> clientUnderTestSpy.open())
+                .hasMessage("Unable to connect to xNF. 127.0.0.1 xNF reply code: 503");
 
         verify(ftpsClientMock).setNeedClientAuth(true);
         verify(ftpsClientMock).setKeyManager(keyManagerMock);
@@ -205,7 +200,7 @@ public class FtpsClientTest {
         doReturn(outputStreamMock).when(clientUnderTestSpy).createOutputStream(LOCAL_FILE_PATH);
         doReturn(true).when(ftpsClientMock).login(USERNAME, PASSWORD);
         doReturn(HttpStatus.OK.value()).when(ftpsClientMock).getReplyCode();
-        clientUnderTestSpy.open(FTP_KEY_PATH, FTP_KEY_PASSWORD, TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD);
+        clientUnderTestSpy.open();
 
         doReturn(false).when(ftpsClientMock).retrieveFile(REMOTE_FILE_PATH, outputStreamMock);
 
@@ -224,7 +219,7 @@ public class FtpsClientTest {
         doReturn(outputStreamMock).when(clientUnderTestSpy).createOutputStream(LOCAL_FILE_PATH);
         doReturn(true).when(ftpsClientMock).login(USERNAME, PASSWORD);
         doReturn(HttpStatus.OK.value()).when(ftpsClientMock).getReplyCode();
-        clientUnderTestSpy.open(FTP_KEY_PATH, FTP_KEY_PASSWORD, TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD);
+        clientUnderTestSpy.open();
         when(ftpsClientMock.isConnected()).thenReturn(false);
 
         doThrow(new IOException("problem")).when(ftpsClientMock).retrieveFile(REMOTE_FILE_PATH, outputStreamMock);

@@ -29,7 +29,6 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.onap.dcaegen2.collectors.datafile.exceptions.DmaapNotFoundException;
 import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
@@ -67,7 +66,7 @@ class JsonMessageParserTest {
     private static final String NOTIFICATION_FIELDS_VERSION = "1.0";
 
     @Test
-    void whenPassingCorrectJson_oneFileReadyMessage() throws DmaapNotFoundException {
+    void whenPassingCorrectJson_oneFileReadyMessage() {
         // @formatter:off
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
                 .name(PM_FILE_NAME)
@@ -101,12 +100,11 @@ class JsonMessageParserTest {
                 .compression(GZIP_COMPRESSION)
                 .fileFormatType(FILE_FORMAT_TYPE)
                 .fileFormatVersion(FILE_FORMAT_VERSION)
+                .messageMetaData(messageMetaData)
                 .build();
         List<FileData> files = new ArrayList<>();
         files.add(expectedFileData);
         FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder()
-                .pnfName(SOURCE_NAME)
-                .messageMetaData(messageMetaData)
                 .files(files)
                 .build();
         // @formatter:on
@@ -122,7 +120,7 @@ class JsonMessageParserTest {
     }
 
     @Test
-    void whenPassingCorrectJsonWithTwoEvents_twoMessages() throws DmaapNotFoundException {
+    void whenPassingCorrectJsonWithTwoEvents_twoMessages() {
         // @formatter:off
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
                 .name(PM_FILE_NAME)
@@ -156,12 +154,11 @@ class JsonMessageParserTest {
                 .compression(GZIP_COMPRESSION)
                 .fileFormatType(FILE_FORMAT_TYPE)
                 .fileFormatVersion(FILE_FORMAT_VERSION)
+                .messageMetaData(messageMetaData)
                 .build();
         List<FileData> files = new ArrayList<>();
         files.add(expectedFileData);
         FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder()
-                .pnfName(SOURCE_NAME)
-                .messageMetaData(messageMetaData)
                 .files(files)
                 .build();
         // @formatter:on
@@ -205,7 +202,7 @@ class JsonMessageParserTest {
     }
 
     @Test
-    void whenPassingCorrectJsonWithTwoEventsFirstNoHeader_oneFileDatan() throws DmaapNotFoundException {
+    void whenPassingCorrectJsonWithTwoEventsFirstNoHeader_oneFileDatan() {
         // @formatter:off
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder()
                 .name(PM_FILE_NAME)
@@ -239,12 +236,11 @@ class JsonMessageParserTest {
                 .compression(GZIP_COMPRESSION)
                 .fileFormatType(FILE_FORMAT_TYPE)
                 .fileFormatVersion(FILE_FORMAT_VERSION)
+                .messageMetaData(messageMetaData)
                 .build();
         List<FileData> files = new ArrayList<>();
         files.add(expectedFileData);
         FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder()
-                .pnfName(SOURCE_NAME)
-                .messageMetaData(messageMetaData)
                 .files(files)
                 .build();
         // @formatter:on
@@ -431,12 +427,11 @@ class JsonMessageParserTest {
                 .compression(GZIP_COMPRESSION)
                 .fileFormatType(FILE_FORMAT_TYPE)
                 .fileFormatVersion(FILE_FORMAT_VERSION)
+                .messageMetaData(messageMetaData)
                 .build();
         List<FileData> files = new ArrayList<>();
         files.add(expectedFileData);
         FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder()
-                .pnfName(SOURCE_NAME)
-                .messageMetaData(messageMetaData)
                 .files(files)
                 .build();
         // @formatter:on

@@ -47,8 +47,6 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.onap.dcaegen2.collectors.datafile.io.FileSystemResourceWrapper;
-import org.onap.dcaegen2.collectors.datafile.io.IFileSystemResource;
 import org.onap.dcaegen2.collectors.datafile.model.CommonFunctions;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
@@ -59,6 +57,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.util.DefaultUriBuilderFactory;
@@ -88,8 +87,6 @@ public class DmaapProducerReactiveHttpClient {
     private final String dmaapContentType;
     private final String user;
     private final String pwd;
-
-    private IFileSystemResource fileResource = new FileSystemResourceWrapper();
 
     /**
      * Constructor DmaapProducerReactiveHttpClient.
@@ -128,7 +125,7 @@ public class DmaapProducerReactiveHttpClient {
             logger.trace(INVOKE_RETURN, "Response from DR {}", response);
             return Mono.just(HttpStatus.valueOf(response.getStatusLine().getStatusCode()));
         } catch (Exception e) {
-            logger.error("Unable to send file to DataRouter. Data: {}", consumerDmaapModel.getInternalLocation(), e);
+            logger.warn("Unable to send file {} to DataRouter, reason: {} ", consumerDmaapModel.getInternalLocation(), e.toString());
             return Mono.error(e);
         }
     }
@@ -158,21 +155,15 @@ public class DmaapProducerReactiveHttpClient {
 
     private void prepareBody(ConsumerDmaapModel model, HttpPut put) throws IOException {
         Path fileLocation = Paths.get(model.getInternalLocation());
-        this.fileResource.setPath(fileLocation);
-        InputStream fileInputStream = fileResource.getInputStream();
-
-        put.setEntity(new ByteArrayEntity(IOUtils.toByteArray(fileInputStream)));
-
+        try (InputStream fileInputStream = createInputStream(fileLocation)) {
+            put.setEntity(new ByteArrayEntity(IOUtils.toByteArray(fileInputStream)));
+        }
     }
 
     private URI getUri(String fileName) {
         String path = dmaapTopicName + URI_SEPARATOR + DEFAULT_FEED_ID + URI_SEPARATOR + fileName;
         return new DefaultUriBuilderFactory().builder().scheme(dmaapProtocol).host(dmaapHostName).port(dmaapPortNumber)
                 .path(path).build();
-    }
-
-    void setFileSystemResource(IFileSystemResource fileSystemResource) {
-        fileResource = fileSystemResource;
     }
 
     protected CloseableHttpAsyncClient createWebClient()
@@ -190,5 +181,11 @@ public class DmaapProducerReactiveHttpClient {
         webClient.start();
         return webClient;
     }
+
+    protected InputStream createInputStream(Path path) throws IOException {
+        FileSystemResource resource = new FileSystemResource(path);
+        return resource.getInputStream();
+    }
+
 
 }
