@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ef05f062_3457e865",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-19T16:21:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a33c139d_6c037c88",
+      "range": {
+        "startLine": 59,
+        "startChar": 1,
+        "endLine": 59,
+        "endChar": 23
+      },
+      "revId": "373aa762cf811c00a83f045c34c48502632da1b5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9ef94a92_9bf79170",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
         "patchSetId": 6
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "02cfa828_06582ca4",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-19T16:21:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ef94a92_9bf79170",
+      "range": {
+        "startLine": 78,
+        "startChar": 2,
+        "endLine": 78,
+        "endChar": 60
+      },
+      "revId": "373aa762cf811c00a83f045c34c48502632da1b5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bac17ee7_3d3a7077",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapBusControllerReactiveHttpClient.java",
         "patchSetId": 6
@@ -59,6 +107,30 @@
       "writtenOn": "2019-03-19T12:15:17Z",
       "side": 1,
       "message": "Why do we call these classes \"Reactive\"? I think that is confusing because the getDmaapBusControllerResponse function is synchronuos/blocking (which is not what one would expect from a reactive client).",
+      "range": {
+        "startLine": 41,
+        "startChar": 31,
+        "endLine": 41,
+        "endChar": 49
+      },
+      "revId": "373aa762cf811c00a83f045c34c48502632da1b5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d6fe91c1_e969bbae",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DmaapBusControllerReactiveHttpClient.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-19T16:21:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bac17ee7_3d3a7077",
       "range": {
         "startLine": 41,
         "startChar": 31,
