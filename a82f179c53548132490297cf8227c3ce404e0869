@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b815d9de_11eed42e",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/PublishedChecker.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-19T11:47:01Z",
+      "side": 1,
+      "message": "as a side comment, contextMap seems to be missing in documentation in all places.\nMaybe a better name of the function would be \nisFilePublished\n\nBut these are details that should not delay this commit.",
+      "range": {
+        "startLine": 72,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 6
+      },
+      "revId": "a82f179c53548132490297cf8227c3ce404e0869",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
