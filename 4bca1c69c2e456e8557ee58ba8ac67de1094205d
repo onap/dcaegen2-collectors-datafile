@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "903424b6_0f29b7ff",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileData.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-19T07:43:46Z",
+      "side": 1,
+      "message": "A comment would be good, it is not obvious that source name is the name of the PNF.",
+      "range": {
+        "startLine": 63,
+        "startChar": 3,
+        "endLine": 63,
+        "endChar": 32
+      },
+      "revId": "4bca1c69c2e456e8557ee58ba8ac67de1094205d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "07510262_161d8fb2",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileData.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-19T07:43:46Z",
+      "side": 1,
+      "message": "No need to synchronize this",
+      "range": {
+        "startLine": 72,
+        "startChar": 11,
+        "endLine": 72,
+        "endChar": 23
+      },
+      "revId": "4bca1c69c2e456e8557ee58ba8ac67de1094205d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dae62dd5_96a7f1d0",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-19T07:43:46Z",
+      "side": 1,
+      "message": "param contextMap is missing in the doc.",
+      "revId": "4bca1c69c2e456e8557ee58ba8ac67de1094205d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c0adcbfd_af612c90",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-19T07:43:46Z",
+      "side": 1,
+      "message": "the @return comment is wrong. ConsumerDmaapModel is returned.",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 51
+      },
+      "revId": "4bca1c69c2e456e8557ee58ba8ac67de1094205d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bced3984_a0ea4b11",
+        "filename": "datafile-dmaap-client/src/test/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-19T07:43:46Z",
+      "side": 1,
+      "message": "It could be verified that the right path is used.",
+      "range": {
+        "startLine": 164,
+        "startChar": 85,
+        "endLine": 164,
+        "endChar": 90
+      },
+      "revId": "4bca1c69c2e456e8557ee58ba8ac67de1094205d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
