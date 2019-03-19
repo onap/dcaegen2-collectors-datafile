@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6dd2cec4_7d366616",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollector.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-19T09:51:45Z",
+      "side": 1,
+      "message": "I get the following warning for this:\nUse try-with-resources or close this \"SftpClient\" in a \"finally\" clause. SonarLint On-The-Fly Issue\nThis is taken care of when the method createSftpClient is called, but the warning is still there. So the question is if it is possible to somehow get rid of this warning?  Otherwise this introduces a code smell in Sonar.",
+      "revId": "43efe86781474e336128348e3f24201f78bd08a9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d34e968c_00dc8737",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollector.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-19T09:51:45Z",
+      "side": 1,
+      "message": "I get the following warning for this:\nUse try-with-resources or close this \"FtpsClient\" in a \"finally\" clause. SonarLint On-The-Fly Issue\nThis is taken care of when the method createFtpsClient is called, but the warning is still there. So the question is if it is possible to somehow get rid of this warning?  Otherwise this introduces a code smell in Sonar.",
+      "revId": "43efe86781474e336128348e3f24201f78bd08a9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
