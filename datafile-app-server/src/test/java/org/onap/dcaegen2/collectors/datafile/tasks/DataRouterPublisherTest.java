@@ -30,6 +30,7 @@ import static org.mockito.Mockito.when;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -38,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -46,15 +48,13 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
+import org.onap.dcaegen2.collectors.datafile.model.FeedData;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
+import org.onap.dcaegen2.collectors.datafile.model.ImmutableFeedData;
 import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerReactiveHttpClient;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.util.DefaultUriBuilderFactory;
-import org.springframework.web.util.UriBuilder;
 
 import reactor.test.StepVerifier;
 
@@ -81,6 +81,8 @@ class DataRouterPublisherTest {
     private static final String HOST = "54.45.33.2";
     private static final String HTTPS_SCHEME = "https";
     private static final int PORT = 1234;
+    private static final String USERNAME = "username";
+    private static final String PASSWORD = "password";
     private static final String APPLICATION_OCTET_STREAM_CONTENT_TYPE = "application/octet-stream";
     private static final String PUBLISH_TOPIC = "publish";
     private static final String FEED_ID = "1";
@@ -88,10 +90,15 @@ class DataRouterPublisherTest {
 
     private static final Map<String, String> CONTEXT_MAP = new HashMap<>();
 
+    private static final FeedData FEED_DATA = ImmutableFeedData.builder() //
+            .publishedCheckUrl("") //
+            .publishUrl(HTTPS_SCHEME + "://" + HOST + ":" + PORT + "/" + PUBLISH_TOPIC + "/" + FEED_ID) //
+            .username(USERNAME) //
+            .password(PASSWORD) //
+            .build();
+
     private static ConsumerDmaapModel consumerDmaapModel;
     private static DmaapProducerReactiveHttpClient httpClientMock;
-    private static AppConfig appConfig;
-    private static DmaapPublisherConfiguration publisherConfigurationMock = mock(DmaapPublisherConfiguration.class);
 
     private static DataRouterPublisher publisherTaskUnderTestSpy;
 
@@ -100,10 +107,6 @@ class DataRouterPublisherTest {
      */
     @BeforeAll
     public static void setUp() {
-        when(publisherConfigurationMock.dmaapHostName()).thenReturn(HOST);
-        when(publisherConfigurationMock.dmaapProtocol()).thenReturn(HTTPS_SCHEME);
-        when(publisherConfigurationMock.dmaapPortNumber()).thenReturn(PORT);
-
         consumerDmaapModel = ImmutableConsumerDmaapModel.builder() //
                 .productName(PRODUCT_NAME) //
                 .vendorName(VENDOR_NAME) //
@@ -118,8 +121,7 @@ class DataRouterPublisherTest {
                 .fileFormatType(FILE_FORMAT_TYPE) //
                 .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build(); //
-        appConfig = mock(AppConfig.class);
-        publisherTaskUnderTestSpy = spy(new DataRouterPublisher(appConfig));
+        publisherTaskUnderTestSpy = spy(new DataRouterPublisher());
     }
 
     @Test
@@ -127,13 +129,12 @@ class DataRouterPublisherTest {
         prepareMocksForTests(null, Integer.valueOf(HttpStatus.OK.value()));
 
         StepVerifier
-                .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 1, Duration.ofSeconds(0), CONTEXT_MAP))
+                .create(publisherTaskUnderTestSpy.publishFile(consumerDmaapModel, FEED_DATA, 1, Duration.ofSeconds(0),
+                        CONTEXT_MAP))
                 .expectNext(consumerDmaapModel) //
                 .verifyComplete();
 
         ArgumentCaptor<HttpUriRequest> requestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
-        verify(httpClientMock).getBaseUri();
-        verify(httpClientMock).addUserCredentialsToHead(any(HttpUriRequest.class));
         verify(httpClientMock).getDmaapProducerResponseWithRedirect(requestCaptor.capture(), any());
         verifyNoMoreInteractions(httpClientMock);
 
@@ -149,6 +150,13 @@ class DataRouterPublisherTest {
 
         Header[] contentHeaders = actualPut.getHeaders("content-type");
         assertEquals(APPLICATION_OCTET_STREAM_CONTENT_TYPE, contentHeaders[0].getValue());
+
+        String plainCreds = USERNAME + ":" + PASSWORD;
+        byte[] plainCredsBytes = plainCreds.getBytes(StandardCharsets.ISO_8859_1);
+        byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
+        String base64Creds = "Basic " + new String(base64CredsBytes);
+        Header[] authorizationHeaders = actualPut.getHeaders("Authorization");
+        assertEquals(base64Creds, authorizationHeaders[0].getValue());
 
         Header[] metaHeaders = actualPut.getHeaders(X_DMAAP_DR_META);
         Map<String, String> metaHash = getMetaDataAsMap(metaHeaders);
@@ -170,7 +178,8 @@ class DataRouterPublisherTest {
         prepareMocksForTests(new DatafileTaskException("Error"), HttpStatus.OK.value());
 
         StepVerifier
-                .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 2, Duration.ofSeconds(0), CONTEXT_MAP))
+                .create(publisherTaskUnderTestSpy.publishFile(consumerDmaapModel, FEED_DATA, 2, Duration.ofSeconds(0),
+                        CONTEXT_MAP))
                 .expectNext(consumerDmaapModel) //
                 .verifyComplete();
     }
@@ -181,12 +190,11 @@ class DataRouterPublisherTest {
                 Integer.valueOf(HttpStatus.OK.value()));
 
         StepVerifier
-                .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 1, Duration.ofSeconds(0), CONTEXT_MAP))
+                .create(publisherTaskUnderTestSpy.publishFile(consumerDmaapModel, FEED_DATA, 1, Duration.ofSeconds(0),
+                        CONTEXT_MAP))
                 .expectNext(consumerDmaapModel) //
                 .verifyComplete();
 
-        verify(httpClientMock, times(2)).getBaseUri();
-        verify(httpClientMock, times(2)).addUserCredentialsToHead(any(HttpUriRequest.class));
         verify(httpClientMock, times(2)).getDmaapProducerResponseWithRedirect(any(HttpUriRequest.class), any());
         verifyNoMoreInteractions(httpClientMock);
     }
@@ -197,12 +205,11 @@ class DataRouterPublisherTest {
                 Integer.valueOf((HttpStatus.BAD_GATEWAY.value())));
 
         StepVerifier
-                .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 1, Duration.ofSeconds(0), CONTEXT_MAP))
+                .create(publisherTaskUnderTestSpy.publishFile(consumerDmaapModel, FEED_DATA, 1, Duration.ofSeconds(0),
+                        CONTEXT_MAP))
                 .expectErrorMessage("Retries exhausted: 1/1") //
                 .verify();
 
-        verify(httpClientMock, times(2)).getBaseUri();
-        verify(httpClientMock, times(2)).addUserCredentialsToHead(any(HttpUriRequest.class));
         verify(httpClientMock, times(2)).getDmaapProducerResponseWithRedirect(any(HttpUriRequest.class), any());
         verifyNoMoreInteractions(httpClientMock);
     }
@@ -211,12 +218,7 @@ class DataRouterPublisherTest {
     final void prepareMocksForTests(Exception exception, Integer firstResponse, Integer... nextHttpResponses)
             throws Exception {
         httpClientMock = mock(DmaapProducerReactiveHttpClient.class);
-        when(appConfig.getDmaapPublisherConfiguration()).thenReturn(publisherConfigurationMock);
-        doReturn(publisherConfigurationMock).when(publisherTaskUnderTestSpy).resolveConfiguration();
-        doReturn(httpClientMock).when(publisherTaskUnderTestSpy).resolveClient();
-
-        UriBuilder uriBuilder = new DefaultUriBuilderFactory().builder().scheme(HTTPS_SCHEME).host(HOST).port(PORT);
-        when(httpClientMock.getBaseUri()).thenReturn(uriBuilder);
+        doReturn(httpClientMock).when(publisherTaskUnderTestSpy).createClient();
 
         HttpResponse httpResponseMock = mock(HttpResponse.class);
         if (exception == null) {

@@ -31,13 +31,15 @@ import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
-import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
+import org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import reactor.core.publisher.Mono;
 
 /**
+ * Collects a file from a PNF.
+ *
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 public class FileCollector {
@@ -45,19 +47,35 @@ public class FileCollector {
     private static final Logger logger = LoggerFactory.getLogger(FileCollector.class);
     private final AppConfig datafileAppConfig;
 
+    /**
+     * Constructor.
+     *
+     * @param datafileAppConfig application configuration
+     */
     public FileCollector(AppConfig datafileAppConfig) {
         this.datafileAppConfig = datafileAppConfig;
     }
 
-    public Mono<ConsumerDmaapModel> execute(FileData fileData, MessageMetaData metaData, long maxNumberOfRetries,
-            Duration firstBackoffTimeout, Map<String, String> contextMap) {
+    /**
+     * Collects a file from the PNF and stores it in the local file system.
+     *
+     * @param fileData data about the file to collect.
+     * @param metaData message meta data.
+     * @param numRetries the number of retries if the publishing fails
+     * @param firstBackoff the time to delay the first retry
+     * @param contextMap context for logging.
+     *
+     * @return the data needed to publish the file.
+     */
+    public Mono<ConsumerDmaapModel> collectFile(FileData fileData, MessageMetaData metaData, long numRetries,
+            Duration firstBackoff, Map<String, String> contextMap) {
         MdcVariables.setMdcContextMap(contextMap);
         logger.trace("Entering execute with {}", fileData);
 
         return Mono.just(fileData) //
                 .cache() //
                 .flatMap(fd -> collectFile(fileData, metaData, contextMap)) //
-                .retryBackoff(maxNumberOfRetries, firstBackoffTimeout);
+                .retryBackoff(numRetries, firstBackoff);
     }
 
     private Mono<ConsumerDmaapModel> collectFile(FileData fileData, MessageMetaData metaData,
