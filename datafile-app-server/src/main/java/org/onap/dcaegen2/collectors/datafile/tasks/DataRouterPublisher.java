@@ -18,6 +18,7 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import java.time.Duration;
 import java.util.Map;
+
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
@@ -27,6 +28,7 @@ import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPub
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+
 import reactor.core.publisher.Mono;
 
 /**
@@ -48,12 +50,13 @@ public class DataRouterPublisher {
      * @param consumerDmaapModel information about the file to publish
      * @param maxNumberOfRetries the maximal number of retries if the publishing fails
      * @param firstBackoffTimeout the time to delay the first retry
-     * @return the HTTP response status as a string
+     * @param contextMap tracing context variables
+     * @return the (same) ConsumerDmaapModel
      */
     public Mono<ConsumerDmaapModel> execute(ConsumerDmaapModel model, long numRetries, Duration firstBackoff,
             Map<String, String> contextMap) {
         MdcVariables.setMdcContextMap(contextMap);
-        logger.trace("Method called with arg {}", model);
+        logger.trace("Publish called with arg {}", model);
         DmaapProducerReactiveHttpClient dmaapProducerReactiveHttpClient = resolveClient();
 
         //@formatter:off

@@ -47,7 +47,7 @@ public class SftpClient implements FileCollectClient {
 
     @Override
     public void collectFile(String remoteFile, Path localFile) throws DatafileTaskException {
-        logger.trace("collectFile called");
+        logger.trace("collectFile {}", localFile);
 
         try {
             sftpChannel.get(remoteFile, localFile.toString());
@@ -61,7 +61,7 @@ public class SftpClient implements FileCollectClient {
 
     @Override
     public void close() {
-        logger.trace("close");
+        logger.trace("closing sftp session");
         if (sftpChannel != null) {
             sftpChannel.exit();
             sftpChannel = null;

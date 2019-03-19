@@ -21,7 +21,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.gson.JsonElement;
@@ -32,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -42,15 +42,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.onap.dcaegen2.collectors.datafile.io.IFileSystemResource;
 import org.onap.dcaegen2.collectors.datafile.model.CommonFunctions;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
@@ -86,8 +83,6 @@ class DmaapProducerReactiveHttpClientTest {
 
     private DmaapPublisherConfiguration dmaapPublisherConfigurationMock = mock(DmaapPublisherConfiguration.class);
     private ConsumerDmaapModel consumerDmaapModel;
-
-    private IFileSystemResource fileSystemResourceMock = mock(IFileSystemResource.class);
     private CloseableHttpAsyncClient clientMock;
     private HttpResponse responseMock = mock(HttpResponse.class);
     @SuppressWarnings("unchecked")
@@ -96,7 +91,7 @@ class DmaapProducerReactiveHttpClientTest {
     private InputStream fileStream;
 
     @BeforeEach
-    void setUp() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+    void setUp() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException, IOException {
         when(dmaapPublisherConfigurationMock.dmaapHostName()).thenReturn(HOST);
         when(dmaapPublisherConfigurationMock.dmaapProtocol()).thenReturn(HTTPS_SCHEME);
         when(dmaapPublisherConfigurationMock.dmaapPortNumber()).thenReturn(PORT);
@@ -123,7 +118,7 @@ class DmaapProducerReactiveHttpClientTest {
         //formatter:on
 
         dmaapProducerReactiveHttpClient = spy(new DmaapProducerReactiveHttpClient(dmaapPublisherConfigurationMock));
-        dmaapProducerReactiveHttpClient.setFileSystemResource(fileSystemResourceMock);
+
         clientMock = mock(CloseableHttpAsyncClient.class);
         doReturn(clientMock).when(dmaapProducerReactiveHttpClient).createWebClient();
     }
@@ -154,12 +149,7 @@ class DmaapProducerReactiveHttpClientTest {
         Map<String, String> contextMap = new HashMap<>();
         StepVerifier.create(dmaapProducerReactiveHttpClient.getDmaapProducerResponse(consumerDmaapModel, contextMap))
         .expectNext(HttpStatus.OK).verifyComplete();
-
-        verify(fileSystemResourceMock).setPath(Paths.get("target/" + FILE_NAME));
-        InputStream fileInputStream = fileSystemResourceMock.getInputStream();
-        httpPut.setEntity(new ByteArrayEntity(IOUtils.toByteArray(fileInputStream)));
     }
-
     @Test
     void getHttpResponse_Fail() throws Exception {
         Map<String, String> contextMap = new HashMap<>();
@@ -173,11 +163,20 @@ class DmaapProducerReactiveHttpClientTest {
     private void mockWebClientDependantObject()
             throws IOException, InterruptedException, ExecutionException {
         fileStream = new ByteArrayInputStream(FILE_CONTENT.getBytes());
-        when(fileSystemResourceMock.getInputStream()).thenReturn(fileStream);
+        Path path = Paths.get("target/" + FILE_NAME);
+        doReturn(fileStream).when(dmaapProducerReactiveHttpClient).createInputStream(path);
         when(clientMock.execute(any(HttpPut.class), any())).thenReturn(futureMock);
         when(futureMock.get()).thenReturn(responseMock);
         when(responseMock.getStatusLine()).thenReturn(statusLine);
         when(statusLine.getStatusCode()).thenReturn(HttpUtils.SC_OK);
-
     }
 }
+
+
+
+
+
+
+//
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

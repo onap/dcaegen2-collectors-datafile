@@ -25,9 +25,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
@@ -37,6 +39,7 @@ import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerReact
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
 import org.springframework.http.HttpStatus;
+
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -58,6 +61,7 @@ class DataRouterPublisherTest {
     private static DmaapProducerReactiveHttpClient dMaaPProducerReactiveHttpClient;
     private static AppConfig appConfig;
     private static DmaapPublisherConfiguration dmaapPublisherConfiguration;
+    private final Map<String, String> contextMap = new HashMap<>();
 
     @BeforeAll
     public static void setUp() {
@@ -99,7 +103,6 @@ class DataRouterPublisherTest {
     public void whenPassedObjectFits_ReturnsCorrectStatus() {
         prepareMocksForTests(Mono.just(HttpStatus.OK));
 
-        Map<String, String> contextMap = new HashMap<>();
         StepVerifier.create(dmaapPublisherTask.execute(consumerDmaapModel, 1, Duration.ofSeconds(0), contextMap))
                 .expectNext(consumerDmaapModel).verifyComplete();
 
@@ -111,7 +114,6 @@ class DataRouterPublisherTest {
     public void whenPassedObjectFits_firstFailsThenSucceeds() {
         prepareMocksForTests(Mono.just(HttpStatus.BAD_GATEWAY), Mono.just(HttpStatus.OK));
 
-        Map<String, String> contextMap = new HashMap<>();
         StepVerifier.create(dmaapPublisherTask.execute(consumerDmaapModel, 1, Duration.ofSeconds(0), contextMap))
                 .expectNext(consumerDmaapModel).verifyComplete();
 
@@ -123,7 +125,6 @@ class DataRouterPublisherTest {
     public void whenPassedObjectFits_firstFailsThenFails() {
         prepareMocksForTests(Mono.just(HttpStatus.BAD_GATEWAY), Mono.just(HttpStatus.BAD_GATEWAY));
 
-        Map<String, String> contextMap = new HashMap<>();
         StepVerifier.create(dmaapPublisherTask.execute(consumerDmaapModel, 1, Duration.ofSeconds(0), contextMap))
                 .expectErrorMessage("Retries exhausted: 1/1").verify();
 
