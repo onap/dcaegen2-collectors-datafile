@@ -52,6 +52,24 @@
       "revId": "166231a9c4d128141d6bd0b480466eb91acf6c57",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "68285409_1dfc5b99",
+        "filename": "datafile-app-server/config/datafile_endpoints.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-20T16:12:57Z",
+      "side": 1,
+      "message": "Agree to Martin\u0027s comment. The buscontroller api should not be directly invoked/consumed by service component. DCAE Platform (dmaap plugin) would make the required calls and translate the response to the dmaap mr/dr structure.",
+      "parentUuid": "5dbcc16c_e4057f63",
+      "revId": "166231a9c4d128141d6bd0b480466eb91acf6c57",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
