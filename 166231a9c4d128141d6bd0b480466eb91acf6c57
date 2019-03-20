@@ -16,6 +16,24 @@
       "revId": "166231a9c4d128141d6bd0b480466eb91acf6c57",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1b60f820_bdfe1aef",
+        "filename": "datafile-app-server/config/datafile_endpoints.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-20T07:27:25Z",
+      "side": 1,
+      "message": "When the feed is created through BusController, info about the URLs to use to publish to and query DR are provided in the reply. So there is no need for configuring that.",
+      "parentUuid": "388691a6_631c81e3",
+      "revId": "166231a9c4d128141d6bd0b480466eb91acf6c57",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
