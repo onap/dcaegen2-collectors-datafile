@@ -46,6 +46,40 @@
       "revId": "a82f179c53548132490297cf8227c3ce404e0869",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d36e1ad4_f894cf98",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/CommonFunctions.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-03-20T16:52:19Z",
+      "side": 1,
+      "message": "this seems odd.\n\nAre you converting \\ to / to deal with windows paths? If so, you probably should be looking at File.separator to determine if it should be replaced. Technically, \\ is a valid character in a unix filename.\n\nIf not dealing with windows paths, please add comments to say why you\u0027re doing this. JavaDocs comments are always welcome irregardless.",
+      "revId": "a82f179c53548132490297cf8227c3ce404e0869",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a8bbb30f_038d2b39",
+        "filename": "datafile-commons/src/test/java/org/onap/dcaegen2/collectors/datafile/model/CommonFunctionsTest.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-03-20T16:52:19Z",
+      "side": 1,
+      "message": "this should be cognizant of File.separator, and using appending File.separator instead of append \"\\\". See further comments on CommonFunctions.",
+      "revId": "a82f179c53548132490297cf8227c3ce404e0869",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
