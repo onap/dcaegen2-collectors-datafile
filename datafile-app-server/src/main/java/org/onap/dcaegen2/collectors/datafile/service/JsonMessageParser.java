@@ -88,11 +88,17 @@ public class JsonMessageParser {
         }
     }
 
+    /**
+     * Parses the Json message and returns a stream of messages.
+     *
+     * @param rawMessage the Json message to parse.
+     * @return a <code>Flux</code> containing messages.
+     */
     public Flux<FileReadyMessage> getMessagesFromJson(Mono<String> rawMessage) {
         return rawMessage.flatMapMany(this::getJsonParserMessage).flatMap(this::createMessageData);
     }
 
-    public Optional<JsonObject> getJsonObjectFromAnArray(JsonElement element) {
+    Optional<JsonObject> getJsonObjectFromAnArray(JsonElement element) {
         JsonParser jsonParser = new JsonParser();
         return element.isJsonPrimitive() ? Optional.of(jsonParser.parse(element.getAsString()).getAsJsonObject())
                 : element.isJsonObject() ? Optional.of((JsonObject) element)
@@ -136,13 +142,11 @@ public class JsonMessageParser {
                 List<FileData> allFileDataFromJson = getAllFileDataFromJson(arrayOfNamedHashMap);
                 if (!allFileDataFromJson.isEmpty()) {
                     MessageMetaData messageMetaData = optionalMessageMetaData.get();
-                    // @formatter:off
-                    return Mono.just(ImmutableFileReadyMessage.builder()
-                            .pnfName(messageMetaData.sourceName())
-                            .messageMetaData(messageMetaData)
-                            .files(allFileDataFromJson)
+                    return Mono.just(ImmutableFileReadyMessage.builder() //
+                            .pnfName(messageMetaData.sourceName()) //
+                            .messageMetaData(messageMetaData) //
+                            .files(allFileDataFromJson) //
                             .build());
-                    // @formatter:on
                 } else {
                     return Mono.empty();
                 }
@@ -168,18 +172,16 @@ public class JsonMessageParser {
         // version.
         getValueFromJson(notificationFields, NOTIFICATION_FIELDS_VERSION, missingValues);
 
-        // @formatter:off
-        MessageMetaData messageMetaData = ImmutableMessageMetaData.builder()
-                .productName(getDataFromEventName(EventNameDataType.PRODUCT_NAME, eventName, missingValues))
-                .vendorName(getDataFromEventName(EventNameDataType.VENDOR_NAME, eventName, missingValues))
-                .lastEpochMicrosec(getValueFromJson(commonEventHeader, LAST_EPOCH_MICROSEC, missingValues))
-                .sourceName(getValueFromJson(commonEventHeader, SOURCE_NAME, missingValues))
-                .startEpochMicrosec(getValueFromJson(commonEventHeader, START_EPOCH_MICROSEC, missingValues))
-                .timeZoneOffset(getValueFromJson(commonEventHeader, TIME_ZONE_OFFSET, missingValues))
-                .changeIdentifier(changeIdentifier)
-                .changeType(changeType)
+        MessageMetaData messageMetaData = ImmutableMessageMetaData.builder() //
+                .productName(getDataFromEventName(EventNameDataType.PRODUCT_NAME, eventName, missingValues)) //
+                .vendorName(getDataFromEventName(EventNameDataType.VENDOR_NAME, eventName, missingValues)) //
+                .lastEpochMicrosec(getValueFromJson(commonEventHeader, LAST_EPOCH_MICROSEC, missingValues)) //
+                .sourceName(getValueFromJson(commonEventHeader, SOURCE_NAME, missingValues)) //
+                .startEpochMicrosec(getValueFromJson(commonEventHeader, START_EPOCH_MICROSEC, missingValues)) //
+                .timeZoneOffset(getValueFromJson(commonEventHeader, TIME_ZONE_OFFSET, missingValues)) //
+                .changeIdentifier(changeIdentifier) //
+                .changeType(changeType) //
                 .build();
-        // @formatter:on
         if (missingValues.isEmpty() && isChangeIdentifierCorrect(changeIdentifier) && isChangeTypeCorrect(changeType)) {
             return Optional.of(messageMetaData);
         } else {
@@ -231,16 +233,14 @@ public class JsonMessageParser {
             logger.error("Unable to collect file from xNF.", e);
             return Optional.empty();
         }
-        // @formatter:off
-        FileData fileData = ImmutableFileData.builder()
-                .name(getValueFromJson(fileInfo, NAME, missingValues))
-                .fileFormatType(getValueFromJson(data, FILE_FORMAT_TYPE, missingValues))
-                .fileFormatVersion(getValueFromJson(data, FILE_FORMAT_VERSION, missingValues))
-                .location(location)
-                .scheme(scheme)
-                .compression(getValueFromJson(data, COMPRESSION, missingValues))
+        FileData fileData = ImmutableFileData.builder() //
+                .name(getValueFromJson(fileInfo, NAME, missingValues)) //
+                .fileFormatType(getValueFromJson(data, FILE_FORMAT_TYPE, missingValues)) //
+                .fileFormatVersion(getValueFromJson(data, FILE_FORMAT_VERSION, missingValues)) //
+                .location(location) //
+                .scheme(scheme) //
+                .compression(getValueFromJson(data, COMPRESSION, missingValues)) //
                 .build();
-        // @formatter:on
         if (missingValues.isEmpty()) {
             return Optional.of(fileData);
         }
@@ -250,8 +250,8 @@ public class JsonMessageParser {
     }
 
     /**
-     * Gets data from the event name, defined as:
-     * {DomainAbbreviation}_{productName}-{vendorName}_{Description}, example:
+     * Gets data from the event name.
+     * Defined as: {DomainAbbreviation}_{productName}-{vendorName}_{Description}, example:
      * Noti_RnNode-Ericsson_FileReady
      *
      * @param dataType The type of data to get, {@link DmaapConsumerJsonParser.EventNameDataType}.

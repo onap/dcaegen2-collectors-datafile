@@ -20,15 +20,44 @@ package org.onap.dcaegen2.collectors.datafile.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
+import java.lang.reflect.Type;
+import java.nio.file.Path;
 
+/**
+ * Helper class to serialize object.
+ */
 public class CommonFunctions {
 
-    private static Gson gson = new GsonBuilder().serializeNulls().create();
+    private static Gson gson =
+        new GsonBuilder().registerTypeHierarchyAdapter(Path.class, new PathConverter()).serializeNulls().create();
 
-    private CommonFunctions() {}
+    private CommonFunctions() {
+    }
 
+    /**
+     * Serializes a <code>ConsumerDmaapModel</code>.
+     *
+     * @param consumerDmaapModel model to serialize.
+     *
+     * @return a string with the serialized model.
+     */
     public static String createJsonBody(ConsumerDmaapModel consumerDmaapModel) {
         return gson.toJson(consumerDmaapModel);
+    }
+
+    /**
+     * Json serializer that handles Path serializations, since <code>Path</code> does not implement the
+     * <code>Serializable</code> interface.
+     */
+    public static class PathConverter implements JsonSerializer<Path> {
+        @Override
+        public JsonElement serialize(Path path, Type type, JsonSerializationContext jsonSerializationContext) {
+            return new JsonPrimitive(path.toString());
+        }
     }
 }
