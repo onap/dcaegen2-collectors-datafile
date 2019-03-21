@@ -16,6 +16,9 @@
 
 package org.onap.dcaegen2.collectors.datafile.model;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -28,29 +31,27 @@ public class ConsumerDmaapModelTest {
     private static final String TIME_ZONE_OFFSET = "UTC+05:00";
     private static final String NAME = "A20161224.1030-1045.bin.gz";
     private static final String LOCATION = "ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1145.bin.gz";
-    private static final String INTERNAL_LOCATION = "target/A20161224.1030-1045.bin.gz";
+    private static final Path INTERNAL_LOCATION = Paths.get("target/A20161224.1030-1045.bin.gz");
     private static final String COMPRESSION = "gzip";
     private static final String FILE_FORMAT_TYPE = "org.3GPP.32.435#measCollec";
     private static final String FILE_FORMAT_VERSION = "V10";
 
     @Test
     public void consumerDmaapModelBuilder_shouldBuildAnObject() {
-        // @formatter:off
-        ConsumerDmaapModel consumerDmaapModel = ImmutableConsumerDmaapModel.builder()
-                .productName(PRODUCT_NAME)
-                .vendorName(VENDOR_NAME)
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC)
-                .sourceName(SOURCE_NAME)
-                .startEpochMicrosec(START_EPOCH_MICROSEC)
-                .timeZoneOffset(TIME_ZONE_OFFSET)
-                .name(NAME)
-                .location(LOCATION)
-                .internalLocation(INTERNAL_LOCATION)
-                .compression(COMPRESSION)
-                .fileFormatType(FILE_FORMAT_TYPE)
-                .fileFormatVersion(FILE_FORMAT_VERSION)
+        ConsumerDmaapModel consumerDmaapModel = ImmutableConsumerDmaapModel.builder() //
+                .productName(PRODUCT_NAME) //
+                .vendorName(VENDOR_NAME) //
+                .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+                .sourceName(SOURCE_NAME) //
+                .startEpochMicrosec(START_EPOCH_MICROSEC) //
+                .timeZoneOffset(TIME_ZONE_OFFSET) //
+                .name(NAME) //
+                .location(LOCATION) //
+                .internalLocation(INTERNAL_LOCATION) //
+                .compression(COMPRESSION) //
+                .fileFormatType(FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
-        // @formatter:on
 
         Assertions.assertNotNull(consumerDmaapModel);
         Assertions.assertEquals(PRODUCT_NAME, consumerDmaapModel.getProductName());

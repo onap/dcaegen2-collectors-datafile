@@ -79,7 +79,7 @@ public class SftpClient implements FileCollectClient {
                 sftpChannel = getChannel(session);
             }
         } catch (JSchException e) {
-            throw new DatafileTaskException("Could not open Sftp client", e);
+            throw new DatafileTaskException("Could not open Sftp client" + e, e);
         }
     }
 
