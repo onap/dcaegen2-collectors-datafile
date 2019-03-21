@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b9b8f0a_260adcc7",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/CommonFunctions.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-21T12:14:58Z",
+      "side": 1,
+      "message": "You will still need the  public class PathConverter, but I do not think you need the replace(\u0027\\\\\u0027, \u0027/\u0027));\n(if the Path is to be seralized). \n\nThe problem was that in windows Path.toString will use backslash \u0027\\\u0027 for formatting.",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 33,
+        "endChar": 5
+      },
+      "revId": "720f8dddf55ea8a0dea5e9633271262385df8518",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
