@@ -66,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "ed177fc7_f55d4a55",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/CommonFunctions.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-21T07:52:17Z",
+      "side": 1,
+      "message": "Restored to original version since these changes are no longer needed when the test is removed.",
+      "parentUuid": "d36e1ad4_f894cf98",
+      "revId": "a82f179c53548132490297cf8227c3ce404e0869",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a8bbb30f_038d2b39",
         "filename": "datafile-commons/src/test/java/org/onap/dcaegen2/collectors/datafile/model/CommonFunctionsTest.java",
         "patchSetId": 12
@@ -83,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "e14df375_c7160002",
+        "filename": "datafile-commons/src/test/java/org/onap/dcaegen2/collectors/datafile/model/CommonFunctionsTest.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-21T07:52:17Z",
+      "side": 1,
+      "message": "No changes needed since test is removed.\nDone",
+      "parentUuid": "a8bbb30f_038d2b39",
+      "revId": "a82f179c53548132490297cf8227c3ce404e0869",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0156f096_1e97470c",
         "filename": "datafile-commons/src/test/java/org/onap/dcaegen2/collectors/datafile/model/CommonFunctionsTest.java",
         "patchSetId": 12
@@ -94,6 +130,30 @@
       "writtenOn": "2019-03-21T07:22:42Z",
       "side": 1,
       "message": "Maybe this is a bit inopportune but the functionality tested is just two mapping functions; \n- Path -\u003e JsonElement  \n- JsonElement -\u003e Path. \n\nThese are the two lines of code tested: \n\nreturn Paths.get(jsonElement.getAsString());\nreturn new JsonPrimitive(path.toString()); \n    \n\nThis kind of test is very hard to maintain because if the test fails one will have figure out which of all these letters that does not math. This will happen any time ConsumerDmaapModel is changed and the tested code has nothing to with that class. \n\nThe problem with string representation of file names in windows and linux is only a problem for the test since the actual string representation is compared. \n\nI would argue that this test is not motivated. I would remove it.",
+      "range": {
+        "startLine": 54,
+        "startChar": 17,
+        "endLine": 54,
+        "endChar": 49
+      },
+      "revId": "a82f179c53548132490297cf8227c3ce404e0869",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c6e9ee0f_c1ea83f6",
+        "filename": "datafile-commons/src/test/java/org/onap/dcaegen2/collectors/datafile/model/CommonFunctionsTest.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-21T07:52:17Z",
+      "side": 1,
+      "message": "Test removed.\nDone",
+      "parentUuid": "0156f096_1e97470c",
       "range": {
         "startLine": 54,
         "startChar": 17,
