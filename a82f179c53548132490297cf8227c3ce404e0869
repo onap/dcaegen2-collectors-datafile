@@ -80,6 +80,29 @@
       "revId": "a82f179c53548132490297cf8227c3ce404e0869",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0156f096_1e97470c",
+        "filename": "datafile-commons/src/test/java/org/onap/dcaegen2/collectors/datafile/model/CommonFunctionsTest.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-21T07:22:42Z",
+      "side": 1,
+      "message": "Maybe this is a bit inopportune but the functionality tested is just two mapping functions; \n- Path -\u003e JsonElement  \n- JsonElement -\u003e Path. \n\nThese are the two lines of code tested: \n\nreturn Paths.get(jsonElement.getAsString());\nreturn new JsonPrimitive(path.toString()); \n    \n\nThis kind of test is very hard to maintain because if the test fails one will have figure out which of all these letters that does not math. This will happen any time ConsumerDmaapModel is changed and the tested code has nothing to with that class. \n\nThe problem with string representation of file names in windows and linux is only a problem for the test since the actual string representation is compared. \n\nI would argue that this test is not motivated. I would remove it.",
+      "range": {
+        "startLine": 54,
+        "startChar": 17,
+        "endLine": 54,
+        "endChar": 49
+      },
+      "revId": "a82f179c53548132490297cf8227c3ce404e0869",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
