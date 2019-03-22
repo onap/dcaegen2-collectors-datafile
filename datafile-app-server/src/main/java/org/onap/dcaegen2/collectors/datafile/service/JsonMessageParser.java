@@ -100,9 +100,13 @@ public class JsonMessageParser {
 
     Optional<JsonObject> getJsonObjectFromAnArray(JsonElement element) {
         JsonParser jsonParser = new JsonParser();
-        return element.isJsonPrimitive() ? Optional.of(jsonParser.parse(element.getAsString()).getAsJsonObject())
-                : element.isJsonObject() ? Optional.of((JsonObject) element)
-                        : Optional.of(jsonParser.parse(element.toString()).getAsJsonObject());
+        if (element.isJsonPrimitive()) {
+            return Optional.of(jsonParser.parse(element.getAsString()).getAsJsonObject());
+        } else if (element.isJsonObject()) {
+            return Optional.of((JsonObject) element);
+        } else {
+            return Optional.of(jsonParser.parse(element.toString()).getAsJsonObject());
+        }
     }
 
     private Flux<FileReadyMessage> getMessagesFromJsonArray(JsonElement jsonElement) {
@@ -133,18 +137,17 @@ public class JsonMessageParser {
                 : logErrorAndReturnEmptyMessageFlux("Incorrect JsonObject - missing header. " + jsonObject));
     }
 
+
     private Mono<FileReadyMessage> transformMessages(JsonObject message) {
         Optional<MessageMetaData> optionalMessageMetaData = getMessageMetaData(message);
         if (optionalMessageMetaData.isPresent()) {
+            MessageMetaData messageMetaData = optionalMessageMetaData.get();
             JsonObject notificationFields = message.getAsJsonObject(EVENT).getAsJsonObject(NOTIFICATION_FIELDS);
             JsonArray arrayOfNamedHashMap = notificationFields.getAsJsonArray(ARRAY_OF_NAMED_HASH_MAP);
             if (arrayOfNamedHashMap != null) {
-                List<FileData> allFileDataFromJson = getAllFileDataFromJson(arrayOfNamedHashMap);
+                List<FileData> allFileDataFromJson = getAllFileDataFromJson(arrayOfNamedHashMap, messageMetaData);
                 if (!allFileDataFromJson.isEmpty()) {
-                    MessageMetaData messageMetaData = optionalMessageMetaData.get();
                     return Mono.just(ImmutableFileReadyMessage.builder() //
-                            .pnfName(messageMetaData.sourceName()) //
-                            .messageMetaData(messageMetaData) //
                             .files(allFileDataFromJson) //
                             .build());
                 } else {
@@ -152,12 +155,13 @@ public class JsonMessageParser {
                 }
             }
 
-            logger.error("Unable to collect file from xNF. Missing arrayOfNamedHashMap in message. {}", message);
+            logger.error("VES event parsing. Missing arrayOfNamedHashMap in message. {}", message);
             return Mono.empty();
         }
-        logger.error("Unable to collect file from xNF. FileReady event has incorrect JsonObject. {}", message);
+        logger.error("VES event parsing. FileReady event has incorrect JsonObject. {}", message);
         return Mono.empty();
     }
+
 
     private Optional<MessageMetaData> getMessageMetaData(JsonObject message) {
         List<String> missingValues = new ArrayList<>();
@@ -185,7 +189,7 @@ public class JsonMessageParser {
         if (missingValues.isEmpty() && isChangeIdentifierCorrect(changeIdentifier) && isChangeTypeCorrect(changeType)) {
             return Optional.of(messageMetaData);
         } else {
-            String errorMessage = "Unable to collect file from xNF.";
+            String errorMessage = "VES event parsing.";
             if (!missingValues.isEmpty()) {
                 errorMessage += " Missing data: " + missingValues;
             }
@@ -206,11 +210,11 @@ public class JsonMessageParser {
         return FILE_READY_CHANGE_IDENTIFIER.equals(changeIdentifier);
     }
 
-    private List<FileData> getAllFileDataFromJson(JsonArray arrayOfAdditionalFields) {
+    private List<FileData> getAllFileDataFromJson(JsonArray arrayOfAdditionalFields, MessageMetaData messageMetaData) {
         List<FileData> res = new ArrayList<>();
         for (int i = 0; i < arrayOfAdditionalFields.size(); i++) {
             JsonObject fileInfo = (JsonObject) arrayOfAdditionalFields.get(i);
-            Optional<FileData> fileData = getFileDataFromJson(fileInfo);
+            Optional<FileData> fileData = getFileDataFromJson(fileInfo, messageMetaData);
 
             if (fileData.isPresent()) {
                 res.add(fileData.get());
@@ -219,7 +223,7 @@ public class JsonMessageParser {
         return res;
     }
 
-    private Optional<FileData> getFileDataFromJson(JsonObject fileInfo) {
+    private Optional<FileData> getFileDataFromJson(JsonObject fileInfo, MessageMetaData messageMetaData) {
         logger.trace("starting to getFileDataFromJson!");
 
         List<String> missingValues = new ArrayList<>();
@@ -230,7 +234,7 @@ public class JsonMessageParser {
         try {
             scheme = Scheme.getSchemeFromString(URI.create(location).getScheme());
         } catch (Exception e) {
-            logger.error("Unable to collect file from xNF.", e);
+            logger.error("VES event parsing.", e);
             return Optional.empty();
         }
         FileData fileData = ImmutableFileData.builder() //
@@ -240,12 +244,12 @@ public class JsonMessageParser {
                 .location(location) //
                 .scheme(scheme) //
                 .compression(getValueFromJson(data, COMPRESSION, missingValues)) //
+                .messageMetaData(messageMetaData)
                 .build();
         if (missingValues.isEmpty()) {
             return Optional.of(fileData);
         }
-        logger.error("Unable to collect file from xNF. File information wrong. Missing data: {} Data: {}",
-                missingValues, fileInfo);
+        logger.error("VES event parsing. File information wrong. Missing data: {} Data: {}", missingValues, fileInfo);
         return Optional.empty();
     }
 

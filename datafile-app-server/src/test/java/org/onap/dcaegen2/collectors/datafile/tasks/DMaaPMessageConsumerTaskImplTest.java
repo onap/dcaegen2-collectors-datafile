@@ -20,7 +20,6 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -156,13 +155,12 @@ public class DMaaPMessageConsumerTaskImplTest {
                 .compression(GZIP_COMPRESSION) //
                 .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
                 .fileFormatVersion(FILE_FORMAT_VERSION) //
+                .messageMetaData(messageMetaData)
                 .build();
 
         List<FileData> files = new ArrayList<>();
         files.add(ftpesFileData);
         expectedFtpesMessage = ImmutableFileReadyMessage.builder() //
-                .pnfName(SOURCE_NAME) //
-                .messageMetaData(messageMetaData) //
                 .files(files) //
                 .build();
 
@@ -187,6 +185,7 @@ public class DMaaPMessageConsumerTaskImplTest {
                 .compression(GZIP_COMPRESSION) //
                 .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
                 .fileFormatVersion(FILE_FORMAT_VERSION) //
+                .messageMetaData(messageMetaData)
                 .build();
 
         ImmutableConsumerDmaapModel consumerDmaapModel = ImmutableConsumerDmaapModel.builder() //
@@ -208,8 +207,6 @@ public class DMaaPMessageConsumerTaskImplTest {
         files = new ArrayList<>();
         files.add(sftpFileData);
         expectedSftpMessage = ImmutableFileReadyMessage.builder() //
-                .pnfName(SOURCE_NAME) //
-                .messageMetaData(messageMetaData) //
                 .files(files) //
                 .build();
     }
@@ -264,8 +261,6 @@ public class DMaaPMessageConsumerTaskImplTest {
                     .thenReturn(Flux.error(new DatafileTaskException("problemas")));
         }
 
-        messageConsumerTask = spy(new DMaaPMessageConsumerTask(appConfig, httpClientMock, jsonMessageParserMock));
-        when(messageConsumerTask.resolveConfiguration()).thenReturn(dmaapConsumerConfiguration);
-        doReturn(httpClientMock).when(messageConsumerTask).resolveClient();
+        messageConsumerTask = spy(new DMaaPMessageConsumerTask(httpClientMock, jsonMessageParserMock));
     }
 }

@@ -84,12 +84,13 @@ public class DataRouterPublisher {
      * @param model information about the file to publish
      * @param numRetries the maximal number of retries if the publishing fails
      * @param firstBackoff the time to delay the first retry
-     * @return the HTTP response status as a string
+     * @param contextMap tracing context variables
+     * @return the (same) ConsumerDmaapModel
      */
     public Mono<ConsumerDmaapModel> execute(ConsumerDmaapModel model, long numRetries, Duration firstBackoff,
             Map<String, String> contextMap) {
         MdcVariables.setMdcContextMap(contextMap);
-        logger.trace("Method called with arg {}", model);
+        logger.trace("Publish called with arg {}", model);
         dmaapProducerReactiveHttpClient = resolveClient();
 
         return Mono.just(model)
@@ -117,7 +118,7 @@ public class DataRouterPublisher {
             logger.trace(response.toString());
             return Mono.just(HttpStatus.valueOf(response.getStatusLine().getStatusCode()));
         } catch (Exception e) {
-            logger.error("Unable to send file to DataRouter. Data: {}", consumerDmaapModel.getInternalLocation(), e);
+            logger.warn("Unable to send file to DataRouter. Data: {}", consumerDmaapModel.getInternalLocation(), e);
             return Mono.error(e);
         }
     }

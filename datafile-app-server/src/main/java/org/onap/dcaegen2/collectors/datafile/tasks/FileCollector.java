@@ -49,31 +49,31 @@ public class FileCollector {
         this.datafileAppConfig = datafileAppConfig;
     }
 
-    public Mono<ConsumerDmaapModel> execute(FileData fileData, MessageMetaData metaData, long maxNumberOfRetries,
-            Duration firstBackoffTimeout, Map<String, String> contextMap) {
+    public Mono<ConsumerDmaapModel> execute(FileData fileData, long maxNumberOfRetries, Duration firstBackoffTimeout,
+            Map<String, String> contextMap) {
         MdcVariables.setMdcContextMap(contextMap);
         logger.trace("Entering execute with {}", fileData);
 
         return Mono.just(fileData) //
                 .cache() //
-                .flatMap(fd -> collectFile(fileData, metaData, contextMap)) //
+                .flatMap(fd -> collectFile(fileData, contextMap)) //
                 .retryBackoff(maxNumberOfRetries, firstBackoffTimeout);
     }
 
-    private Mono<ConsumerDmaapModel> collectFile(FileData fileData, MessageMetaData metaData,
-            Map<String, String> contextMap) {
+    private Mono<ConsumerDmaapModel> collectFile(FileData fileData, Map<String, String> contextMap) {
         MdcVariables.setMdcContextMap(contextMap);
-        logger.trace("starting to collectFile");
+        logger.trace("starting to collectFile {}", fileData.name());
 
         final String remoteFile = fileData.remoteFilePath();
         final Path localFile = fileData.getLocalFileName();
 
         try (FileCollectClient currentClient = createClient(fileData)) {
+            currentClient.open();
             localFile.getParent().toFile().mkdir(); // Create parent directories
             currentClient.collectFile(remoteFile, localFile);
-            return Mono.just(getConsumerDmaapModel(fileData, metaData, localFile));
+            return Mono.just(getConsumerDmaapModel(fileData, localFile));
         } catch (Exception throwable) {
-            logger.warn("Failed to download file: {}, reason: {}", fileData.name(), throwable);
+            logger.warn("Failed to download file: {} {}, reason: {}", fileData.sourceName(), fileData.name(), throwable.toString());
             return Mono.error(throwable);
         }
     }
@@ -89,9 +89,9 @@ public class FileCollector {
         }
     }
 
-    private ConsumerDmaapModel getConsumerDmaapModel(FileData fileData, MessageMetaData metaData, Path localFile) {
+    private ConsumerDmaapModel getConsumerDmaapModel(FileData fileData, Path localFile) {
         String location = fileData.location();
-
+        MessageMetaData metaData = fileData.messageMetaData();
         return ImmutableConsumerDmaapModel.builder() //
                 .productName(metaData.productName()) //
                 .vendorName(metaData.vendorName()) //
@@ -108,16 +108,13 @@ public class FileCollector {
                 .build();
     }
 
-    SftpClient createSftpClient(FileData fileData) throws DatafileTaskException {
-        SftpClient client = new SftpClient(fileData.fileServerData());
-        client.open();
-        return client;
+    protected SftpClient createSftpClient(FileData fileData) {
+       return new SftpClient(fileData.fileServerData());
     }
 
-    FtpsClient createFtpsClient(FileData fileData) throws DatafileTaskException {
+    protected FtpsClient createFtpsClient(FileData fileData) {
         FtpesConfig config = datafileAppConfig.getFtpesConfiguration();
-        FtpsClient client = new FtpsClient(fileData.fileServerData());
-        client.open(config.keyCert(), config.keyPassword(), Paths.get(config.trustedCA()), config.trustedCAPassword());
-        return client;
+        return new FtpsClient(fileData.fileServerData(), config.keyCert(), config.keyPassword(),
+                Paths.get(config.trustedCA()), config.trustedCAPassword());
     }
 }

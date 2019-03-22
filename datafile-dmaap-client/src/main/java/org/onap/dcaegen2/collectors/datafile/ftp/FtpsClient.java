@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 
 /**
- * Gets file from xNF with FTPS protocol.
+ * Gets file from PNF with FTPS protocol.
  *
  * @author <a href="mailto:martin.c.yan@est.tech">Martin Yan</a>
  */
@@ -53,12 +53,22 @@ public class FtpsClient implements FileCollectClient {
     private final FileServerData fileServerData;
     private static TrustManager theTrustManager = null;
 
-    public FtpsClient(FileServerData fileServerData) {
+    private final String keyCertPath;
+    private final String keyCertPassword;
+    private final Path trustedCAPath;
+    private final String trustedCAPassword;
+
+    public FtpsClient(FileServerData fileServerData, String keyCertPath, String keyCertPassword, Path trustedCAPath,
+            String trustedCAPassword) {
         this.fileServerData = fileServerData;
+        this.keyCertPath = keyCertPath;
+        this.keyCertPassword = keyCertPassword;
+        this.trustedCAPath = trustedCAPath;
+        this.trustedCAPassword = trustedCAPassword;
     }
 
-    public void open(String keyCertPath, String keyCertPassword, Path trustedCAPath, String trustedCAPassword)
-            throws DatafileTaskException {
+    @Override
+    public void open() throws DatafileTaskException {
         try {
             realFtpsClient.setNeedClientAuth(true);
             realFtpsClient.setKeyManager(createKeyManager(keyCertPath, keyCertPassword));
@@ -135,23 +145,9 @@ public class FtpsClient implements FileCollectClient {
         logger.trace("setUpConnection successfully!");
     }
 
-    InputStream createInputStream(Path localFileName) throws IOException {
-        FileSystemResource realResource = new FileSystemResource(localFileName);
-        return realResource.getInputStream();
-    }
-
-    OutputStream createOutputStream(Path localFileName) throws IOException {
-        File localFile = localFileName.toFile();
-        if (localFile.createNewFile()) {
-            logger.warn("Local file {} already created", localFileName);
-        }
-        OutputStream output = new FileOutputStream(localFile);
-        logger.debug("File {} opened xNF", localFileName);
-        return output;
-    }
-
     private TrustManager createTrustManager(Path trustedCAPath, String trustedCAPassword)
             throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
+        logger.trace("Creating trust manager from file: {}", trustedCAPath);
         try (InputStream fis = createInputStream(trustedCAPath)) {
             KeyStore keyStore = KeyStore.getInstance("JKS");
             keyStore.load(fis, trustedCAPassword.toCharArray());
@@ -161,7 +157,22 @@ public class FtpsClient implements FileCollectClient {
         }
     }
 
-    TrustManager getTrustManager(Path trustedCAPath, String trustedCAPassword)
+    protected InputStream createInputStream(Path localFileName) throws IOException {
+        FileSystemResource realResource = new FileSystemResource(localFileName);
+        return realResource.getInputStream();
+    }
+
+    protected OutputStream createOutputStream(Path localFileName) throws IOException {
+        File localFile = localFileName.toFile();
+        if (localFile.createNewFile()) {
+            logger.warn("Local file {} already created", localFileName);
+        }
+        OutputStream output = new FileOutputStream(localFile);
+        logger.debug("File {} opened xNF", localFileName);
+        return output;
+    }
+
+    protected TrustManager getTrustManager(Path trustedCAPath, String trustedCAPassword)
             throws KeyStoreException, NoSuchAlgorithmException, IOException, CertificateException {
         synchronized (FtpsClient.class) {
             if (theTrustManager == null) {
@@ -171,7 +182,7 @@ public class FtpsClient implements FileCollectClient {
         }
     }
 
-    KeyManager createKeyManager(String keyCertPath, String keyCertPassword)
+    protected KeyManager createKeyManager(String keyCertPath, String keyCertPassword)
             throws IOException, GeneralSecurityException {
         return KeyManagerUtils.createClientKeyManager(new File(keyCertPath), keyCertPassword);
     }

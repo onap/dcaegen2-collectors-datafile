@@ -92,7 +92,7 @@ class DataRouterPublisherTest {
     private static DmaapProducerReactiveHttpClient httpClientMock;
     private static AppConfig appConfig;
     private static DmaapPublisherConfiguration publisherConfigurationMock = mock(DmaapPublisherConfiguration.class);
-
+    private final Map<String, String> contextMap = new HashMap<>();
     private static DataRouterPublisher publisherTaskUnderTestSpy;
 
     /**
@@ -125,7 +125,6 @@ class DataRouterPublisherTest {
     @Test
     public void whenPassedObjectFits_ReturnsCorrectStatus() throws Exception {
         prepareMocksForTests(null, Integer.valueOf(HttpStatus.OK.value()));
-
         StepVerifier
                 .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 1, Duration.ofSeconds(0), CONTEXT_MAP))
                 .expectNext(consumerDmaapModel) //
