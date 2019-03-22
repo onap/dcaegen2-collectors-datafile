@@ -1,0 +1,153 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "05863504_9d665d6c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-22T14:04:28Z",
+      "side": 1,
+      "message": "Is this combination of maxretries and retry timeout really enough to make any difference? The retry should cover the case when a PNF is e.g. restarting, and that can take up to 90 seconds. If only three retries are made and the initial retry timeout is only 5 secons, it will hardly retry long enough to cover this case.",
+      "revId": "150b74091f49e785c3010695a2d3c033bdc98884",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ff2891c3_85a04ea7",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-22T14:04:28Z",
+      "side": 1,
+      "message": "Is the reason for using toString() on the exception to not overflow the log? If not, then it shouldn\u0027t be called.",
+      "range": {
+        "startLine": 122,
+        "startChar": 95,
+        "endLine": 122,
+        "endChar": 115
+      },
+      "revId": "150b74091f49e785c3010695a2d3c033bdc98884",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ee7358b2_548d0674",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-22T14:04:28Z",
+      "side": 1,
+      "message": "Is the reason for using toString() on the exception to not overflow the log? If not, then it shouldn\u0027t be called.\nAlso, the row is longer than 120 characters.",
+      "range": {
+        "startLine": 187,
+        "startChar": 89,
+        "endLine": 187,
+        "endChar": 109
+      },
+      "revId": "150b74091f49e785c3010695a2d3c033bdc98884",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e12499a0_68d45de3",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-22T14:04:28Z",
+      "side": 1,
+      "message": "Why is this method\u0027s visibility not changed when the three down below have been changed?",
+      "revId": "150b74091f49e785c3010695a2d3c033bdc98884",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3cb82263_be481757",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisherTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-22T14:04:28Z",
+      "side": 1,
+      "message": "This is not needed, since CONTEXT_MAP is already defined above.",
+      "range": {
+        "startLine": 95,
+        "startChar": 38,
+        "endLine": 95,
+        "endChar": 47
+      },
+      "revId": "150b74091f49e785c3010695a2d3c033bdc98884",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5841b3c1_c3ae1138",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollectorTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-22T14:04:28Z",
+      "side": 1,
+      "message": "This could be considered as a constant and also declared as static, and the name capitalized, to follow naming conventions when a member is a constant, CONTEXT_MAP.",
+      "range": {
+        "startLine": 96,
+        "startChar": 38,
+        "endLine": 96,
+        "endChar": 48
+      },
+      "revId": "150b74091f49e785c3010695a2d3c033bdc98884",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "50489997_1c95c44d",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasksTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-03-22T14:04:28Z",
+      "side": 1,
+      "message": "This could be considered as a constant and also declared as static, and the name capitalized, to follow naming conventions when a member is a constant, CONTEXT_MAP.",
+      "range": {
+        "startLine": 69,
+        "startChar": 32,
+        "endLine": 69,
+        "endChar": 42
+      },
+      "revId": "150b74091f49e785c3010695a2d3c033bdc98884",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
