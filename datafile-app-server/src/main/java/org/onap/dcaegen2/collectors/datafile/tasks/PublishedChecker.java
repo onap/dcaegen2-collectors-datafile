@@ -20,9 +20,9 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.REQUEST_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_INVOCATION_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_ONAP_REQUEST_ID;
+import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.REQUEST_ID;
+import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.X_INVOCATION_ID;
+import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.X_ONAP_REQUEST_ID;
 
 import java.io.InputStream;
 import java.net.URI;
@@ -34,55 +34,43 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
-import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
-import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
+import org.onap.dcaegen2.collectors.datafile.model.FeedData;
 import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerReactiveHttpClient;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.web.util.DefaultUriBuilderFactory;
 
 /**
- * Bean used to check with DataRouter if a file has been published.
+ * Checks with DataRouter if a file has been published.
  *
  * @author <a href="mailto:maxime.bonneau@est.tech">Maxime Bonneau</a>
  *
  */
 public class PublishedChecker {
-    private static final String FEEDLOG_TOPIC = "feedlog";
-    private static final String DEFAULT_FEED_ID = "1";
-
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    private AppConfig appConfig;
-
-    /**
-     * Constructor.
-     *
-     * @param appConfig The DFC configuration.
-     */
-    public PublishedChecker(AppConfig appConfig) {
-        this.appConfig = appConfig;
-    }
 
     /**
      * Checks with DataRouter if the given file has been published already.
      *
      * @param fileName the name of the file used when it is published.
+     * @param feedData data about the feed to use.
+     * @param contextMap context for logging.
      *
      * @return <code>true</code> if the file has been published before, <code>false</code> otherwise.
      */
-    public boolean execute(String fileName, Map<String, String> contextMap) {
+    public boolean isPublished(String fileName, FeedData feedData, Map<String, String> contextMap) {
         MdcVariables.setMdcContextMap(contextMap);
-        DmaapProducerReactiveHttpClient producerClient = resolveClient();
-
+        DmaapProducerReactiveHttpClient producerClient = createClient();
         HttpGet getRequest = new HttpGet();
         String requestId = MDC.get(REQUEST_ID);
         getRequest.addHeader(X_ONAP_REQUEST_ID, requestId);
         String invocationId = UUID.randomUUID().toString();
         getRequest.addHeader(X_INVOCATION_ID, invocationId);
-        getRequest.setURI(getPublishedQueryUri(fileName, producerClient));
-        producerClient.addUserCredentialsToHead(getRequest);
+
+        getRequest.setURI(getPublishedQueryUri(fileName, feedData));
+        feedData.addUserCredentialsToHead(getRequest);
 
         try {
             HttpResponse response =
@@ -100,20 +88,15 @@ public class PublishedChecker {
         }
     }
 
-    private URI getPublishedQueryUri(String fileName, DmaapProducerReactiveHttpClient producerClient) {
-        return producerClient.getBaseUri() //
-                .pathSegment(FEEDLOG_TOPIC) //
-                .pathSegment(DEFAULT_FEED_ID) //
+    private URI getPublishedQueryUri(String fileName, FeedData feedData) {
+        return new DefaultUriBuilderFactory() //
+                .uriString(feedData.publishedCheckUrl()) //
                 .queryParam("type", "pub") //
                 .queryParam("filename", fileName) //
                 .build();
     }
 
-    protected DmaapPublisherConfiguration resolveConfiguration() {
-        return appConfig.getDmaapPublisherConfiguration();
-    }
-
-    protected DmaapProducerReactiveHttpClient resolveClient() {
-        return new DmaapProducerReactiveHttpClient(resolveConfiguration());
+    protected DmaapProducerReactiveHttpClient createClient() {
+        return new DmaapProducerReactiveHttpClient();
     }
 }

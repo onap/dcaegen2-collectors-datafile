@@ -14,14 +14,15 @@
                 "timeoutMs": -1,
                 "messageLimit": 1
             },
-            "dmaapProducerConfiguration": {
+            "dmaapBusControllerConfiguration": {
                 "dmaapHostName": "localhost",
-                "dmaapPortNumber": 3907,
+                "dmaapPortNumber": 6666,
+                "dmaapTopicName": "webapis/feeds",
+                "dmaapDrFeedName": "bulk_pm_feed",
                 "dmaapProtocol": "https",
-                "dmaapTopicName": "publish",
-                "dmaapUserName": "dradmin",
-                "dmaapUserPassword": "dradmin",
-                "dmaapContentType": "application/octet-stream"
+                "dmaapUserName": "dbcadmin",
+                "dmaapUserPassword": "dbcadmin",
+                "dmaapContentType": "application/json"
             }
         },
         "ftp": {

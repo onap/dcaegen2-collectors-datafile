@@ -27,6 +27,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,7 +68,8 @@ public class FileCollectorTest {
     private static final int PORT_22 = 22;
     private static final String PM_FILE_NAME = "A20161224.1030-1045.bin.gz";
     private static final String REMOTE_FILE_LOCATION = "/ftp/rop/" + PM_FILE_NAME;
-    private static final Path LOCAL_FILE_LOCATION = FileData.createLocalFileName(SERVER_ADDRESS, PM_FILE_NAME);
+    private static final Path LOCAL_FILE_LOCATION =
+            Paths.get("/tmp/onap_datafile/", SERVER_ADDRESS + "_" + PM_FILE_NAME);
     private static final String USER = "usr";
     private static final String PWD = "pwd";
     private static final String FTPES_LOCATION =
@@ -162,7 +164,7 @@ public class FileCollectorTest {
 
         Map<String, String> contextMap = new HashMap<>();
         StepVerifier.create(
-                collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0), contextMap))
+                collectorUndetTest.collectFile(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0), contextMap))
                 .expectNext(expectedConsumerDmaapModel).verifyComplete();
 
         verify(ftpsClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
@@ -181,7 +183,7 @@ public class FileCollectorTest {
 
         Map<String, String> contextMap = new HashMap<>();
         StepVerifier
-                .create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0),
+                .create(collectorUndetTest.collectFile(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0),
                         contextMap))
                 .expectNext(expectedConsumerDmaapModel) //
                 .verifyComplete();
@@ -191,7 +193,7 @@ public class FileCollectorTest {
         expectedConsumerDmaapModel = createExpectedConsumerDmaapModel(SFTP_LOCATION);
 
         StepVerifier
-                .create(collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0),
+                .create(collectorUndetTest.collectFile(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0),
                         contextMap))
                 .expectNext(expectedConsumerDmaapModel) //
                 .verifyComplete();
@@ -212,7 +214,7 @@ public class FileCollectorTest {
 
         Map<String, String> contextMap = new HashMap<>();
         StepVerifier.create(
-                collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0), contextMap))
+                collectorUndetTest.collectFile(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0), contextMap))
                 .expectErrorMessage("Retries exhausted: 3/3").verify();
 
         verify(ftpsClientMock, times(4)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
@@ -230,7 +232,7 @@ public class FileCollectorTest {
         FileData fileData = createFileData(FTPES_LOCATION_NO_PORT, Scheme.FTPS);
         Map<String, String> contextMap = new HashMap<>();
         StepVerifier.create(
-                collectorUndetTest.execute(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0), contextMap))
+                collectorUndetTest.collectFile(fileData, createMessageMetaData(), 3, Duration.ofSeconds(0), contextMap))
                 .expectNext(expectedConsumerDmaapModel).verifyComplete();
 
         verify(ftpsClientMock, times(2)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);

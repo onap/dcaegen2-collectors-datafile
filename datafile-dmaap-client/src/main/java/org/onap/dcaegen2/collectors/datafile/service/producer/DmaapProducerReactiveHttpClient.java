@@ -16,7 +16,6 @@
 
 package org.onap.dcaegen2.collectors.datafile.service.producer;
 
-import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -25,7 +24,6 @@ import java.util.concurrent.Future;
 
 import javax.net.ssl.SSLContext;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -35,17 +33,16 @@ import org.apache.http.ssl.SSLContextBuilder;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.http.HttpAsyncClientBuilderWrapper;
 import org.onap.dcaegen2.collectors.datafile.http.IHttpAsyncClientBuilder;
-import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
 import org.onap.dcaegen2.collectors.datafile.web.PublishRedirectStrategy;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
-import org.springframework.web.util.DefaultUriBuilderFactory;
-import org.springframework.web.util.UriBuilder;
 
 /**
+ * DataRouter client.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 7/4/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
@@ -57,25 +54,16 @@ public class DmaapProducerReactiveHttpClient {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final String dmaapHostName;
-    private final Integer dmaapPortNumber;
-    private final String dmaapProtocol;
-    private final String user;
-    private final String pwd;
-
     /**
-     * Constructor DmaapProducerReactiveHttpClient.
+     * Executes the given request and handles redirects.
      *
-     * @param dmaapPublisherConfiguration - DMaaP producer configuration object
+     * @param request the request to execute.
+     * @param contextMap context for logging.
+     *
+     * @return the response from the request.
+     *
+     * @throws DatafileTaskException if anything goes wrong.
      */
-    public DmaapProducerReactiveHttpClient(DmaapPublisherConfiguration dmaapPublisherConfiguration) {
-        this.dmaapHostName = dmaapPublisherConfiguration.dmaapHostName();
-        this.dmaapPortNumber = dmaapPublisherConfiguration.dmaapPortNumber();
-        this.dmaapProtocol = dmaapPublisherConfiguration.dmaapProtocol();
-        this.user = dmaapPublisherConfiguration.dmaapUserName();
-        this.pwd = dmaapPublisherConfiguration.dmaapUserPassword();
-    }
-
     public HttpResponse getDmaapProducerResponseWithRedirect(HttpUriRequest request, Map<String, String> contextMap)
             throws DatafileTaskException {
         try (CloseableHttpAsyncClient webClient = createWebClient(true, NO_REQUEST_TIMEOUT)) {
@@ -92,6 +80,17 @@ public class DmaapProducerReactiveHttpClient {
         }
     }
 
+    /**
+     * Executes the given request using the given timeout time.
+     *
+     * @param request the request to execute.
+     * @param requestTimeout the timeout time for the request.
+     * @param contextMap context for logging.
+     *
+     * @return the response from the request.
+     *
+     * @throws DatafileTaskException if anything goes wrong.
+     */
     public HttpResponse getDmaapProducerResponseWithCustomTimeout(HttpUriRequest request, int requestTimeout,
             Map<String, String> contextMap) throws DatafileTaskException {
         try (CloseableHttpAsyncClient webClient = createWebClient(false, requestTimeout)) {
@@ -106,22 +105,6 @@ public class DmaapProducerReactiveHttpClient {
         } catch (Exception e) {
             throw new DatafileTaskException("Unable to create web client.", e);
         }
-    }
-
-    public void addUserCredentialsToHead(HttpUriRequest request) {
-        String plainCreds = user + ":" + pwd;
-        byte[] plainCredsBytes = plainCreds.getBytes(StandardCharsets.ISO_8859_1);
-        byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
-        String base64Creds = new String(base64CredsBytes);
-        logger.trace("base64Creds...: {}", base64Creds);
-        request.addHeader("Authorization", "Basic " + base64Creds);
-    }
-
-    public UriBuilder getBaseUri() {
-        return new DefaultUriBuilderFactory().builder() //
-                .scheme(dmaapProtocol) //
-                .host(dmaapHostName) //
-                .port(dmaapPortNumber);
     }
 
     private CloseableHttpAsyncClient createWebClient(boolean expectRedirect, int requestTimeout)
