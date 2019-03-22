@@ -57,11 +57,7 @@ public class DmaapProducerReactiveHttpClient {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final String dmaapHostName;
-    private final Integer dmaapPortNumber;
-    private final String dmaapProtocol;
-    private final String user;
-    private final String pwd;
+    private final DmaapPublisherConfiguration configuration;
 
     /**
      * Constructor DmaapProducerReactiveHttpClient.
@@ -69,11 +65,7 @@ public class DmaapProducerReactiveHttpClient {
      * @param dmaapPublisherConfiguration - DMaaP producer configuration object
      */
     public DmaapProducerReactiveHttpClient(DmaapPublisherConfiguration dmaapPublisherConfiguration) {
-        this.dmaapHostName = dmaapPublisherConfiguration.dmaapHostName();
-        this.dmaapPortNumber = dmaapPublisherConfiguration.dmaapPortNumber();
-        this.dmaapProtocol = dmaapPublisherConfiguration.dmaapProtocol();
-        this.user = dmaapPublisherConfiguration.dmaapUserName();
-        this.pwd = dmaapPublisherConfiguration.dmaapUserPassword();
+        this.configuration = dmaapPublisherConfiguration;
     }
 
     public HttpResponse getDmaapProducerResponseWithRedirect(HttpUriRequest request, Map<String, String> contextMap)
@@ -85,7 +77,7 @@ public class DmaapProducerReactiveHttpClient {
             logger.trace(INVOKE, "Starting to produce to DR {}", request);
             Future<HttpResponse> future = webClient.execute(request, null);
             HttpResponse response = future.get();
-            logger.trace(INVOKE_RETURN, "Response from DR {}", response.toString());
+            logger.trace(INVOKE_RETURN, "Response from DR {}", response);
             return response;
         } catch (Exception e) {
             throw new DatafileTaskException("Unable to create web client.", e);
@@ -101,7 +93,7 @@ public class DmaapProducerReactiveHttpClient {
             logger.trace(INVOKE, "Starting to produce to DR {}", request);
             Future<HttpResponse> future = webClient.execute(request, null);
             HttpResponse response = future.get();
-            logger.trace(INVOKE_RETURN, "Response from DR {}", response.toString());
+            logger.trace(INVOKE_RETURN, "Response from DR {}", response);
             return response;
         } catch (Exception e) {
             throw new DatafileTaskException("Unable to create web client.", e);
@@ -109,7 +101,7 @@ public class DmaapProducerReactiveHttpClient {
     }
 
     public void addUserCredentialsToHead(HttpUriRequest request) {
-        String plainCreds = user + ":" + pwd;
+        String plainCreds = configuration.dmaapUserName() + ":" + configuration.dmaapUserPassword();
         byte[] plainCredsBytes = plainCreds.getBytes(StandardCharsets.ISO_8859_1);
         byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
         String base64Creds = new String(base64CredsBytes);
@@ -119,9 +111,9 @@ public class DmaapProducerReactiveHttpClient {
 
     public UriBuilder getBaseUri() {
         return new DefaultUriBuilderFactory().builder() //
-                .scheme(dmaapProtocol) //
-                .host(dmaapHostName) //
-                .port(dmaapPortNumber);
+                .scheme(configuration.dmaapProtocol()) //
+                .host(configuration.dmaapHostName()) //
+                .port(configuration.dmaapPortNumber());
     }
 
     private CloseableHttpAsyncClient createWebClient(boolean expectRedirect, int requestTimeout)

@@ -86,13 +86,11 @@ class DataRouterPublisherTest {
     private static final String FEED_ID = "1";
     private static final String FILE_CONTENT = "Just a string.";
 
-    private static final Map<String, String> CONTEXT_MAP = new HashMap<>();
-
     private static ConsumerDmaapModel consumerDmaapModel;
     private static DmaapProducerReactiveHttpClient httpClientMock;
     private static AppConfig appConfig;
     private static DmaapPublisherConfiguration publisherConfigurationMock = mock(DmaapPublisherConfiguration.class);
-
+    private final Map<String, String> contextMap = new HashMap<>();
     private static DataRouterPublisher publisherTaskUnderTestSpy;
 
     /**
@@ -125,9 +123,8 @@ class DataRouterPublisherTest {
     @Test
     public void whenPassedObjectFits_ReturnsCorrectStatus() throws Exception {
         prepareMocksForTests(null, Integer.valueOf(HttpStatus.OK.value()));
-
         StepVerifier
-                .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 1, Duration.ofSeconds(0), CONTEXT_MAP))
+                .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 1, Duration.ofSeconds(0), contextMap))
                 .expectNext(consumerDmaapModel) //
                 .verifyComplete();
 
@@ -170,7 +167,7 @@ class DataRouterPublisherTest {
         prepareMocksForTests(new DatafileTaskException("Error"), HttpStatus.OK.value());
 
         StepVerifier
-                .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 2, Duration.ofSeconds(0), CONTEXT_MAP))
+                .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 2, Duration.ofSeconds(0), contextMap))
                 .expectNext(consumerDmaapModel) //
                 .verifyComplete();
     }
@@ -181,7 +178,7 @@ class DataRouterPublisherTest {
                 Integer.valueOf(HttpStatus.OK.value()));
 
         StepVerifier
-                .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 1, Duration.ofSeconds(0), CONTEXT_MAP))
+                .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 1, Duration.ofSeconds(0), contextMap))
                 .expectNext(consumerDmaapModel) //
                 .verifyComplete();
 
@@ -197,7 +194,7 @@ class DataRouterPublisherTest {
                 Integer.valueOf((HttpStatus.BAD_GATEWAY.value())));
 
         StepVerifier
-                .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 1, Duration.ofSeconds(0), CONTEXT_MAP))
+                .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 1, Duration.ofSeconds(0), contextMap))
                 .expectErrorMessage("Retries exhausted: 1/1") //
                 .verify();
 

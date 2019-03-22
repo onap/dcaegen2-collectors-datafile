@@ -30,8 +30,9 @@ import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.service.consume
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
@@ -39,25 +40,21 @@ import reactor.core.publisher.Flux;
 public class DMaaPMessageConsumerTask {
     private static final Logger logger = LoggerFactory.getLogger(DMaaPMessageConsumerTask.class);
 
-    private AppConfig datafileAppConfig;
-    private JsonMessageParser jsonMessageParser;
-    private DMaaPConsumerReactiveHttpClient dmaaPConsumerReactiveHttpClient;
+    private final JsonMessageParser jsonMessageParser;
+    private final DMaaPConsumerReactiveHttpClient dmaaPConsumerReactiveHttpClient;
 
     public DMaaPMessageConsumerTask(AppConfig datafileAppConfig) {
-        this.datafileAppConfig = datafileAppConfig;
         this.jsonMessageParser = new JsonMessageParser();
+        this.dmaaPConsumerReactiveHttpClient = createHttpClient(datafileAppConfig);
     }
 
-    protected DMaaPMessageConsumerTask(AppConfig datafileAppConfig,
-                                    DMaaPConsumerReactiveHttpClient dmaaPConsumerReactiveHttpClient,
+    protected DMaaPMessageConsumerTask(DMaaPConsumerReactiveHttpClient dmaaPConsumerReactiveHttpClient,
             JsonMessageParser messageParser) {
-        this.datafileAppConfig = datafileAppConfig;
         this.dmaaPConsumerReactiveHttpClient = dmaaPConsumerReactiveHttpClient;
         this.jsonMessageParser = messageParser;
     }
 
     public Flux<FileReadyMessage> execute() {
-        dmaaPConsumerReactiveHttpClient = resolveClient();
         logger.trace("execute called");
         return consume((dmaaPConsumerReactiveHttpClient.getDMaaPConsumerResponse()));
     }
@@ -67,15 +64,10 @@ public class DMaaPMessageConsumerTask {
         return jsonMessageParser.getMessagesFromJson(message);
     }
 
-    protected DmaapConsumerConfiguration resolveConfiguration() {
-        return datafileAppConfig.getDmaapConsumerConfiguration();
+    private static DMaaPConsumerReactiveHttpClient createHttpClient(AppConfig datafileAppConfig) {
+        DmaapConsumerConfiguration config = datafileAppConfig.getDmaapConsumerConfiguration();
+        WebClient client = new DmaapReactiveWebClient().fromConfiguration(config).build();
+        return new DMaaPConsumerReactiveHttpClient(config, client);
     }
 
-    protected DMaaPConsumerReactiveHttpClient resolveClient() {
-        return new DMaaPConsumerReactiveHttpClient(resolveConfiguration(), buildWebClient());
-    }
-
-    protected WebClient buildWebClient() {
-        return new DmaapReactiveWebClient().fromConfiguration(resolveConfiguration()).build();
-    }
 }

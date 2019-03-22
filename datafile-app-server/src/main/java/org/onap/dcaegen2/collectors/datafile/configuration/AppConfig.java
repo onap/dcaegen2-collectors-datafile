@@ -112,10 +112,8 @@ public class AppConfig {
 
                 setConfiguration(consumerConfiguration, publisherConfiguration, ftpesConfig);
             }
-        } catch (IOException e) {
-            logger.error("Problem with file loading, file: {}", filepath, e);
-        } catch (JsonSyntaxException e) {
-            logger.error("Problem with Json deserialization", e);
+        } catch (JsonSyntaxException | IOException e) {
+            logger.error("Problem with loading configuration, file: {}", filepath, e);
         }
     }
 

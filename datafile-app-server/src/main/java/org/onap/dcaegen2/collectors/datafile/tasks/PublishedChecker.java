@@ -54,7 +54,7 @@ public class PublishedChecker {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private AppConfig appConfig;
+    private final AppConfig appConfig;
 
     /**
      * Constructor.
@@ -88,12 +88,13 @@ public class PublishedChecker {
             HttpResponse response =
                     producerClient.getDmaapProducerResponseWithCustomTimeout(getRequest, 2000, contextMap);
 
-            logger.trace(response.toString());
+            logger.trace("{}", response);
             int status = response.getStatusLine().getStatusCode();
             HttpEntity entity = response.getEntity();
-            InputStream content = entity.getContent();
-            String body = IOUtils.toString(content);
-            return HttpStatus.SC_OK == status && !"[]".equals(body);
+            try (InputStream content = entity.getContent()) {
+                String body = IOUtils.toString(content);
+                return HttpStatus.SC_OK == status && !"[]".equals(body);
+            }
         } catch (Exception e) {
             logger.warn("Unable to check if file has been published.", e);
             return false;

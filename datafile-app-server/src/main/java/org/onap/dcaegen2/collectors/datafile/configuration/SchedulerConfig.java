@@ -63,7 +63,7 @@ public class SchedulerConfig {
     private static final Logger logger = LoggerFactory.getLogger(SchedulerConfig.class);
     private static final Marker ENTRY = MarkerFactory.getMarker("ENTRY");
     private static final Marker EXIT = MarkerFactory.getMarker("EXIT");
-    private static volatile List<ScheduledFuture<?>> scheduledFutureList = new ArrayList<>();
+    private static List<ScheduledFuture<?>> scheduledFutureList = new ArrayList<>();
     private Map<String, String> contextMap;
 
     private final TaskScheduler taskScheduler;
@@ -97,8 +97,7 @@ public class SchedulerConfig {
         MdcVariables.setMdcContextMap(contextMap);
         logger.info(EXIT, "Stopped Datafile workflow");
         MDC.clear();
-        return Mono.defer(() -> Mono
-                .just(new ResponseEntity<>("Datafile Service has already been stopped!", HttpStatus.CREATED)));
+        return Mono.just(new ResponseEntity<>("Datafile Service has already been stopped!", HttpStatus.CREATED));
     }
 
     /**
