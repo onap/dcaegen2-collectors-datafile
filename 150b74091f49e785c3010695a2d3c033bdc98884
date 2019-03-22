@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "590bd61c_ca10c860",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-22T14:29:33Z",
+      "side": 1,
+      "message": "It should cover a temporary glitch in the network but not a longer outage for a node. \nI have not changed this in this commit, I just put them i a more visible place.  \n\nIt is easy to change these figures when we are testing. I do not know what to put here right now. 15 minutes later a new attempt will be done in most cases.",
+      "parentUuid": "05863504_9d665d6c",
+      "revId": "150b74091f49e785c3010695a2d3c033bdc98884",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ff2891c3_85a04ea7",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
         "patchSetId": 5
@@ -30,6 +48,30 @@
       "writtenOn": "2019-03-22T14:04:28Z",
       "side": 1,
       "message": "Is the reason for using toString() on the exception to not overflow the log? If not, then it shouldn\u0027t be called.",
+      "range": {
+        "startLine": 122,
+        "startChar": 95,
+        "endLine": 122,
+        "endChar": 115
+      },
+      "revId": "150b74091f49e785c3010695a2d3c033bdc98884",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "462ea4cb_682e4f74",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-22T14:29:33Z",
+      "side": 1,
+      "message": "You right in the general case. But it got more readable like this.",
+      "parentUuid": "ff2891c3_85a04ea7",
       "range": {
         "startLine": 122,
         "startChar": 95,
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "5fba2eb9_31690b6b",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-22T14:29:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee7358b2_548d0674",
+      "range": {
+        "startLine": 187,
+        "startChar": 89,
+        "endLine": 187,
+        "endChar": 109
+      },
+      "revId": "150b74091f49e785c3010695a2d3c033bdc98884",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e12499a0_68d45de3",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
         "patchSetId": 5
@@ -82,6 +148,24 @@
     },
     {
       "key": {
+        "uuid": "5fd642b3_7431c1ac",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-22T14:29:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e12499a0_68d45de3",
+      "revId": "150b74091f49e785c3010695a2d3c033bdc98884",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3cb82263_be481757",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisherTest.java",
         "patchSetId": 5
@@ -93,6 +177,30 @@
       "writtenOn": "2019-03-22T14:04:28Z",
       "side": 1,
       "message": "This is not needed, since CONTEXT_MAP is already defined above.",
+      "range": {
+        "startLine": 95,
+        "startChar": 38,
+        "endLine": 95,
+        "endChar": 47
+      },
+      "revId": "150b74091f49e785c3010695a2d3c033bdc98884",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bb97c591_ac2be156",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisherTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-22T14:29:33Z",
+      "side": 1,
+      "message": "I will remove one.",
+      "parentUuid": "3cb82263_be481757",
       "range": {
         "startLine": 95,
         "startChar": 38,
@@ -128,6 +236,30 @@
     },
     {
       "key": {
+        "uuid": "94c5ebf7_f8645a05",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollectorTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-22T14:29:33Z",
+      "side": 1,
+      "message": "No I do not think it should qualify as a constant. \nA Map is not immutable. The fact that we never put anything in it in the test does not make it a constant as I see it.",
+      "parentUuid": "5841b3c1_c3ae1138",
+      "range": {
+        "startLine": 96,
+        "startChar": 38,
+        "endLine": 96,
+        "endChar": 48
+      },
+      "revId": "150b74091f49e785c3010695a2d3c033bdc98884",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "50489997_1c95c44d",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasksTest.java",
         "patchSetId": 5
@@ -139,6 +271,30 @@
       "writtenOn": "2019-03-22T14:04:28Z",
       "side": 1,
       "message": "This could be considered as a constant and also declared as static, and the name capitalized, to follow naming conventions when a member is a constant, CONTEXT_MAP.",
+      "range": {
+        "startLine": 69,
+        "startChar": 32,
+        "endLine": 69,
+        "endChar": 42
+      },
+      "revId": "150b74091f49e785c3010695a2d3c033bdc98884",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "744838c7_bf5996ac",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasksTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-22T14:29:33Z",
+      "side": 1,
+      "message": "See previous answer. It would look very strange if all variables that never changes value in a test would be spelled with capitals.",
+      "parentUuid": "50489997_1c95c44d",
       "range": {
         "startLine": 69,
         "startChar": 32,
