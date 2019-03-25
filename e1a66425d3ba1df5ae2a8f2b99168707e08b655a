@@ -1,0 +1,9 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Tamas Bakai <tamas.bakai@est.tech>
+Code-Review+1: Henrik Andersson <henrik.b.andersson@est.tech>
+Code-Review+2: Tony Hansen <tony@att.com>
+Submitted-by: Tony Hansen <tony@att.com>
+Submitted-at: Mon, 25 Mar 2019 17:37:44 +0000
+Reviewed-on: https://gerrit.onap.org/r/82597
+Project: dcaegen2/collectors/datafile
+Branch: refs/heads/master
