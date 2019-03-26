@@ -28,6 +28,7 @@ meetings:
       repeats: 'weekly'
       time: '13:00 UTC (DST), 15:30 UTC (post DST)'
 repositories:
+<<<<<<< HEAD
     - 'dcaegen2'
     - 'dcaegen2-analytics'
     - 'dcaegen2-analytics-flink'
@@ -54,6 +55,9 @@ repositories:
     - 'dcaegen2-services-mapper'
     - 'dcaegen2-services-pm-mapper'
     - 'dcaegen2-services-prh'
+=======
+    - 'dcaegen2-collectors-datafile'
+>>>>>>> 3f7770f... update INFO.yaml
 committers:
     - <<: *onap_dcaegen2_ptl
     - name: 'Lusheng Ji'
@@ -86,5 +90,19 @@ committers:
       company: 'ATT'
       id: 'jflucas'
       timezone: 'America/New_York'
+<<<<<<< HEAD
 tsc:
     approval: 'https://lists.onap.org/pipermail/onap-tsc'
+=======
+    - name: 'Henrik Andersson'
+      email: 'henrik.b.andersson@est.tech'
+      company: 'EST'
+      id: 'elinuxhenrik'
+      timezone: 'Europe/Stockholm'
+tsc:
+    approval: 'https://lists.onap.org/pipermail/onap-tsc'
+    changes:
+        - type: 'Addition'
+          name: 'Henrik Andersson'
+          link: 'https://lists.onap.org/g/onap-tsc/message/4771'
+>>>>>>> 3f7770f... update INFO.yaml
