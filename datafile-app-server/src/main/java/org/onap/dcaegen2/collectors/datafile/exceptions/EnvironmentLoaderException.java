@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START=======================================================
  * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
  * ================================================================================
@@ -19,6 +19,8 @@
 package org.onap.dcaegen2.collectors.datafile.exceptions;
 
 /**
+ * Exception thrown when there is a problem with the Consul environment.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 9/19/18
  */
 public class EnvironmentLoaderException extends Exception {

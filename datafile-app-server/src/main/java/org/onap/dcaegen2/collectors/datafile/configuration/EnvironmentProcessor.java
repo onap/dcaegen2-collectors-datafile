@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START========================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * =================================================================================================
@@ -19,17 +19,17 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
-
 import org.onap.dcaegen2.collectors.datafile.exceptions.EnvironmentLoaderException;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.ImmutableEnvProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-
 import reactor.core.publisher.Mono;
 
 /**
+ * Handling the Consul connection.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 9/19/18
  */
 class EnvironmentProcessor {
@@ -63,7 +63,8 @@ class EnvironmentProcessor {
     }
 
     private static Integer getConsultPort(Properties systemEnvironments) {
-        return Optional.ofNullable(systemEnvironments.getProperty("CONSUL_PORT")).map(Integer::valueOf)
+        return Optional.ofNullable(systemEnvironments.getProperty("CONSUL_PORT")) //
+                .map(Integer::valueOf) //
                 .orElseGet(EnvironmentProcessor::getDefaultPortOfConsul);
     }
 
