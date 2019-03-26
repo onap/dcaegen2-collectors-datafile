@@ -16,15 +16,15 @@
 
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
+import io.swagger.annotations.ApiOperation;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
-
 import javax.annotation.PostConstruct;
-
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
 import org.slf4j.Logger;
@@ -36,8 +36,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
-import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Mono;
 
 /**
@@ -55,7 +53,7 @@ public class SchedulerConfig {
     private static final Duration SCHEDULING_DELAY_FOR_DATAFILE_PURGE_CACHE = Duration.ofHours(1);
     private static final Logger logger = LoggerFactory.getLogger(SchedulerConfig.class);
     private static List<ScheduledFuture<?>> scheduledFutureList = new ArrayList<>();
-    private Map<String, String> contextMap;
+    private Map<String, String> contextMap = new HashMap<>();
 
     private final TaskScheduler taskScheduler;
     private final ScheduledTasks scheduledTask;
@@ -110,11 +108,13 @@ public class SchedulerConfig {
             scheduledFutureList
                     .add(taskScheduler.scheduleWithFixedDelay(() -> scheduledTask.purgeCachedInformation(Instant.now()),
                             SCHEDULING_DELAY_FOR_DATAFILE_PURGE_CACHE));
-
             return true;
         } else {
             return false;
         }
+    }
 
+    static void setScheduledFutureList(List<ScheduledFuture<?>> scheduledFutureList) {
+        SchedulerConfig.scheduledFutureList = scheduledFutureList;
     }
 }

@@ -38,7 +38,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -55,10 +54,6 @@ import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPub
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriBuilder;
 
-/**
- * @author <a href="mailto:maxime.bonneau@est.tech">Maxime Bonneau</a>
- *
- */
 public class PublishedCheckerTest {
     private static final String EMPTY_CONTENT = "[]";
     private static final String FEEDLOG_TOPIC = "feedlog";
@@ -95,7 +90,7 @@ public class PublishedCheckerTest {
     public void executeWhenNotPublished_returnsFalse() throws Exception {
         prepareMocksForTests(HttpUtils.SC_OK, EMPTY_CONTENT, null);
 
-        boolean isPublished = publishedCheckerUnderTestSpy.execute(LOCAL_FILE_NAME, CONTEXT_MAP);
+        boolean isPublished = publishedCheckerUnderTestSpy.isFilePublished(LOCAL_FILE_NAME, CONTEXT_MAP);
 
         assertFalse(isPublished);
 
@@ -123,7 +118,7 @@ public class PublishedCheckerTest {
     public void executeWhenDataRouterReturnsNok_returnsFalse() throws Exception {
         prepareMocksForTests(HttpUtils.SC_BAD_REQUEST, EMPTY_CONTENT, null);
 
-        boolean isPublished = publishedCheckerUnderTestSpy.execute(LOCAL_FILE_NAME, CONTEXT_MAP);
+        boolean isPublished = publishedCheckerUnderTestSpy.isFilePublished(LOCAL_FILE_NAME, CONTEXT_MAP);
 
         assertFalse(isPublished);
     }
@@ -132,7 +127,7 @@ public class PublishedCheckerTest {
     public void executeWhenPublished_returnsTrue() throws Exception {
         prepareMocksForTests(HttpUtils.SC_OK, "[" + LOCAL_FILE_NAME + "]", null);
 
-        boolean isPublished = publishedCheckerUnderTestSpy.execute(LOCAL_FILE_NAME, CONTEXT_MAP);
+        boolean isPublished = publishedCheckerUnderTestSpy.isFilePublished(LOCAL_FILE_NAME, CONTEXT_MAP);
 
         assertTrue(isPublished);
     }
@@ -141,7 +136,7 @@ public class PublishedCheckerTest {
     public void executeWhenErrorInDataRouter_returnsFalse() throws Exception {
         prepareMocksForTests(HttpUtils.SC_OK, EMPTY_CONTENT, new DatafileTaskException(""));
 
-        boolean isPublished = publishedCheckerUnderTestSpy.execute(LOCAL_FILE_NAME, CONTEXT_MAP);
+        boolean isPublished = publishedCheckerUnderTestSpy.isFilePublished(LOCAL_FILE_NAME, CONTEXT_MAP);
 
         assertFalse(isPublished);
     }

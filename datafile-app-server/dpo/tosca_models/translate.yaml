@@ -20,9 +20,9 @@ topology_template:
       type: string
     ftp.ftpesConfiguration.keyPassword:
       type: string
-    ftp.ftpesConfiguration.trustedCA:
+    ftp.ftpesConfiguration.trustedCa:
       type: string
-    ftp.ftpesConfiguration.trustedCAPassword:
+    ftp.ftpesConfiguration.trustedCaPassword:
       type: string
     image:
       type: string
@@ -80,10 +80,10 @@ topology_template:
             get_input: ftp.ftpesConfiguration.keyCert
           ftp.ftpesConfiguration.keyPassword:
             get_input: ftp.ftpesConfiguration.keyPassword
-          ftp.ftpesConfiguration.trustedCA:
-            get_input: ftp.ftpesConfiguration.trustedCA
-          ftp.ftpesConfiguration.trustedCAPassword:
-            get_input: ftp.ftpesConfiguration.trustedCAPassword
+          ftp.ftpesConfiguration.trustedCa:
+            get_input: ftp.ftpesConfiguration.trustedCa
+          ftp.ftpesConfiguration.trustedCaPassword:
+            get_input: ftp.ftpesConfiguration.trustedCaPassword
           security.enableDmaapCertAuth:
             get_input: security.enableDmaapCertAuth
           security.keyStorePasswordPath:
