@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7364f537_ebdff46d",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollectorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-03-28T15:52:03Z",
+      "side": 1,
+      "message": "I think it is better to reuse the FileData.DATAFILE_TMPDIR\nconstant (just make it public) so it is easy to understand where it comes from.\nIt is not a big deal though but I think all relevant constants should be defined in one place.",
+      "range": {
+        "startLine": 69,
+        "startChar": 67,
+        "endLine": 69,
+        "endChar": 68
+      },
+      "revId": "a57c8be01306d34e95e052a12e4e935721df5f96",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
