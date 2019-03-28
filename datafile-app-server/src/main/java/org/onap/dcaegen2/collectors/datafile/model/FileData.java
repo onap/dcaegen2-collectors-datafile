@@ -20,7 +20,6 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
-
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 import org.onap.dcaegen2.collectors.datafile.ftp.FileServerData;
@@ -72,11 +71,7 @@ public abstract class FileData {
     }
 
     public Path getLocalFileName() {
-       return createLocalFileName(messageMetaData().sourceName(), name());
-    }
-
-    public static Path createLocalFileName(String sourceName, String fileName) {
-        return Paths.get(DATAFILE_TMPDIR, sourceName + "_" + fileName);
+       return Paths.get(DATAFILE_TMPDIR, name());
     }
 
     public FileServerData fileServerData() {

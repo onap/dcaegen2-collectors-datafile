@@ -26,7 +26,6 @@ import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -34,7 +33,6 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Map;
 import java.util.UUID;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPut;
@@ -52,7 +50,6 @@ import org.slf4j.MDC;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-
 import reactor.core.publisher.Mono;
 
 /**
@@ -129,7 +126,7 @@ public class DataRouterPublisher {
         metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
         metaData.getAsJsonObject().remove(INTERNAL_LOCATION_JSON_TAG);
         put.addHeader(X_DMAAP_DR_META, metaData.toString());
-        put.setURI(getPublishUri(model.getInternalLocation().getFileName().toString()));
+        put.setURI(getPublishUri(model.getName()));
     }
 
     private void prepareBody(ConsumerDmaapModel model, HttpPut put) throws IOException {
