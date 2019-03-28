@@ -5,8 +5,6 @@ imports:
 - schema: schema.yaml
 topology_template:
   inputs:
-    buscontroller_feed_publishing_endpoint:
-      type: string
     cpu_period:
       type: integer
       default: 10000
@@ -17,56 +15,6 @@ topology_template:
       type: integer
       default: 256
     datafile.policy:
-      type: string
-    dmaap.dmaapBusControllerConfiguration.dmaapContentType:
-      type: string
-    dmaap.dmaapBusControllerConfiguration.dmaapDrFeedName:
-      type: string
-    dmaap.dmaapBusControllerConfiguration.dmaapHostName:
-      type: string
-    dmaap.dmaapBusControllerConfiguration.dmaapPortNumber:
-      type: string
-    dmaap.dmaapBusControllerConfiguration.dmaapProtocol:
-      type: string
-    dmaap.dmaapBusControllerConfiguration.dmaapTopicName:
-      type: string
-    dmaap.dmaapBusControllerConfiguration.dmaapUserName:
-      type: string
-    dmaap.dmaapBusControllerConfiguration.dmaapUserPassword:
-      type: string
-    dmaap.dmaapConsumerConfiguration.consumerGroup:
-      type: string
-    dmaap.dmaapConsumerConfiguration.consumerId:
-      type: string
-    dmaap.dmaapConsumerConfiguration.dmaapContentType:
-      type: string
-    dmaap.dmaapConsumerConfiguration.dmaapHostName:
-      type: string
-    dmaap.dmaapConsumerConfiguration.dmaapPortNumber:
-      type: string
-    dmaap.dmaapConsumerConfiguration.dmaapProtocol:
-      type: string
-    dmaap.dmaapConsumerConfiguration.dmaapTopicName:
-      type: string
-    dmaap.dmaapConsumerConfiguration.messageLimit:
-      type: string
-    dmaap.dmaapConsumerConfiguration.timeoutMs:
-      type: string
-    dmaap.dmaapProducerConfiguration.dmaapContentType:
-      type: string
-    dmaap.dmaapProducerConfiguration.dmaapHostName:
-      type: string
-    dmaap.dmaapProducerConfiguration.dmaapPortNumber:
-      type: string
-    dmaap.dmaapProducerConfiguration.dmaapProtocol:
-      type: string
-    dmaap.dmaapProducerConfiguration.dmaapTopicName:
-      type: string
-    dmaap.dmaapProducerConfiguration.dmaapUserName:
-      type: string
-    dmaap.dmaapProducerConfiguration.dmaapUserPassword:
-      type: string
-    dmaap_dr_feed_id:
       type: string
     ftp.ftpesConfiguration.keyCert:
       type: string
@@ -126,60 +74,8 @@ topology_template:
       type: dcae.nodes.DockerContainerForComponentsUsingDmaap
       properties:
         application_config:
-          buscontroller_feed_publishing_endpoint:
-            get_input: buscontroller_feed_publishing_endpoint
           datafile.policy:
             get_input: datafile.policy
-          dmaap.dmaapBusControllerConfiguration.dmaapContentType:
-            get_input: dmaap.dmaapBusControllerConfiguration.dmaapContentType
-          dmaap.dmaapBusControllerConfiguration.dmaapDrFeedName:
-            get_input: dmaap.dmaapBusControllerConfiguration.dmaapDrFeedName
-          dmaap.dmaapBusControllerConfiguration.dmaapHostName:
-            get_input: dmaap.dmaapBusControllerConfiguration.dmaapHostName
-          dmaap.dmaapBusControllerConfiguration.dmaapPortNumber:
-            get_input: dmaap.dmaapBusControllerConfiguration.dmaapPortNumber
-          dmaap.dmaapBusControllerConfiguration.dmaapProtocol:
-            get_input: dmaap.dmaapBusControllerConfiguration.dmaapProtocol
-          dmaap.dmaapBusControllerConfiguration.dmaapTopicName:
-            get_input: dmaap.dmaapBusControllerConfiguration.dmaapTopicName
-          dmaap.dmaapBusControllerConfiguration.dmaapUserName:
-            get_input: dmaap.dmaapBusControllerConfiguration.dmaapUserName
-          dmaap.dmaapBusControllerConfiguration.dmaapUserPassword:
-            get_input: dmaap.dmaapBusControllerConfiguration.dmaapUserPassword
-          dmaap.dmaapConsumerConfiguration.consumerGroup:
-            get_input: dmaap.dmaapConsumerConfiguration.consumerGroup
-          dmaap.dmaapConsumerConfiguration.consumerId:
-            get_input: dmaap.dmaapConsumerConfiguration.consumerId
-          dmaap.dmaapConsumerConfiguration.dmaapContentType:
-            get_input: dmaap.dmaapConsumerConfiguration.dmaapContentType
-          dmaap.dmaapConsumerConfiguration.dmaapHostName:
-            get_input: dmaap.dmaapConsumerConfiguration.dmaapHostName
-          dmaap.dmaapConsumerConfiguration.dmaapPortNumber:
-            get_input: dmaap.dmaapConsumerConfiguration.dmaapPortNumber
-          dmaap.dmaapConsumerConfiguration.dmaapProtocol:
-            get_input: dmaap.dmaapConsumerConfiguration.dmaapProtocol
-          dmaap.dmaapConsumerConfiguration.dmaapTopicName:
-            get_input: dmaap.dmaapConsumerConfiguration.dmaapTopicName
-          dmaap.dmaapConsumerConfiguration.messageLimit:
-            get_input: dmaap.dmaapConsumerConfiguration.messageLimit
-          dmaap.dmaapConsumerConfiguration.timeoutMs:
-            get_input: dmaap.dmaapConsumerConfiguration.timeoutMs
-          dmaap.dmaapProducerConfiguration.dmaapContentType:
-            get_input: dmaap.dmaapProducerConfiguration.dmaapContentType
-          dmaap.dmaapProducerConfiguration.dmaapHostName:
-            get_input: dmaap.dmaapProducerConfiguration.dmaapHostName
-          dmaap.dmaapProducerConfiguration.dmaapPortNumber:
-            get_input: dmaap.dmaapProducerConfiguration.dmaapPortNumber
-          dmaap.dmaapProducerConfiguration.dmaapProtocol:
-            get_input: dmaap.dmaapProducerConfiguration.dmaapProtocol
-          dmaap.dmaapProducerConfiguration.dmaapTopicName:
-            get_input: dmaap.dmaapProducerConfiguration.dmaapTopicName
-          dmaap.dmaapProducerConfiguration.dmaapUserName:
-            get_input: dmaap.dmaapProducerConfiguration.dmaapUserName
-          dmaap.dmaapProducerConfiguration.dmaapUserPassword:
-            get_input: dmaap.dmaapProducerConfiguration.dmaapUserPassword
-          dmaap_dr_feed_id:
-            get_input: dmaap_dr_feed_id
           ftp.ftpesConfiguration.keyCert:
             get_input: ftp.ftpesConfiguration.keyCert
           ftp.ftpesConfiguration.keyPassword:
