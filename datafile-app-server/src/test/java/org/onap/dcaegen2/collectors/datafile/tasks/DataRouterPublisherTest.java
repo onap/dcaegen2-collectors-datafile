@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -55,7 +54,6 @@ import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPub
 import org.springframework.http.HttpStatus;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriBuilder;
-
 import reactor.test.StepVerifier;
 
 /**
@@ -71,7 +69,6 @@ class DataRouterPublisherTest {
     private static final String TIME_ZONE_OFFSET = "UTC+05:00";
     private static final String PM_FILE_NAME = "A20161224.1030-1045.bin.gz";
     private static final String FTPES_ADDRESS = "ftpes://192.168.0.101:22/ftp/rop/" + PM_FILE_NAME;
-    private static final String LOCAL_FILE_NAME = SOURCE_NAME + "_" + PM_FILE_NAME;
 
     private static final String COMPRESSION = "gzip";
     private static final String FILE_FORMAT_TYPE = "org.3GPP.32.435#measCollec";
@@ -111,7 +108,7 @@ class DataRouterPublisherTest {
                 .timeZoneOffset(TIME_ZONE_OFFSET) //
                 .name(PM_FILE_NAME) //
                 .location(FTPES_ADDRESS) //
-                .internalLocation(Paths.get("target/" + LOCAL_FILE_NAME)) //
+                .internalLocation(Paths.get("target/" + PM_FILE_NAME)) //
                 .compression("gzip") //
                 .fileFormatType(FILE_FORMAT_TYPE) //
                 .fileFormatVersion(FILE_FORMAT_VERSION) //
@@ -142,7 +139,7 @@ class DataRouterPublisherTest {
         Path actualPath = Paths.get(actualUri.getPath());
         assertTrue(PUBLISH_TOPIC.equals(actualPath.getName(0).toString()));
         assertTrue(FEED_ID.equals(actualPath.getName(1).toString()));
-        assertTrue(LOCAL_FILE_NAME.equals(actualPath.getName(2).toString()));
+        assertTrue(PM_FILE_NAME.equals(actualPath.getName(2).toString()));
 
         Header[] contentHeaders = actualPut.getHeaders("content-type");
         assertEquals(APPLICATION_OCTET_STREAM_CONTENT_TYPE, contentHeaders[0].getValue());
@@ -228,7 +225,7 @@ class DataRouterPublisherTest {
         when(statusLineMock.getStatusCode()).thenReturn(firstResponse, nextHttpResponses);
 
         InputStream fileStream = new ByteArrayInputStream(FILE_CONTENT.getBytes());
-        doReturn(fileStream).when(publisherTaskUnderTestSpy).createInputStream(Paths.get("target", LOCAL_FILE_NAME));
+        doReturn(fileStream).when(publisherTaskUnderTestSpy).createInputStream(Paths.get("target", PM_FILE_NAME));
     }
 
     private Map<String, String> getMetaDataAsMap(Header[] metaHeaders) {

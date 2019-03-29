@@ -22,7 +22,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
@@ -34,7 +33,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -144,9 +142,9 @@ public class ScheduledTasks {
 
     private boolean shouldBePublished(FileData fileData, Map<String, String> contextMap) {
         boolean result = false;
-        Path localFileName = fileData.getLocalFileName();
-        if (alreadyPublishedFiles.put(localFileName) == null) {
-            result = !createPublishedChecker().execute(localFileName.getFileName().toString(), contextMap);
+        Path localFilePath = fileData.getLocalFilePath();
+        if (alreadyPublishedFiles.put(localFilePath) == null) {
+            result = !createPublishedChecker().execute(fileData.name(), contextMap);
         }
         return result;
     }
@@ -160,10 +158,10 @@ public class ScheduledTasks {
 
     private Mono<ConsumerDmaapModel> handleFetchFileFailure(FileData fileData, Map<String, String> contextMap) {
         MdcVariables.setMdcContextMap(contextMap);
-        Path localFileName = fileData.getLocalFileName();
+        Path localFilePath = fileData.getLocalFilePath();
         logger.error("File fetching failed, fileData {}", fileData);
-        deleteFile(localFileName, contextMap);
-        alreadyPublishedFiles.remove(localFileName);
+        deleteFile(localFilePath, contextMap);
+        alreadyPublishedFiles.remove(localFilePath);
         currentNumberOfTasks.decrementAndGet();
         return Mono.empty();
     }

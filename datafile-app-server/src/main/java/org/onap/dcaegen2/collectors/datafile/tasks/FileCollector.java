@@ -65,7 +65,7 @@ public class FileCollector {
         logger.trace("starting to collectFile {}", fileData.name());
 
         final String remoteFile = fileData.remoteFilePath();
-        final Path localFile = fileData.getLocalFileName();
+        final Path localFile = fileData.getLocalFilePath();
 
         try (FileCollectClient currentClient = createClient(fileData)) {
             currentClient.open();
