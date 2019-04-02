@@ -168,7 +168,7 @@ public class ScheduledTasksTest {
         doReturn(consumerMock).when(testedObject).createConsumerTask();
         doReturn(Flux.empty()).when(consumerMock).execute();
 
-        testedObject.scheduleMainDatafileEventTask(any());
+        testedObject.executeDatafileMainTask();
 
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
         verify(consumerMock, times(1)).execute();

@@ -31,9 +31,9 @@ import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
-import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import reactor.core.publisher.Mono;
 
@@ -51,7 +51,7 @@ public class FileCollector {
 
     public Mono<ConsumerDmaapModel> execute(FileData fileData, long maxNumberOfRetries, Duration firstBackoffTimeout,
             Map<String, String> contextMap) {
-        MdcVariables.setMdcContextMap(contextMap);
+        MDC.setContextMap(contextMap);
         logger.trace("Entering execute with {}", fileData);
 
         return Mono.just(fileData) //
@@ -61,7 +61,7 @@ public class FileCollector {
     }
 
     private Mono<ConsumerDmaapModel> collectFile(FileData fileData, Map<String, String> contextMap) {
-        MdcVariables.setMdcContextMap(contextMap);
+        MDC.setContextMap(contextMap);
         logger.trace("starting to collectFile {}", fileData.name());
 
         final String remoteFile = fileData.remoteFilePath();

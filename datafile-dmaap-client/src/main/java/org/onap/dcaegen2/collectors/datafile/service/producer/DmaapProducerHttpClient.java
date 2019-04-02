@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -35,11 +36,11 @@ import org.apache.http.ssl.SSLContextBuilder;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.http.HttpAsyncClientBuilderWrapper;
 import org.onap.dcaegen2.collectors.datafile.http.IHttpAsyncClientBuilder;
-import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
 import org.onap.dcaegen2.collectors.datafile.web.PublishRedirectStrategy;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.web.util.DefaultUriBuilderFactory;
@@ -49,9 +50,9 @@ import org.springframework.web.util.UriBuilder;
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 7/4/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
-public class DmaapProducerReactiveHttpClient {
+public class DmaapProducerHttpClient {
 
-    private static final int NO_REQUEST_TIMEOUT = -1;
+    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofMinutes(2);
     private static final Marker INVOKE = MarkerFactory.getMarker("INVOKE");
     private static final Marker INVOKE_RETURN = MarkerFactory.getMarker("INVOKE_RETURN");
 
@@ -64,14 +65,14 @@ public class DmaapProducerReactiveHttpClient {
      *
      * @param dmaapPublisherConfiguration - DMaaP producer configuration object
      */
-    public DmaapProducerReactiveHttpClient(DmaapPublisherConfiguration dmaapPublisherConfiguration) {
+    public DmaapProducerHttpClient(DmaapPublisherConfiguration dmaapPublisherConfiguration) {
         this.configuration = dmaapPublisherConfiguration;
     }
 
     public HttpResponse getDmaapProducerResponseWithRedirect(HttpUriRequest request, Map<String, String> contextMap)
             throws DatafileTaskException {
-        try (CloseableHttpAsyncClient webClient = createWebClient(true, NO_REQUEST_TIMEOUT)) {
-            MdcVariables.setMdcContextMap(contextMap);
+        MDC.setContextMap(contextMap);
+        try (CloseableHttpAsyncClient webClient = createWebClient(true, DEFAULT_REQUEST_TIMEOUT)) {
             webClient.start();
 
             logger.trace(INVOKE, "Starting to produce to DR {}", request);
@@ -84,10 +85,10 @@ public class DmaapProducerReactiveHttpClient {
         }
     }
 
-    public HttpResponse getDmaapProducerResponseWithCustomTimeout(HttpUriRequest request, int requestTimeout,
+    public HttpResponse getDmaapProducerResponseWithCustomTimeout(HttpUriRequest request, Duration requestTimeout,
             Map<String, String> contextMap) throws DatafileTaskException {
+        MDC.setContextMap(contextMap);
         try (CloseableHttpAsyncClient webClient = createWebClient(false, requestTimeout)) {
-            MdcVariables.setMdcContextMap(contextMap);
             webClient.start();
 
             logger.trace(INVOKE, "Starting to produce to DR {}", request);
@@ -116,7 +117,7 @@ public class DmaapProducerReactiveHttpClient {
                 .port(configuration.dmaapPortNumber());
     }
 
-    private CloseableHttpAsyncClient createWebClient(boolean expectRedirect, int requestTimeout)
+    private CloseableHttpAsyncClient createWebClient(boolean expectRedirect, Duration requestTimeout)
             throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
         SSLContext sslContext =
                 new SSLContextBuilder().loadTrustMaterial(null, (certificate, authType) -> true).build();
@@ -129,14 +130,17 @@ public class DmaapProducerReactiveHttpClient {
             clientBuilder.setRedirectStrategy(PublishRedirectStrategy.INSTANCE);
         }
 
-        if (requestTimeout > NO_REQUEST_TIMEOUT) {
+        if (requestTimeout.toMillis() > 0) {
+            int millis = (int)requestTimeout.toMillis();
             RequestConfig requestConfig = RequestConfig.custom() //
-                    .setSocketTimeout(requestTimeout) //
-                    .setConnectTimeout(requestTimeout) //
-                    .setConnectionRequestTimeout(requestTimeout) //
+                    .setSocketTimeout(millis) //
+                    .setConnectTimeout(millis) //
+                    .setConnectionRequestTimeout(millis) //
                     .build();
 
             clientBuilder.setDefaultRequestConfig(requestConfig);
+        } else {
+            logger.error("WEB client without timeout created {}", requestTimeout);
         }
 
         return clientBuilder.build();
