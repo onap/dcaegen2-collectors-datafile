@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "62833200_332706e4",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-04-02T10:49:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d30b9be_7a119463",
+      "range": {
+        "startLine": 53,
+        "startChar": 13,
+        "endLine": 53,
+        "endChar": 44
+      },
+      "revId": "a08357f7688e489ba53adde3acfeecf79b658db5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8aee14a0_7ce01eaa",
         "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClient.java",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2019-04-02T10:41:00Z",
       "side": 1,
       "message": "Do not use no timeout, it may lead to infinitly hanging threads.",
+      "range": {
+        "startLine": 55,
+        "startChar": 34,
+        "endLine": 55,
+        "endChar": 76
+      },
+      "revId": "a08357f7688e489ba53adde3acfeecf79b658db5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e133364e_50b275b9",
+        "filename": "datafile-dmaap-client/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerReactiveHttpClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-04-02T10:49:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8aee14a0_7ce01eaa",
       "range": {
         "startLine": 55,
         "startChar": 34,
