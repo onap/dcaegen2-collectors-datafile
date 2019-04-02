@@ -20,14 +20,10 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.REQUEST_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_INVOCATION_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_ONAP_REQUEST_ID;
-
 import java.io.InputStream;
 import java.net.URI;
+import java.time.Duration;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -51,6 +47,7 @@ import org.slf4j.MDC;
 public class PublishedChecker {
     private static final String FEEDLOG_TOPIC = "feedlog";
     private static final String DEFAULT_FEED_ID = "1";
+    private static final Duration WEB_CLIENT_TIMEOUT = Duration.ofSeconds(4);
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -73,20 +70,18 @@ public class PublishedChecker {
      * @return <code>true</code> if the file has been published before, <code>false</code> otherwise.
      */
     public boolean execute(String fileName, Map<String, String> contextMap) {
-        MdcVariables.setMdcContextMap(contextMap);
+        MDC.setContextMap(contextMap);
         DmaapProducerReactiveHttpClient producerClient = resolveClient();
 
         HttpGet getRequest = new HttpGet();
-        String requestId = MDC.get(REQUEST_ID);
-        getRequest.addHeader(X_ONAP_REQUEST_ID, requestId);
-        String invocationId = UUID.randomUUID().toString();
-        getRequest.addHeader(X_INVOCATION_ID, invocationId);
+        MdcVariables.appendTraceInfo(getRequest);
+
         getRequest.setURI(getPublishedQueryUri(fileName, producerClient));
         producerClient.addUserCredentialsToHead(getRequest);
 
         try {
             HttpResponse response =
-                    producerClient.getDmaapProducerResponseWithCustomTimeout(getRequest, 2000, contextMap);
+                    producerClient.getDmaapProducerResponseWithCustomTimeout(getRequest, WEB_CLIENT_TIMEOUT, contextMap);
 
             logger.trace("{}", response);
             int status = response.getStatusLine().getStatusCode();
@@ -96,7 +91,7 @@ public class PublishedChecker {
                 return HttpStatus.SC_OK == status && !"[]".equals(body);
             }
         } catch (Exception e) {
-            logger.warn("Unable to check if file has been published.", e);
+            logger.warn("Unable to check if file has been published, file: {}", fileName, e);
             return false;
         }
     }

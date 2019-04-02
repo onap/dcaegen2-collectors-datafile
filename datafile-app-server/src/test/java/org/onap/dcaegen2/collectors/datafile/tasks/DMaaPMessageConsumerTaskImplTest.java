@@ -34,7 +34,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
@@ -48,8 +47,6 @@ import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.service.JsonMessageParser;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapConsumerConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.service.consumer.DMaaPConsumerReactiveHttpClient;
 
 import reactor.core.publisher.Flux;
@@ -81,11 +78,8 @@ public class DMaaPMessageConsumerTaskImplTest {
     private static final String GZIP_COMPRESSION = "gzip";
     private static final String MEAS_COLLECT_FILE_FORMAT_TYPE = "org.3GPP.32.435#measCollec";
     private static final String FILE_FORMAT_VERSION = "V10";
-
     private static List<ConsumerDmaapModel> listOfConsumerDmaapModel = new ArrayList<ConsumerDmaapModel>();
 
-    private static AppConfig appConfig;
-    private static DmaapConsumerConfiguration dmaapConsumerConfiguration;
     private DMaaPMessageConsumerTask messageConsumerTask;
     private DMaaPConsumerReactiveHttpClient httpClientMock;
 
@@ -102,25 +96,6 @@ public class DMaaPMessageConsumerTaskImplTest {
      */
     @BeforeAll
     public static void setUp() {
-        dmaapConsumerConfiguration = new ImmutableDmaapConsumerConfiguration.Builder() //
-                .consumerGroup("OpenDCAE-c12") //
-                .consumerId("c12") //
-                .dmaapContentType("application/json") //
-                .dmaapHostName("54.45.33.2") //
-                .dmaapPortNumber(1234).dmaapProtocol("https") //
-                .dmaapUserName("Datafile") //
-                .dmaapUserPassword("Datafile") //
-                .dmaapTopicName("unauthenticated.NOTIFICATION") //
-                .timeoutMs(-1) //
-                .messageLimit(-1) //
-                .trustStorePath("trustStorePath") //
-                .trustStorePasswordPath("trustStorePasswordPath") //
-                .keyStorePath("keyStorePath") //
-                .keyStorePasswordPath("keyStorePasswordPath") //
-                .enableDmaapCertAuth(true) //
-                .build();
-
-        appConfig = mock(AppConfig.class);
 
         AdditionalField ftpesAdditionalField = new JsonMessage.AdditionalFieldBuilder() //
                 .location(FTPES_LOCATION) //

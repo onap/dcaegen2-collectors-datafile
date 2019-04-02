@@ -20,10 +20,6 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.REQUEST_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_INVOCATION_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_ONAP_REQUEST_ID;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
@@ -33,7 +29,6 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -89,7 +84,7 @@ public class DataRouterPublisher {
      */
     public Mono<ConsumerDmaapModel> execute(ConsumerDmaapModel model, long numRetries, Duration firstBackoff,
             Map<String, String> contextMap) {
-        MdcVariables.setMdcContextMap(contextMap);
+        MDC.setContextMap(contextMap);
         logger.trace("Publish called with arg {}", model);
         dmaapProducerReactiveHttpClient = resolveClient();
 
@@ -104,18 +99,13 @@ public class DataRouterPublisher {
         logger.trace("Entering publishFile with {}", consumerDmaapModel);
         try {
             HttpPut put = new HttpPut();
-            String requestId = MDC.get(REQUEST_ID);
-            put.addHeader(X_ONAP_REQUEST_ID, requestId);
-            String invocationId = UUID.randomUUID().toString();
-            put.addHeader(X_INVOCATION_ID, invocationId);
-
             prepareHead(consumerDmaapModel, put);
             prepareBody(consumerDmaapModel, put);
             dmaapProducerReactiveHttpClient.addUserCredentialsToHead(put);
 
             HttpResponse response =
                     dmaapProducerReactiveHttpClient.getDmaapProducerResponseWithRedirect(put, contextMap);
-            logger.trace(response.toString());
+            logger.trace("{}", response);
             return Mono.just(HttpStatus.valueOf(response.getStatusLine().getStatusCode()));
         } catch (Exception e) {
             logger.warn("Unable to send file to DataRouter. Data: {}", consumerDmaapModel.getInternalLocation(), e);
@@ -130,6 +120,7 @@ public class DataRouterPublisher {
         metaData.getAsJsonObject().remove(INTERNAL_LOCATION_JSON_TAG);
         put.addHeader(X_DMAAP_DR_META, metaData.toString());
         put.setURI(getPublishUri(model.getInternalLocation().getFileName().toString()));
+        MdcVariables.appendTraceInfo(put);
     }
 
     private void prepareBody(ConsumerDmaapModel model, HttpPut put) throws IOException {
@@ -148,7 +139,7 @@ public class DataRouterPublisher {
 
     private Mono<ConsumerDmaapModel> handleHttpResponse(HttpStatus response, ConsumerDmaapModel model,
             Map<String, String> contextMap) {
-        MdcVariables.setMdcContextMap(contextMap);
+        MDC.setContextMap(contextMap);
         if (HttpUtils.isSuccessfulResponseCode(response.value())) {
             logger.trace("Publish to DR successful!");
             return Mono.just(model);

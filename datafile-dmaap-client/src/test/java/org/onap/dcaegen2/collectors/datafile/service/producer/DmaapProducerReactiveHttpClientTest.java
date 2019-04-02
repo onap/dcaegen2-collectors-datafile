@@ -32,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -65,7 +66,7 @@ class DmaapProducerReactiveHttpClientTest {
     private static final String HTTPS_SCHEME = "https";
     private static final int PORT = 1234;
     private static final String USER_NAME = "dradmin";
-    private static final int TWO_SECOND_TIMEOUT = 2000;
+    private static final Duration TWO_SECOND_TIMEOUT = Duration.ofSeconds(2);
 
     private static final Map<String, String> CONTEXT_MAP = new HashMap<>();
 
@@ -138,9 +139,9 @@ class DmaapProducerReactiveHttpClientTest {
         verify(clientBuilderMock).setSSLHostnameVerifier(any(NoopHostnameVerifier.class));
         verify(clientBuilderMock).setDefaultRequestConfig(requestConfigCaptor.capture());
         RequestConfig requestConfig = requestConfigCaptor.getValue();
-        assertEquals(TWO_SECOND_TIMEOUT, requestConfig.getSocketTimeout());
-        assertEquals(TWO_SECOND_TIMEOUT, requestConfig.getConnectTimeout());
-        assertEquals(TWO_SECOND_TIMEOUT, requestConfig.getConnectionRequestTimeout());
+        assertEquals(TWO_SECOND_TIMEOUT.toMillis(), requestConfig.getSocketTimeout());
+        assertEquals(TWO_SECOND_TIMEOUT.toMillis(), requestConfig.getConnectTimeout());
+        assertEquals(TWO_SECOND_TIMEOUT.toMillis(), requestConfig.getConnectionRequestTimeout());
         verify(clientBuilderMock).build();
         verifyNoMoreInteractions(clientBuilderMock);
 
