@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eeb5baa7_4d2255fa",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-04-03T10:43:37Z",
+      "side": 1,
+      "message": "Trailing whitespaces added. Best to remove.",
+      "range": {
+        "startLine": 177,
+        "startChar": 17,
+        "endLine": 177,
+        "endChar": 19
+      },
+      "revId": "75ab07650c441390ac721d744db039f813efb887",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a32a2329_568aeb76",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-04-03T10:43:37Z",
+      "side": 1,
+      "message": "Trailing whitespaces added. Best to remove.",
+      "range": {
+        "startLine": 219,
+        "startChar": 40,
+        "endLine": 219,
+        "endChar": 43
+      },
+      "revId": "75ab07650c441390ac721d744db039f813efb887",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "93cc0fed_77913a69",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/logging/MdcVariables.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-04-03T10:43:37Z",
+      "side": 1,
+      "message": "There is an MdcVariables in the sdk, org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables. Wouldn\u0027t it be better to use that and create a new static helper class for the methods added here? In that way there is no duplcation of code.",
+      "range": {
+        "startLine": 31,
+        "startChar": 19,
+        "endLine": 31,
+        "endChar": 31
+      },
+      "revId": "75ab07650c441390ac721d744db039f813efb887",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
