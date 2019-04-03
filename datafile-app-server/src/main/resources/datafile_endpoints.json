@@ -28,8 +28,8 @@
             "ftpesConfiguration": {
                 "keyCert": "config/ftpKey.jks",
                 "keyPassword": "secret",
-                "trustedCA": "config/cacerts",
-                "trustedCAPassword": "secret"
+                "trustedCa": "config/cacerts",
+                "trustedCaPassword": "secret"
             }
         }
     }

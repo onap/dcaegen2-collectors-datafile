@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
@@ -37,6 +37,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
 /**
+ * Gets the DFC configuration from the ConfigBindingService/Consul and parses it to the configurations needed in DFC.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 9/19/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
@@ -56,14 +58,15 @@ public class CloudConfiguration extends AppConfig {
     private Properties systemEnvironment;
 
     @Autowired
-    public synchronized void setThreadPoolTaskScheduler(ReactiveCloudConfigurationProvider reactiveCloudConfigurationProvider) {
+    public synchronized void setThreadPoolTaskScheduler(
+            ReactiveCloudConfigurationProvider reactiveCloudConfigurationProvider) {
         this.reactiveCloudConfigurationProvider = reactiveCloudConfigurationProvider;
     }
 
 
     protected void runTask(Map<String, String> contextMap) {
-        Flux.defer(() -> EnvironmentProcessor.evaluate(systemEnvironment, contextMap)).subscribeOn(Schedulers.parallel())
-                .subscribe(this::parsingConfigSuccess, this::parsingConfigError);
+        Flux.defer(() -> EnvironmentProcessor.evaluate(systemEnvironment, contextMap))
+                .subscribeOn(Schedulers.parallel()).subscribe(this::parsingConfigSuccess, this::parsingConfigError);
     }
 
     private void parsingConfigError(Throwable throwable) {

@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
@@ -18,10 +18,13 @@
 
 package org.onap.dcaegen2.collectors.datafile.controllers;
 
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.INVOCATION_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.REQUEST_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_INVOCATION_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_ONAP_REQUEST_ID;
+import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.INVOCATION_ID;
+import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.REQUEST_ID;
+import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.X_INVOCATION_ID;
+import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.X_ONAP_REQUEST_ID;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.onap.dcaegen2.collectors.datafile.configuration.SchedulerConfig;
@@ -36,11 +39,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Mono;
 
 /**
+ * The HTTP api to start and stop DFC.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/5/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
@@ -63,6 +66,12 @@ public class ScheduleController {
         return Mono.fromSupplier(schedulerConfig::tryToStartTask).map(this::createStartTaskResponse);
     }
 
+    /**
+     * Start the DFC.
+     *
+     * @param headers the request headers.
+     * @return the response.
+     */
     @RequestMapping(value = "start", method = RequestMethod.GET)
     @ApiOperation(value = "Start scheduling worker request")
     public Mono<ResponseEntity<String>> startTasks(@RequestHeader HttpHeaders headers) {
@@ -80,6 +89,11 @@ public class ScheduleController {
         return Mono.fromSupplier(schedulerConfig::tryToStartTask).map(this::createStartTaskResponse);
     }
 
+    /**
+     * Stop the DFC.
+     *
+     * @return the response.
+     */
     @RequestMapping(value = "stopDatafile", method = RequestMethod.GET)
     @ApiOperation(value = "Receiving stop scheduling worker request")
     public Mono<ResponseEntity<String>> stopTask() {

@@ -47,8 +47,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
-import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
-import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
+import org.onap.dcaegen2.collectors.datafile.model.FilePublishInformation;
+import org.onap.dcaegen2.collectors.datafile.model.ImmutableFilePublishInformation;
 import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerReactiveHttpClient;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.springframework.http.HttpStatus;
@@ -57,6 +57,8 @@ import org.springframework.web.util.UriBuilder;
 import reactor.test.StepVerifier;
 
 /**
+ * Tests the DataRouter publisher.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 5/17/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
@@ -83,23 +85,20 @@ class DataRouterPublisherTest {
     private static final String FEED_ID = "1";
     private static final String FILE_CONTENT = "Just a string.";
 
-    private static ConsumerDmaapModel consumerDmaapModel;
+    private static FilePublishInformation filePublishInformation;
     private static DmaapProducerReactiveHttpClient httpClientMock;
     private static AppConfig appConfig;
     private static DmaapPublisherConfiguration publisherConfigurationMock = mock(DmaapPublisherConfiguration.class);
     private final Map<String, String> contextMap = new HashMap<>();
     private static DataRouterPublisher publisherTaskUnderTestSpy;
 
-    /**
-     * Sets up data for tests.
-     */
     @BeforeAll
     public static void setUp() {
         when(publisherConfigurationMock.dmaapHostName()).thenReturn(HOST);
         when(publisherConfigurationMock.dmaapProtocol()).thenReturn(HTTPS_SCHEME);
         when(publisherConfigurationMock.dmaapPortNumber()).thenReturn(PORT);
 
-        consumerDmaapModel = ImmutableConsumerDmaapModel.builder() //
+        filePublishInformation = ImmutableFilePublishInformation.builder() //
                 .productName(PRODUCT_NAME) //
                 .vendorName(VENDOR_NAME) //
                 .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
@@ -121,8 +120,9 @@ class DataRouterPublisherTest {
     public void whenPassedObjectFits_ReturnsCorrectStatus() throws Exception {
         prepareMocksForTests(null, Integer.valueOf(HttpStatus.OK.value()));
         StepVerifier
-                .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 1, Duration.ofSeconds(0), contextMap))
-                .expectNext(consumerDmaapModel) //
+                .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0),
+                        contextMap))
+                .expectNext(filePublishInformation) //
                 .verifyComplete();
 
         ArgumentCaptor<HttpUriRequest> requestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
@@ -164,8 +164,9 @@ class DataRouterPublisherTest {
         prepareMocksForTests(new DatafileTaskException("Error"), HttpStatus.OK.value());
 
         StepVerifier
-                .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 2, Duration.ofSeconds(0), contextMap))
-                .expectNext(consumerDmaapModel) //
+                .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 2, Duration.ofSeconds(0),
+                        contextMap))
+                .expectNext(filePublishInformation) //
                 .verifyComplete();
     }
 
@@ -175,8 +176,9 @@ class DataRouterPublisherTest {
                 Integer.valueOf(HttpStatus.OK.value()));
 
         StepVerifier
-                .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 1, Duration.ofSeconds(0), contextMap))
-                .expectNext(consumerDmaapModel) //
+                .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0),
+                        contextMap))
+                .expectNext(filePublishInformation) //
                 .verifyComplete();
 
         verify(httpClientMock, times(2)).getBaseUri();
@@ -191,7 +193,8 @@ class DataRouterPublisherTest {
                 Integer.valueOf((HttpStatus.BAD_GATEWAY.value())));
 
         StepVerifier
-                .create(publisherTaskUnderTestSpy.execute(consumerDmaapModel, 1, Duration.ofSeconds(0), contextMap))
+                .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0),
+                        contextMap))
                 .expectErrorMessage("Retries exhausted: 1/1") //
                 .verify();
 
