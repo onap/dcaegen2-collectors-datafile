@@ -16,9 +16,10 @@
 
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.INVOCATION_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.REQUEST_ID;
+import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.INVOCATION_ID;
+import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.REQUEST_ID;
 
+import io.swagger.annotations.ApiOperation;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -26,12 +27,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ScheduledFuture;
-
 import javax.annotation.PostConstruct;
-
 import org.apache.commons.lang3.StringUtils;
-import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
+import org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -43,8 +42,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
-import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Mono;
 
 /**
@@ -127,11 +124,13 @@ public class SchedulerConfig {
             scheduledFutureList
                     .add(taskScheduler.scheduleWithFixedDelay(() -> scheduledTask.purgeCachedInformation(Instant.now()),
                             SCHEDULING_DELAY_FOR_DATAFILE_PURGE_CACHE));
-
             return true;
         } else {
             return false;
         }
+    }
 
+    static void setScheduledFutureList(List<ScheduledFuture<?>> scheduledFutureList) {
+        SchedulerConfig.scheduledFutureList = scheduledFutureList;
     }
 }

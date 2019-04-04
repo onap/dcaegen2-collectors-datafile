@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
@@ -19,7 +19,6 @@ package org.onap.dcaegen2.collectors.datafile.service;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

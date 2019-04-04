@@ -17,10 +17,10 @@
  * SPDX-License-Identifier: Apache-2.0
  * ============LICENSE_END=========================================================
  */
+
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import java.io.Serializable;
-
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 import org.springframework.stereotype.Component;
@@ -41,8 +41,8 @@ public abstract class FtpesConfig implements Serializable {
     public abstract String keyPassword();
 
     @Value.Parameter
-    public abstract String trustedCA();
+    public abstract String trustedCa();
 
     @Value.Parameter
-    public abstract String trustedCAPassword();
+    public abstract String trustedCaPassword();
 }
