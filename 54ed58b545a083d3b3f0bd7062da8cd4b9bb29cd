@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8d82358a_481ebabe",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SchedulerConfig.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-04-04T13:43:18Z",
+      "side": 1,
+      "message": "why do you need to call initializeTraceContext() twice? once here and once in CloudConfiguration.java\n...\nAfter looking at other files, I noticed that you are calling initializeTraceContext() many times, which does not seem to be the right approach.",
+      "range": {
+        "startLine": 102,
+        "startChar": 46,
+        "endLine": 102,
+        "endChar": 68
+      },
+      "revId": "54ed58b545a083d3b3f0bd7062da8cd4b9bb29cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7898af2d_1143c7bb",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/controllers/ScheduleController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-04-04T13:43:18Z",
+      "side": 1,
+      "message": "In my understanding, ENTRY marker will be put when starting tasks, and EXIT marker when stopping them. You should not have ENTRY/EXIT markers for both start and stop. I think you should double-check the documentation.",
+      "range": {
+        "startLine": 61,
+        "startChar": 20,
+        "endLine": 61,
+        "endChar": 66
+      },
+      "revId": "54ed58b545a083d3b3f0bd7062da8cd4b9bb29cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "27ca3868_3c28b3df",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/controllers/ScheduleController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-04-04T13:43:18Z",
+      "side": 1,
+      "message": "I don\u0027t understand what is the point of initialising MDC when stopping all the tasks. I think you should initialise MDC when receiving the start request, save it, and then stop it with the same MDC that was set at the time of receiving start request.",
+      "range": {
+        "startLine": 73,
+        "startChar": 33,
+        "endLine": 73,
+        "endChar": 55
+      },
+      "revId": "54ed58b545a083d3b3f0bd7062da8cd4b9bb29cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b9a3c44b_e808c42e",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/logging/MappedDiagnosticContents.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-04-04T13:43:18Z",
+      "side": 1,
+      "message": "I guess you intended to write MappedDiagnosticContext. Please replace Contents with Context",
+      "range": {
+        "startLine": 34,
+        "startChar": 19,
+        "endLine": 34,
+        "endChar": 43
+      },
+      "revId": "54ed58b545a083d3b3f0bd7062da8cd4b9bb29cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e04d94b4_623b76b9",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/logging/MappedDiagnosticContents.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-04-04T13:43:18Z",
+      "side": 1,
+      "message": "what is the purpose of these headers? requestId has already been added in previous line.",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 59,
+        "endChar": 74
+      },
+      "revId": "54ed58b545a083d3b3f0bd7062da8cd4b9bb29cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
