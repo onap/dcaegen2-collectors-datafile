@@ -17,10 +17,11 @@
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import com.google.gson.JsonObject;
+
 import java.util.Map;
-import java.util.Optional;
 import java.util.Properties;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
+
+import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.providers.ReactiveCloudConfigurationProvider;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
@@ -33,7 +34,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import reactor.core.publisher.Flux;
+
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 /**
@@ -56,50 +58,51 @@ public class CloudConfiguration extends AppConfig {
     private Properties systemEnvironment;
 
     @Autowired
-    public synchronized void setThreadPoolTaskScheduler(ReactiveCloudConfigurationProvider reactiveCloudConfigurationProvider) {
+    public synchronized void setThreadPoolTaskScheduler(
+            ReactiveCloudConfigurationProvider reactiveCloudConfigurationProvider) {
         this.reactiveCloudConfigurationProvider = reactiveCloudConfigurationProvider;
     }
 
-
-    protected void runTask(Map<String, String> contextMap) {
-        Flux.defer(() -> EnvironmentProcessor.evaluate(systemEnvironment, contextMap)).subscribeOn(Schedulers.parallel())
-                .subscribe(this::parsingConfigSuccess, this::parsingConfigError);
+    public void runTask() {
+        Map<String,String> context = MappedDiagnosticContext.initializeTraceContext();
+        EnvironmentProcessor.readEnvironmentVariables(systemEnvironment, context) //
+                .subscribeOn(Schedulers.parallel()) //
+                .flatMap(reactiveCloudConfigurationProvider::callForServiceConfigurationReactive) //
+                .flatMap(this::parseCloudConfig) //
+                .subscribe(null, this::onError, this::onComplete);
     }
 
-    private void parsingConfigError(Throwable throwable) {
-        logger.warn("Error in case of processing system environment, more details below: ", throwable);
+    private void onComplete() {
+        logger.trace("Configuration updated");
     }
 
-    private void cloudConfigError(Throwable throwable) {
+    private void onError(Throwable throwable) {
         logger.warn("Exception during getting configuration from CONSUL/CONFIG_BINDING_SERVICE ", throwable);
     }
 
-    private void parsingConfigSuccess(EnvProperties envProperties) {
-        logger.info("Fetching Datafile Collector configuration from ConfigBindingService/Consul");
-        reactiveCloudConfigurationProvider.callForServiceConfigurationReactive(envProperties)
-                .subscribe(this::parseCloudConfig, this::cloudConfigError);
-    }
-
-    private synchronized void parseCloudConfig(JsonObject jsonObject) {
+    private synchronized Mono<CloudConfiguration> parseCloudConfig(JsonObject jsonObject) {
         logger.info("Received application configuration: {}", jsonObject);
         CloudConfigParser cloudConfigParser = new CloudConfigParser(jsonObject);
         dmaapPublisherCloudConfiguration = cloudConfigParser.getDmaapPublisherConfig();
         dmaapConsumerCloudConfiguration = cloudConfigParser.getDmaapConsumerConfig();
         ftpesCloudConfiguration = cloudConfigParser.getFtpesConfig();
+        return Mono.just(this);
     }
 
     @Override
     public synchronized DmaapPublisherConfiguration getDmaapPublisherConfiguration() {
-        return Optional.ofNullable(dmaapPublisherCloudConfiguration).orElse(super.getDmaapPublisherConfiguration());
+        return dmaapPublisherCloudConfiguration != null ? dmaapPublisherCloudConfiguration
+                : super.getDmaapPublisherConfiguration();
     }
 
     @Override
     public synchronized DmaapConsumerConfiguration getDmaapConsumerConfiguration() {
-        return Optional.ofNullable(dmaapConsumerCloudConfiguration).orElse(super.getDmaapConsumerConfiguration());
+        return dmaapConsumerCloudConfiguration != null ? dmaapConsumerCloudConfiguration
+                : super.getDmaapConsumerConfiguration();
     }
 
     @Override
     public synchronized FtpesConfig getFtpesConfiguration() {
-        return Optional.ofNullable(ftpesCloudConfiguration).orElse(super.getFtpesConfiguration());
+        return ftpesCloudConfiguration != null ? ftpesCloudConfiguration : super.getFtpesConfiguration();
     }
 }

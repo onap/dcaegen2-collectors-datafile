@@ -26,7 +26,7 @@ import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
-import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
+import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.collectors.datafile.service.PublishedFileCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,13 +72,15 @@ public class ScheduledTasks {
     /**
      * Main function for scheduling for the file collection Workflow.
      */
-    public void scheduleMainDatafileEventTask(Map<String, String> contextMap) {
+    public void executeDatafileMainTask() {
         try {
-            MdcVariables.setMdcContextMap(contextMap);
+            Map<String, String> context = MappedDiagnosticContext.initializeTraceContext();
             logger.trace("Execution of tasks was registered");
             applicationConfiguration.loadConfigurationFromFile();
-            createMainTask(contextMap).subscribe(model -> onSuccess(model, contextMap), thr -> onError(thr, contextMap),
-                    () -> onComplete(contextMap));
+            createMainTask(context) //
+                    .subscribe(model -> onSuccess(model, context), //
+                            thr -> onError(thr, context), //
+                            () -> onComplete(context));
         } catch (Exception e) {
             logger.error("Unexpected exception: ", e);
         }
@@ -126,17 +128,17 @@ public class ScheduledTasks {
     }
 
     private void onComplete(Map<String, String> contextMap) {
-        MdcVariables.setMdcContextMap(contextMap);
+        MDC.setContextMap(contextMap);
         logger.trace("Datafile tasks have been completed");
     }
 
     private synchronized void onSuccess(ConsumerDmaapModel model, Map<String, String> contextMap) {
-        MdcVariables.setMdcContextMap(contextMap);
+        MDC.setContextMap(contextMap);
         logger.info("Datafile file published {}", model.getInternalLocation());
     }
 
     private void onError(Throwable throwable, Map<String, String> contextMap) {
-        MdcVariables.setMdcContextMap(contextMap);
+        MDC.setContextMap(contextMap);
         logger.error("Chain of tasks have been aborted due to errors in Datafile workflow {}", throwable.toString());
     }
 
@@ -150,14 +152,14 @@ public class ScheduledTasks {
     }
 
     private Mono<ConsumerDmaapModel> fetchFile(FileData fileData, Map<String, String> contextMap) {
-        MdcVariables.setMdcContextMap(contextMap);
+        MDC.setContextMap(contextMap);
         return createFileCollector()
                 .execute(fileData, FILE_TRANSFER_MAX_RETRIES, FILE_TRANSFER_INITIAL_RETRY_TIMEOUT, contextMap)
                 .onErrorResume(exception -> handleFetchFileFailure(fileData, contextMap));
     }
 
     private Mono<ConsumerDmaapModel> handleFetchFileFailure(FileData fileData, Map<String, String> contextMap) {
-        MdcVariables.setMdcContextMap(contextMap);
+        MDC.setContextMap(contextMap);
         Path localFilePath = fileData.getLocalFilePath();
         logger.error("File fetching failed, fileData {}", fileData);
         deleteFile(localFilePath, contextMap);
@@ -167,7 +169,7 @@ public class ScheduledTasks {
     }
 
     private Mono<ConsumerDmaapModel> publishToDataRouter(ConsumerDmaapModel model, Map<String, String> contextMap) {
-        MdcVariables.setMdcContextMap(contextMap);
+        MDC.setContextMap(contextMap);
 
         return createDataRouterPublisher()
                 .execute(model, DATA_ROUTER_MAX_RETRIES, DATA_ROUTER_INITIAL_RETRY_TIMEOUT, contextMap)
@@ -175,7 +177,7 @@ public class ScheduledTasks {
     }
 
     private Mono<ConsumerDmaapModel> handlePublishFailure(ConsumerDmaapModel model, Map<String, String> contextMap) {
-        MdcVariables.setMdcContextMap(contextMap);
+        MDC.setContextMap(contextMap);
         logger.error("File publishing failed: {}", model);
         Path internalFileName = model.getInternalLocation();
         deleteFile(internalFileName, contextMap);
@@ -201,14 +203,14 @@ public class ScheduledTasks {
     }
 
     private Flux<FileReadyMessage> handleConsumeMessageFailure(Throwable exception, Map<String, String> contextMap) {
-        MdcVariables.setMdcContextMap(contextMap);
+        MDC.setContextMap(contextMap);
         logger.error("Polling for file ready message failed, exception: {}, config: {}", exception.toString(),
                 this.applicationConfiguration.getDmaapConsumerConfiguration());
         return Flux.empty();
     }
 
     private void deleteFile(Path localFile, Map<String, String> contextMap) {
-        MdcVariables.setMdcContextMap(contextMap);
+        MDC.setContextMap(contextMap);
         logger.trace("Deleting file: {}", localFile);
         try {
             Files.delete(localFile);

@@ -18,24 +18,18 @@
 
 package org.onap.dcaegen2.collectors.datafile.controllers;
 
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.INVOCATION_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.REQUEST_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_INVOCATION_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_ONAP_REQUEST_ID;
-import java.util.UUID;
-import org.apache.commons.lang3.StringUtils;
 import org.onap.dcaegen2.collectors.datafile.configuration.SchedulerConfig;
+import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Mono;
@@ -46,7 +40,7 @@ import reactor.core.publisher.Mono;
  */
 
 @RestController
-@Api(value = "ScheduleController", description = "Schedule Controller")
+@Api(value = "ScheduleController")
 public class ScheduleController {
 
     private static final Logger logger = LoggerFactory.getLogger(ScheduleController.class);
@@ -58,33 +52,29 @@ public class ScheduleController {
         this.schedulerConfig = schedulerConfig;
     }
 
-    public Mono<ResponseEntity<String>> startTasks() {
-        logger.trace("Start scheduling worker request");
-        return Mono.fromSupplier(schedulerConfig::tryToStartTask).map(this::createStartTaskResponse);
-    }
-
-    @RequestMapping(value = "start", method = RequestMethod.GET)
+    @GetMapping("/start")
     @ApiOperation(value = "Start scheduling worker request")
     public Mono<ResponseEntity<String>> startTasks(@RequestHeader HttpHeaders headers) {
-        String requestId = headers.getFirst(X_ONAP_REQUEST_ID);
-        if (StringUtils.isBlank(requestId)) {
-            requestId = UUID.randomUUID().toString();
-        }
-        String invocationId = headers.getFirst(X_INVOCATION_ID);
-        if (StringUtils.isBlank(invocationId)) {
-            invocationId = UUID.randomUUID().toString();
-        }
-        MDC.put(REQUEST_ID, requestId);
-        MDC.put(INVOCATION_ID, invocationId);
-        logger.trace("Receiving start scheduling worker request");
-        return Mono.fromSupplier(schedulerConfig::tryToStartTask).map(this::createStartTaskResponse);
+        MappedDiagnosticContext.initializeTraceContext(headers);
+        logger.info(MappedDiagnosticContext.ENTRY, "Start request");
+        Mono<ResponseEntity<String>> response = startTasks();
+        logger.info(MappedDiagnosticContext.EXIT, "Start request");
+        return response;
     }
 
-    @RequestMapping(value = "stopDatafile", method = RequestMethod.GET)
+    public Mono<ResponseEntity<String>> startTasks() {
+        return Mono.fromSupplier(schedulerConfig::tryToStartTask) //
+                .map(this::createStartTaskResponse);
+    }
+
+    @GetMapping("/stopDatafile")
     @ApiOperation(value = "Receiving stop scheduling worker request")
-    public Mono<ResponseEntity<String>> stopTask() {
-        logger.trace("Receiving stop scheduling worker request");
-        return schedulerConfig.getResponseFromCancellationOfTasks();
+    public Mono<ResponseEntity<String>> stopTask(@RequestHeader HttpHeaders headers) {
+        MappedDiagnosticContext.initializeTraceContext(headers);
+        logger.info(MappedDiagnosticContext.ENTRY, "Stop request");
+        Mono<ResponseEntity<String>> response =  schedulerConfig.getResponseFromCancellationOfTasks();
+        logger.info(MappedDiagnosticContext.EXIT, "Stop request");
+        return response;
     }
 
     @ApiOperation(value = "Sends success or error response on starting task execution")

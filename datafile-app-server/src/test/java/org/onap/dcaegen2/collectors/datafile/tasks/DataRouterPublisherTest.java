@@ -49,7 +49,7 @@ import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.model.ConsumerDmaapModel;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableConsumerDmaapModel;
-import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerReactiveHttpClient;
+import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerHttpClient;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.util.DefaultUriBuilderFactory;
@@ -84,7 +84,7 @@ class DataRouterPublisherTest {
     private static final String FILE_CONTENT = "Just a string.";
 
     private static ConsumerDmaapModel consumerDmaapModel;
-    private static DmaapProducerReactiveHttpClient httpClientMock;
+    private static DmaapProducerHttpClient httpClientMock;
     private static AppConfig appConfig;
     private static DmaapPublisherConfiguration publisherConfigurationMock = mock(DmaapPublisherConfiguration.class);
     private final Map<String, String> contextMap = new HashMap<>();
@@ -204,7 +204,7 @@ class DataRouterPublisherTest {
     @SafeVarargs
     final void prepareMocksForTests(Exception exception, Integer firstResponse, Integer... nextHttpResponses)
             throws Exception {
-        httpClientMock = mock(DmaapProducerReactiveHttpClient.class);
+        httpClientMock = mock(DmaapProducerHttpClient.class);
         when(appConfig.getDmaapPublisherConfiguration()).thenReturn(publisherConfigurationMock);
         doReturn(publisherConfigurationMock).when(publisherTaskUnderTestSpy).resolveConfiguration();
         doReturn(httpClientMock).when(publisherTaskUnderTestSpy).resolveClient();
