@@ -140,6 +140,30 @@
       "revId": "75ab07650c441390ac721d744db039f813efb887",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "699396c1_32d93273",
+        "filename": "datafile-commons/src/main/java/org/onap/dcaegen2/collectors/datafile/model/logging/MdcVariables.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-04-04T07:30:23Z",
+      "side": 1,
+      "message": "That class has only two one-line functions where one is deprecated. I will rename this class instead.",
+      "parentUuid": "a9a349ea_b65ff163",
+      "range": {
+        "startLine": 31,
+        "startChar": 19,
+        "endLine": 31,
+        "endChar": 31
+      },
+      "revId": "75ab07650c441390ac721d744db039f813efb887",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
