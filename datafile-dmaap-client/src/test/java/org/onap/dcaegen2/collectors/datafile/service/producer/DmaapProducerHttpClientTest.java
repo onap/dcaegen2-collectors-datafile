@@ -32,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -59,18 +60,18 @@ import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPub
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 7/4/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
-class DmaapProducerReactiveHttpClientTest {
+class DmaapProducerHttpClientTest {
 
     private static final String HOST = "54.45.33.2";
     private static final String HTTPS_SCHEME = "https";
     private static final int PORT = 1234;
     private static final String USER_NAME = "dradmin";
-    private static final int TWO_SECOND_TIMEOUT = 2000;
+    private static final Duration TWO_SECOND_TIMEOUT = Duration.ofSeconds(2);
 
     private static final Map<String, String> CONTEXT_MAP = new HashMap<>();
 
 
-    private DmaapProducerReactiveHttpClient producerClientUnderTestSpy;
+    private DmaapProducerHttpClient producerClientUnderTestSpy;
 
     private DmaapPublisherConfiguration dmaapPublisherConfigurationMock = mock(DmaapPublisherConfiguration.class);
 
@@ -88,7 +89,7 @@ class DmaapProducerReactiveHttpClientTest {
         when(dmaapPublisherConfigurationMock.dmaapUserName()).thenReturn("dradmin");
         when(dmaapPublisherConfigurationMock.dmaapUserPassword()).thenReturn("dradmin");
 
-        producerClientUnderTestSpy = spy(new DmaapProducerReactiveHttpClient(dmaapPublisherConfigurationMock));
+        producerClientUnderTestSpy = spy(new DmaapProducerHttpClient(dmaapPublisherConfigurationMock));
 
         clientBuilderMock = mock(IHttpAsyncClientBuilder.class);
         clientMock = mock(CloseableHttpAsyncClient.class);
@@ -110,6 +111,7 @@ class DmaapProducerReactiveHttpClientTest {
         verify(clientBuilderMock).setSSLContext(any(SSLContext.class));
         verify(clientBuilderMock).setSSLHostnameVerifier(any(NoopHostnameVerifier.class));
         verify(clientBuilderMock).setRedirectStrategy(PublishRedirectStrategy.INSTANCE);
+        verify(clientBuilderMock).setDefaultRequestConfig(any());
         verify(clientBuilderMock).build();
         verifyNoMoreInteractions(clientBuilderMock);
 
@@ -138,9 +140,9 @@ class DmaapProducerReactiveHttpClientTest {
         verify(clientBuilderMock).setSSLHostnameVerifier(any(NoopHostnameVerifier.class));
         verify(clientBuilderMock).setDefaultRequestConfig(requestConfigCaptor.capture());
         RequestConfig requestConfig = requestConfigCaptor.getValue();
-        assertEquals(TWO_SECOND_TIMEOUT, requestConfig.getSocketTimeout());
-        assertEquals(TWO_SECOND_TIMEOUT, requestConfig.getConnectTimeout());
-        assertEquals(TWO_SECOND_TIMEOUT, requestConfig.getConnectionRequestTimeout());
+        assertEquals(TWO_SECOND_TIMEOUT.toMillis(), requestConfig.getSocketTimeout());
+        assertEquals(TWO_SECOND_TIMEOUT.toMillis(), requestConfig.getConnectTimeout());
+        assertEquals(TWO_SECOND_TIMEOUT.toMillis(), requestConfig.getConnectionRequestTimeout());
         verify(clientBuilderMock).build();
         verifyNoMoreInteractions(clientBuilderMock);
 

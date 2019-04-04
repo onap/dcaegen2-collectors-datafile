@@ -20,14 +20,10 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.REQUEST_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_INVOCATION_ID;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.X_ONAP_REQUEST_ID;
-
 import java.io.InputStream;
 import java.net.URI;
+import java.time.Duration;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -35,8 +31,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
-import org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables;
-import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerReactiveHttpClient;
+import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContents;
+import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerHttpClient;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +47,7 @@ import org.slf4j.MDC;
 public class PublishedChecker {
     private static final String FEEDLOG_TOPIC = "feedlog";
     private static final String DEFAULT_FEED_ID = "1";
+    private static final Duration WEB_CLIENT_TIMEOUT = Duration.ofSeconds(4);
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -73,20 +70,18 @@ public class PublishedChecker {
      * @return <code>true</code> if the file has been published before, <code>false</code> otherwise.
      */
     public boolean execute(String fileName, Map<String, String> contextMap) {
-        MdcVariables.setMdcContextMap(contextMap);
-        DmaapProducerReactiveHttpClient producerClient = resolveClient();
+        MDC.setContextMap(contextMap);
+        DmaapProducerHttpClient producerClient = resolveClient();
 
         HttpGet getRequest = new HttpGet();
-        String requestId = MDC.get(REQUEST_ID);
-        getRequest.addHeader(X_ONAP_REQUEST_ID, requestId);
-        String invocationId = UUID.randomUUID().toString();
-        getRequest.addHeader(X_INVOCATION_ID, invocationId);
+        MappedDiagnosticContents.appendTraceInfo(getRequest);
+
         getRequest.setURI(getPublishedQueryUri(fileName, producerClient));
         producerClient.addUserCredentialsToHead(getRequest);
 
         try {
             HttpResponse response =
-                    producerClient.getDmaapProducerResponseWithCustomTimeout(getRequest, 2000, contextMap);
+                    producerClient.getDmaapProducerResponseWithCustomTimeout(getRequest, WEB_CLIENT_TIMEOUT, contextMap);
 
             logger.trace("{}", response);
             int status = response.getStatusLine().getStatusCode();
@@ -96,12 +91,12 @@ public class PublishedChecker {
                 return HttpStatus.SC_OK == status && !"[]".equals(body);
             }
         } catch (Exception e) {
-            logger.warn("Unable to check if file has been published.", e);
+            logger.warn("Unable to check if file has been published, file: {}", fileName, e);
             return false;
         }
     }
 
-    private URI getPublishedQueryUri(String fileName, DmaapProducerReactiveHttpClient producerClient) {
+    private URI getPublishedQueryUri(String fileName, DmaapProducerHttpClient producerClient) {
         return producerClient.getBaseUri() //
                 .pathSegment(FEEDLOG_TOPIC) //
                 .pathSegment(DEFAULT_FEED_ID) //
@@ -114,7 +109,7 @@ public class PublishedChecker {
         return appConfig.getDmaapPublisherConfiguration();
     }
 
-    protected DmaapProducerReactiveHttpClient resolveClient() {
-        return new DmaapProducerReactiveHttpClient(resolveConfiguration());
+    protected DmaapProducerHttpClient resolveClient() {
+        return new DmaapProducerHttpClient(resolveConfiguration());
     }
 }

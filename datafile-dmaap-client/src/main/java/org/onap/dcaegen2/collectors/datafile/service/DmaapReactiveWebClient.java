@@ -16,9 +16,10 @@
 
 package org.onap.dcaegen2.collectors.datafile.service;
 
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.RESPONSE_CODE;
-import static org.onap.dcaegen2.collectors.datafile.model.logging.MdcVariables.SERVICE_NAME;
+import static org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContents.RESPONSE_CODE;
+import static org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContents.SERVICE_NAME;
 import static org.springframework.web.reactive.function.client.ExchangeFilterFunctions.basicAuthentication;
+
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapCustomConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
+
 import reactor.core.publisher.Mono;
 
 /**
@@ -57,12 +59,13 @@ public class DmaapReactiveWebClient {
      * @return WebClient
      */
     public WebClient build() {
-        Builder webClientBuilder = WebClient.builder().defaultHeader(HttpHeaders.CONTENT_TYPE, dmaaPContentType)
-                .filter(logRequest()).filter(logResponse());
+        Builder webClientBuilder = WebClient.builder()
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, dmaaPContentType) //
+                .filter(logRequest()) //
+                .filter(logResponse());
         if (dmaaPUserName != null && !dmaaPUserName.isEmpty() && dmaaPUserPassword != null
                 && !dmaaPUserPassword.isEmpty()) {
             webClientBuilder.filter(basicAuthentication(dmaaPUserName, dmaaPUserPassword));
-
         }
         return webClientBuilder.build();
     }
@@ -81,7 +84,7 @@ public class DmaapReactiveWebClient {
             MDC.put(SERVICE_NAME, String.valueOf(clientRequest.url()));
             logger.trace("Request: {} {}", clientRequest.method(), clientRequest.url());
             clientRequest.headers()
-                    .forEach((name, values) -> values.forEach(value -> logger.info("{}={}", name, value)));
+                    .forEach((name, values) -> values.forEach(value -> logger.trace("{}={}", name, value)));
             logger.trace("HTTP request headers: {}", clientRequest.headers());
             MDC.remove(SERVICE_NAME);
             return Mono.just(clientRequest);

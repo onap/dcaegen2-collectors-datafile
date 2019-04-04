@@ -24,7 +24,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -51,7 +50,7 @@ import org.mockito.ArgumentCaptor;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.service.HttpUtils;
-import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerReactiveHttpClient;
+import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerHttpClient;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriBuilder;
@@ -75,7 +74,7 @@ public class PublishedCheckerTest {
 
     private static DmaapPublisherConfiguration publisherConfigurationMock = mock(DmaapPublisherConfiguration.class);
     private static AppConfig appConfigMock;
-    private DmaapProducerReactiveHttpClient httpClientMock = mock(DmaapProducerReactiveHttpClient.class);
+    private DmaapProducerHttpClient httpClientMock = mock(DmaapProducerHttpClient.class);
 
     private PublishedChecker publishedCheckerUnderTestSpy;
 
@@ -103,7 +102,7 @@ public class PublishedCheckerTest {
         ArgumentCaptor<HttpUriRequest> requestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
         verify(httpClientMock).getBaseUri();
         verify(httpClientMock).addUserCredentialsToHead(any(HttpUriRequest.class));
-        verify(httpClientMock).getDmaapProducerResponseWithCustomTimeout(requestCaptor.capture(), anyInt(), any());
+        verify(httpClientMock).getDmaapProducerResponseWithCustomTimeout(requestCaptor.capture(), any(), any());
         verifyNoMoreInteractions(httpClientMock);
 
         HttpUriRequest getRequest = requestCaptor.getValue();
@@ -158,10 +157,10 @@ public class PublishedCheckerTest {
 
         HttpResponse httpResponseMock = mock(HttpResponse.class);
         if (exception == null) {
-            when(httpClientMock.getDmaapProducerResponseWithCustomTimeout(any(HttpUriRequest.class), anyInt(), any()))
+            when(httpClientMock.getDmaapProducerResponseWithCustomTimeout(any(HttpUriRequest.class), any(), any()))
                     .thenReturn(httpResponseMock);
         } else {
-            when(httpClientMock.getDmaapProducerResponseWithCustomTimeout(any(HttpUriRequest.class), anyInt(), any()))
+            when(httpClientMock.getDmaapProducerResponseWithCustomTimeout(any(HttpUriRequest.class), any(), any()))
                     .thenThrow(exception);
         }
         HttpEntity httpEntityMock = mock(HttpEntity.class);

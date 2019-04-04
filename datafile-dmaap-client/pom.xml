@@ -116,13 +116,7 @@
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher -->
-    <dependency>
-      <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-launcher</artifactId>
-      <scope>test</scope>
-    </dependency>
+  
     <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime -->
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
