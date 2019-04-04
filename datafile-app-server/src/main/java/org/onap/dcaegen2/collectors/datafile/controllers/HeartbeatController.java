@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ===============================================================================================
@@ -18,6 +18,10 @@
 
 package org.onap.dcaegen2.collectors.datafile.controllers;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -25,14 +29,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import reactor.core.publisher.Mono;
 
 /**
+ * Controller to check the heartbeat of DFC.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/19/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
@@ -42,19 +43,24 @@ public class HeartbeatController {
 
     private static final Logger logger = LoggerFactory.getLogger(HeartbeatController.class);
 
+    /**
+     * Checks the heartbeat of DFC.
+     *
+     * @return the heartbeat status of DFC.
+     */
     @RequestMapping(value = "heartbeat", method = RequestMethod.GET)
     @ApiOperation(value = "Returns liveness of DATAFILE service")
-    @ApiResponses(value = {
+    @ApiResponses(value = { //
             @ApiResponse(code = 200, message = "DATAFILE service is living"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
-    }
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") //
+        } //
     )
     public Mono<ResponseEntity<String>> heartbeat() {
         logger.trace("Receiving heartbeat request");
-        return Mono.defer(() ->
-                Mono.just(new ResponseEntity<>("I'm living", HttpStatus.OK))
+        return Mono.defer(() -> //
+                Mono.just(new ResponseEntity<>("I'm living", HttpStatus.OK)) //
         );
     }
 }

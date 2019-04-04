@@ -100,8 +100,8 @@ node_templates:
       application_config:
         dmaap.ftp.ftpesConfiguration.keyCert: "/config/ftpKey.jks"
         dmaap.ftp.ftpesConfiguration.keyPassword: "secret"
-        dmaap.ftp.ftpesConfiguration.trustedCA: "/config/cacerts"
-        dmaap.ftp.ftpesConfiguration.trustedCAPassword: "secret"
+        dmaap.ftp.ftpesConfiguration.trustedCa: "/config/cacerts"
+        dmaap.ftp.ftpesConfiguration.trustedCaPassword: "secret"
         dmaap.security.trustStorePath: "/opt/app/datafile/etc/cert/trust.jks"
         dmaap.security.trustStorePasswordPath: "/opt/app/datafile/etc/cert/trust.pass"
         dmaap.security.keyStorePath: "/opt/app/datafile/etc/cert/key.p12"

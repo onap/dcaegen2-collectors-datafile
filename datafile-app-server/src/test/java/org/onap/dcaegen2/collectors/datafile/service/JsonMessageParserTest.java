@@ -22,11 +22,9 @@ import static org.mockito.Mockito.spy;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
@@ -38,11 +36,12 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
-
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 /**
+ * Tests the JsonMessageParser.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 5/8/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
@@ -99,11 +98,11 @@ class JsonMessageParserTest {
                 .compression(GZIP_COMPRESSION) //
                 .fileFormatType(FILE_FORMAT_TYPE) //
                 .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .messageMetaData(messageMetaData)
+                .messageMetaData(messageMetaData) //
                 .build();
         List<FileData> files = new ArrayList<>();
         files.add(expectedFileData);
-        FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder()
+        FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder() //
                 .files(files) //
                 .build();
 
@@ -152,7 +151,7 @@ class JsonMessageParserTest {
                 .compression(GZIP_COMPRESSION) //
                 .fileFormatType(FILE_FORMAT_TYPE) //
                 .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .messageMetaData(messageMetaData)
+                .messageMetaData(messageMetaData) //
                 .build();
         List<FileData> files = new ArrayList<>();
         files.add(expectedFileData);
@@ -232,7 +231,7 @@ class JsonMessageParserTest {
                 .compression(GZIP_COMPRESSION) //
                 .fileFormatType(FILE_FORMAT_TYPE) //
                 .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .messageMetaData(messageMetaData)
+                .messageMetaData(messageMetaData) //
                 .build();
         List<FileData> files = new ArrayList<>();
         files.add(expectedFileData);
@@ -417,7 +416,7 @@ class JsonMessageParserTest {
                 .compression(GZIP_COMPRESSION) //
                 .fileFormatType(FILE_FORMAT_TYPE) //
                 .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .messageMetaData(messageMetaData)
+                .messageMetaData(messageMetaData) //
                 .build();
         List<FileData> files = new ArrayList<>();
         files.add(expectedFileData);
@@ -473,7 +472,7 @@ class JsonMessageParserTest {
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
                 .name(PM_FILE_NAME) //
                 .location(LOCATION) //
-                .compression(GZIP_COMPRESSION)
+                .compression(GZIP_COMPRESSION) //
                 .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //

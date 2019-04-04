@@ -511,9 +511,9 @@ node_types:
         type: string
       ftp.ftpesConfiguration.keyPassword:
         type: string
-      ftp.ftpesConfiguration.trustedCA:
+      ftp.ftpesConfiguration.trustedCa:
         type: string
-      ftp.ftpesConfiguration.trustedCAPassword:
+      ftp.ftpesConfiguration.trustedCaPassword:
         type: string
       security.enableDmaapCertAuth:
         type: string
