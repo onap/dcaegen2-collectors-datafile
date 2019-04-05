@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ===============================================================================================
@@ -19,7 +19,6 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.gson.JsonObject;
-
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
@@ -68,8 +67,8 @@ class CloudConfigParserTest {
             new ImmutableFtpesConfig.Builder() //
                     .keyCert("/config/ftpKey.jks") //
                     .keyPassword("secret") //
-                    .trustedCA("config/cacerts") //
-                    .trustedCAPassword("secret") //
+                    .trustedCa("config/cacerts") //
+                    .trustedCaPassword("secret") //
                     .build();
 
     private CloudConfigParser cloudConfigParser = new CloudConfigParser(getCloudConfigJsonObject());
@@ -121,8 +120,8 @@ class CloudConfigParserTest {
         config.addProperty("dmaap.dmaapProducerConfiguration.dmaapUserPassword", "dradmin");
         config.addProperty("dmaap.ftpesConfig.keyCert", "/config/ftpKey.jks");
         config.addProperty("dmaap.ftpesConfig.keyPassword", "secret");
-        config.addProperty("dmaap.ftpesConfig.trustedCA", "config/cacerts");
-        config.addProperty("dmaap.ftpesConfig.trustedCAPassword", "secret");
+        config.addProperty("dmaap.ftpesConfig.trustedCa", "config/cacerts");
+        config.addProperty("dmaap.ftpesConfig.trustedCaPassword", "secret");
 
         config.addProperty("dmaap.security.trustStorePath", "trustStorePath");
         config.addProperty("dmaap.security.trustStorePasswordPath", "trustStorePasswordPath");

@@ -21,15 +21,17 @@
 package org.onap.dcaegen2.collectors.datafile.model;
 
 import java.util.List;
-
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 
 /**
+ * Contains all the info about a fileReady message.
+ *
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 @Value.Immutable
 @Gson.TypeAdapters
+@FunctionalInterface
 public interface FileReadyMessage {
     public List<FileData> files();
 }

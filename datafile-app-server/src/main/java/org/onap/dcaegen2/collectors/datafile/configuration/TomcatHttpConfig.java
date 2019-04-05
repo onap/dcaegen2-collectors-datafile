@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
  * ===============================================================================================
@@ -23,11 +23,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * Configuration of Tomcat.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/18/18
  */
 @Configuration
 public class TomcatHttpConfig {
-
+    /**
+     * Creates a Tomcat server factory.
+     *
+     * @return a Tomcat server factory.
+     */
     @Bean
     public ServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();

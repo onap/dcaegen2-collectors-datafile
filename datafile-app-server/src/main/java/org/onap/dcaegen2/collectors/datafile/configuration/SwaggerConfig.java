@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ===============================================================================================
@@ -23,7 +23,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -36,42 +35,45 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @Configuration
 @Profile("prod")
-public class SwaggerConfig extends WebMvcConfigurationSupport{
+public class SwaggerConfig extends WebMvcConfigurationSupport {
 
-  public static final String PACKAGE_PATH = "org.onap.dcaegen2.collectors.datafile";
-  public static final String API_TITLE = "DATAFILE app server";
-  public static final String DESCRIPTION = "This page lists all the rest apis for DATAFILE app server.";
-  public static final String VERSION = "1.0";
-  public static final String RESOURCES_PATH = "classpath:/META-INF/resources/";
-  public static final String WEBJARS_PATH = RESOURCES_PATH + "webjars/";
-  public static final String SWAGGER_UI = "swagger-ui.html";
-  public static final String WEBJARS = "/webjars/**";
+    public static final String PACKAGE_PATH = "org.onap.dcaegen2.collectors.datafile";
+    public static final String API_TITLE = "DATAFILE app server";
+    public static final String DESCRIPTION = "This page lists all the rest apis for DATAFILE app server.";
+    public static final String VERSION = "1.0";
+    public static final String RESOURCES_PATH = "classpath:/META-INF/resources/";
+    public static final String WEBJARS_PATH = RESOURCES_PATH + "webjars/";
+    public static final String SWAGGER_UI = "swagger-ui.html";
+    public static final String WEBJARS = "/webjars/**";
 
-  @Bean
-  public Docket api() {
-    return new Docket(DocumentationType.SWAGGER_2)
-        .apiInfo(apiInfo())
-        .select()
-        .apis(RequestHandlerSelectors.basePackage(PACKAGE_PATH))
-        .paths(PathSelectors.any())
-        .build();
-  }
+    /**
+     * Gets the API info.
+     *
+     * @return the API info.
+     */
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2) //
+                .apiInfo(apiInfo()) //
+                .select().apis(RequestHandlerSelectors.basePackage(PACKAGE_PATH)) //
+                .paths(PathSelectors.any()) //
+                .build();
+    }
 
-  private ApiInfo apiInfo() {
-    return new ApiInfoBuilder()
-        .title(API_TITLE)
-        .description(DESCRIPTION)
-        .version(VERSION)
-        .build();
-  }
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder() //
+                .title(API_TITLE) //
+                .description(DESCRIPTION) //
+                .version(VERSION) //
+                .build();
+    }
 
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler(SWAGGER_UI) //
+                .addResourceLocations(RESOURCES_PATH);
 
-  @Override
-  protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-    registry.addResourceHandler(SWAGGER_UI)
-        .addResourceLocations(RESOURCES_PATH);
-
-    registry.addResourceHandler(WEBJARS)
-        .addResourceLocations(WEBJARS_PATH);
-  }
+        registry.addResourceHandler(WEBJARS) //
+                .addResourceLocations(WEBJARS_PATH);
+    }
 }
