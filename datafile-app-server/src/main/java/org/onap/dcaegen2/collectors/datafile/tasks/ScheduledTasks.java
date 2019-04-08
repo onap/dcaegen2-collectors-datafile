@@ -111,8 +111,12 @@ public class ScheduledTasks {
         return new PublishedChecker(applicationConfiguration);
     }
 
-    protected int getCurrentNumberOfTasks() {
+    public int getCurrentNumberOfTasks() {
         return currentNumberOfTasks.get();
+    }
+
+    public int publishedFilesCacheSize() {
+        return alreadyPublishedFiles.size();
     }
 
     protected DMaaPMessageConsumer createConsumerTask() {
