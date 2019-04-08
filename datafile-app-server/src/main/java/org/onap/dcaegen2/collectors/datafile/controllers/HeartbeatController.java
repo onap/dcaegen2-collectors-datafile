@@ -16,13 +16,19 @@
 
 package org.onap.dcaegen2.collectors.datafile.controllers;
 
+import static java.lang.Thread.State.RUNNABLE;
+import static org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext.ENTRY;
+import static org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext.EXIT;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
+import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +49,13 @@ public class HeartbeatController {
 
     private static final Logger logger = LoggerFactory.getLogger(HeartbeatController.class);
 
+    private final ScheduledTasks scheduledTasks;
+
+    @Autowired
+    public HeartbeatController(ScheduledTasks scheduledTasks) {
+        this.scheduledTasks = scheduledTasks;
+    }
+
     /**
      * Checks the heartbeat of DFC.
      *
@@ -54,13 +67,30 @@ public class HeartbeatController {
             @ApiResponse(code = 200, message = "DATAFILE service is living"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
     public Mono<ResponseEntity<String>> heartbeat(@RequestHeader HttpHeaders headers) {
         MappedDiagnosticContext.initializeTraceContext(headers);
-        logger.info(MappedDiagnosticContext.ENTRY, "Heartbeat request");
-        Mono<ResponseEntity<String>> response = Mono.just(new ResponseEntity<>("I'm living", HttpStatus.OK));
+        logger.info(ENTRY, "Heartbeat request");
+
+        StringBuilder statusString = new StringBuilder("I'm living! Status: ");
+        statusString.append("noOfActiveEventTasks=").append(scheduledTasks.getCurrentNumberOfTasks()).append(",");
+        statusString.append("fileCacheSize=").append(scheduledTasks.publishedFilesCacheSize()).append(',');
+        statusString.append("noOfActiveThreads=").append(Thread.activeCount()).append(",");
+        statusString.append("noOfExecutingThreads=").append(getNoExecutingThreads());
+
+        Mono<ResponseEntity<String>> response = Mono.just(new ResponseEntity<>(statusString.toString(), HttpStatus.OK));
         logger.trace("Heartbeat");
-        logger.info(MappedDiagnosticContext.EXIT, "Heartbeat request");
+        logger.info(EXIT, "Heartbeat request");
         return response;
+    }
+
+    private int getNoExecutingThreads() {
+        int nbRunning = 0;
+        for (Thread t : Thread.getAllStackTraces().keySet()) {
+            if (t.getState() == RUNNABLE) {
+                nbRunning++;
+            }
+        }
+        return nbRunning;
     }
 }
