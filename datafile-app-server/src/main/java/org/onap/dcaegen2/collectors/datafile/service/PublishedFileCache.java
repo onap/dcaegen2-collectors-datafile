@@ -63,7 +63,7 @@ public class PublishedFileCache {
         }
     }
 
-    int size() {
+    public int size() {
         return publishedFiles.size();
     }
 
