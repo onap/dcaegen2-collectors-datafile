@@ -98,9 +98,9 @@ node_templates:
               - concat: ["8433:", { get_input: host_port_secure}]
     properties:
       application_config:
-        dmaap.ftp.ftpesConfiguration.keyCert: "/config/ftpKey.jks"
+        dmaap.ftp.ftpesConfiguration.keyCert: "/config/ftp.jks"
         dmaap.ftp.ftpesConfiguration.keyPassword: "secret"
-        dmaap.ftp.ftpesConfiguration.trustedCA: "/config/cacerts"
+        dmaap.ftp.ftpesConfiguration.trustedCA: "/config/dfc.jks"
         dmaap.ftp.ftpesConfiguration.trustedCAPassword: "secret"
         dmaap.security.trustStorePath: "/opt/app/datafile/etc/cert/trust.jks"
         dmaap.security.trustStorePasswordPath: "/opt/app/datafile/etc/cert/trust.pass"
