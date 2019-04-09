@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e0fd4241_2c24e5b2",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-04-09T12:05:39Z",
+      "side": 1,
+      "message": "Please verify the filenames in k8s-datafile.yaml against those used everywhere else in the other files. They appear to be different.\nIf correct, perhaps a comment would be worth adding to k8s-datafile.yaml saying that they are flipped from what is used elsewhere for the reason ....",
+      "revId": "82666aa47757e1224afed8e4887c29c2cd3ed2c2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bc00e260_c69aec6b",
+        "filename": "datafile-app-server/src/main/resources/datafile_endpoints.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-04-09T12:05:39Z",
+      "side": 1,
+      "message": "please verify these. they appear to be opposite from those specified in\n\nk8s-datafile.yaml:\n        dmaap.ftp.ftpesConfiguration.keyCert: \"/config/ftp.jks\"\n        dmaap.ftp.ftpesConfiguration.trustedCA: \"/config/dfc.jks\"",
+      "revId": "82666aa47757e1224afed8e4887c29c2cd3ed2c2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8aa431d3_120756c9",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfigTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-04-09T12:05:39Z",
+      "side": 1,
+      "message": "please verify these. They appear to be opposite from what was specified in k8s-datafile.yaml:\n\n        dmaap.ftp.ftpesConfiguration.keyCert: \"/config/ftp.jks\"\n        dmaap.ftp.ftpesConfiguration.trustedCA: \"/config/dfc.jks\"",
+      "revId": "82666aa47757e1224afed8e4887c29c2cd3ed2c2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "21eda364_ed687bfa",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParserTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-04-09T12:05:39Z",
+      "side": 1,
+      "message": "please verify these. They appear to be opposite from what was specified in k8s-datafile.yaml:\n\n        dmaap.ftp.ftpesConfiguration.keyCert: \"/config/ftp.jks\"\n        dmaap.ftp.ftpesConfiguration.trustedCA: \"/config/dfc.jks\"",
+      "revId": "82666aa47757e1224afed8e4887c29c2cd3ed2c2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "156bf36c_f4d5459c",
+        "filename": "datafile-app-server/src/test/resources/datafile_endpoints.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-04-09T12:05:39Z",
+      "side": 1,
+      "message": "please verify these. They appear to be opposite from what was specified in k8s-datafile.yaml:\n\n        dmaap.ftp.ftpesConfiguration.keyCert: \"/config/ftp.jks\"\n        dmaap.ftp.ftpesConfiguration.trustedCA: \"/config/dfc.jks\"",
+      "revId": "82666aa47757e1224afed8e4887c29c2cd3ed2c2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "36e02c14_74847db1",
+        "filename": "docker-compose/docker-compose.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-04-09T12:05:39Z",
+      "side": 1,
+      "message": "please verify these. They appear to be opposite from what was specified in k8s-datafile.yaml:\n\n        dmaap.ftp.ftpesConfiguration.keyCert: \"/config/ftp.jks\"\n        dmaap.ftp.ftpesConfiguration.trustedCA: \"/config/dfc.jks\"",
+      "revId": "82666aa47757e1224afed8e4887c29c2cd3ed2c2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
