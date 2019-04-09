@@ -25,16 +25,18 @@ RUN mkdir -p /var/log/ONAP
 ADD /target/datafile-app-server.jar /opt/app/datafile/
 
 ADD /config/application.yaml /opt/app/datafile/config/
-ADD /config/cacerts /opt/app/datafile/config/
+ADD /config/dfc.jks.b64 /opt/app/datafile/config/
 ADD /config/datafile_endpoints.json /opt/app/datafile/config/
-ADD /config/ftpKey.jks /opt/app/datafile/config/
-ADD /config/keystore /opt/app/datafile/config/
+ADD /config/ftp.jks.b64 /opt/app/datafile/config/
 
 EXPOSE 8100 8433
 
 RUN addgroup -S onap && adduser -S datafile -G onap
 RUN chown -R datafile:onap /opt/app/datafile
 RUN chown -R datafile:onap /var/log/ONAP
+RUN base64 -d /opt/app/datafile/config/dfc.jks.b64 > /opt/app/datafile/config/dfc.jks && base64 -d /opt/app/datafile/config/ftp.jks.b64 > /opt/app/datafile/config/ftp.jks 
+RUN chown -R root:root /opt/app/datafile/config/*
+RUN chmod -R 755 /opt/app/datafile/config/
 
 USER datafile
 
