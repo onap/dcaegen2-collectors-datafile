@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4fb22d37_ba8dcdb3",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SchedulerConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-04-09T10:04:49Z",
+      "side": 1,
+      "message": "This file should not be included in the commit as there are no changes",
+      "range": {
+        "startLine": 49,
+        "startChar": 13,
+        "endLine": 49,
+        "endChar": 28
+      },
+      "revId": "7f8a2e8cda3b09d0593e3f19b1e17174ad79f10e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
