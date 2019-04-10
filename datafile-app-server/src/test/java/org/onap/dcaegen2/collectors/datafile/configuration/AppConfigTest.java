@@ -24,17 +24,14 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -186,9 +183,9 @@ class AppConfigTest {
         dmaapConfigs.add("dmaapProducerConfiguration", dmaapProducerConfigData);
 
         JsonObject ftpesConfigData = new JsonObject();
-        ftpesConfigData.addProperty("keyCert", "config/ftpKey.jks");
+        ftpesConfigData.addProperty("keyCert", "config/dfc.jks");
         ftpesConfigData.addProperty("keyPassword", "secret");
-        ftpesConfigData.addProperty("trustedCA", "config/cacerts");
+        ftpesConfigData.addProperty("trustedCA", "config/ftp.jks");
         ftpesConfigData.addProperty("trustedCAPassword", "secret");
 
         JsonObject security = new JsonObject();

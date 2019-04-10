@@ -17,9 +17,7 @@
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import com.google.gson.JsonObject;
-
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
@@ -66,9 +64,9 @@ class CloudConfigParserTest {
 
     private static final ImmutableFtpesConfig CORRECT_FTPES_CONFIGURATION = //
             new ImmutableFtpesConfig.Builder() //
-                    .keyCert("/config/ftpKey.jks") //
+                    .keyCert("/config/dfc.jks") //
                     .keyPassword("secret") //
-                    .trustedCA("config/cacerts") //
+                    .trustedCA("config/ftp.jks") //
                     .trustedCAPassword("secret") //
                     .build();
 
@@ -119,9 +117,9 @@ class CloudConfigParserTest {
         config.addProperty("dmaap.dmaapProducerConfiguration.dmaapPortNumber", 3907);
         config.addProperty("dmaap.dmaapProducerConfiguration.dmaapUserName", "dradmin");
         config.addProperty("dmaap.dmaapProducerConfiguration.dmaapUserPassword", "dradmin");
-        config.addProperty("dmaap.ftpesConfig.keyCert", "/config/ftpKey.jks");
+        config.addProperty("dmaap.ftpesConfig.keyCert", "/config/dfc.jks");
         config.addProperty("dmaap.ftpesConfig.keyPassword", "secret");
-        config.addProperty("dmaap.ftpesConfig.trustedCA", "config/cacerts");
+        config.addProperty("dmaap.ftpesConfig.trustedCA", "config/ftp.jks");
         config.addProperty("dmaap.ftpesConfig.trustedCAPassword", "secret");
 
         config.addProperty("dmaap.security.trustStorePath", "trustStorePath");

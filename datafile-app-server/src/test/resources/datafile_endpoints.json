@@ -26,9 +26,9 @@
         },
         "ftp": {
             "ftpesConfiguration": {
-                "keyCert": "/config/ftpKey.jks",
+                "keyCert": "/config/dfc.jks",
                 "keyPassword": "secret",
-                "trustedCA": "/config/ftpKey.jks",
+                "trustedCA": "/config/ftp.jks",
                 "trustedCAPassword": "secret"
             }
         },
