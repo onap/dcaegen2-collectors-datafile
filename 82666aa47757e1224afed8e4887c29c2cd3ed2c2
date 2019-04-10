@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "51262969_c8837db2",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5059
+      },
+      "writtenOn": "2019-04-10T11:21:53Z",
+      "side": 1,
+      "message": "The file names are now corrected in this file to the proper value. The other comments were related to this and does not require modification.",
+      "parentUuid": "e0fd4241_2c24e5b2",
+      "revId": "82666aa47757e1224afed8e4887c29c2cd3ed2c2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bc00e260_c69aec6b",
         "filename": "datafile-app-server/src/main/resources/datafile_endpoints.json",
         "patchSetId": 4
