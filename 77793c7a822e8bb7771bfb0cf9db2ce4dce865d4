@@ -1,0 +1,10 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Henrik Andersson <henrik.b.andersson@est.tech>
+Code-Review+1: Sonia Sangari <sonia.sangari@est.tech>
+Code-Review+1: Maxime Bonneau <maxime.bonneau@est.tech>
+Code-Review+2: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-by: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-at: Thu, 11 Apr 2019 20:53:30 +0000
+Reviewed-on: https://gerrit.onap.org/r/85026
+Project: dcaegen2/collectors/datafile
+Branch: refs/heads/master
