@@ -69,7 +69,7 @@ public class PublishedChecker {
      *
      * @return <code>true</code> if the file has been published before, <code>false</code> otherwise.
      */
-    public boolean execute(String fileName, Map<String, String> contextMap) {
+    public boolean isFilePublished(String fileName, Map<String, String> contextMap) {
         MDC.setContextMap(contextMap);
         DmaapProducerHttpClient producerClient = resolveClient();
 

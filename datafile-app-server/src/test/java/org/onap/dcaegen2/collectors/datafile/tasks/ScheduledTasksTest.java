@@ -184,7 +184,7 @@ public class ScheduledTasksTest {
         Flux<FileReadyMessage> fileReadyMessages = fileReadyMessageFlux(noOfEvents, noOfFilesPerEvent, true);
         doReturn(fileReadyMessages).when(consumerMock).execute();
 
-        doReturn(false).when(publishedCheckerMock).execute(anyString(), any());
+        doReturn(false).when(publishedCheckerMock).isFilePublished(anyString(), any());
 
         Mono<ConsumerDmaapModel> collectedFile = Mono.just(consumerData());
         doReturn(collectedFile).when(fileCollectorMock).execute(notNull(), anyLong(), notNull(), notNull());
@@ -209,7 +209,7 @@ public class ScheduledTasksTest {
         Flux<FileReadyMessage> fileReadyMessages = fileReadyMessageFlux(2, 2, true); // 4 files
         doReturn(fileReadyMessages).when(consumerMock).execute();
 
-        doReturn(false).when(publishedCheckerMock).execute(anyString(), any());
+        doReturn(false).when(publishedCheckerMock).isFilePublished(anyString(), any());
 
         Mono<ConsumerDmaapModel> collectedFile = Mono.just(consumerData());
         Mono<Object> error = Mono.error(new Exception("problem"));
@@ -242,7 +242,7 @@ public class ScheduledTasksTest {
         Flux<FileReadyMessage> fileReadyMessages = fileReadyMessageFlux(2, 2, true); // 4 files
         doReturn(fileReadyMessages).when(consumerMock).execute();
 
-        doReturn(false).when(publishedCheckerMock).execute(anyString(), any());
+        doReturn(false).when(publishedCheckerMock).isFilePublished(anyString(), any());
 
         Mono<ConsumerDmaapModel> collectedFile = Mono.just(consumerData());
         doReturn(collectedFile).when(fileCollectorMock).execute(notNull(), anyLong(), notNull(), notNull());
@@ -276,7 +276,7 @@ public class ScheduledTasksTest {
         Flux<FileReadyMessage> fileReadyMessages = fileReadyMessageFlux(noOfEvents, noOfFilesPerEvent, false);
         doReturn(fileReadyMessages).when(consumerMock).execute();
 
-        doReturn(false).when(publishedCheckerMock).execute(anyString(), any());
+        doReturn(false).when(publishedCheckerMock).isFilePublished(anyString(), any());
 
         Mono<ConsumerDmaapModel> collectedFile = Mono.just(consumerData());
         doReturn(collectedFile).when(fileCollectorMock).execute(notNull(), anyLong(), notNull(), notNull());
@@ -291,9 +291,11 @@ public class ScheduledTasksTest {
         verify(consumerMock, times(1)).execute();
         verify(fileCollectorMock, times(1)).execute(notNull(), anyLong(), notNull(), notNull());
         verify(dataRouterMock, times(1)).execute(notNull(), anyLong(), notNull(), any());
+        verify(publishedCheckerMock, times(1)).isFilePublished(notNull(), notNull());
         verifyNoMoreInteractions(dataRouterMock);
         verifyNoMoreInteractions(fileCollectorMock);
         verifyNoMoreInteractions(consumerMock);
+        verifyNoMoreInteractions(dataRouterMock);
     }
 
 

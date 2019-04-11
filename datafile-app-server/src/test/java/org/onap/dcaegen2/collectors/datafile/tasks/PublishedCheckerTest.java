@@ -95,7 +95,7 @@ public class PublishedCheckerTest {
     public void executeWhenNotPublished_returnsFalse() throws Exception {
         prepareMocksForTests(HttpUtils.SC_OK, EMPTY_CONTENT, null);
 
-        boolean isPublished = publishedCheckerUnderTestSpy.execute(LOCAL_FILE_NAME, CONTEXT_MAP);
+        boolean isPublished = publishedCheckerUnderTestSpy.isFilePublished(LOCAL_FILE_NAME, CONTEXT_MAP);
 
         assertFalse(isPublished);
 
@@ -123,7 +123,7 @@ public class PublishedCheckerTest {
     public void executeWhenDataRouterReturnsNok_returnsFalse() throws Exception {
         prepareMocksForTests(HttpUtils.SC_BAD_REQUEST, EMPTY_CONTENT, null);
 
-        boolean isPublished = publishedCheckerUnderTestSpy.execute(LOCAL_FILE_NAME, CONTEXT_MAP);
+        boolean isPublished = publishedCheckerUnderTestSpy.isFilePublished(LOCAL_FILE_NAME, CONTEXT_MAP);
 
         assertFalse(isPublished);
     }
@@ -132,7 +132,7 @@ public class PublishedCheckerTest {
     public void executeWhenPublished_returnsTrue() throws Exception {
         prepareMocksForTests(HttpUtils.SC_OK, "[" + LOCAL_FILE_NAME + "]", null);
 
-        boolean isPublished = publishedCheckerUnderTestSpy.execute(LOCAL_FILE_NAME, CONTEXT_MAP);
+        boolean isPublished = publishedCheckerUnderTestSpy.isFilePublished(LOCAL_FILE_NAME, CONTEXT_MAP);
 
         assertTrue(isPublished);
     }
@@ -141,7 +141,7 @@ public class PublishedCheckerTest {
     public void executeWhenErrorInDataRouter_returnsFalse() throws Exception {
         prepareMocksForTests(HttpUtils.SC_OK, EMPTY_CONTENT, new DatafileTaskException(""));
 
-        boolean isPublished = publishedCheckerUnderTestSpy.execute(LOCAL_FILE_NAME, CONTEXT_MAP);
+        boolean isPublished = publishedCheckerUnderTestSpy.isFilePublished(LOCAL_FILE_NAME, CONTEXT_MAP);
 
         assertFalse(isPublished);
     }
