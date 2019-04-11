@@ -1,6 +1,11 @@
 spring:
   profiles:
     active: prod
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "loggers,logfile,health,info,metrics"
 server:
   port: 8433
   ssl:
