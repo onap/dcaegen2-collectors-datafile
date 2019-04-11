@@ -293,8 +293,10 @@ public class ScheduledTasksTest {
         verify(consumerMock, times(1)).getMessageRouterResponse();
         verify(fileCollectorMock, times(1)).collectFile(notNull(), anyLong(), notNull(), notNull());
         verify(dataRouterMock, times(1)).publishFile(notNull(), anyLong(), notNull(), any());
+        verify(publishedCheckerMock, times(1)).isFilePublished(notNull(), notNull());
         verifyNoMoreInteractions(dataRouterMock);
         verifyNoMoreInteractions(fileCollectorMock);
         verifyNoMoreInteractions(consumerMock);
+        verifyNoMoreInteractions(dataRouterMock);
     }
 }
