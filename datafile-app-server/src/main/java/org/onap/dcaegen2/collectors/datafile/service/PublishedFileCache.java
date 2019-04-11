@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
@@ -24,8 +24,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * A cache of all files that already has been published. Key is the local file path and the value is
- * a time stamp, when the key was last used.
+ * A cache of all files that already has been published. Key is the local file path and the value is a time stamp, when
+ * the key was last used.
  */
 public class PublishedFileCache {
     private final Map<Path, Instant> publishedFiles = Collections.synchronizedMap(new HashMap<Path, Instant>());
@@ -71,6 +71,4 @@ public class PublishedFileCache {
         final int timeToKeepInfoInSeconds = 60 * 60 * 24;
         return now.getEpochSecond() - then.getEpochSecond() > timeToKeepInfoInSeconds;
     }
-
-
 }

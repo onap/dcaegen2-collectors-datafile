@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ===============================================================================================
@@ -66,8 +66,8 @@ class CloudConfigParserTest {
             new ImmutableFtpesConfig.Builder() //
                     .keyCert("/config/dfc.jks") //
                     .keyPassword("secret") //
-                    .trustedCA("config/ftp.jks") //
-                    .trustedCAPassword("secret") //
+                    .trustedCa("config/ftp.jks") //
+                    .trustedCaPassword("secret") //
                     .build();
 
     private CloudConfigParser cloudConfigParser = new CloudConfigParser(getCloudConfigJsonObject());
@@ -119,8 +119,8 @@ class CloudConfigParserTest {
         config.addProperty("dmaap.dmaapProducerConfiguration.dmaapUserPassword", "dradmin");
         config.addProperty("dmaap.ftpesConfig.keyCert", "/config/dfc.jks");
         config.addProperty("dmaap.ftpesConfig.keyPassword", "secret");
-        config.addProperty("dmaap.ftpesConfig.trustedCA", "config/ftp.jks");
-        config.addProperty("dmaap.ftpesConfig.trustedCAPassword", "secret");
+        config.addProperty("dmaap.ftpesConfig.trustedCa", "config/ftp.jks");
+        config.addProperty("dmaap.ftpesConfig.trustedCaPassword", "secret");
 
         config.addProperty("dmaap.security.trustStorePath", "trustStorePath");
         config.addProperty("dmaap.security.trustStorePasswordPath", "trustStorePasswordPath");

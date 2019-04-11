@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Map;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -69,7 +68,7 @@ public class PublishedChecker {
      *
      * @return <code>true</code> if the file has been published before, <code>false</code> otherwise.
      */
-    public boolean execute(String fileName, Map<String, String> contextMap) {
+    public boolean isFilePublished(String fileName, Map<String, String> contextMap) {
         MDC.setContextMap(contextMap);
         DmaapProducerHttpClient producerClient = resolveClient();
 
@@ -80,8 +79,8 @@ public class PublishedChecker {
         producerClient.addUserCredentialsToHead(getRequest);
 
         try {
-            HttpResponse response =
-                    producerClient.getDmaapProducerResponseWithCustomTimeout(getRequest, WEB_CLIENT_TIMEOUT, contextMap);
+            HttpResponse response = producerClient.getDmaapProducerResponseWithCustomTimeout(getRequest,
+                    WEB_CLIENT_TIMEOUT, contextMap);
 
             logger.trace("{}", response);
             int status = response.getStatusLine().getStatusCode();

@@ -22,13 +22,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
-
 import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
@@ -39,7 +37,6 @@ import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -244,7 +241,7 @@ public class JsonMessageParser {
                 .location(location) //
                 .scheme(scheme) //
                 .compression(getValueFromJson(data, COMPRESSION, missingValues)) //
-                .messageMetaData(messageMetaData)
+                .messageMetaData(messageMetaData) //
                 .build();
         if (missingValues.isEmpty()) {
             return Optional.of(fileData);
@@ -254,9 +251,8 @@ public class JsonMessageParser {
     }
 
     /**
-     * Gets data from the event name.
-     * Defined as: {DomainAbbreviation}_{productName}-{vendorName}_{Description}, example:
-     * Noti_RnNode-Ericsson_FileReady
+     * Gets data from the event name. Defined as: {DomainAbbreviation}_{productName}-{vendorName}_{Description},
+     * example: Noti_RnNode-Ericsson_FileReady
      *
      * @param dataType The type of data to get, {@link DmaapConsumerJsonParser.EventNameDataType}.
      * @param eventName The event name to get the data from.

@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START=======================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ================================================================================
@@ -26,10 +26,18 @@ import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.Immutabl
 
 
 /**
+ * Parses the cloud configuration.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 9/19/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 public class CloudConfigParser {
+
+    private static final String DMAAP_SECURITY_TRUST_STORE_PATH = "dmaap.security.trustStorePath";
+    private static final String DMAAP_SECURITY_TRUST_STORE_PASS_PATH = "dmaap.security.trustStorePasswordPath";
+    private static final String DMAAP_SECURITY_KEY_STORE_PATH = "dmaap.security.keyStorePath";
+    private static final String DMAAP_SECURITY_KEY_STORE_PASS_PATH = "dmaap.security.keyStorePasswordPath";
+    private static final String DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH = "dmaap.security.enableDmaapCertAuth";
 
     private final JsonObject jsonObject;
 
@@ -46,11 +54,11 @@ public class CloudConfigParser {
                 .dmaapContentType(jsonObject.get("dmaap.dmaapProducerConfiguration.dmaapContentType").getAsString())
                 .dmaapHostName(jsonObject.get("dmaap.dmaapProducerConfiguration.dmaapHostName").getAsString())
                 .dmaapUserName(jsonObject.get("dmaap.dmaapProducerConfiguration.dmaapUserName").getAsString())
-                .trustStorePath(jsonObject.get("dmaap.security.trustStorePath").getAsString())
-                .trustStorePasswordPath(jsonObject.get("dmaap.security.trustStorePasswordPath").getAsString())
-                .keyStorePath(jsonObject.get("dmaap.security.keyStorePath").getAsString())
-                .keyStorePasswordPath(jsonObject.get("dmaap.security.keyStorePasswordPath").getAsString())
-                .enableDmaapCertAuth(jsonObject.get("dmaap.security.enableDmaapCertAuth").getAsBoolean())
+                .trustStorePath(jsonObject.get(DMAAP_SECURITY_TRUST_STORE_PATH).getAsString())
+                .trustStorePasswordPath(jsonObject.get(DMAAP_SECURITY_TRUST_STORE_PASS_PATH).getAsString())
+                .keyStorePath(jsonObject.get(DMAAP_SECURITY_KEY_STORE_PATH).getAsString())
+                .keyStorePasswordPath(jsonObject.get(DMAAP_SECURITY_KEY_STORE_PASS_PATH).getAsString())
+                .enableDmaapCertAuth(jsonObject.get(DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH).getAsBoolean()) //
                 .build();
     }
 
@@ -67,20 +75,20 @@ public class CloudConfigParser {
                 .dmaapProtocol(jsonObject.get("dmaap.dmaapConsumerConfiguration.dmaapProtocol").getAsString())
                 .consumerId(jsonObject.get("dmaap.dmaapConsumerConfiguration.consumerId").getAsString())
                 .consumerGroup(jsonObject.get("dmaap.dmaapConsumerConfiguration.consumerGroup").getAsString())
-                .trustStorePath(jsonObject.get("dmaap.security.trustStorePath").getAsString())
-                .trustStorePasswordPath(jsonObject.get("dmaap.security.trustStorePasswordPath").getAsString())
-                .keyStorePath(jsonObject.get("dmaap.security.keyStorePath").getAsString())
-                .keyStorePasswordPath(jsonObject.get("dmaap.security.keyStorePasswordPath").getAsString())
-                .enableDmaapCertAuth(jsonObject.get("dmaap.security.enableDmaapCertAuth").getAsBoolean())
+                .trustStorePath(jsonObject.get(DMAAP_SECURITY_TRUST_STORE_PATH).getAsString())
+                .trustStorePasswordPath(jsonObject.get(DMAAP_SECURITY_TRUST_STORE_PASS_PATH).getAsString())
+                .keyStorePath(jsonObject.get(DMAAP_SECURITY_KEY_STORE_PATH).getAsString())
+                .keyStorePasswordPath(jsonObject.get(DMAAP_SECURITY_KEY_STORE_PASS_PATH).getAsString())
+                .enableDmaapCertAuth(jsonObject.get(DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH).getAsBoolean()) //
                 .build();
     }
 
-    public FtpesConfig getFtpesConfig() {
-        return new ImmutableFtpesConfig.Builder()
+    FtpesConfig getFtpesConfig() {
+        return new ImmutableFtpesConfig.Builder() //
                 .keyCert(jsonObject.get("dmaap.ftpesConfig.keyCert").getAsString())
                 .keyPassword(jsonObject.get("dmaap.ftpesConfig.keyPassword").getAsString())
-                .trustedCA(jsonObject.get("dmaap.ftpesConfig.trustedCA").getAsString())
-                .trustedCAPassword(jsonObject.get("dmaap.ftpesConfig.trustedCAPassword").getAsString())
+                .trustedCa(jsonObject.get("dmaap.ftpesConfig.trustedCa").getAsString())
+                .trustedCaPassword(jsonObject.get("dmaap.ftpesConfig.trustedCaPassword").getAsString()) //
                 .build();
     }
 }

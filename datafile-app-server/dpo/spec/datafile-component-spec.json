@@ -83,7 +83,7 @@
       "required": true
     },
     {
-      "name": "ftp.ftpesConfiguration.trustedCA",
+      "name": "ftp.ftpesConfiguration.trustedCa",
       "value": "config/ftp.jks",
       "description": "",
       "designer_editable": true,
@@ -93,7 +93,7 @@
       "required": true
     },
     {
-      "name": "ftp.ftpesConfiguration.trustedCAPassword",
+      "name": "ftp.ftpesConfiguration.trustedCaPassword",
       "value": "secret",
       "description": "",
       "designer_editable": true,

@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
@@ -35,14 +35,13 @@ import java.util.Objects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.onap.dcaegen2.collectors.datafile.integration.junit5.mockito.MockitoExtension;
 
 /**
+ * Tests the AppConfig.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/9/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
-@ExtendWith({MockitoExtension.class})
 class AppConfigTest {
 
     private static final String DATAFILE_ENDPOINTS = "datafile_endpoints.json";
@@ -185,8 +184,8 @@ class AppConfigTest {
         JsonObject ftpesConfigData = new JsonObject();
         ftpesConfigData.addProperty("keyCert", "config/dfc.jks");
         ftpesConfigData.addProperty("keyPassword", "secret");
-        ftpesConfigData.addProperty("trustedCA", "config/ftp.jks");
-        ftpesConfigData.addProperty("trustedCAPassword", "secret");
+        ftpesConfigData.addProperty("trustedCa", "config/ftp.jks");
+        ftpesConfigData.addProperty("trustedCaPassword", "secret");
 
         JsonObject security = new JsonObject();
         security.addProperty("trustStorePath", "trustStorePath");

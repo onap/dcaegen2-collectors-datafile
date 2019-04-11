@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
@@ -18,6 +18,8 @@
 
 package org.onap.dcaegen2.collectors.datafile.controllers;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.onap.dcaegen2.collectors.datafile.configuration.SchedulerConfig;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.slf4j.Logger;
@@ -29,12 +31,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Mono;
 
 /**
+ * The HTTP api to start and stop DFC.
+ *
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/5/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
@@ -52,6 +53,12 @@ public class ScheduleController {
         this.schedulerConfig = schedulerConfig;
     }
 
+    /**
+     * Start the DFC.
+     *
+     * @param headers the request headers.
+     * @return the response.
+     */
     @GetMapping("/start")
     @ApiOperation(value = "Start scheduling worker request")
     public Mono<ResponseEntity<String>> startTasks(@RequestHeader HttpHeaders headers) {
@@ -67,6 +74,11 @@ public class ScheduleController {
                 .map(this::createStartTaskResponse);
     }
 
+    /**
+     * Stop the DFC.
+     *
+     * @return the response.
+     */
     @GetMapping("/stopDatafile")
     @ApiOperation(value = "Receiving stop scheduling worker request")
     public Mono<ResponseEntity<String>> stopTask(@RequestHeader HttpHeaders headers) {

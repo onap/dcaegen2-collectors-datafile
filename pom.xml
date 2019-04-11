@@ -66,8 +66,6 @@
   </properties>
 
   <modules>
-    <module>datafile-commons</module>
-    <module>datafile-dmaap-client</module>
     <module>datafile-app-server</module>
   </modules>
 
