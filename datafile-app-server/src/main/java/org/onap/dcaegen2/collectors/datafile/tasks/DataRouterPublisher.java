@@ -22,12 +22,13 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.Map;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPut;
@@ -45,6 +46,7 @@ import org.slf4j.MDC;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+
 import reactor.core.publisher.Mono;
 
 /**
@@ -72,56 +74,55 @@ public class DataRouterPublisher {
     /**
      * Publish one file.
      *
-     * @param model information about the file to publish
+     * @param publishInfo information about the file to publish
      * @param numRetries the maximal number of retries if the publishing fails
      * @param firstBackoff the time to delay the first retry
-     * @param contextMap tracing context variables
      * @return the (same) filePublishInformation
      */
-    public Mono<FilePublishInformation> publishFile(FilePublishInformation model, long numRetries,
-            Duration firstBackoff, Map<String, String> contextMap) {
-        MDC.setContextMap(contextMap);
-        logger.trace("publishFile called with arg {}", model);
+    public Mono<FilePublishInformation> publishFile(FilePublishInformation publishInfo, long numRetries,
+            Duration firstBackoff) {
+        MDC.setContextMap(publishInfo.getContext());
+        logger.trace("publishFile called with arg {}", publishInfo);
         dmaapProducerReactiveHttpClient = resolveClient();
 
-        return Mono.just(model) //
+        return Mono.just(publishInfo) //
                 .cache() //
-                .flatMap(m -> publishFile(m, contextMap)) //
-                .flatMap(httpStatus -> handleHttpResponse(httpStatus, model, contextMap)) //
+                .flatMap(this::publishFile) //
+                .flatMap(httpStatus -> handleHttpResponse(httpStatus, publishInfo)) //
                 .retryBackoff(numRetries, firstBackoff);
     }
 
-    private Mono<HttpStatus> publishFile(FilePublishInformation filePublishInformation,
-            Map<String, String> contextMap) {
-        logger.trace("Entering publishFile with {}", filePublishInformation);
+    private Mono<HttpStatus> publishFile(FilePublishInformation publishInfo
+            ) {
+        logger.trace("Entering publishFile with {}", publishInfo);
         try {
             HttpPut put = new HttpPut();
-            prepareHead(filePublishInformation, put);
-            prepareBody(filePublishInformation, put);
+            prepareHead(publishInfo, put);
+            prepareBody(publishInfo, put);
             dmaapProducerReactiveHttpClient.addUserCredentialsToHead(put);
 
             HttpResponse response =
-                    dmaapProducerReactiveHttpClient.getDmaapProducerResponseWithRedirect(put, contextMap);
+                    dmaapProducerReactiveHttpClient.getDmaapProducerResponseWithRedirect(put, publishInfo.getContext());
             logger.trace("{}", response);
             return Mono.just(HttpStatus.valueOf(response.getStatusLine().getStatusCode()));
         } catch (Exception e) {
-            logger.warn("Unable to send file to DataRouter. Data: {}", filePublishInformation.getInternalLocation(), e);
+            logger.warn("Unable to send file to DataRouter. Data: {}", publishInfo.getInternalLocation(), e);
             return Mono.error(e);
         }
     }
 
-    private void prepareHead(FilePublishInformation model, HttpPut put) {
+    private void prepareHead(FilePublishInformation publishInfo, HttpPut put) {
         put.addHeader(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE);
-        JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(model));
+        JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(publishInfo));
         metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
         metaData.getAsJsonObject().remove(INTERNAL_LOCATION_JSON_TAG);
         put.addHeader(X_DMAAP_DR_META, metaData.toString());
-        put.setURI(getPublishUri(model.getName()));
+        put.setURI(getPublishUri(publishInfo.getName()));
         MappedDiagnosticContext.appendTraceInfo(put);
     }
 
-    private void prepareBody(FilePublishInformation model, HttpPut put) throws IOException {
-        Path fileLocation = model.getInternalLocation();
+    private void prepareBody(FilePublishInformation publishInfo, HttpPut put) throws IOException {
+        Path fileLocation = publishInfo.getInternalLocation();
         try (InputStream fileInputStream = createInputStream(fileLocation)) {
             put.setEntity(new ByteArrayEntity(IOUtils.toByteArray(fileInputStream)));
         }
@@ -134,12 +135,11 @@ public class DataRouterPublisher {
                 .pathSegment(fileName).build();
     }
 
-    private Mono<FilePublishInformation> handleHttpResponse(HttpStatus response, FilePublishInformation model,
-            Map<String, String> contextMap) {
-        MDC.setContextMap(contextMap);
+    private Mono<FilePublishInformation> handleHttpResponse(HttpStatus response, FilePublishInformation publishInfo) {
+        MDC.setContextMap(publishInfo.getContext());
         if (HttpUtils.isSuccessfulResponseCode(response.value())) {
             logger.trace("Publish to DR successful!");
-            return Mono.just(model);
+            return Mono.just(publishInfo);
         } else {
             logger.warn("Publish to DR unsuccessful, response code: {}", response);
             return Mono.error(new Exception("Publish to DR unsuccessful, response code: " + response));

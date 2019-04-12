@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
@@ -52,6 +53,7 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -162,7 +164,7 @@ public class ScheduledTasksTest {
                 .compression("") //
                 .fileFormatType("") //
                 .fileFormatVersion("") //
-                .build();
+                .context(new HashMap<String, String>()).build();
     }
 
     @Test
@@ -190,9 +192,11 @@ public class ScheduledTasksTest {
 
         Mono<FilePublishInformation> collectedFile = Mono.just(filePublishInformation());
         doReturn(collectedFile).when(fileCollectorMock).collectFile(notNull(), anyLong(), notNull(), notNull());
-        doReturn(collectedFile).when(dataRouterMock).publishFile(notNull(), anyLong(), notNull(), any());
+        doReturn(collectedFile).when(dataRouterMock).publishFile(notNull(), anyLong(), notNull());
 
-        StepVerifier.create(testedObject.createMainTask(contextMap)).expectSubscription() //
+        StepVerifier //
+                .create(testedObject.createMainTask(contextMap)) //
+                .expectSubscription() //
                 .expectNextCount(noOfFiles) //
                 .expectComplete() //
                 .verify(); //
@@ -200,7 +204,7 @@ public class ScheduledTasksTest {
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
         verify(consumerMock, times(1)).getMessageRouterResponse();
         verify(fileCollectorMock, times(noOfFiles)).collectFile(notNull(), anyLong(), notNull(), notNull());
-        verify(dataRouterMock, times(noOfFiles)).publishFile(notNull(), anyLong(), notNull(), any());
+        verify(dataRouterMock, times(noOfFiles)).publishFile(notNull(), anyLong(), notNull());
         verifyNoMoreInteractions(dataRouterMock);
         verifyNoMoreInteractions(fileCollectorMock);
         verifyNoMoreInteractions(consumerMock);
@@ -221,10 +225,12 @@ public class ScheduledTasksTest {
                 .when(fileCollectorMock) //
                 .collectFile(any(FileData.class), anyLong(), any(Duration.class), notNull());
 
-        doReturn(collectedFile).when(dataRouterMock).publishFile(notNull(), anyLong(), notNull(), any());
-        doReturn(collectedFile).when(dataRouterMock).publishFile(notNull(), anyLong(), notNull(), any());
+        doReturn(collectedFile).when(dataRouterMock).publishFile(notNull(), anyLong(), notNull());
+        doReturn(collectedFile).when(dataRouterMock).publishFile(notNull(), anyLong(), notNull());
 
-        StepVerifier.create(testedObject.createMainTask(contextMap)).expectSubscription() //
+        StepVerifier //
+                .create(testedObject.createMainTask(contextMap)) //
+                .expectSubscription() //
                 .expectNextCount(3) //
                 .expectComplete() //
                 .verify(); //
@@ -232,7 +238,7 @@ public class ScheduledTasksTest {
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
         verify(consumerMock, times(1)).getMessageRouterResponse();
         verify(fileCollectorMock, times(4)).collectFile(notNull(), anyLong(), notNull(), notNull());
-        verify(dataRouterMock, times(3)).publishFile(notNull(), anyLong(), notNull(), any());
+        verify(dataRouterMock, times(3)).publishFile(notNull(), anyLong(), notNull());
         verifyNoMoreInteractions(dataRouterMock);
         verifyNoMoreInteractions(fileCollectorMock);
         verifyNoMoreInteractions(consumerMock);
@@ -253,9 +259,11 @@ public class ScheduledTasksTest {
         // One publish will fail, the rest will succeed
         doReturn(collectedFile, error, collectedFile, collectedFile) //
                 .when(dataRouterMock) //
-                .publishFile(notNull(), anyLong(), notNull(), any());
+                .publishFile(notNull(), anyLong(), notNull());
 
-        StepVerifier.create(testedObject.createMainTask(contextMap)).expectSubscription() //
+        StepVerifier //
+                .create(testedObject.createMainTask(contextMap)) //
+                .expectSubscription() //
                 .expectNextCount(3) // 3 completed files
                 .expectComplete() //
                 .verify(); //
@@ -263,7 +271,7 @@ public class ScheduledTasksTest {
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
         verify(consumerMock, times(1)).getMessageRouterResponse();
         verify(fileCollectorMock, times(4)).collectFile(notNull(), anyLong(), notNull(), notNull());
-        verify(dataRouterMock, times(4)).publishFile(notNull(), anyLong(), notNull(), any());
+        verify(dataRouterMock, times(4)).publishFile(notNull(), anyLong(), notNull());
         verifyNoMoreInteractions(dataRouterMock);
         verifyNoMoreInteractions(fileCollectorMock);
         verifyNoMoreInteractions(consumerMock);
@@ -282,9 +290,10 @@ public class ScheduledTasksTest {
 
         Mono<FilePublishInformation> collectedFile = Mono.just(filePublishInformation());
         doReturn(collectedFile).when(fileCollectorMock).collectFile(notNull(), anyLong(), notNull(), notNull());
-        doReturn(collectedFile).when(dataRouterMock).publishFile(notNull(), anyLong(), notNull(), any());
+        doReturn(collectedFile).when(dataRouterMock).publishFile(notNull(), anyLong(), notNull());
 
-        StepVerifier.create(testedObject.createMainTask(contextMap)).expectSubscription() //
+        StepVerifier //
+                .create(testedObject.createMainTask(contextMap)).expectSubscription() //
                 .expectNextCount(1) // 99 is skipped
                 .expectComplete() //
                 .verify(); //
@@ -292,7 +301,7 @@ public class ScheduledTasksTest {
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
         verify(consumerMock, times(1)).getMessageRouterResponse();
         verify(fileCollectorMock, times(1)).collectFile(notNull(), anyLong(), notNull(), notNull());
-        verify(dataRouterMock, times(1)).publishFile(notNull(), anyLong(), notNull(), any());
+        verify(dataRouterMock, times(1)).publishFile(notNull(), anyLong(), notNull());
         verify(publishedCheckerMock, times(1)).isFilePublished(notNull(), notNull());
         verifyNoMoreInteractions(dataRouterMock);
         verifyNoMoreInteractions(fileCollectorMock);

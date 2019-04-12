@@ -18,6 +18,8 @@ package org.onap.dcaegen2.collectors.datafile.model;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -50,6 +52,7 @@ public class FilePublishInformationTest {
             .compression(COMPRESSION) //
             .fileFormatType(FILE_FORMAT_TYPE) //
             .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .context(new HashMap<String,String>()) //
             .build();
 
         Assertions.assertNotNull(filePublishInformation);

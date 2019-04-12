@@ -40,6 +40,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+
 /**
  * This implements the main flow of the data file collector. Fetch file ready events from the
  * message router, fetch new files from the PNF publish these in the data router.
@@ -89,7 +90,7 @@ public class ScheduledTasks {
             logger.trace("Execution of tasks was registered");
             applicationConfiguration.loadConfigurationFromFile();
             createMainTask(context) //
-                    .subscribe(model -> onSuccess(model, context), //
+                    .subscribe(this::onSuccess, //
                             throwable -> {
                                 onError(throwable, context);
                                 currentNumberOfSubscriptions.decrementAndGet();
@@ -103,18 +104,30 @@ public class ScheduledTasks {
         }
     }
 
-    Flux<FilePublishInformation> createMainTask(Map<String, String> contextMap) {
+    Flux<FilePublishInformation> createMainTask(Map<String, String> context) {
         return fetchMoreFileReadyMessages() //
-                .parallel(NUMBER_OF_WORKER_THREADS / 2) // Each message in parallel
+                .parallel(NUMBER_OF_WORKER_THREADS) // Each FileReadyMessage in a separate thread
                 .runOn(scheduler) //
                 .flatMap(fileReadyMessage -> Flux.fromIterable(fileReadyMessage.files())) //
                 .doOnNext(fileData -> currentNumberOfTasks.incrementAndGet()) //
-                .filter(fileData -> shouldBePublished(fileData, contextMap)) //
-                .flatMap(fileData -> fetchFile(fileData, contextMap), false, 1, 1) //
-                .flatMap(model -> publishToDataRouter(model, contextMap), false, 1, 1) //
-                .doOnNext(model -> deleteFile(model.getInternalLocation(), contextMap)) //
-                .doOnNext(model -> currentNumberOfTasks.decrementAndGet()) //
+                .flatMap(fileData -> createMdcContext(fileData, context)) //
+                .filter(this::shouldBePublished) //
+                .flatMap(this::fetchFile, false, 1, 1) //
+                .flatMap(this::publishToDataRouter,false, 1, 1) //
+                .doOnNext(publishInfo -> deleteFile(publishInfo.getInternalLocation(), publishInfo.getContext())) //
+                .doOnNext(publishInfo -> currentNumberOfTasks.decrementAndGet()) //
                 .sequential();
+
+    }
+
+    private class FileDataWithContext {
+        FileDataWithContext(FileData fileData, Map<String, String> context) {
+            this.fileData = fileData;
+            this.context = context;
+        }
+
+        final FileData fileData;
+        final Map<String, String> context;
     }
 
     /**
@@ -136,6 +149,10 @@ public class ScheduledTasks {
         return publishedFilesCache.size();
     }
 
+    public int getCurrentNumberOfSubscriptions() {
+        return currentNumberOfSubscriptions.get();
+    }
+
     protected DMaaPMessageConsumer createConsumerTask() {
         return new DMaaPMessageConsumer(this.applicationConfiguration);
     }
@@ -153,21 +170,28 @@ public class ScheduledTasks {
         logger.trace("Datafile tasks have been completed");
     }
 
-    private synchronized void onSuccess(FilePublishInformation model, Map<String, String> contextMap) {
-        MDC.setContextMap(contextMap);
-        logger.info("Datafile file published {}", model.getInternalLocation());
+    private synchronized void onSuccess(FilePublishInformation publishInfo) {
+        MDC.setContextMap(publishInfo.getContext());
+        logger.info("Datafile file published {}", publishInfo.getInternalLocation());
     }
 
-    private void onError(Throwable throwable, Map<String, String> contextMap) {
-        MDC.setContextMap(contextMap);
+    private void onError(Throwable throwable, Map<String, String> context) {
+        MDC.setContextMap(context);
         logger.error("Chain of tasks have been aborted due to errors in Datafile workflow {}", throwable.toString());
     }
 
-    private boolean shouldBePublished(FileData fileData, Map<String, String> contextMap) {
+    private Mono<FileDataWithContext> createMdcContext(FileData fileData, Map<String, String> context) {
+        MDC.setContextMap(context);
+        context = MappedDiagnosticContext.setRequestId(fileData.name());
+        FileDataWithContext pair = new FileDataWithContext(fileData, context);
+        return Mono.just(pair);
+    }
+
+    private boolean shouldBePublished(FileDataWithContext fileData) {
         boolean result = false;
-        Path localFilePath = fileData.getLocalFilePath();
+        Path localFilePath = fileData.fileData.getLocalFilePath();
         if (publishedFilesCache.put(localFilePath) == null) {
-            result = !createPublishedChecker().isFilePublished(fileData.name(), contextMap);
+            result = !createPublishedChecker().isFilePublished(fileData.fileData.name(), fileData.context);
         }
         if (!result) {
             currentNumberOfTasks.decrementAndGet();
@@ -176,38 +200,36 @@ public class ScheduledTasks {
         return result;
     }
 
-    private Mono<FilePublishInformation> fetchFile(FileData fileData, Map<String, String> contextMap) {
-        MDC.setContextMap(contextMap);
-        return createFileCollector()
-                .collectFile(fileData, FILE_TRANSFER_MAX_RETRIES, FILE_TRANSFER_INITIAL_RETRY_TIMEOUT, contextMap)
-                .onErrorResume(exception -> handleFetchFileFailure(fileData, contextMap));
+    private Mono<FilePublishInformation> fetchFile(FileDataWithContext fileData) {
+        MDC.setContextMap(fileData.context);
+        return createFileCollector().collectFile(fileData.fileData, FILE_TRANSFER_MAX_RETRIES,
+                FILE_TRANSFER_INITIAL_RETRY_TIMEOUT, fileData.context)
+                .onErrorResume(exception -> handleFetchFileFailure(fileData));
     }
 
-    private Mono<FilePublishInformation> handleFetchFileFailure(FileData fileData, Map<String, String> contextMap) {
-        MDC.setContextMap(contextMap);
-        Path localFilePath = fileData.getLocalFilePath();
-        logger.error("File fetching failed, fileData {}", fileData);
-        deleteFile(localFilePath, contextMap);
+    private Mono<FilePublishInformation> handleFetchFileFailure(FileDataWithContext fileData) {
+        MDC.setContextMap(fileData.context);
+        Path localFilePath = fileData.fileData.getLocalFilePath();
+        logger.error("File fetching failed, fileData {}", fileData.fileData);
+        deleteFile(localFilePath, fileData.context);
         publishedFilesCache.remove(localFilePath);
         currentNumberOfTasks.decrementAndGet();
         return Mono.empty();
     }
 
-    private Mono<FilePublishInformation> publishToDataRouter(FilePublishInformation model,
-            Map<String, String> contextMap) {
-        MDC.setContextMap(contextMap);
+    private Mono<FilePublishInformation> publishToDataRouter(FilePublishInformation publishInfo) {
+        MDC.setContextMap(publishInfo.getContext());
 
         return createDataRouterPublisher()
-                .publishFile(model, DATA_ROUTER_MAX_RETRIES, DATA_ROUTER_INITIAL_RETRY_TIMEOUT, contextMap)
-                .onErrorResume(exception -> handlePublishFailure(model, contextMap));
+                .publishFile(publishInfo, DATA_ROUTER_MAX_RETRIES, DATA_ROUTER_INITIAL_RETRY_TIMEOUT)
+                .onErrorResume(exception -> handlePublishFailure(publishInfo));
     }
 
-    private Mono<FilePublishInformation> handlePublishFailure(FilePublishInformation model,
-            Map<String, String> contextMap) {
-        MDC.setContextMap(contextMap);
-        logger.error("File publishing failed: {}", model);
-        Path internalFileName = model.getInternalLocation();
-        deleteFile(internalFileName, contextMap);
+    private Mono<FilePublishInformation> handlePublishFailure(FilePublishInformation publishInfo) {
+        MDC.setContextMap(publishInfo.getContext());
+        logger.error("File publishing failed: {}", publishInfo);
+        Path internalFileName = publishInfo.getInternalLocation();
+        deleteFile(internalFileName, publishInfo.getContext());
         publishedFilesCache.remove(internalFileName);
         currentNumberOfTasks.decrementAndGet();
         return Mono.empty();
@@ -221,21 +243,21 @@ public class ScheduledTasks {
                 "Consuming new file ready messages, current number of tasks: {}, published files: {}, number of subscrptions: {}",
                 getCurrentNumberOfTasks(), publishedFilesCache.size(), this.currentNumberOfSubscriptions.get());
 
-        Map<String, String> contextMap = MDC.getCopyOfContextMap();
+        Map<String, String> context = MDC.getCopyOfContextMap();
         return createConsumerTask() //
                 .getMessageRouterResponse() //
-                .onErrorResume(exception -> handleConsumeMessageFailure(exception, contextMap));
+                .onErrorResume(exception -> handleConsumeMessageFailure(exception, context));
     }
 
-    private Flux<FileReadyMessage> handleConsumeMessageFailure(Throwable exception, Map<String, String> contextMap) {
-        MDC.setContextMap(contextMap);
+    private Flux<FileReadyMessage> handleConsumeMessageFailure(Throwable exception, Map<String, String> context) {
+        MDC.setContextMap(context);
         logger.error("Polling for file ready message failed, exception: {}, config: {}", exception.toString(),
                 this.applicationConfiguration.getDmaapConsumerConfiguration());
         return Flux.empty();
     }
 
-    private void deleteFile(Path localFile, Map<String, String> contextMap) {
-        MDC.setContextMap(contextMap);
+    private void deleteFile(Path localFile, Map<String, String> context) {
+        MDC.setContextMap(context);
         logger.trace("Deleting file: {}", localFile);
         try {
             Files.delete(localFile);

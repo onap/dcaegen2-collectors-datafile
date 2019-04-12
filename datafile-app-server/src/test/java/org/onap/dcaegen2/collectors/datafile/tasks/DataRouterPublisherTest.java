@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -54,6 +55,7 @@ import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPub
 import org.springframework.http.HttpStatus;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriBuilder;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -89,7 +91,7 @@ class DataRouterPublisherTest {
     private static DmaapProducerHttpClient httpClientMock;
     private static AppConfig appConfig;
     private static DmaapPublisherConfiguration publisherConfigurationMock = mock(DmaapPublisherConfiguration.class);
-    private final Map<String, String> contextMap = new HashMap<>();
+    private static Map<String, String> context = new HashMap<>();
     private static DataRouterPublisher publisherTaskUnderTestSpy;
 
     @BeforeAll
@@ -111,6 +113,7 @@ class DataRouterPublisherTest {
                 .compression("gzip") //
                 .fileFormatType(FILE_FORMAT_TYPE) //
                 .fileFormatVersion(FILE_FORMAT_VERSION) //
+                .context(context) //
                 .build(); //
         appConfig = mock(AppConfig.class);
         publisherTaskUnderTestSpy = spy(new DataRouterPublisher(appConfig));
@@ -119,9 +122,8 @@ class DataRouterPublisherTest {
     @Test
     public void whenPassedObjectFits_ReturnsCorrectStatus() throws Exception {
         prepareMocksForTests(null, Integer.valueOf(HttpStatus.OK.value()));
-        StepVerifier
-                .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0),
-                        contextMap))
+        StepVerifier //
+                .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0)))
                 .expectNext(filePublishInformation) //
                 .verifyComplete();
 
@@ -146,7 +148,7 @@ class DataRouterPublisherTest {
 
         Header[] metaHeaders = actualPut.getHeaders(X_DMAAP_DR_META);
         Map<String, String> metaHash = getMetaDataAsMap(metaHeaders);
-        assertTrue(10 == metaHash.size());
+        assertEquals(11, metaHash.size());
         assertEquals(PRODUCT_NAME, metaHash.get("productName"));
         assertEquals(VENDOR_NAME, metaHash.get("vendorName"));
         assertEquals(LAST_EPOCH_MICROSEC, metaHash.get("lastEpochMicrosec"));
@@ -163,9 +165,8 @@ class DataRouterPublisherTest {
     void whenPassedObjectFits_firstFailsWithExceptionThenSucceeds() throws Exception {
         prepareMocksForTests(new DatafileTaskException("Error"), HttpStatus.OK.value());
 
-        StepVerifier
-                .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 2, Duration.ofSeconds(0),
-                        contextMap))
+        StepVerifier //
+                .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 2, Duration.ofSeconds(0)))
                 .expectNext(filePublishInformation) //
                 .verifyComplete();
     }
@@ -175,9 +176,8 @@ class DataRouterPublisherTest {
         prepareMocksForTests(null, Integer.valueOf(HttpStatus.BAD_GATEWAY.value()),
                 Integer.valueOf(HttpStatus.OK.value()));
 
-        StepVerifier
-                .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0),
-                        contextMap))
+        StepVerifier //
+                .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0)))
                 .expectNext(filePublishInformation) //
                 .verifyComplete();
 
@@ -192,9 +192,8 @@ class DataRouterPublisherTest {
         prepareMocksForTests(null, Integer.valueOf(HttpStatus.BAD_GATEWAY.value()),
                 Integer.valueOf((HttpStatus.BAD_GATEWAY.value())));
 
-        StepVerifier
-                .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0),
-                        contextMap))
+        StepVerifier //
+                .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0)))
                 .expectErrorMessage("Retries exhausted: 1/1") //
                 .verify();
 

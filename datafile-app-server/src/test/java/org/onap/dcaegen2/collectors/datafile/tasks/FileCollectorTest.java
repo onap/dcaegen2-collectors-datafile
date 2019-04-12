@@ -31,6 +31,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
@@ -45,6 +46,7 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFilePublishInformation;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
+
 import reactor.test.StepVerifier;
 
 public class FileCollectorTest {
@@ -130,6 +132,7 @@ public class FileCollectorTest {
                 .compression(GZIP_COMPRESSION) //
                 .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
                 .fileFormatVersion(FILE_FORMAT_VERSION) //
+                .context(new HashMap<String,String>())
                 .build();
     }
 

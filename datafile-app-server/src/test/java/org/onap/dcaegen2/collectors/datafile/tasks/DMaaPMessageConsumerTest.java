@@ -30,7 +30,9 @@ import static org.mockito.Mockito.when;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
@@ -47,6 +49,7 @@ import org.onap.dcaegen2.collectors.datafile.service.JsonMessageParser;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.service.consumer.DMaaPConsumerReactiveHttpClient;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -170,6 +173,7 @@ public class DMaaPMessageConsumerTest {
                 .compression(GZIP_COMPRESSION) //
                 .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
                 .fileFormatVersion(FILE_FORMAT_VERSION) //
+                .context(new HashMap<String,String>()) //
                 .build();
         listOfFilePublishInformation.add(filePublishInformation);
 

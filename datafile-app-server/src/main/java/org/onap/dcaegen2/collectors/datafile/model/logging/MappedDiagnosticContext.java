@@ -18,6 +18,7 @@ package org.onap.dcaegen2.collectors.datafile.model.logging;
 
 import java.util.Map;
 import java.util.UUID;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables;
@@ -84,4 +85,17 @@ public final class MappedDiagnosticContext {
         MDC.put(MdcVariables.REQUEST_ID, UUID.randomUUID().toString());
         return MDC.getCopyOfContextMap();
     }
+
+    /**
+     * Updates the request ID in the current context.
+     * @param newRequestId the new value of the request ID
+     * @return a copy the updated context
+     */
+    public static Map<String, String> setRequestId(String newRequestId) {
+        Map<String, String> context = MDC.getCopyOfContextMap();
+        context.put(MdcVariables.REQUEST_ID, newRequestId);
+        MDC.setContextMap(context);
+        return context;
+    }
+
 }

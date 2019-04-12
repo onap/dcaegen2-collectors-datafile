@@ -23,6 +23,8 @@ package org.onap.dcaegen2.collectors.datafile.model;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Paths;
+import java.util.HashMap;
+
 import org.junit.jupiter.api.Test;
 
 public class CommonFunctionsTest {
@@ -42,6 +44,7 @@ public class CommonFunctionsTest {
             .compression("") //
             .fileFormatType("") //
             .fileFormatVersion("") //
+            .context(new HashMap<String,String>())
             .build();
         String actualBody = CommonFunctions.createJsonBody(filePublishInformation);
 

@@ -24,6 +24,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+
 import java.lang.reflect.Type;
 import java.nio.file.Path;
 
@@ -43,7 +44,7 @@ public class CommonFunctions {
      *
      * @param filePublishInformation info to serialize.
      *
-     * @return a string with the serialized model.
+     * @return a string with the serialized info.
      */
     public static String createJsonBody(FilePublishInformation filePublishInformation) {
         return gson.toJson(filePublishInformation);

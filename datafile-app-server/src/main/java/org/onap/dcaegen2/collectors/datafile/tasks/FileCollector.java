@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Map;
+
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
@@ -33,6 +34,7 @@ import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+
 import reactor.core.publisher.Mono;
 
 /**
@@ -75,8 +77,8 @@ public class FileCollector {
                 .retryBackoff(numRetries, firstBackoff);
     }
 
-    private Mono<FilePublishInformation> collectFile(FileData fileData, Map<String, String> contextMap) {
-        MDC.setContextMap(contextMap);
+    private Mono<FilePublishInformation> collectFile(FileData fileData, Map<String, String> context) {
+        MDC.setContextMap(context);
         logger.trace("starting to collectFile {}", fileData.name());
 
         final String remoteFile = fileData.remoteFilePath();
@@ -86,7 +88,7 @@ public class FileCollector {
             currentClient.open();
             localFile.getParent().toFile().mkdir(); // Create parent directories
             currentClient.collectFile(remoteFile, localFile);
-            return Mono.just(getFilePublishInformation(fileData, localFile));
+            return Mono.just(getFilePublishInformation(fileData, localFile, context));
         } catch (Exception throwable) {
             logger.warn("Failed to download file: {} {}, reason: {}", fileData.sourceName(), fileData.name(),
                     throwable.toString());
@@ -105,7 +107,7 @@ public class FileCollector {
         }
     }
 
-    private FilePublishInformation getFilePublishInformation(FileData fileData, Path localFile) {
+    private FilePublishInformation getFilePublishInformation(FileData fileData, Path localFile,Map<String, String> context) {
         String location = fileData.location();
         MessageMetaData metaData = fileData.messageMetaData();
         return ImmutableFilePublishInformation.builder() //
@@ -121,6 +123,7 @@ public class FileCollector {
                 .compression(fileData.compression()) //
                 .fileFormatType(fileData.fileFormatType()) //
                 .fileFormatVersion(fileData.fileFormatVersion()) //
+                .context(context) //
                 .build();
     }
 
