@@ -133,7 +133,7 @@ public class ScheduledTasks {
     }
 
     public int publishedFilesCacheSize() {
-        return alreadyPublishedFiles.size();
+        return publishedFilesCache.size();
     }
 
     protected DMaaPMessageConsumer createConsumerTask() {
