@@ -148,7 +148,11 @@ class DataRouterPublisherTest {
 
         Header[] metaHeaders = actualPut.getHeaders(X_DMAAP_DR_META);
         Map<String, String> metaHash = getMetaDataAsMap(metaHeaders);
-        assertEquals(11, metaHash.size());
+
+        // Note that the following line checks the number of properties that are sent to the data router.
+        // This should be 10 unless the API is updated. The class DataRouterPublisher removes
+        // info that should not be reported.
+        assertEquals(10, metaHash.size());
         assertEquals(PRODUCT_NAME, metaHash.get("productName"));
         assertEquals(VENDOR_NAME, metaHash.get("vendorName"));
         assertEquals(LAST_EPOCH_MICROSEC, metaHash.get("lastEpochMicrosec"));

@@ -60,6 +60,7 @@ public class DataRouterPublisher {
     private static final String CONTENT_TYPE = "application/octet-stream";
     private static final String NAME_JSON_TAG = "name";
     private static final String INTERNAL_LOCATION_JSON_TAG = "internalLocation";
+    private static final String CONTEXT_JSON_TAG = "context";
     private static final String PUBLISH_TOPIC = "publish";
     private static final String DEFAULT_FEED_ID = "1";
 
@@ -116,6 +117,8 @@ public class DataRouterPublisher {
         JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(publishInfo));
         metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
         metaData.getAsJsonObject().remove(INTERNAL_LOCATION_JSON_TAG);
+        metaData.getAsJsonObject().remove(CONTEXT_JSON_TAG);
+
         put.addHeader(X_DMAAP_DR_META, metaData.toString());
         put.setURI(getPublishUri(publishInfo.getName()));
         MappedDiagnosticContext.appendTraceInfo(put);
