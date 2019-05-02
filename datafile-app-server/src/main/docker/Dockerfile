@@ -35,7 +35,7 @@ RUN addgroup -S onap && adduser -S datafile -G onap
 RUN chown -R datafile:onap /opt/app/datafile
 RUN chown -R datafile:onap /var/log/ONAP
 RUN base64 -d /opt/app/datafile/config/dfc.jks.b64 > /opt/app/datafile/config/dfc.jks && base64 -d /opt/app/datafile/config/ftp.jks.b64 > /opt/app/datafile/config/ftp.jks 
-RUN chown -R root:root /opt/app/datafile/config/*
+RUN chown -R datafile:onap /opt/app/datafile/config/*
 RUN chmod -R 755 /opt/app/datafile/config/
 
 USER datafile
