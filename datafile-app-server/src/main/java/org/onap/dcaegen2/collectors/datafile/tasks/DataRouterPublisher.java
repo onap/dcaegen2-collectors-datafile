@@ -83,9 +83,7 @@ public class DataRouterPublisher {
     public Mono<FilePublishInformation> publishFile(FilePublishInformation publishInfo, long numRetries,
             Duration firstBackoff) {
         MDC.setContextMap(publishInfo.getContext());
-        logger.trace("publishFile called with arg {}", publishInfo);
         dmaapProducerReactiveHttpClient = resolveClient();
-
         return Mono.just(publishInfo) //
                 .cache() //
                 .flatMap(this::publishFile) //
@@ -93,8 +91,8 @@ public class DataRouterPublisher {
                 .retryBackoff(numRetries, firstBackoff);
     }
 
-    private Mono<HttpStatus> publishFile(FilePublishInformation publishInfo
-            ) {
+    private Mono<HttpStatus> publishFile(FilePublishInformation publishInfo) {
+        MDC.setContextMap(publishInfo.getContext());
         logger.trace("Entering publishFile with {}", publishInfo);
         try {
             HttpPut put = new HttpPut();
