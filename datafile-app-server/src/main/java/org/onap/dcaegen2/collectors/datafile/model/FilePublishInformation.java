@@ -23,7 +23,6 @@ import java.util.Map;
 
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
-import org.onap.dcaegen2.services.sdk.rest.services.model.DmaapModel;
 
 /**
  * Information needed to publish a file to DataRouter.
@@ -34,7 +33,7 @@ import org.onap.dcaegen2.services.sdk.rest.services.model.DmaapModel;
 
 @Value.Immutable
 @Gson.TypeAdapters
-public interface FilePublishInformation extends DmaapModel {
+public interface FilePublishInformation  {
 
     @SerializedName("productName")
     String getProductName();
@@ -54,14 +53,8 @@ public interface FilePublishInformation extends DmaapModel {
     @SerializedName("timeZoneOffset")
     String getTimeZoneOffset();
 
-    @SerializedName("name")
-    String getName();
-
     @SerializedName("location")
     String getLocation();
-
-    @SerializedName("internalLocation")
-    Path getInternalLocation();
 
     @SerializedName("compression")
     String getCompression();
@@ -72,6 +65,9 @@ public interface FilePublishInformation extends DmaapModel {
     @SerializedName("fileFormatVersion")
     String getFileFormatVersion();
 
-    @SerializedName("context")
+    Path getInternalLocation();
+
+    String getName();
+
     Map<String, String> getContext();
 }
