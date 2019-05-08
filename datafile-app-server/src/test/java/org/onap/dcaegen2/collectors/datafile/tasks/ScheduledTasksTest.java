@@ -21,6 +21,7 @@
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -32,13 +33,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
@@ -51,9 +55,9 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableFilePublishInformati
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileReadyMessage;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
+import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -168,7 +172,16 @@ public class ScheduledTasksTest {
     }
 
     @Test
-    public void notingToConsume() {
+    public void purgeFileCache() {
+        testedObject.publishedFilesCache.put(Paths.get("file.xml"));
+
+        testedObject.purgeCachedInformation(Instant.MAX);
+
+        assertEquals(0, testedObject.publishedFilesCacheSize());
+    }
+
+    @Test
+    public void nothingToConsume() {
         doReturn(consumerMock).when(testedObject).createConsumerTask();
         doReturn(Flux.empty()).when(consumerMock).getMessageRouterResponse();
 
@@ -177,6 +190,95 @@ public class ScheduledTasksTest {
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
         verify(consumerMock, times(1)).getMessageRouterResponse();
         verifyNoMoreInteractions(consumerMock);
+    }
+
+    @Test
+    public void skippingConsumeDueToCurrentNumberOfTasksGreaterThan50() {
+        doReturn(51).when(testedObject).getCurrentNumberOfTasks();
+
+        testedObject.executeDatafileMainTask();
+
+        verifyNoMoreInteractions(consumerMock);
+    }
+
+    @Test
+    public void mainTaskReturnsException() {
+        doReturn(Flux.error(new Exception("Failed"))).when(testedObject).fetchMoreFileReadyMessages();
+
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduledTasks.class);
+        testedObject.executeDatafileMainTask();
+
+        Awaitility.await().pollDelay(org.awaitility.Duration.ONE_HUNDRED_MILLISECONDS)
+                .until(() -> logAppender.list.size() > 0);
+
+        assertEquals("[ERROR] Chain of tasks have been aborted due to errors in Datafile workflow "
+                + "java.lang.Exception: Failed", logAppender.list.get(0).toString());
+
+        verifyNoMoreInteractions(consumerMock);
+    }
+
+    @Test
+    public void executeDatafileMainTask_successfulCase() {
+        final int noOfEvents = 1;
+        final int noOfFilesPerEvent = 1;
+
+        Flux<FileReadyMessage> fileReadyMessages = fileReadyMessageFlux(noOfEvents, noOfFilesPerEvent, true);
+        doReturn(fileReadyMessages).when(consumerMock).getMessageRouterResponse();
+
+        doReturn(false).when(publishedCheckerMock).isFilePublished(anyString(), any());
+
+        Mono<FilePublishInformation> collectedFile = Mono.just(filePublishInformation());
+        doReturn(collectedFile).when(fileCollectorMock).collectFile(notNull(), anyLong(), notNull(), notNull());
+        doReturn(collectedFile).when(dataRouterMock).publishFile(notNull(), anyLong(), notNull());
+
+        testedObject.executeDatafileMainTask();
+    }
+
+    @Test
+    public void executeDatafileMainTask_unexpectedFail() {
+        doReturn(Flux.error(new Exception("Failed"))).when(testedObject).createMainTask(contextMap);
+
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduledTasks.class);
+        testedObject.executeDatafileMainTask();
+
+        assertTrue(logAppender.list.toString().contains("[ERROR] Unexpected exception: "));
+    }
+
+    @Test
+    public void executeDatafileMainTask_consumeFail() {
+        doReturn(Flux.error(new Exception("Failed"))).when(consumerMock).getMessageRouterResponse();
+
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduledTasks.class);
+        testedObject.executeDatafileMainTask();
+
+        Awaitility.await().pollDelay(org.awaitility.Duration.ONE_HUNDRED_MILLISECONDS)
+                .until(() -> logAppender.list.size() > 0);
+
+        assertTrue(logAppender.list.toString().contains(
+                "[ERROR] Polling for file ready message failed, " + "exception: java.lang.Exception: Failed"));
+    }
+
+    @Test
+    public void executeDatafileMainTask_publishFail() {
+        final int noOfEvents = 1;
+        final int noOfFilesPerEvent = 1;
+
+        Flux<FileReadyMessage> fileReadyMessages = fileReadyMessageFlux(noOfEvents, noOfFilesPerEvent, true);
+        doReturn(fileReadyMessages).when(consumerMock).getMessageRouterResponse();
+
+        doReturn(false).when(publishedCheckerMock).isFilePublished(anyString(), any());
+
+        Mono<FilePublishInformation> collectedFile = Mono.just(filePublishInformation());
+        doReturn(collectedFile).when(fileCollectorMock).collectFile(notNull(), anyLong(), notNull(), notNull());
+        doReturn(Mono.error(new Exception("Failed"))).when(dataRouterMock).publishFile(notNull(), anyLong(), notNull());
+
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduledTasks.class);
+        testedObject.executeDatafileMainTask();
+
+        Awaitility.await().pollDelay(org.awaitility.Duration.ONE_HUNDRED_MILLISECONDS)
+                .until(() -> logAppender.list.size() > 0);
+
+        assertTrue(logAppender.list.toString().contains("[ERROR] File publishing failed: "));
     }
 
     @Test

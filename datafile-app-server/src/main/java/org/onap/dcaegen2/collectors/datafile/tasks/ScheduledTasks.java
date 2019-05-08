@@ -100,7 +100,7 @@ public class ScheduledTasks {
                                 currentNumberOfSubscriptions.decrementAndGet();
                             });
         } catch (Exception e) {
-            logger.error("Unexpected exception: ", e);
+            logger.error("Unexpected exception: {}", e.toString(), e);
         }
     }
 
@@ -238,7 +238,7 @@ public class ScheduledTasks {
     /**
      * Fetch more messages from the message router. This is done in a polling/blocking fashion.
      */
-    private Flux<FileReadyMessage> fetchMoreFileReadyMessages() {
+    Flux<FileReadyMessage> fetchMoreFileReadyMessages() {
         logger.info(
                 "Consuming new file ready messages, current number of tasks: {}, published files: {}, number of subscrptions: {}",
                 getCurrentNumberOfTasks(), publishedFilesCache.size(), this.currentNumberOfSubscriptions.get());

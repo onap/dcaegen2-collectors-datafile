@@ -22,13 +22,11 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Path;
 import java.time.Duration;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPut;
@@ -46,7 +44,6 @@ import org.slf4j.MDC;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-
 import reactor.core.publisher.Mono;
 
 /**
@@ -93,8 +90,7 @@ public class DataRouterPublisher {
                 .retryBackoff(numRetries, firstBackoff);
     }
 
-    private Mono<HttpStatus> publishFile(FilePublishInformation publishInfo
-            ) {
+    private Mono<HttpStatus> publishFile(FilePublishInformation publishInfo) {
         logger.trace("Entering publishFile with {}", publishInfo);
         try {
             HttpPut put = new HttpPut();
@@ -144,7 +140,7 @@ public class DataRouterPublisher {
             logger.trace("Publish to DR successful!");
             return Mono.just(publishInfo);
         } else {
-            logger.warn("Publish to DR unsuccessful, response code: {}", response);
+            logger.warn("Publish of file {} to DR unsuccessful. Response code: {}", publishInfo.getName(), response);
             return Mono.error(new Exception("Publish to DR unsuccessful, response code: " + response));
         }
     }

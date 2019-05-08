@@ -16,6 +16,7 @@
 
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
@@ -24,6 +25,9 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -35,6 +39,7 @@ import java.util.Objects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
 
 /**
  * Tests the AppConfig.
@@ -98,16 +103,21 @@ class AppConfigTest {
         filePath = "/temp.json";
         appConfigUnderTest.setFilepath(filePath);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
+
         // When
         appConfigUnderTest.loadConfigurationFromFile();
 
         // Then
+        assertEquals("[ERROR] Problem with loading configuration, file: /temp.json",
+                logAppender.list.get(0).toString());
+        logAppender.stop();
+
         verify(appConfigUnderTest, times(1)).setFilepath(anyString());
         verify(appConfigUnderTest, times(1)).loadConfigurationFromFile();
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         Assertions.assertNull(appConfigUnderTest.getDmaapPublisherConfiguration());
         Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
-
     }
 
     @Test

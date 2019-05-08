@@ -18,8 +18,12 @@
 
 package org.onap.dcaegen2.collectors.datafile.service;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.spy;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import java.util.ArrayList;
@@ -36,6 +40,7 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
+import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -193,8 +198,46 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
                 .expectSubscription().expectNextCount(0).verifyComplete();
+
+        assertTrue(logAppender.list.get(0).toString()
+                .startsWith("[ERROR] VES event parsing. File information wrong. " + "Missing location."));
+        assertTrue(logAppender.list.get(0).toString().contains("sourceName=5GRAN_DU"));
+    }
+
+    @Test
+    void whenPassingCorrectJsonWrongScheme_noMessage() {
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
+                .name(PM_FILE_NAME) //
+                .location("http://location.xml") //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatType(FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
+                .build();
+        JsonMessage message = new JsonMessage.JsonMessageBuilder() //
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+                .addAdditionalField(additionalField) //
+                .build();
+
+        String messageString = message.toString();
+        String parsedString = message.getParsed();
+        JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
+        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
+                .getJsonObjectFromAnArray(jsonElement);
+
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+                .expectSubscription().expectNextCount(0).verifyComplete();
+
+        assertTrue(logAppender.list.get(0).toString().startsWith("[ERROR] VES event parsing. DFC does not support "
+                + "protocol http. Supported protocols are FTPES , FTPS, and SFTP. Location: http://location.xml"));
+        assertTrue(logAppender.list.get(0).toString().contains("sourceName=5GRAN_DU"));
     }
 
     @Test
@@ -270,8 +313,12 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
                 .expectSubscription().expectComplete().verify();
+
+        assertEquals("[ERROR] VES event parsing. Can not get PRODUCT_NAME from eventName, eventName is not in correct "
+                + "format: Faulty event name", logAppender.list.get(0).toString());
     }
 
     @Test
@@ -297,8 +344,12 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
                 .expectSubscription().expectNextCount(0).verifyComplete();
+
+        assertEquals("[ERROR] VES event parsing. File information wrong. Missing data: [name] Data: "
+                + message.getAdditionalFields().get(0).toString(), logAppender.list.get(0).toString());
     }
 
     @Test
@@ -317,8 +368,12 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
                 .expectSubscription().expectNextCount(0).verifyComplete();
+
+        assertEquals("[ERROR] VES event parsing. Missing arrayOfNamedHashMap in message. " + message.getParsed(),
+                logAppender.list.get(0).toString());
     }
 
     @Test
@@ -344,8 +399,12 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
                 .expectSubscription().expectNextCount(0).verifyComplete();
+
+        assertEquals("[ERROR] VES event parsing. File information wrong. Missing data: [compression] Data: "
+                + message.getAdditionalFields().get(0).toString(), logAppender.list.get(0).toString());
     }
 
     @Test
@@ -371,8 +430,12 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
                 .expectSubscription().expectNextCount(0).verifyComplete();
+
+        assertEquals("[ERROR] VES event parsing. File information wrong. Missing data: [fileFormatType] Data: "
+                + message.getAdditionalFields().get(0).toString(), logAppender.list.get(0).toString());
     }
 
     @Test
@@ -439,9 +502,6 @@ class JsonMessageParserTest {
     void whenPassingJsonWithoutMandatoryHeaderInformation_noFileData() {
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //
                 .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
-                .changeIdentifier("PM_MEAS_FILES_INVALID") //
-                .changeType("FileReady_INVALID") //
-                .notificationFieldsVersion("1.0_INVALID") //
                 .build();
 
         String incorrectMessageString = message.toString();
@@ -451,8 +511,14 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(incorrectMessageString)))
                 .expectSubscription().expectComplete().verify();
+
+        assertEquals(
+                "[ERROR] VES event parsing. Missing data: [changeIdentifier, changeType, notificationFieldsVersion]."
+                        + "Change identifier or change type is wrong. Message: " + message.getParsed(),
+                logAppender.list.get(0).toString());
     }
 
     @Test
@@ -463,8 +529,12 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just("[{}]"))).expectSubscription()
                 .expectComplete().verify();
+
+        assertEquals("[ERROR] VES event parsing. Incorrect JsonObject - missing header. {}",
+                logAppender.list.get(0).toString());
     }
 
     @Test
@@ -490,8 +560,13 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
                 .expectSubscription().expectNextCount(0).expectComplete().verify();
+
+        assertEquals(
+                "[ERROR] VES event parsing. Change identifier or change type is wrong. Message: " + message.getParsed(),
+                logAppender.list.get(0).toString());
     }
 
     @Test
@@ -517,7 +592,12 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
                 .expectSubscription().expectComplete().verify();
+
+        assertEquals(
+                "[ERROR] VES event parsing. Change identifier or change type is wrong. Message: " + message.getParsed(),
+                logAppender.list.get(0).toString());
     }
 }
