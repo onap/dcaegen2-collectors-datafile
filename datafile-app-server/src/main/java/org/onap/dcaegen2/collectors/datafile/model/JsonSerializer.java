@@ -18,26 +18,25 @@
 
 package org.onap.dcaegen2.collectors.datafile.model;
 
+import com.google.common.collect.Sets;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 
-import java.lang.reflect.Type;
-import java.nio.file.Path;
+import java.util.Set;
 
 /**
  * Helper class to serialize object.
  */
-public class CommonFunctions {
+public abstract class JsonSerializer {
+
 
     private static Gson gson =
-        new GsonBuilder().registerTypeHierarchyAdapter(Path.class, new PathConverter()).serializeNulls().create();
-
-    private CommonFunctions() {
-    }
+        new GsonBuilder() //
+        .serializeNulls() //
+        .addSerializationExclusionStrategy(new FilePublishInformationExclusionStrategy()) //
+        .create(); //
 
     /**
      * Serializes a <code>filePublishInformation</code>.
@@ -46,18 +45,25 @@ public class CommonFunctions {
      *
      * @return a string with the serialized info.
      */
-    public static String createJsonBody(FilePublishInformation filePublishInformation) {
+    public static String createJsonBodyForDataRouter(FilePublishInformation filePublishInformation) {
         return gson.toJson(filePublishInformation);
     }
 
-    /**
-     * Json serializer that handles Path serializations, since <code>Path</code> does not implement the
-     * <code>Serializable</code> interface.
-     */
-    public static class PathConverter implements JsonSerializer<Path> {
+    private static class FilePublishInformationExclusionStrategy implements ExclusionStrategy {
+        /**
+         * Elements in FilePublishInformation to include in the file publishing Json string.
+         */
+        private final Set<String> inclusions =
+                Sets.newHashSet("productName", "vendorName", "lastEpochMicrosec", "sourceName", "startEpochMicrosec",
+                        "timeZoneOffset", "location", "compression", "fileFormatType", "fileFormatVersion");
         @Override
-        public JsonElement serialize(Path path, Type type, JsonSerializationContext jsonSerializationContext) {
-            return new JsonPrimitive(path.toString());
+        public boolean shouldSkipField(FieldAttributes f) {
+            return !inclusions.contains(f.getName());
+        }
+
+        @Override
+        public boolean shouldSkipClass(Class<?> clazz) {
+            return false;
         }
     }
 }

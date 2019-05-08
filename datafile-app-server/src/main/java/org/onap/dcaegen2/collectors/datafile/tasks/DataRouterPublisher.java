@@ -34,8 +34,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ByteArrayEntity;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
-import org.onap.dcaegen2.collectors.datafile.model.CommonFunctions;
 import org.onap.dcaegen2.collectors.datafile.model.FilePublishInformation;
+import org.onap.dcaegen2.collectors.datafile.model.JsonSerializer;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.collectors.datafile.service.HttpUtils;
 import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerHttpClient;
@@ -58,9 +58,6 @@ import reactor.core.publisher.Mono;
 public class DataRouterPublisher {
     private static final String X_DMAAP_DR_META = "X-DMAAP-DR-META";
     private static final String CONTENT_TYPE = "application/octet-stream";
-    private static final String NAME_JSON_TAG = "name";
-    private static final String INTERNAL_LOCATION_JSON_TAG = "internalLocation";
-    private static final String CONTEXT_JSON_TAG = "context";
     private static final String PUBLISH_TOPIC = "publish";
     private static final String DEFAULT_FEED_ID = "1";
 
@@ -112,11 +109,7 @@ public class DataRouterPublisher {
 
     private void prepareHead(FilePublishInformation publishInfo, HttpPut put) {
         put.addHeader(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE);
-        JsonElement metaData = new JsonParser().parse(CommonFunctions.createJsonBody(publishInfo));
-        metaData.getAsJsonObject().remove(NAME_JSON_TAG).getAsString();
-        metaData.getAsJsonObject().remove(INTERNAL_LOCATION_JSON_TAG);
-        metaData.getAsJsonObject().remove(CONTEXT_JSON_TAG);
-
+        JsonElement metaData = new JsonParser().parse(JsonSerializer.createJsonBodyForDataRouter(publishInfo));
         put.addHeader(X_DMAAP_DR_META, metaData.toString());
         put.setURI(getPublishUri(publishInfo.getName()));
         MappedDiagnosticContext.appendTraceInfo(put);
