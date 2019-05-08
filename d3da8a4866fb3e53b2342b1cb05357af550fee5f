@@ -1,0 +1,9 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Muhammad Rehan Raza <muhammad.rehan.raza@est.tech>
+Code-Review+1: Tamas Bakai <tamas.bakai@est.tech>
+Code-Review+2: Henrik Andersson <henrik.b.andersson@est.tech>
+Submitted-by: Henrik Andersson <henrik.b.andersson@est.tech>
+Submitted-at: Wed, 08 May 2019 12:51:02 +0000
+Reviewed-on: https://gerrit.onap.org/r/87149
+Project: dcaegen2/collectors/datafile
+Branch: refs/heads/master
