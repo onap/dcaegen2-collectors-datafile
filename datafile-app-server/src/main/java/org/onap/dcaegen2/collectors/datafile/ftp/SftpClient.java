@@ -36,11 +36,11 @@ import org.slf4j.LoggerFactory;
 public class SftpClient implements FileCollectClient {
     private static final Logger logger = LoggerFactory.getLogger(SftpClient.class);
 
-    private static final int FTPS_DEFAULT_PORT = 22;
+    private static final int SFTP_DEFAULT_PORT = 22;
 
     private final FileServerData fileServerData;
-    private Session session = null;
-    private ChannelSftp sftpChannel = null;
+    protected Session session = null;
+    protected ChannelSftp sftpChannel = null;
 
     public SftpClient(FileServerData fileServerData) {
         this.fileServerData = fileServerData;
@@ -81,16 +81,16 @@ public class SftpClient implements FileCollectClient {
                 sftpChannel = getChannel(session);
             }
         } catch (JSchException e) {
-            throw new DatafileTaskException("Could not open Sftp client" + e, e);
+            throw new DatafileTaskException("Could not open Sftp client. " + e, e);
         }
     }
 
     private int getPort(Optional<Integer> port) {
-        return port.isPresent() ? port.get() : FTPS_DEFAULT_PORT;
+        return port.isPresent() ? port.get() : SFTP_DEFAULT_PORT;
     }
 
     private Session setUpSession(FileServerData fileServerData) throws JSchException {
-        JSch jsch = new JSch();
+        JSch jsch = createJsch();
 
         Session newSession =
             jsch.getSession(fileServerData.userId(), fileServerData.serverAddress(), getPort(fileServerData.port()));
@@ -104,5 +104,9 @@ public class SftpClient implements FileCollectClient {
         Channel channel = session.openChannel("sftp");
         channel.connect();
         return (ChannelSftp) channel;
+    }
+
+    protected JSch createJsch() {
+        return new JSch();
     }
 }

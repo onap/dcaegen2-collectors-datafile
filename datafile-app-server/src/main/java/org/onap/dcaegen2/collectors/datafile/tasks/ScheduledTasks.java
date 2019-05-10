@@ -22,7 +22,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FilePublishInformation;
@@ -34,7 +33,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -42,8 +40,8 @@ import reactor.core.scheduler.Schedulers;
 
 
 /**
- * This implements the main flow of the data file collector. Fetch file ready events from the
- * message router, fetch new files from the PNF publish these in the data router.
+ * This implements the main flow of the data file collector. Fetch file ready events from the message router, fetch new
+ * files from the PNF publish these in the data router.
  */
 @Component
 public class ScheduledTasks {
@@ -80,7 +78,8 @@ public class ScheduledTasks {
         try {
             if (getCurrentNumberOfTasks() > MAX_TASKS_FOR_POLLING) {
                 logger.info(
-                        "Skipping consuming new files; current number of tasks: {}, number of subscriptions: {}, published files: {}",
+                        "Skipping consuming new files; current number of tasks: {}, number of subscriptions: {}, "
+                                + "published files: {}",
                         getCurrentNumberOfTasks(), this.currentNumberOfSubscriptions.get(), publishedFilesCache.size());
                 return;
             }
@@ -91,16 +90,16 @@ public class ScheduledTasks {
             applicationConfiguration.loadConfigurationFromFile();
             createMainTask(context) //
                     .subscribe(this::onSuccess, //
-                            throwable -> {
-                                onError(throwable, context);
-                                currentNumberOfSubscriptions.decrementAndGet();
-                            }, //
-                            () -> {
-                                onComplete(context);
-                                currentNumberOfSubscriptions.decrementAndGet();
-                            });
+                        throwable -> {
+                            onError(throwable, context);
+                            currentNumberOfSubscriptions.decrementAndGet();
+                        }, //
+                        () -> {
+                            onComplete(context);
+                            currentNumberOfSubscriptions.decrementAndGet();
+                        });
         } catch (Exception e) {
-            logger.error("Unexpected exception: ", e);
+            logger.error("Unexpected exception: {}", e.toString(), e);
         }
     }
 
@@ -113,7 +112,7 @@ public class ScheduledTasks {
                 .flatMap(fileData -> createMdcContext(fileData, context)) //
                 .filter(this::shouldBePublished) //
                 .flatMap(this::fetchFile, false, 1, 1) //
-                .flatMap(this::publishToDataRouter,false, 1, 1) //
+                .flatMap(this::publishToDataRouter, false, 1, 1) //
                 .doOnNext(publishInfo -> deleteFile(publishInfo.getInternalLocation(), publishInfo.getContext())) //
                 .doOnNext(publishInfo -> currentNumberOfTasks.decrementAndGet()) //
                 .sequential();
@@ -121,13 +120,13 @@ public class ScheduledTasks {
     }
 
     private class FileDataWithContext {
+        final FileData fileData;
+        final Map<String, String> context;
+
         FileDataWithContext(FileData fileData, Map<String, String> context) {
             this.fileData = fileData;
             this.context = context;
         }
-
-        final FileData fileData;
-        final Map<String, String> context;
     }
 
     /**
@@ -238,9 +237,10 @@ public class ScheduledTasks {
     /**
      * Fetch more messages from the message router. This is done in a polling/blocking fashion.
      */
-    private Flux<FileReadyMessage> fetchMoreFileReadyMessages() {
+    Flux<FileReadyMessage> fetchMoreFileReadyMessages() {
         logger.info(
-                "Consuming new file ready messages, current number of tasks: {}, published files: {}, number of subscrptions: {}",
+                "Consuming new file ready messages, current number of tasks: {}, published files: {}, number of "
+                        + "subscrptions: {}",
                 getCurrentNumberOfTasks(), publishedFilesCache.size(), this.currentNumberOfSubscriptions.get());
 
         Map<String, String> context = MDC.getCopyOfContextMap();

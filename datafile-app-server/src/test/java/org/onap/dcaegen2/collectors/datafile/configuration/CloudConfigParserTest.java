@@ -17,6 +17,7 @@
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
