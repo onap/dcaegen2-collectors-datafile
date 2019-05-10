@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ad35807_98e3f081",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/utils/JsonMessage.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-05-10T12:14:15Z",
+      "side": 1,
+      "message": "The name of the function is strange because it seems to do the opposite of what the name and description suggests. No big deal though, this is testcode.",
+      "range": {
+        "startLine": 54,
+        "startChar": 3,
+        "endLine": 54,
+        "endChar": 31
+      },
+      "revId": "8e2e57ad99b28921d293b872d9f3a1f053fcd059",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "95761d4e_c5bb595c",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/utils/JsonMessage.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-05-10T12:14:15Z",
+      "side": 1,
+      "message": "Is this used for anything?\nActually I think it would be more maintainable to just have a textfile with the Json message and to remove this whole class \nWe can look at that later.",
+      "range": {
+        "startLine": 237,
+        "startChar": 3,
+        "endLine": 237,
+        "endChar": 44
+      },
+      "revId": "8e2e57ad99b28921d293b872d9f3a1f053fcd059",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
