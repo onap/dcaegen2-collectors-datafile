@@ -70,6 +70,30 @@
       "revId": "dacc18d72e8734bb6646402c3fde063d6523af24",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fff8cbe3_2c5c68fe",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/web/PublishRedirectStrategyTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-05-13T11:58:55Z",
+      "side": 1,
+      "message": "Done as suggested in the first comment.",
+      "parentUuid": "631d8c01_9a7978da",
+      "range": {
+        "startLine": 46,
+        "startChar": 62,
+        "endLine": 46,
+        "endChar": 73
+      },
+      "revId": "dacc18d72e8734bb6646402c3fde063d6523af24",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
