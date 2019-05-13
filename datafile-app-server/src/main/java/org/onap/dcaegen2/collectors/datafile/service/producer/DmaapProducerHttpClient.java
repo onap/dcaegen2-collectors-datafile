@@ -85,7 +85,7 @@ public class DmaapProducerHttpClient {
     public HttpResponse getDmaapProducerResponseWithRedirect(HttpUriRequest request, Map<String, String> contextMap)
             throws DatafileTaskException {
         MDC.setContextMap(contextMap);
-        try (CloseableHttpAsyncClient webClient = createWebClient(true, DEFAULT_REQUEST_TIMEOUT)) {
+        try (CloseableHttpAsyncClient webClient = createWebClient(true, DEFAULT_REQUEST_TIMEOUT, contextMap)) {
             webClient.start();
 
             logger.trace(INVOKE, "Starting to produce to DR {}", request);
@@ -112,7 +112,7 @@ public class DmaapProducerHttpClient {
     public HttpResponse getDmaapProducerResponseWithCustomTimeout(HttpUriRequest request, Duration requestTimeout,
             Map<String, String> contextMap) throws DatafileTaskException {
         MDC.setContextMap(contextMap);
-        try (CloseableHttpAsyncClient webClient = createWebClient(false, requestTimeout)) {
+        try (CloseableHttpAsyncClient webClient = createWebClient(false, requestTimeout, contextMap)) {
             webClient.start();
 
             logger.trace(INVOKE, "Starting to produce to DR {}", request);
@@ -152,7 +152,8 @@ public class DmaapProducerHttpClient {
                 .port(configuration.dmaapPortNumber());
     }
 
-    private CloseableHttpAsyncClient createWebClient(boolean expectRedirect, Duration requestTimeout)
+    private CloseableHttpAsyncClient createWebClient(boolean expectRedirect, Duration requestTimeout,
+            Map<String, String> contextMap)
             throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
         SSLContext sslContext =
                 new SSLContextBuilder().loadTrustMaterial(null, (certificate, authType) -> true).build();
@@ -162,7 +163,7 @@ public class DmaapProducerHttpClient {
                 .setSslHostnameVerifier(new NoopHostnameVerifier());
 
         if (expectRedirect) {
-            clientBuilder.setRedirectStrategy(PublishRedirectStrategy.INSTANCE);
+            clientBuilder.setRedirectStrategy(new PublishRedirectStrategy(contextMap));
         }
 
         if (requestTimeout.toMillis() > 0) {

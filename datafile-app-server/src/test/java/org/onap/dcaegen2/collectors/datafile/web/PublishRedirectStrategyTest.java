@@ -19,7 +19,8 @@ package org.onap.dcaegen2.collectors.datafile.web;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.http.Header;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -32,16 +33,23 @@ import org.apache.http.protocol.HttpContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables;
+import org.slf4j.MDC;
 
 class PublishRedirectStrategyTest {
 
     private static final String URI = "sftp://localhost:80/";
+    private static final String SAMPLE_REQUEST_ID = "A20000626.2315+0200-2330+0200_PNF0-0-1MB.tar.gz";
+    private static final String ANOTHER_REQUEST_ID = "something_else";
 
     private static PublishRedirectStrategy publishRedirectStrategy;
 
     @BeforeAll
     static void setUp() {
-        publishRedirectStrategy = new PublishRedirectStrategy();
+        MDC.put(MdcVariables.REQUEST_ID, ANOTHER_REQUEST_ID);
+        Map<String, String> contextMap = new HashMap<>();
+        contextMap.put(MdcVariables.REQUEST_ID, SAMPLE_REQUEST_ID);
+        publishRedirectStrategy = new PublishRedirectStrategy(contextMap);
     }
 
     @Test
@@ -70,5 +78,8 @@ class PublishRedirectStrategyTest {
 
         HttpUriRequest actualRedirect = publishRedirectStrategy.getRedirect(requestMock, responseMock, contextMock);
         assertEquals(URI, actualRedirect.getURI().toString());
+
+        String actualRequestId = MDC.get(MdcVariables.REQUEST_ID);
+        assertEquals(SAMPLE_REQUEST_ID, actualRequestId);
     }
 }
