@@ -19,7 +19,8 @@ package org.onap.dcaegen2.collectors.datafile.web;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.http.Header;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -38,10 +39,11 @@ class PublishRedirectStrategyTest {
     private static final String URI = "sftp://localhost:80/";
 
     private static PublishRedirectStrategy publishRedirectStrategy;
+    private static final Map<String, String> CONTEXT_MAP = new HashMap<>();
 
     @BeforeAll
     static void setUp() {
-        publishRedirectStrategy = new PublishRedirectStrategy();
+        publishRedirectStrategy = new PublishRedirectStrategy(CONTEXT_MAP);
     }
 
     @Test
