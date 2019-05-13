@@ -22,6 +22,30 @@
       "revId": "38f644e9dbab74f082a06ef7dea3ee954b18db9f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "af6373c3_5d29b3d5",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/web/PublishRedirectStrategy.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-05-13T14:03:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdfb3336_839e30c1",
+      "range": {
+        "startLine": 50,
+        "startChar": 3,
+        "endLine": 50,
+        "endChar": 43
+      },
+      "revId": "38f644e9dbab74f082a06ef7dea3ee954b18db9f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
