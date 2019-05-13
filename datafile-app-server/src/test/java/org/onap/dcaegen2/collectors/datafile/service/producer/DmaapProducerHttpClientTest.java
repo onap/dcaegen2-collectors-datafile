@@ -26,7 +26,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
@@ -110,7 +109,7 @@ class DmaapProducerHttpClientTest {
 
         verify(clientBuilderMock).setSslContext(any(SSLContext.class));
         verify(clientBuilderMock).setSslHostnameVerifier(any(NoopHostnameVerifier.class));
-        verify(clientBuilderMock).setRedirectStrategy(PublishRedirectStrategy.INSTANCE);
+        verify(clientBuilderMock).setRedirectStrategy(any(PublishRedirectStrategy.class));
         verify(clientBuilderMock).setDefaultRequestConfig(any());
         verify(clientBuilderMock).build();
         verifyNoMoreInteractions(clientBuilderMock);
