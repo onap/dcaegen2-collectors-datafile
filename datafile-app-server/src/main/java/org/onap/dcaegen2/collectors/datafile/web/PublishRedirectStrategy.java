@@ -17,6 +17,7 @@
 package org.onap.dcaegen2.collectors.datafile.web;
 
 import java.net.URI;
+import java.util.Map;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolException;
@@ -33,6 +34,7 @@ import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * PublishRedirectStrategy implementation
@@ -44,8 +46,17 @@ import org.slf4j.LoggerFactory;
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
 public class PublishRedirectStrategy extends DefaultRedirectStrategy {
 
-    public static final PublishRedirectStrategy INSTANCE = new PublishRedirectStrategy();
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Map<String, String> contextMap;
+
+    /**
+     * Constructor PublishRedirectStrategy.
+     *
+     * @param contextMap - MDC context map
+     */
+    public PublishRedirectStrategy(Map<String, String> contextMap) {
+        this.contextMap = contextMap;
+    }
 
     /**
      * Redirectable methods.
@@ -71,6 +82,7 @@ public class PublishRedirectStrategy extends DefaultRedirectStrategy {
     @Override
     public HttpUriRequest getRedirect(final HttpRequest request, final HttpResponse response, final HttpContext context)
         throws ProtocolException {
+        MDC.setContextMap(contextMap);
         final URI uri = getLocationURI(request, response, context);
         logger.trace("getRedirect...: {}", request);
         return RequestBuilder.copy(request).setUri(uri).build();
