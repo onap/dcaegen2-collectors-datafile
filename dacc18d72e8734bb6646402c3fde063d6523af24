@@ -46,6 +46,30 @@
       "revId": "dacc18d72e8734bb6646402c3fde063d6523af24",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "631d8c01_9a7978da",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/web/PublishRedirectStrategyTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-13T11:30:09Z",
+      "side": 1,
+      "message": "But if it did remove the context map after this call it wouldn\u0027t be used when the request is made after this call, so it must be there after this call?",
+      "parentUuid": "130e94b0_9b633641",
+      "range": {
+        "startLine": 46,
+        "startChar": 62,
+        "endLine": 46,
+        "endChar": 73
+      },
+      "revId": "dacc18d72e8734bb6646402c3fde063d6523af24",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
