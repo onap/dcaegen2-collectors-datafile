@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "56e366ec_943152f6",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/web/PublishRedirectStrategyTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-13T11:25:05Z",
+      "side": 1,
+      "message": "Good idea is to add a value to the map, and then assert in getRedirect_shouldReturnCorrectUri that MDC contains the context map with this value, so this new functionality is tested also.",
+      "range": {
+        "startLine": 46,
+        "startChar": 62,
+        "endLine": 46,
+        "endChar": 73
+      },
+      "revId": "dacc18d72e8734bb6646402c3fde063d6523af24",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
