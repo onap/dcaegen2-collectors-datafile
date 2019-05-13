@@ -45,6 +45,30 @@
       "revId": "8e2e57ad99b28921d293b872d9f3a1f053fcd059",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a5aab2ff_91a72d29",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/utils/JsonMessage.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-13T09:12:13Z",
+      "side": 1,
+      "message": "The main method is not used in any test case. It is there as a convenience to get a printout of a Json message.\n\nThis class is used in many tests to generate Json messages with different content, see example below.\n\n        AdditionalField additionalField \u003d new JsonMessage.AdditionalFieldBuilder() //\n                .name(PM_FILE_NAME) //\n                .location(LOCATION) //\n                .compression(GZIP_COMPRESSION) //\n                .fileFormatType(FILE_FORMAT_TYPE) //\n                .fileFormatVersion(FILE_FORMAT_VERSION) //\n                .build();\n        JsonMessage message \u003d new JsonMessage.JsonMessageBuilder() //\n                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //\n                .changeIdentifier(CHANGE_IDENTIFIER) //\n                .changeType(CHANGE_TYPE) //\n                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //\n                .addAdditionalField(additionalField) //\n                .build();\n\nHere a developer can, directly in the test, see what data is used in the test. If this info was put in a text file, they would have to open the text file to find that data. That data would also be in a Json formatted string, which is very hard for a human to read. They would also have to figure out a way of connecting one Json message in the text file to the correct test, which is more complicated. Also, it is very hard for a developer to change a Json message in string format without accidentally breaking the formatting of the Json message. With this class the developer only needs to be concerned with the data, not the formatting. So I don\u0027t think it is better to put this data in a text file.",
+      "parentUuid": "95761d4e_c5bb595c",
+      "range": {
+        "startLine": 237,
+        "startChar": 3,
+        "endLine": 237,
+        "endChar": 44
+      },
+      "revId": "8e2e57ad99b28921d293b872d9f3a1f053fcd059",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
