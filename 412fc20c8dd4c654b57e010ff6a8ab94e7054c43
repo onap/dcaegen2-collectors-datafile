@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a395ab3c_1f289936",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/web/PublishRedirectStrategyTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-05-13T13:11:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7dcbebb2_07b3cd76",
+      "range": {
+        "startLine": 40,
+        "startChar": 32,
+        "endLine": 40,
+        "endChar": 47
+      },
+      "revId": "412fc20c8dd4c654b57e010ff6a8ab94e7054c43",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c9dca5a0_5d63421b",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/web/PublishRedirectStrategyTest.java",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2019-05-13T12:33:20Z",
       "side": 1,
       "message": "When a copy of the context map is sent in to the constructor, there won\u0027t be any difference in the request id after the call to getRedirect. So the test will not really test anything. \nIf a new map with another request id is sent in to the constructor, the test can assert that it is the new request id that has been set after the call, i.e. that it has actually been replaced in the call.",
+      "range": {
+        "startLine": 47,
+        "startChar": 62,
+        "endLine": 47,
+        "endChar": 87
+      },
+      "revId": "412fc20c8dd4c654b57e010ff6a8ab94e7054c43",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72d45467_980809cf",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/web/PublishRedirectStrategyTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-05-13T13:11:14Z",
+      "side": 1,
+      "message": "Done in the new patch set. I guess I get you right this time. Now it is working as follows:\n1) MDC is set to ANOTHER_REQUEST_ID in the beginning.\n2) a new contextMap is created with SAMPLE_REQUEST_ID and the constructor is invoked with this map.\n3) test asserts that ANOTHER_REQUEST_ID has been replaced with SAMPLE_REQUEST_ID.\n\n(note that getRedirect method does not take contextMap as an argument, its values is set during constructor invocation)",
+      "parentUuid": "c9dca5a0_5d63421b",
       "range": {
         "startLine": 47,
         "startChar": 62,
