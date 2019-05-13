@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7dcbebb2_07b3cd76",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/web/PublishRedirectStrategyTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-13T12:33:20Z",
+      "side": 1,
+      "message": "Since this is a constant, it should follow the naming of constants, SAMPLE_REQUEST_ID.",
+      "range": {
+        "startLine": 40,
+        "startChar": 32,
+        "endLine": 40,
+        "endChar": 47
+      },
+      "revId": "412fc20c8dd4c654b57e010ff6a8ab94e7054c43",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c9dca5a0_5d63421b",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/web/PublishRedirectStrategyTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-13T12:33:20Z",
+      "side": 1,
+      "message": "When a copy of the context map is sent in to the constructor, there won\u0027t be any difference in the request id after the call to getRedirect. So the test will not really test anything. \nIf a new map with another request id is sent in to the constructor, the test can assert that it is the new request id that has been set after the call, i.e. that it has actually been replaced in the call.",
+      "range": {
+        "startLine": 47,
+        "startChar": 62,
+        "endLine": 47,
+        "endChar": 87
+      },
+      "revId": "412fc20c8dd4c654b57e010ff6a8ab94e7054c43",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
