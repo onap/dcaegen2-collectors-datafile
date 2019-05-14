@@ -1,0 +1,9 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Patrik Buhr <patrik.buhr@est.tech>
+Code-Review+1: Björn Magnusson <bjorn.magnusson@est.tech>
+Code-Review+2: Henrik Andersson <henrik.b.andersson@est.tech>
+Submitted-by: Henrik Andersson <henrik.b.andersson@est.tech>
+Submitted-at: Tue, 14 May 2019 13:28:29 +0000
+Reviewed-on: https://gerrit.onap.org/r/87530
+Project: dcaegen2/collectors/datafile
+Branch: refs/heads/master
