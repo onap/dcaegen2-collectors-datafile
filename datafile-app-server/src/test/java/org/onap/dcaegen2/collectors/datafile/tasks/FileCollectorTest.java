@@ -214,6 +214,23 @@ public class FileCollectorTest {
     }
 
     @Test
+    public void whenFtpesFileAlwaysFail_failWithoutRetry() throws Exception {
+        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock));
+        doReturn(ftpsClientMock).when(collectorUndetTest).createFtpsClient(any());
+
+        final boolean retry = false;
+        FileData fileData = createFileData(FTPES_LOCATION, Scheme.FTPS);
+        doThrow(new DatafileTaskException("Unable to collect file.", retry)).when(ftpsClientMock)
+                .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+
+        StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
+                .expectErrorMessage("Non retryable file transfer failure") //
+                .verify();
+
+        verify(ftpsClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+    }
+
+    @Test
     public void whenFtpesFileFailOnce_retryAndReturnCorrectResponse() throws Exception {
         FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock));
         doReturn(ftpsClientMock).when(collectorUndetTest).createFtpsClient(any());
