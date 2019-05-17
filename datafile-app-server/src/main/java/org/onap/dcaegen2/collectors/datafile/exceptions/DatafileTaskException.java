@@ -21,12 +21,29 @@ package org.onap.dcaegen2.collectors.datafile.exceptions;
 public class DatafileTaskException extends Exception {
 
     private static final long serialVersionUID = 1L;
+    private final boolean isRetryable;
 
     public DatafileTaskException(String message) {
         super(message);
+        isRetryable = true;
+    }
+
+    public DatafileTaskException(String message, boolean retry) {
+        super(message);
+        isRetryable = retry;
     }
 
     public DatafileTaskException(String message, Exception originalException) {
         super(message, originalException);
+        isRetryable = true;
+    }
+
+    public DatafileTaskException(String message, Exception originalException, boolean retry) {
+        super(message, originalException);
+        isRetryable = retry;
+    }
+
+    public boolean isRetryable() {
+        return this.isRetryable;
     }
 }

@@ -21,8 +21,11 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
+
 import java.nio.file.Path;
 import java.util.Optional;
+
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,8 +56,9 @@ public class SftpClient implements FileCollectClient {
         try {
             sftpChannel.get(remoteFile, localFile.toString());
             logger.debug("File {} Download Successfull from xNF", localFile.getFileName());
-        } catch (Exception e) {
-            throw new DatafileTaskException("Unable to get file from xNF. Data: " + fileServerData, e);
+        } catch (SftpException e) {
+            boolean retry = e.id != ChannelSftp.SSH_FX_NO_SUCH_FILE &&  e.id != ChannelSftp.SSH_FX_PERMISSION_DENIED && e.id != ChannelSftp.SSH_FX_OP_UNSUPPORTED;
+            throw new DatafileTaskException("Unable to get file from xNF. Data: " + fileServerData, e, retry);
         }
 
         logger.trace("collectFile OK");
@@ -81,7 +85,8 @@ public class SftpClient implements FileCollectClient {
                 sftpChannel = getChannel(session);
             }
         } catch (JSchException e) {
-            throw new DatafileTaskException("Could not open Sftp client" + e, e);
+            boolean retry = !e.getMessage().contains("Auth fail");
+            throw new DatafileTaskException("Could not open Sftp client" + e, e, retry);
         }
     }
 
