@@ -107,10 +107,9 @@ public class JsonMessageParser {
     }
 
     private Flux<FileReadyMessage> getMessagesFromJsonArray(JsonElement jsonElement) {
-        return createMessages(
-                Flux.defer(() -> Flux.fromStream(StreamSupport.stream(jsonElement.getAsJsonArray().spliterator(), false)
-                        .map(jsonElementFromArray -> getJsonObjectFromAnArray(jsonElementFromArray)
-                                .orElseGet(JsonObject::new)))));
+        return createMessages(Flux.fromStream(StreamSupport.stream(jsonElement.getAsJsonArray().spliterator(), false)
+                .map(jsonElementFromArray -> getJsonObjectFromAnArray(jsonElementFromArray)
+                        .orElseGet(JsonObject::new))));
     }
 
     /**
