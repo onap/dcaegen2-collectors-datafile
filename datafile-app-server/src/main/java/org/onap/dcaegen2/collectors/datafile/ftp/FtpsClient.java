@@ -28,9 +28,11 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.Optional;
+
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPSClient;
@@ -117,7 +119,8 @@ public class FtpsClient implements FileCollectClient {
         try (OutputStream output = createOutputStream(localFileName)) {
             logger.trace("begin to retrieve from xNF.");
             if (!realFtpsClient.retrieveFile(remoteFileName, output)) {
-                throw new DatafileTaskException("Could not retrieve file " + remoteFileName);
+                final boolean retry = false; // Skip retrying for all problems except IOException
+                throw new DatafileTaskException("Could not retrieve file " + remoteFileName, retry);
             }
         } catch (IOException e) {
             throw new DatafileTaskException("Could not fetch file: " + e, e);
@@ -173,7 +176,7 @@ public class FtpsClient implements FileCollectClient {
 
     protected OutputStream createOutputStream(Path localFileName) throws IOException {
         File localFile = localFileName.toFile();
-        if (localFile.createNewFile()) {
+        if (!localFile.createNewFile()) {
             logger.warn("Local file {} already created", localFileName);
         }
         OutputStream output = new FileOutputStream(localFile);
