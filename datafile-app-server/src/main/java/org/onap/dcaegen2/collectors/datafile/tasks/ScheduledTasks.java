@@ -202,8 +202,9 @@ public class ScheduledTasks {
 
     private Mono<FilePublishInformation> fetchFile(FileDataWithContext fileData) {
         MDC.setContextMap(fileData.context);
-        return createFileCollector().collectFile(fileData.fileData, FILE_TRANSFER_MAX_RETRIES,
-                FILE_TRANSFER_INITIAL_RETRY_TIMEOUT, fileData.context)
+        return createFileCollector() //
+                .collectFile(fileData.fileData, FILE_TRANSFER_MAX_RETRIES, FILE_TRANSFER_INITIAL_RETRY_TIMEOUT,
+                        fileData.context) //
                 .onErrorResume(exception -> handleFetchFileFailure(fileData));
     }
 
