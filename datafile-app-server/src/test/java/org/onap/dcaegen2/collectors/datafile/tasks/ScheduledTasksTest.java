@@ -202,6 +202,7 @@ public class ScheduledTasksTest {
                 .verify(); //
 
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
+        assertEquals(0, testedObject.getThreadPoolQueueSize());
         verify(consumerMock, times(1)).getMessageRouterResponse();
         verify(fileCollectorMock, times(noOfFiles)).collectFile(notNull(), anyLong(), notNull(), notNull());
         verify(dataRouterMock, times(noOfFiles)).publishFile(notNull(), anyLong(), notNull());
