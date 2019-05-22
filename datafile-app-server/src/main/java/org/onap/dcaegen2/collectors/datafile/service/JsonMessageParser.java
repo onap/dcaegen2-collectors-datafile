@@ -46,6 +46,8 @@ import reactor.core.publisher.Mono;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 public class JsonMessageParser {
+    public static final String ERROR_MSG_VES_EVENT_PARSING = "VES event parsing. ";
+
     private static final Logger logger = LoggerFactory.getLogger(JsonMessageParser.class);
 
     private static final String COMMON_EVENT_HEADER = "commonEventHeader";
@@ -130,8 +132,7 @@ public class JsonMessageParser {
     }
 
     private Flux<FileReadyMessage> createMessages(Flux<JsonObject> jsonObject) {
-        return jsonObject.flatMap(monoJsonP -> containsNotificationFields(monoJsonP) ? transformMessages(monoJsonP)
-                : logErrorAndReturnEmptyMessageFlux("Incorrect JsonObject - missing header. " + jsonObject));
+        return jsonObject.flatMap(this::validateJson).flatMap(this::transformMessages);
     }
 
 
@@ -152,10 +153,10 @@ public class JsonMessageParser {
                 }
             }
 
-            logger.error("VES event parsing. Missing arrayOfNamedHashMap in message. {}", message);
+            logger.error(ERROR_MSG_VES_EVENT_PARSING + "Missing arrayOfNamedHashMap in message. {}", message);
             return Mono.empty();
         }
-        logger.error("VES event parsing. FileReady event has incorrect JsonObject. {}", message);
+        logger.error(ERROR_MSG_VES_EVENT_PARSING + "FileReady event has incorrect JsonObject. {}", message);
         return Mono.empty();
     }
 
@@ -186,12 +187,12 @@ public class JsonMessageParser {
         if (missingValues.isEmpty() && isChangeIdentifierCorrect(changeIdentifier) && isChangeTypeCorrect(changeType)) {
             return Optional.of(messageMetaData);
         } else {
-            String errorMessage = "VES event parsing.";
+            String errorMessage = ERROR_MSG_VES_EVENT_PARSING;
             if (!missingValues.isEmpty()) {
-                errorMessage += " Missing data: " + missingValues;
+                errorMessage += "Missing data: " + missingValues + ".";
             }
             if (!isChangeIdentifierCorrect(changeIdentifier) || !isChangeTypeCorrect(changeType)) {
-                errorMessage += " Change identifier or change type is wrong.";
+                errorMessage += "Change identifier or change type is wrong.";
             }
             errorMessage += " Message: {}";
             logger.error(errorMessage, message);
@@ -227,11 +228,17 @@ public class JsonMessageParser {
         JsonObject data = fileInfo.getAsJsonObject(HASH_MAP);
 
         String location = getValueFromJson(data, LOCATION, missingValues);
+        if (StringUtils.isEmpty(location)) {
+            logger.error(ERROR_MSG_VES_EVENT_PARSING + "File information wrong. Missing location. Data: {} {}",
+                    messageMetaData, fileInfo);
+            return Optional.empty();
+        }
         Scheme scheme;
         try {
             scheme = Scheme.getSchemeFromString(URI.create(location).getScheme());
         } catch (Exception e) {
-            logger.error("VES event parsing.", e);
+            logger.error(ERROR_MSG_VES_EVENT_PARSING + "{}. Location: {} Data: {}", e.getMessage(), location,
+                    messageMetaData, e);
             return Optional.empty();
         }
         FileData fileData = ImmutableFileData.builder() //
@@ -246,7 +253,8 @@ public class JsonMessageParser {
         if (missingValues.isEmpty()) {
             return Optional.of(fileData);
         }
-        logger.error("VES event parsing. File information wrong. Missing data: {} Data: {}", missingValues, fileInfo);
+        logger.error(ERROR_MSG_VES_EVENT_PARSING + "File information wrong. Missing data: {} Data: {}", missingValues,
+                fileInfo);
         return Optional.empty();
     }
 
@@ -265,7 +273,9 @@ public class JsonMessageParser {
             return eventArray[dataType.index];
         } else {
             missingValues.add(dataType.toString());
-            logger.error("Can not get {} from eventName, eventName is not in correct format: {}", dataType, eventName);
+            logger.error(
+                    ERROR_MSG_VES_EVENT_PARSING + "Can not get {} from eventName, eventName is not in correct format: {}",
+                    dataType, eventName);
         }
         return "";
     }
@@ -279,12 +289,12 @@ public class JsonMessageParser {
         }
     }
 
-    private boolean containsNotificationFields(JsonObject jsonObject) {
-        return jsonObject.has(EVENT) && jsonObject.getAsJsonObject(EVENT).has(NOTIFICATION_FIELDS);
-    }
-
-    private Flux<FileReadyMessage> logErrorAndReturnEmptyMessageFlux(String errorMessage) {
-        logger.error(errorMessage);
-        return Flux.empty();
+    private Mono<JsonObject> validateJson(JsonObject jsonObject) {
+        if (jsonObject.has(EVENT) && jsonObject.getAsJsonObject(EVENT).has(NOTIFICATION_FIELDS)) {
+            return Mono.just(jsonObject);
+        } else {
+            logger.error(ERROR_MSG_VES_EVENT_PARSING + "Incorrect JsonObject - missing header. {}", jsonObject.toString());
+            return Mono.empty();
+        }
     }
 }

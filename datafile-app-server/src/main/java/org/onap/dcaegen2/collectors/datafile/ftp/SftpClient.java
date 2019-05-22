@@ -22,10 +22,8 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
-
 import java.nio.file.Path;
 import java.util.Optional;
-
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,11 +37,11 @@ import org.slf4j.LoggerFactory;
 public class SftpClient implements FileCollectClient {
     private static final Logger logger = LoggerFactory.getLogger(SftpClient.class);
 
-    private static final int FTPS_DEFAULT_PORT = 22;
+    private static final int SFTP_DEFAULT_PORT = 22;
 
     private final FileServerData fileServerData;
-    private Session session = null;
-    private ChannelSftp sftpChannel = null;
+    protected Session session = null;
+    protected ChannelSftp sftpChannel = null;
 
     public SftpClient(FileServerData fileServerData) {
         this.fileServerData = fileServerData;
@@ -57,7 +55,8 @@ public class SftpClient implements FileCollectClient {
             sftpChannel.get(remoteFile, localFile.toString());
             logger.debug("File {} Download Successfull from xNF", localFile.getFileName());
         } catch (SftpException e) {
-            boolean retry = e.id != ChannelSftp.SSH_FX_NO_SUCH_FILE &&  e.id != ChannelSftp.SSH_FX_PERMISSION_DENIED && e.id != ChannelSftp.SSH_FX_OP_UNSUPPORTED;
+            boolean retry = e.id != ChannelSftp.SSH_FX_NO_SUCH_FILE && e.id != ChannelSftp.SSH_FX_PERMISSION_DENIED
+                    && e.id != ChannelSftp.SSH_FX_OP_UNSUPPORTED;
             throw new DatafileTaskException("Unable to get file from xNF. Data: " + fileServerData, e, retry);
         }
 
@@ -86,19 +85,19 @@ public class SftpClient implements FileCollectClient {
             }
         } catch (JSchException e) {
             boolean retry = !e.getMessage().contains("Auth fail");
-            throw new DatafileTaskException("Could not open Sftp client" + e, e, retry);
+            throw new DatafileTaskException("Could not open Sftp client. " + e, e, retry);
         }
     }
 
     private int getPort(Optional<Integer> port) {
-        return port.isPresent() ? port.get() : FTPS_DEFAULT_PORT;
+        return port.isPresent() ? port.get() : SFTP_DEFAULT_PORT;
     }
 
     private Session setUpSession(FileServerData fileServerData) throws JSchException {
-        JSch jsch = new JSch();
+        JSch jsch = createJsch();
 
-        Session newSession =
-            jsch.getSession(fileServerData.userId(), fileServerData.serverAddress(), getPort(fileServerData.port()));
+        Session newSession = jsch.getSession(fileServerData.userId(), fileServerData.serverAddress(),
+                getPort(fileServerData.port()));
         newSession.setConfig("StrictHostKeyChecking", "no");
         newSession.setPassword(fileServerData.password());
         newSession.connect();
@@ -109,5 +108,9 @@ public class SftpClient implements FileCollectClient {
         Channel channel = session.openChannel("sftp");
         channel.connect();
         return (ChannelSftp) channel;
+    }
+
+    protected JSch createJsch() {
+        return new JSch();
     }
 }

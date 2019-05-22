@@ -18,8 +18,11 @@
 
 package org.onap.dcaegen2.collectors.datafile.service;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.spy;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
+import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -46,6 +50,8 @@ import reactor.test.StepVerifier;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 class JsonMessageParserTest {
+    private static final String ERROR_LOG_TAG = "[ERROR] ";
+
     private static final String NR_RADIO_ERICSSON_EVENT_NAME = "Noti_NrRadio-Ericsson_FileReady";
     private static final String PRODUCT_NAME = "NrRadio";
     private static final String VENDOR_NAME = "Ericsson";
@@ -193,8 +199,48 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
                 .expectSubscription().expectNextCount(0).verifyComplete();
+
+        assertTrue(logAppender.list.toString()
+                .contains("[ERROR] VES event parsing. File information wrong. " + "Missing location."));
+        assertTrue(logAppender.list.get(0).toString().contains("sourceName=5GRAN_DU"));
+    }
+
+    @Test
+    void whenPassingCorrectJsonWrongScheme_noMessage() {
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
+                .name(PM_FILE_NAME) //
+                .location("http://location.xml") //
+                .compression(GZIP_COMPRESSION) //
+                .fileFormatType(FILE_FORMAT_TYPE) //
+                .fileFormatVersion(FILE_FORMAT_VERSION) //
+                .build();
+        JsonMessage message = new JsonMessage.JsonMessageBuilder() //
+                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
+                .changeType(CHANGE_TYPE) //
+                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+                .addAdditionalField(additionalField) //
+                .build();
+
+        String messageString = message.toString();
+        String parsedString = message.getParsed();
+        JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
+        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
+                .getJsonObjectFromAnArray(jsonElement);
+
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+                .expectSubscription().expectNextCount(0).verifyComplete();
+
+        assertTrue("Error missing in log",
+                logAppender.list.toString().contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                        + Scheme.DFC_DOES_NOT_SUPPORT_PROTOCOL_ERROR_MSG + "http"
+                        + Scheme.SUPPORTED_PROTOCOLS_ERROR_MESSAGE + ". Location: http://location.xml"));
+        assertTrue("Missing sourceName in log", logAppender.list.toString().contains("sourceName=5GRAN_DU"));
     }
 
     @Test
@@ -270,8 +316,13 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
                 .expectSubscription().expectComplete().verify();
+
+        assertTrue("Error missing in log", logAppender.list.toString().contains(ERROR_LOG_TAG
+                + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                + "Can not get PRODUCT_NAME from eventName, eventName is not in correct format: Faulty event name"));
     }
 
     @Test
@@ -297,8 +348,15 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
                 .expectSubscription().expectNextCount(0).verifyComplete();
+
+        assertTrue("Error missing in log",
+                logAppender.list.toString()
+                        .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                                + "File information wrong. Missing data: [name] Data: "
+                                + message.getAdditionalFields().get(0).toString()));
     }
 
     @Test
@@ -317,8 +375,13 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
                 .expectSubscription().expectNextCount(0).verifyComplete();
+
+        assertTrue("Error missing in log",
+                logAppender.list.toString().contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                        + "Missing arrayOfNamedHashMap in message. " + message.getParsed()));
     }
 
     @Test
@@ -344,8 +407,15 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
                 .expectSubscription().expectNextCount(0).verifyComplete();
+
+        assertTrue("Error missing in log",
+                logAppender.list.toString()
+                        .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                                + "File information wrong. Missing data: [compression] Data: "
+                                + message.getAdditionalFields().get(0).toString()));
     }
 
     @Test
@@ -371,8 +441,15 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
                 .expectSubscription().expectNextCount(0).verifyComplete();
+
+        assertTrue("Error missing in log",
+                logAppender.list.toString()
+                        .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                                + "File information wrong. Missing data: [fileFormatType] Data: "
+                                + message.getAdditionalFields().get(0).toString()));
     }
 
     @Test
@@ -439,9 +516,6 @@ class JsonMessageParserTest {
     void whenPassingJsonWithoutMandatoryHeaderInformation_noFileData() {
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //
                 .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
-                .changeIdentifier("PM_MEAS_FILES_INVALID") //
-                .changeType("FileReady_INVALID") //
-                .notificationFieldsVersion("1.0_INVALID") //
                 .build();
 
         String incorrectMessageString = message.toString();
@@ -451,8 +525,15 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(incorrectMessageString)))
                 .expectSubscription().expectComplete().verify();
+
+        assertTrue("Error missing in log",
+                logAppender.list.toString()
+                        .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                                + "Missing data: [changeIdentifier, changeType, notificationFieldsVersion]."
+                                + "Change identifier or change type is wrong. Message: " + message.getParsed()));
     }
 
     @Test
@@ -463,8 +544,12 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just("[{}]"))).expectSubscription()
                 .expectComplete().verify();
+
+        assertTrue("Error missing in log", logAppender.list.toString().contains(ERROR_LOG_TAG
+                + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING + "Incorrect JsonObject - missing header. "));
     }
 
     @Test
@@ -490,8 +575,13 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
                 .expectSubscription().expectNextCount(0).expectComplete().verify();
+
+        assertTrue("Error missing in log",
+                logAppender.list.toString().contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                        + "Change identifier or change type is wrong. Message: " + message.getParsed()));
     }
 
     @Test
@@ -517,7 +607,12 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
                 .expectSubscription().expectComplete().verify();
+
+        assertTrue("Error missing in log",
+                logAppender.list.toString().contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                        + "Change identifier or change type is wrong. Message: " + message.getParsed()));
     }
 }
