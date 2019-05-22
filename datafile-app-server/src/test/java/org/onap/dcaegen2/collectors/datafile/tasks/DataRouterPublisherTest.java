@@ -16,8 +16,8 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -27,6 +27,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URI;
@@ -37,7 +39,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -51,11 +52,11 @@ import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.model.FilePublishInformation;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFilePublishInformation;
 import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerHttpClient;
+import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriBuilder;
-
 import reactor.test.StepVerifier;
 
 /**
@@ -169,10 +170,13 @@ class DataRouterPublisherTest {
     void whenPassedObjectFits_firstFailsWithExceptionThenSucceeds() throws Exception {
         prepareMocksForTests(new DatafileTaskException("Error"), HttpStatus.OK.value());
 
-        StepVerifier //
-                .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 2, Duration.ofSeconds(0)))
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(DataRouterPublisher.class);
+        StepVerifier.create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 2, Duration.ofSeconds(0)))
                 .expectNext(filePublishInformation) //
                 .verifyComplete();
+
+        assertTrue("Warning missing in log", logAppender.list.toString()
+                .contains("[WARN] Publish of file " + PM_FILE_NAME + " to DR unsuccessful."));
     }
 
     @Test
@@ -196,10 +200,13 @@ class DataRouterPublisherTest {
         prepareMocksForTests(null, Integer.valueOf(HttpStatus.BAD_GATEWAY.value()),
                 Integer.valueOf((HttpStatus.BAD_GATEWAY.value())));
 
-        StepVerifier //
-                .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0)))
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(DataRouterPublisher.class);
+        StepVerifier.create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0)))
                 .expectErrorMessage("Retries exhausted: 1/1") //
                 .verify();
+
+        assertTrue("Warning missing in log", logAppender.list.toString().contains("[WARN] Publish of file "
+                + PM_FILE_NAME + " to DR unsuccessful. Response code: " + HttpStatus.BAD_GATEWAY));
 
         verify(httpClientMock, times(2)).getBaseUri();
         verify(httpClientMock, times(2)).addUserCredentialsToHead(any(HttpUriRequest.class));
