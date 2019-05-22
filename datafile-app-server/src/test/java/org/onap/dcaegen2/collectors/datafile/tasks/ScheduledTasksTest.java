@@ -20,7 +20,10 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.awaitility.Awaitility.await;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -32,13 +35,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
@@ -51,9 +57,11 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableFilePublishInformati
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileReadyMessage;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
+import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
-
+import org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables;
+import org.slf4j.MDC;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -63,7 +71,7 @@ public class ScheduledTasksTest {
     private static final String PM_FILE_NAME = "A20161224.1030-1045.bin.gz";
 
     private AppConfig appConfig = mock(AppConfig.class);
-    private ScheduledTasks testedObject = spy(new ScheduledTasks(appConfig));
+    private ScheduledTasks testedObject;
 
     private int uniqueValue = 0;
     private DMaaPMessageConsumer consumerMock;
@@ -74,6 +82,8 @@ public class ScheduledTasksTest {
 
     @BeforeEach
     private void setUp() {
+        testedObject = spy(new ScheduledTasks(appConfig));
+
         DmaapPublisherConfiguration dmaapPublisherConfiguration = new ImmutableDmaapPublisherConfiguration.Builder() //
                 .dmaapContentType("application/json") //
                 .dmaapHostName("54.45.33.2") //
@@ -168,7 +178,16 @@ public class ScheduledTasksTest {
     }
 
     @Test
-    public void notingToConsume() {
+    public void purgeFileCache() {
+        testedObject.publishedFilesCache.put(Paths.get("file.xml"));
+
+        testedObject.purgeCachedInformation(Instant.MAX);
+
+        assertEquals(0, testedObject.publishedFilesCacheSize());
+    }
+
+    @Test
+    public void nothingToConsume() {
         doReturn(consumerMock).when(testedObject).createConsumerTask();
         doReturn(Flux.empty()).when(consumerMock).getMessageRouterResponse();
 
@@ -177,6 +196,56 @@ public class ScheduledTasksTest {
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
         verify(consumerMock, times(1)).getMessageRouterResponse();
         verifyNoMoreInteractions(consumerMock);
+    }
+
+    @Test
+    public void skippingConsumeDueToCurrentNumberOfTasksGreaterThan50() {
+        doReturn(51).when(testedObject).getCurrentNumberOfTasks();
+
+        testedObject.executeDatafileMainTask();
+
+        verifyNoMoreInteractions(consumerMock);
+    }
+
+    @Test
+    public void executeDatafileMainTask_successfulCase() {
+        final int noOfEvents = 1;
+        final int noOfFilesPerEvent = 1;
+
+        Flux<FileReadyMessage> fileReadyMessages = fileReadyMessageFlux(noOfEvents, noOfFilesPerEvent, true);
+        doReturn(fileReadyMessages).when(consumerMock).getMessageRouterResponse();
+
+        doReturn(false).when(publishedCheckerMock).isFilePublished(anyString(), any());
+
+        Mono<FilePublishInformation> collectedFile = Mono.just(filePublishInformation());
+        doReturn(collectedFile).when(fileCollectorMock).collectFile(notNull(), anyLong(), notNull(), notNull());
+        doReturn(collectedFile).when(dataRouterMock).publishFile(notNull(), anyLong(), notNull());
+
+        testedObject.executeDatafileMainTask();
+
+        await().untilAsserted(() -> assertEquals(0, testedObject.getCurrentNumberOfSubscriptions()));
+
+        assertFalse(StringUtils.isBlank(MDC.get(MdcVariables.REQUEST_ID)));
+
+        verify(appConfig).loadConfigurationFromFile();
+        verifyNoMoreInteractions(appConfig);
+    }
+
+    @Test
+    public void createMainTask_consumeFail() {
+        MDC.setContextMap(contextMap);
+        doReturn(Flux.error(new Exception("Failed"))).when(consumerMock).getMessageRouterResponse();
+
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduledTasks.class);
+        StepVerifier //
+                .create(testedObject.createMainTask(contextMap)) //
+                .expectSubscription() //
+                .expectNextCount(0) //
+                .expectComplete() //
+                .verify(); //
+
+        assertTrue("Error missing in log", logAppender.list.toString().contains(
+                "[ERROR] Polling for file ready message failed, " + "exception: java.lang.Exception: Failed"));
     }
 
     @Test
@@ -262,12 +331,15 @@ public class ScheduledTasksTest {
                 .when(dataRouterMock) //
                 .publishFile(notNull(), anyLong(), notNull());
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduledTasks.class);
         StepVerifier //
                 .create(testedObject.createMainTask(contextMap)) //
                 .expectSubscription() //
                 .expectNextCount(3) // 3 completed files
                 .expectComplete() //
                 .verify(); //
+
+        assertTrue("Error missing in log", logAppender.list.toString().contains("[ERROR] File publishing failed: "));
 
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
         verify(consumerMock, times(1)).getMessageRouterResponse();
