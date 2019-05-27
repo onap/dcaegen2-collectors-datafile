@@ -55,7 +55,7 @@ public class SftpClient implements FileCollectClient {
 
         try {
             sftpChannel.get(remoteFile, localFile.toString());
-            logger.debug("File {} Download Successfull from xNF", localFile.getFileName());
+            logger.trace("File {} Download Successfull from xNF", localFile.getFileName());
         } catch (SftpException e) {
             boolean retry = e.id != ChannelSftp.SSH_FX_NO_SUCH_FILE &&  e.id != ChannelSftp.SSH_FX_PERMISSION_DENIED && e.id != ChannelSftp.SSH_FX_OP_UNSUPPORTED;
             throw new DatafileTaskException("Unable to get file from xNF. Data: " + fileServerData, e, retry);

@@ -83,6 +83,7 @@ public class FileCollectorTest {
     private static final String FTP_KEY_PASSWORD = "ftpKeyPassword";
     private static final String TRUSTED_CA_PATH = "trustedCAPath";
     private static final String TRUSTED_CA_PASSWORD = "trustedCAPassword";
+    private static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
     private static AppConfig appConfigMock = mock(AppConfig.class);
     private static FtpesConfig ftpesConfigMock = mock(FtpesConfig.class);
@@ -132,7 +133,8 @@ public class FileCollectorTest {
                 .compression(GZIP_COMPRESSION) //
                 .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
                 .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .context(new HashMap<String,String>())
+                .context(new HashMap<String,String>()) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
                 .build();
     }
 
