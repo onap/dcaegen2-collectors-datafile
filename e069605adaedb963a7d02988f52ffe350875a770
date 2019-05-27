@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "de4e5948_aed85d8c",
+        "filename": "datafile-app-server/config/datafile_endpoints.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-27T13:20:20Z",
+      "side": 1,
+      "message": "Why this two-step configuration when the topicId is used to get the rest of the configuration? Isn\u0027t it simpler to just put the topic_url here directly?",
+      "range": {
+        "startLine": 17,
+        "startChar": 6,
+        "endLine": 17,
+        "endChar": 25
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d6f85d1f_23b45dc1",
+        "filename": "datafile-app-server/config/datafile_endpoints.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-27T13:20:20Z",
+      "side": 1,
+      "message": "These parameters don\u0027t seem to be used anywhere, so they can be removed?",
+      "range": {
+        "startLine": 29,
+        "startChar": 6,
+        "endLine": 31,
+        "endChar": 33
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "94134f8d_847be381",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/ConsumerConfiguration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-27T13:20:20Z",
+      "side": 1,
+      "message": "This is always empty, so no need to add it.",
+      "range": {
+        "startLine": 99,
+        "startChar": 38,
+        "endLine": 99,
+        "endChar": 47
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c06a2c31_9ac3c9c0",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/PublisherConfiguration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-27T13:20:20Z",
+      "side": 1,
+      "message": "The tag dmaapContentType is set twice, one should be removed.",
+      "range": {
+        "startLine": 58,
+        "startChar": 17,
+        "endLine": 58,
+        "endChar": 33
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "38d9edfe_d140c0de",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisherTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-27T13:20:20Z",
+      "side": 1,
+      "message": "This could be constructed from the constants defined for the parts, HTTPS_SCHEME, HOST, etc, to minimize the risk of them diverging and causing test failures in the future.",
+      "range": {
+        "startLine": 67,
+        "startChar": 47,
+        "endLine": 67,
+        "endChar": 80
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2d3e047_f38f05a7",
+        "filename": "datafile-app-server/src/test/resources/datafile_endpoints_test.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-27T13:20:20Z",
+      "side": 1,
+      "message": "Trailing whitespaces",
+      "range": {
+        "startLine": 14,
+        "startChar": 5,
+        "endLine": 14,
+        "endChar": 8
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88e0ca7e_418a81ed",
+        "filename": "datafile-app-server/src/test/resources/datafile_endpoints_test.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-27T13:20:20Z",
+      "side": 1,
+      "message": "See comment in top datafile_endpoints_test.json",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 25
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb2898ad_d5df3d19",
+        "filename": "datafile-app-server/src/test/resources/datafile_endpoints_test.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-27T13:20:20Z",
+      "side": 1,
+      "message": "See comment in top datafile_endpoints_test.json",
+      "range": {
+        "startLine": 28,
+        "startChar": 6,
+        "endLine": 30,
+        "endChar": 33
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d13019e0_28079382",
+        "filename": "datafile-app-server/src/test/resources/datafile_endpoints_test_2producers.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-27T13:20:20Z",
+      "side": 1,
+      "message": "See comment in top datafile_endpoints_test.json",
+      "range": {
+        "startLine": 26,
+        "startChar": 6,
+        "endLine": 26,
+        "endChar": 25
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7695b726_6b8060d1",
+        "filename": "datafile-app-server/src/test/resources/datafile_endpoints_test_2producers.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-27T13:20:20Z",
+      "side": 1,
+      "message": "See comment in top datafile_endpoints_test.json",
+      "range": {
+        "startLine": 46,
+        "startChar": 6,
+        "endLine": 48,
+        "endChar": 33
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
