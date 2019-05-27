@@ -180,7 +180,7 @@ public class FtpsClient implements FileCollectClient {
             logger.warn("Local file {} already created", localFileName);
         }
         OutputStream output = new FileOutputStream(localFile);
-        logger.debug("File {} opened xNF", localFileName);
+        logger.trace("File {} opened xNF", localFileName);
         return output;
     }
 

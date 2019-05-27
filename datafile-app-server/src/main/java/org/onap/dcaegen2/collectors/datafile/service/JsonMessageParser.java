@@ -22,11 +22,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
+
 import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
@@ -37,6 +39,7 @@ import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -70,7 +73,6 @@ public class JsonMessageParser {
     private static final String FILE_FORMAT_VERSION = "fileFormatVersion";
 
     private static final String FILE_READY_CHANGE_TYPE = "FileReady";
-    private static final String FILE_READY_CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
     /**
      * The data types available in the event name.
@@ -124,7 +126,6 @@ public class JsonMessageParser {
     }
 
     private Mono<JsonElement> getJsonParserMessage(String message) {
-        logger.trace("original message from message router: {}", message);
         return StringUtils.isEmpty(message) ? Mono.empty() : Mono.fromSupplier(() -> new JsonParser().parse(message));
     }
 
@@ -182,15 +183,15 @@ public class JsonMessageParser {
                 .changeIdentifier(changeIdentifier) //
                 .changeType(changeType) //
                 .build();
-        if (missingValues.isEmpty() && isChangeIdentifierCorrect(changeIdentifier) && isChangeTypeCorrect(changeType)) {
+        if (missingValues.isEmpty() && isChangeTypeCorrect(changeType)) {
             return Optional.of(messageMetaData);
         } else {
             String errorMessage = "VES event parsing.";
             if (!missingValues.isEmpty()) {
                 errorMessage += " Missing data: " + missingValues;
             }
-            if (!isChangeIdentifierCorrect(changeIdentifier) || !isChangeTypeCorrect(changeType)) {
-                errorMessage += " Change identifier or change type is wrong.";
+            if (!isChangeTypeCorrect(changeType)) {
+                errorMessage += " Change type is wrong: " + changeType + " expected: " + FILE_READY_CHANGE_TYPE;
             }
             errorMessage += " Message: {}";
             logger.error(errorMessage, message);
@@ -200,10 +201,6 @@ public class JsonMessageParser {
 
     private boolean isChangeTypeCorrect(String changeType) {
         return FILE_READY_CHANGE_TYPE.equals(changeType);
-    }
-
-    private boolean isChangeIdentifierCorrect(String changeIdentifier) {
-        return FILE_READY_CHANGE_IDENTIFIER.equals(changeIdentifier);
     }
 
     private List<FileData> getAllFileDataFromJson(JsonArray arrayOfAdditionalFields, MessageMetaData messageMetaData) {

@@ -38,6 +38,7 @@ import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
  */
 @Value.Immutable
 @Gson.TypeAdapters
+@Value.Style(redactedMask = "####")
 public abstract class FileData {
     public static final String DATAFILE_TMPDIR = "/tmp/onap_datafile/";
 
@@ -53,6 +54,7 @@ public abstract class FileData {
      *
      * @return the URL to use to fetch the file from the PNF
      */
+    @Value.Redacted
     public abstract String location();
 
     /**

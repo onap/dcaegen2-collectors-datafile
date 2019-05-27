@@ -74,7 +74,7 @@ public class FileCollector {
 
         return Mono.just(fileData) //
                 .cache() //
-                .flatMap(fd -> collectFile(fileData, contextMap)) //
+                .flatMap(fd -> tryCollectFile(fileData, contextMap)) //
                 .retryBackoff(numRetries, firstBackoff) //
                 .flatMap(this::checkCollectedFile);
     }
@@ -88,7 +88,7 @@ public class FileCollector {
         }
     }
 
-    private Mono<Optional<FilePublishInformation>> collectFile(FileData fileData, Map<String, String> context) {
+    private Mono<Optional<FilePublishInformation>> tryCollectFile(FileData fileData, Map<String, String> context) {
         MDC.setContextMap(context);
         logger.trace("starting to collectFile {}", fileData.name());
 
@@ -143,6 +143,7 @@ public class FileCollector {
                 .compression(fileData.compression()) //
                 .fileFormatType(fileData.fileFormatType()) //
                 .fileFormatVersion(fileData.fileFormatVersion()) //
+                .changeIdentifier(fileData.messageMetaData().changeIdentifier()) //
                 .context(context) //
                 .build();
     }

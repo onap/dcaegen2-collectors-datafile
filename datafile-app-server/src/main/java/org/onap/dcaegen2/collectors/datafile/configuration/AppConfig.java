@@ -22,21 +22,37 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapterFactory;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.Duration;
+import java.util.Map;
+import java.util.Properties;
 import java.util.ServiceLoader;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
+
+import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.ImmutableEnvProperties;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.providers.CloudConfigurationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
+
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * Holds all configuration for the DFC.
@@ -46,105 +62,175 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
+@ComponentScan("org.onap.dcaegen2.services.sdk.rest.services.cbs.client.providers")
 @EnableConfigurationProperties
 @ConfigurationProperties("app")
 public class AppConfig {
-
-    private static final String CONFIG = "configs";
-    private static final String DMAAP = "dmaap";
-    private static final String DMAAP_PRODUCER = "dmaapProducerConfiguration";
-    private static final String DMAAP_CONSUMER = "dmaapConsumerConfiguration";
-    private static final String FTP = "ftp";
-    private static final String FTPES_CONFIGURATION = "ftpesConfiguration";
-    private static final String SECURITY = "security";
     private static final Logger logger = LoggerFactory.getLogger(AppConfig.class);
 
-    private DmaapConsumerConfiguration dmaapConsumerConfiguration;
-    private DmaapPublisherConfiguration dmaapPublisherConfiguration;
+    private ConsumerConfiguration dmaapConsumerConfiguration;
+    private Map<String, PublisherConfiguration> publishingConfiguration;
     private FtpesConfig ftpesConfiguration;
+    private CloudConfigurationProvider cloudConfigurationProvider;
+    @Value("#{systemEnvironment}")
+    Properties systemEnvironment;
+    private Disposable refreshConfigTask = null;
 
     @NotEmpty
     private String filepath;
 
-    public synchronized DmaapConsumerConfiguration getDmaapConsumerConfiguration() {
-        return dmaapConsumerConfiguration;
-    }
-
-    public synchronized DmaapPublisherConfiguration getDmaapPublisherConfiguration() {
-        return dmaapPublisherConfiguration;
-    }
-
-    public synchronized FtpesConfig getFtpesConfiguration() {
-        return ftpesConfiguration;
-    }
-
-    /**
-     * Reads the configuration from file.
-     */
-    public void loadConfigurationFromFile() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        ServiceLoader.load(TypeAdapterFactory.class).forEach(gsonBuilder::registerTypeAdapterFactory);
-        JsonParser parser = new JsonParser();
-        JsonObject jsonObject;
-        try (InputStream inputStream = createInputStream(filepath)) {
-            JsonElement rootElement = getJsonElement(parser, inputStream);
-            if (rootElement.isJsonObject()) {
-                jsonObject = rootElement.getAsJsonObject();
-                FtpesConfig ftpesConfig = deserializeType(gsonBuilder,
-                        jsonObject.getAsJsonObject(CONFIG).getAsJsonObject(FTP).getAsJsonObject(FTPES_CONFIGURATION),
-                        FtpesConfig.class);
-                DmaapConsumerConfiguration consumerConfiguration = deserializeType(gsonBuilder,
-                        concatenateJsonObjects(
-                                jsonObject.getAsJsonObject(CONFIG).getAsJsonObject(DMAAP)
-                                        .getAsJsonObject(DMAAP_CONSUMER),
-                                rootElement.getAsJsonObject().getAsJsonObject(CONFIG).getAsJsonObject(SECURITY)),
-                        DmaapConsumerConfiguration.class);
-
-                DmaapPublisherConfiguration publisherConfiguration = deserializeType(gsonBuilder,
-                        concatenateJsonObjects(
-                                jsonObject.getAsJsonObject(CONFIG).getAsJsonObject(DMAAP)
-                                        .getAsJsonObject(DMAAP_PRODUCER),
-                                rootElement.getAsJsonObject().getAsJsonObject(CONFIG).getAsJsonObject(SECURITY)),
-                        DmaapPublisherConfiguration.class);
-
-                setConfiguration(consumerConfiguration, publisherConfiguration, ftpesConfig);
-            }
-        } catch (JsonSyntaxException | IOException e) {
-            logger.error("Problem with loading configuration, file: {}", filepath, e);
-        }
-    }
-
-    synchronized void setConfiguration(DmaapConsumerConfiguration consumerConfiguration,
-            DmaapPublisherConfiguration publisherConfiguration, FtpesConfig ftpesConfig) {
-        this.dmaapConsumerConfiguration = consumerConfiguration;
-        this.dmaapPublisherConfiguration = publisherConfiguration;
-        this.ftpesConfiguration = ftpesConfig;
-    }
-
-    JsonElement getJsonElement(JsonParser parser, InputStream inputStream) {
-        return parser.parse(new InputStreamReader(inputStream));
-    }
-
-    private <T> T deserializeType(@NotNull GsonBuilder gsonBuilder, @NotNull JsonObject jsonObject,
-            @NotNull Class<T> type) {
-        return gsonBuilder.create().fromJson(jsonObject, type);
-    }
-
-    InputStream createInputStream(@NotNull String filepath) throws IOException {
-        return new BufferedInputStream(new FileInputStream(filepath));
-    }
-
-    synchronized String getFilepath() {
-        return this.filepath;
+    @Autowired
+    public synchronized void setCloudConfigurationProvider(
+            CloudConfigurationProvider reactiveCloudConfigurationProvider) {
+        this.cloudConfigurationProvider = reactiveCloudConfigurationProvider;
     }
 
     public synchronized void setFilepath(String filepath) {
         this.filepath = filepath;
     }
 
-    private JsonObject concatenateJsonObjects(JsonObject target, JsonObject source) {
-        source.entrySet().forEach(entry -> target.add(entry.getKey(), entry.getValue()));
-        return target;
+    /**
+     * Reads the cloud configuration.
+     */
+    public void initialize() {
+        stop();
+        Map<String, String> context = MappedDiagnosticContext.initializeTraceContext();
+        loadConfigurationFromFile();
+
+        refreshConfigTask = Flux.interval(Duration.ZERO, Duration.ofMinutes(5))
+                .flatMap(count -> createRefreshConfigurationTask(count, context))
+                .subscribe(e -> logger.info("Refreshed configuration data"),
+                        throwable -> logger.error("Configuration refresh terminated due to exception", throwable),
+                        () -> logger.error("Configuration refresh terminated"));
+    }
+
+    public void stop() {
+        if (refreshConfigTask != null) {
+            refreshConfigTask.dispose();
+            refreshConfigTask = null;
+        }
+    }
+
+    public synchronized ConsumerConfiguration getDmaapConsumerConfiguration() {
+        return dmaapConsumerConfiguration;
+    }
+
+    public synchronized boolean isFeedConfigured(String changeIdentifier)
+    {
+       return publishingConfiguration.containsKey(changeIdentifier);
+    }
+
+    public synchronized PublisherConfiguration getPublisherConfiguration(String changeIdentifier)
+            throws DatafileTaskException {
+
+        if (publishingConfiguration == null) {
+            throw new DatafileTaskException("No PublishingConfiguration loaded, changeIdentifier: " + changeIdentifier);
+        }
+        PublisherConfiguration cfg = publishingConfiguration.get(changeIdentifier);
+        if (cfg == null) {
+            throw new DatafileTaskException(
+                    "Cannot find getPublishingConfiguration for changeIdentifier: " + changeIdentifier);
+        }
+        return cfg;
+    }
+
+    public synchronized FtpesConfig getFtpesConfiguration() {
+        return ftpesConfiguration;
+    }
+
+    Flux<AppConfig> createRefreshConfigurationTask(Long counter, Map<String, String> context) {
+        return Flux.just(counter) //
+                .doOnNext(cnt -> logger.debug("Refresh config {}", cnt)) //
+                .flatMap(cnt -> readEnvironmentVariables(systemEnvironment, context)) //
+                .flatMap(this::fetchConfiguration);
+    }
+
+    Mono<EnvProperties> readEnvironmentVariables(Properties systemEnvironment, Map<String, String> context) {
+        return EnvironmentProcessor.readEnvironmentVariables(systemEnvironment, context)
+                .onErrorResume(this::onErrorResume);
+    }
+
+    private <R> Mono<R> onErrorResume(Throwable trowable) {
+        logger.error("Could not refresh application configuration {}", trowable.toString());
+        return Mono.empty();
+    }
+
+    private Mono<AppConfig> fetchConfiguration(EnvProperties env) {
+        Mono<JsonObject> serviceCfg = cloudConfigurationProvider.callForServiceConfigurationReactive(env) //
+                .onErrorResume(this::onErrorResume);
+
+        // Note, have to use this callForServiceConfigurationReactive with EnvProperties, since the
+        // other ones does not work
+        EnvProperties dmaapEnv = ImmutableEnvProperties.builder() //
+                .consulHost(env.consulHost()) //
+                .consulPort(env.consulPort()) //
+                .cbsName(env.cbsName()) //
+                .appName(env.appName() + ":dmaap") //
+                .build(); //
+        Mono<JsonObject> dmaapCfg = cloudConfigurationProvider.callForServiceConfigurationReactive(dmaapEnv)
+                .onErrorResume(t -> Mono.just(new JsonObject()));
+
+        return serviceCfg.zipWith(dmaapCfg, this::parseCloudConfig) //
+                .onErrorResume(this::onErrorResume);
+    }
+
+    /**
+     * parse configuration
+     *
+     * @param serviceConfigRootObject
+     * @param dmaapConfigRootObject if there is no dmaapConfigRootObject, the dmaap feeds are taken
+     *        from the serviceConfigRootObject
+     * @return this which is updated if successful
+     */
+    private AppConfig parseCloudConfig(JsonObject serviceConfigRootObject, JsonObject dmaapConfigRootObject) {
+        try {
+            CloudConfigParser parser = new CloudConfigParser(serviceConfigRootObject, dmaapConfigRootObject);
+            setConfiguration(parser.getDmaapConsumerConfig(), parser.getDmaapPublisherConfig(),
+                    parser.getFtpesConfig());
+        } catch (DatafileTaskException e) {
+            logger.error("Could not parse configuration {}", e.toString(), e);
+        }
+        return this;
+    }
+
+    /**
+     * Reads the configuration from file.
+     */
+    void loadConfigurationFromFile() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        ServiceLoader.load(TypeAdapterFactory.class).forEach(gsonBuilder::registerTypeAdapterFactory);
+
+        try (InputStream inputStream = createInputStream(filepath)) {
+            JsonParser parser = new JsonParser();
+            JsonObject rootObject = getJsonElement(parser, inputStream).getAsJsonObject();
+            if (rootObject == null) {
+                throw new JsonSyntaxException("Root is not a json object");
+            }
+            parseCloudConfig(rootObject, rootObject);
+        } catch (JsonSyntaxException | IOException e) {
+            logger.info("Local configuration file not loaded: {}", filepath, e);
+        }
+    }
+
+    private synchronized void setConfiguration(ConsumerConfiguration consumerConfiguration,
+            Map<String, PublisherConfiguration> publisherConfiguration, FtpesConfig ftpesConfig) {
+        if (consumerConfiguration == null || publisherConfiguration == null || ftpesConfig == null) {
+            logger.error(
+                    "Problem with configuration consumerConfiguration: {}, publisherConfiguration: {}, ftpesConfig: {}",
+                    consumerConfiguration, publisherConfiguration, ftpesConfig);
+        } else {
+            this.dmaapConsumerConfiguration = consumerConfiguration;
+            this.publishingConfiguration = publisherConfiguration;
+            this.ftpesConfiguration = ftpesConfig;
+        }
+    }
+
+    JsonElement getJsonElement(JsonParser parser, InputStream inputStream) {
+        return parser.parse(new InputStreamReader(inputStream));
+    }
+
+    InputStream createInputStream(@NotNull String filepath) throws IOException {
+        return new BufferedInputStream(new FileInputStream(filepath));
     }
 
 }
