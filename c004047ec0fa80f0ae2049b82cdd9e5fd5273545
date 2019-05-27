@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c321a3aa_c2376eaf",
+        "filename": "datafile-app-server/config/datafile_endpoints.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-27T13:20:20Z",
+      "side": 1,
+      "message": "Why use this two step configuration where the topicId is configured here to be looked up to get the rest of the configuration? Isn\u0027t it better to just put the topic_url directly here?",
+      "range": {
+        "startLine": 17,
+        "startChar": 6,
+        "endLine": 17,
+        "endChar": 25
+      },
+      "revId": "c004047ec0fa80f0ae2049b82cdd9e5fd5273545",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a488461_0f5c97fe",
+        "filename": "datafile-app-server/config/datafile_endpoints.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-27T13:20:20Z",
+      "side": 1,
+      "message": "I cannot see that these values are used anywhere, so I think they can be removed.",
+      "range": {
+        "startLine": 29,
+        "startChar": 6,
+        "endLine": 31,
+        "endChar": 33
+      },
+      "revId": "c004047ec0fa80f0ae2049b82cdd9e5fd5273545",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
