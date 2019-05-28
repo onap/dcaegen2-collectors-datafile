@@ -17,6 +17,7 @@
 package org.onap.dcaegen2.collectors.datafile.ftp;
 
 import java.util.Optional;
+
 import org.immutables.value.Value;
 
 /**
@@ -26,11 +27,13 @@ import org.immutables.value.Value;
  *
  */
 @Value.Immutable
+@Value.Style(redactedMask = "####")
 public interface FileServerData {
     public String serverAddress();
 
     public String userId();
 
+    @Value.Redacted
     public String password();
 
     public Optional<Integer> port();

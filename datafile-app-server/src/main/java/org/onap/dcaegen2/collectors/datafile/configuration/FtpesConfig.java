@@ -21,6 +21,7 @@
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import java.io.Serializable;
+
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Value.Immutable
-@Value.Style(builder = "new")
+@Value.Style(builder = "new", redactedMask = "####")
 @Gson.TypeAdapters
 public abstract class FtpesConfig implements Serializable {
 
@@ -38,11 +39,13 @@ public abstract class FtpesConfig implements Serializable {
     public abstract String keyCert();
 
     @Value.Parameter
+    @Value.Redacted
     public abstract String keyPassword();
 
     @Value.Parameter
     public abstract String trustedCa();
 
     @Value.Parameter
+    @Value.Redacted
     public abstract String trustedCaPassword();
 }

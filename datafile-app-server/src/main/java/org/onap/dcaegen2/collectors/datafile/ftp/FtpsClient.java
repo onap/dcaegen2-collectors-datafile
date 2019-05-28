@@ -128,7 +128,7 @@ public class FtpsClient implements FileCollectClient {
         logger.trace("collectFile fetched: {}", localFileName);
     }
 
-    private int getPort(Optional<Integer> port) {
+    private static int getPort(Optional<Integer> port) {
         return port.isPresent() ? port.get() : FTPS_DEFAULT_PORT;
     }
 
@@ -180,7 +180,7 @@ public class FtpsClient implements FileCollectClient {
             logger.warn("Local file {} already created", localFileName);
         }
         OutputStream output = new FileOutputStream(localFile);
-        logger.debug("File {} opened xNF", localFileName);
+        logger.trace("File {} opened xNF", localFileName);
         return output;
     }
 

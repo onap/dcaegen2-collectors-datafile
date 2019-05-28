@@ -22,11 +22,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
+
 import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
@@ -37,6 +39,7 @@ import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -70,7 +73,6 @@ public class JsonMessageParser {
     private static final String FILE_FORMAT_VERSION = "fileFormatVersion";
 
     private static final String FILE_READY_CHANGE_TYPE = "FileReady";
-    private static final String FILE_READY_CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
     /**
      * The data types available in the event name.
@@ -92,7 +94,7 @@ public class JsonMessageParser {
      * @return a <code>Flux</code> containing messages.
      */
     public Flux<FileReadyMessage> getMessagesFromJson(Mono<String> rawMessage) {
-        return rawMessage.flatMapMany(this::getJsonParserMessage).flatMap(this::createMessageData);
+        return rawMessage.flatMapMany(JsonMessageParser::getJsonParserMessage).flatMap(this::createMessageData);
     }
 
     Optional<JsonObject> getJsonObjectFromAnArray(JsonElement element) {
@@ -123,18 +125,17 @@ public class JsonMessageParser {
                 : getMessagesFromJsonArray(jsonElement);
     }
 
-    private Mono<JsonElement> getJsonParserMessage(String message) {
-        logger.trace("original message from message router: {}", message);
+    private static Mono<JsonElement> getJsonParserMessage(String message) {
         return StringUtils.isEmpty(message) ? Mono.empty() : Mono.fromSupplier(() -> new JsonParser().parse(message));
     }
 
-    private Flux<FileReadyMessage> createMessages(Flux<JsonObject> jsonObject) {
+    private static Flux<FileReadyMessage> createMessages(Flux<JsonObject> jsonObject) {
         return jsonObject.flatMap(monoJsonP -> containsNotificationFields(monoJsonP) ? transformMessages(monoJsonP)
                 : logErrorAndReturnEmptyMessageFlux("Incorrect JsonObject - missing header. " + jsonObject));
     }
 
 
-    private Mono<FileReadyMessage> transformMessages(JsonObject message) {
+    private static Mono<FileReadyMessage> transformMessages(JsonObject message) {
         Optional<MessageMetaData> optionalMessageMetaData = getMessageMetaData(message);
         if (optionalMessageMetaData.isPresent()) {
             MessageMetaData messageMetaData = optionalMessageMetaData.get();
@@ -159,7 +160,7 @@ public class JsonMessageParser {
     }
 
 
-    private Optional<MessageMetaData> getMessageMetaData(JsonObject message) {
+    private static Optional<MessageMetaData> getMessageMetaData(JsonObject message) {
         List<String> missingValues = new ArrayList<>();
         JsonObject commonEventHeader = message.getAsJsonObject(EVENT).getAsJsonObject(COMMON_EVENT_HEADER);
         String eventName = getValueFromJson(commonEventHeader, EVENT_NAME, missingValues);
@@ -182,15 +183,15 @@ public class JsonMessageParser {
                 .changeIdentifier(changeIdentifier) //
                 .changeType(changeType) //
                 .build();
-        if (missingValues.isEmpty() && isChangeIdentifierCorrect(changeIdentifier) && isChangeTypeCorrect(changeType)) {
+        if (missingValues.isEmpty() && isChangeTypeCorrect(changeType)) {
             return Optional.of(messageMetaData);
         } else {
             String errorMessage = "VES event parsing.";
             if (!missingValues.isEmpty()) {
                 errorMessage += " Missing data: " + missingValues;
             }
-            if (!isChangeIdentifierCorrect(changeIdentifier) || !isChangeTypeCorrect(changeType)) {
-                errorMessage += " Change identifier or change type is wrong.";
+            if (!isChangeTypeCorrect(changeType)) {
+                errorMessage += " Change type is wrong: " + changeType + " expected: " + FILE_READY_CHANGE_TYPE;
             }
             errorMessage += " Message: {}";
             logger.error(errorMessage, message);
@@ -198,15 +199,11 @@ public class JsonMessageParser {
         }
     }
 
-    private boolean isChangeTypeCorrect(String changeType) {
+    private static boolean isChangeTypeCorrect(String changeType) {
         return FILE_READY_CHANGE_TYPE.equals(changeType);
     }
 
-    private boolean isChangeIdentifierCorrect(String changeIdentifier) {
-        return FILE_READY_CHANGE_IDENTIFIER.equals(changeIdentifier);
-    }
-
-    private List<FileData> getAllFileDataFromJson(JsonArray arrayOfAdditionalFields, MessageMetaData messageMetaData) {
+    private static List<FileData> getAllFileDataFromJson(JsonArray arrayOfAdditionalFields, MessageMetaData messageMetaData) {
         List<FileData> res = new ArrayList<>();
         for (int i = 0; i < arrayOfAdditionalFields.size(); i++) {
             JsonObject fileInfo = (JsonObject) arrayOfAdditionalFields.get(i);
@@ -219,7 +216,7 @@ public class JsonMessageParser {
         return res;
     }
 
-    private Optional<FileData> getFileDataFromJson(JsonObject fileInfo, MessageMetaData messageMetaData) {
+    private static Optional<FileData> getFileDataFromJson(JsonObject fileInfo, MessageMetaData messageMetaData) {
         logger.trace("starting to getFileDataFromJson!");
 
         List<String> missingValues = new ArrayList<>();
@@ -258,7 +255,7 @@ public class JsonMessageParser {
      * @param missingValues List of missing values. The dataType will be added if missing.
      * @return String of data from event name
      */
-    private String getDataFromEventName(EventNameDataType dataType, String eventName, List<String> missingValues) {
+    private static String getDataFromEventName(EventNameDataType dataType, String eventName, List<String> missingValues) {
         String[] eventArray = eventName.split("_|-");
         if (eventArray.length >= 4) {
             return eventArray[dataType.index];
@@ -269,7 +266,7 @@ public class JsonMessageParser {
         return "";
     }
 
-    private String getValueFromJson(JsonObject jsonObject, String jsonKey, List<String> missingValues) {
+    private static String getValueFromJson(JsonObject jsonObject, String jsonKey, List<String> missingValues) {
         if (jsonObject.has(jsonKey)) {
             return jsonObject.get(jsonKey).getAsString();
         } else {
@@ -278,11 +275,11 @@ public class JsonMessageParser {
         }
     }
 
-    private boolean containsNotificationFields(JsonObject jsonObject) {
+    private static boolean containsNotificationFields(JsonObject jsonObject) {
         return jsonObject.has(EVENT) && jsonObject.getAsJsonObject(EVENT).has(NOTIFICATION_FIELDS);
     }
 
-    private Flux<FileReadyMessage> logErrorAndReturnEmptyMessageFlux(String errorMessage) {
+    private static Flux<FileReadyMessage> logErrorAndReturnEmptyMessageFlux(String errorMessage) {
         logger.error(errorMessage);
         return Flux.empty();
     }
