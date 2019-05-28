@@ -27,7 +27,9 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.Future;
+
 import javax.net.ssl.SSLContext;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
@@ -44,8 +46,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
-import org.springframework.web.util.DefaultUriBuilderFactory;
-import org.springframework.web.util.UriBuilder;
 
 /**
  * Client used to send requests to DataRouter.
@@ -139,22 +139,8 @@ public class DmaapProducerHttpClient {
         request.addHeader("Authorization", "Basic " + base64Creds);
     }
 
-    /**
-     * Gets a <code>UriBuilder</code> containing the base URI needed talk to DataRouter. Specific parts can then be
-     * added to the URI by the user.
-     *
-     * @return a <code>UriBuilder</code> containing the base URI needed talk to DataRouter.
-     */
-    public UriBuilder getBaseUri() {
-        return new DefaultUriBuilderFactory().builder() //
-                .scheme(configuration.dmaapProtocol()) //
-                .host(configuration.dmaapHostName()) //
-                .port(configuration.dmaapPortNumber());
-    }
-
     private CloseableHttpAsyncClient createWebClient(boolean expectRedirect, Duration requestTimeout,
-            Map<String, String> contextMap)
-            throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+            Map<String, String> contextMap) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
         SSLContext sslContext =
                 new SSLContextBuilder().loadTrustMaterial(null, (certificate, authType) -> true).build();
 

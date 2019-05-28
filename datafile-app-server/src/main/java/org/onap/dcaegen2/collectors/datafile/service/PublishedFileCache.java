@@ -67,7 +67,7 @@ public class PublishedFileCache {
         return publishedFiles.size();
     }
 
-    private boolean isCachedPublishedFileOutdated(Instant now, Instant then) {
+    private static boolean isCachedPublishedFileOutdated(Instant now, Instant then) {
         final int timeToKeepInfoInSeconds = 60 * 60 * 24;
         return now.getEpochSecond() - then.getEpochSecond() > timeToKeepInfoInSeconds;
     }

@@ -38,6 +38,7 @@ import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
  */
 @Value.Immutable
 @Gson.TypeAdapters
+@Value.Style(redactedMask = "####")
 public abstract class FileData {
     public static final String DATAFILE_TMPDIR = "/tmp/onap_datafile/";
 
@@ -53,6 +54,7 @@ public abstract class FileData {
      *
      * @return the URL to use to fetch the file from the PNF
      */
+    @Value.Redacted
     public abstract String location();
 
     /**
@@ -123,7 +125,7 @@ public abstract class FileData {
      * @return An <code>Optional</code> containing a String array with the user name and password if given, or an empty
      *         <code>Optional</code> if not given.
      */
-    private Optional<String[]> getUserNameAndPasswordIfGiven(String userInfoString) {
+    private static Optional<String[]> getUserNameAndPasswordIfGiven(String userInfoString) {
         if (userInfoString != null) {
             String[] userAndPassword = userInfoString.split(":");
             if (userAndPassword.length == 2) {
