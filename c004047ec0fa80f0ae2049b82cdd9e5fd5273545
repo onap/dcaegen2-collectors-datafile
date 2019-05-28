@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "67d28bb9_2d1ec3cd",
+        "filename": "datafile-app-server/config/datafile_endpoints.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-05-28T14:12:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c321a3aa_c2376eaf",
+      "range": {
+        "startLine": 17,
+        "startChar": 6,
+        "endLine": 17,
+        "endChar": 25
+      },
+      "revId": "c004047ec0fa80f0ae2049b82cdd9e5fd5273545",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6a488461_0f5c97fe",
         "filename": "datafile-app-server/config/datafile_endpoints.json",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "c004047ec0fa80f0ae2049b82cdd9e5fd5273545",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db4d542c_de6e0322",
+        "filename": "datafile-app-server/config/datafile_endpoints.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-05-28T14:12:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a488461_0f5c97fe",
+      "range": {
+        "startLine": 29,
+        "startChar": 6,
+        "endLine": 31,
+        "endChar": 33
+      },
+      "revId": "c004047ec0fa80f0ae2049b82cdd9e5fd5273545",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
