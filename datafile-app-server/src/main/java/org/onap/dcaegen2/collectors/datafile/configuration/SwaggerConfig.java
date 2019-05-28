@@ -62,7 +62,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .build();
     }
 
-    private ApiInfo apiInfo() {
+    private static ApiInfo apiInfo() {
         return new ApiInfoBuilder() //
                 .title(API_TITLE) //
                 .description(DESCRIPTION) //

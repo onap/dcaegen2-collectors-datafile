@@ -77,6 +77,7 @@ public class DMaaPMessageConsumerTest {
     private static final String MEAS_COLLECT_FILE_FORMAT_TYPE = "org.3GPP.32.435#measCollec";
     private static final String FILE_FORMAT_VERSION = "V10";
     private static List<FilePublishInformation> listOfFilePublishInformation = new ArrayList<FilePublishInformation>();
+    private static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
     private DMaaPConsumerReactiveHttpClient httpClientMock;
 
@@ -173,6 +174,7 @@ public class DMaaPMessageConsumerTest {
                 .compression(GZIP_COMPRESSION) //
                 .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
                 .fileFormatVersion(FILE_FORMAT_VERSION) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
                 .context(new HashMap<String,String>()) //
                 .build();
         listOfFilePublishInformation.add(filePublishInformation);

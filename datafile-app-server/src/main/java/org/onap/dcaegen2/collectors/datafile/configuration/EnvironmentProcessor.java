@@ -19,12 +19,14 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
+
 import org.onap.dcaegen2.collectors.datafile.exceptions.EnvironmentLoaderException;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.ImmutableEnvProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+
 import reactor.core.publisher.Mono;
 
 /**
@@ -53,7 +55,7 @@ class EnvironmentProcessor {
         } catch (EnvironmentLoaderException e) {
             return Mono.error(e);
         }
-        logger.info("Evaluated environment system variables {}", envProperties);
+        logger.trace("Evaluated environment system variables {}", envProperties);
         return Mono.just(envProperties);
     }
 

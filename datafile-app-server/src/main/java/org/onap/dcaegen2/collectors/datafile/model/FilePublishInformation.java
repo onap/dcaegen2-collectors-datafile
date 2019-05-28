@@ -33,6 +33,7 @@ import org.immutables.value.Value;
 
 @Value.Immutable
 @Gson.TypeAdapters
+@Value.Style(redactedMask = "####")
 public interface FilePublishInformation  {
 
     @SerializedName("productName")
@@ -54,6 +55,7 @@ public interface FilePublishInformation  {
     String getTimeZoneOffset();
 
     @SerializedName("location")
+    @Value.Redacted
     String getLocation();
 
     @SerializedName("compression")
@@ -70,4 +72,6 @@ public interface FilePublishInformation  {
     String getName();
 
     Map<String, String> getContext();
+
+    String getChangeIdentifier();
 }
