@@ -26,7 +26,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import java.net.URI;
+
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -35,7 +35,9 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
+
 import javax.net.ssl.SSLContext;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -191,11 +193,5 @@ class DmaapProducerHttpClientTest {
         String base64Creds = "Basic " + new String(base64CredsBytes);
         Header[] authorizationHeaders = request.getHeaders("Authorization");
         assertEquals(base64Creds, authorizationHeaders[0].getValue());
-    }
-
-    @Test
-    public void getBaseUri_success() {
-        URI uri = producerClientUnderTestSpy.getBaseUri().build();
-        assertEquals(HTTPS_SCHEME + "://" + HOST + ":" + PORT, uri.toString());
     }
 }

@@ -42,6 +42,11 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
+import org.onap.dcaegen2.collectors.datafile.configuration.ConsumerConfiguration;
+import org.onap.dcaegen2.collectors.datafile.configuration.ImmutableConsumerConfiguration;
+import org.onap.dcaegen2.collectors.datafile.configuration.ImmutablePublisherConfiguration;
+import org.onap.dcaegen2.collectors.datafile.configuration.PublisherConfiguration;
+import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FilePublishInformation;
@@ -51,8 +56,6 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableFilePublishInformati
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileReadyMessage;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -61,6 +64,7 @@ import reactor.test.StepVerifier;
 public class ScheduledTasksTest {
 
     private static final String PM_FILE_NAME = "A20161224.1030-1045.bin.gz";
+    private static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
     private AppConfig appConfig = mock(AppConfig.class);
     private ScheduledTasks testedObject = spy(new ScheduledTasks(appConfig));
@@ -72,23 +76,33 @@ public class ScheduledTasksTest {
     private DataRouterPublisher dataRouterMock;
     private Map<String, String> contextMap = new HashMap<String, String>();
 
+    private final String publishUrl = "https://54.45.33.2:1234/unauthenticated.VES_NOTIFICATION_OUTPUT";
+
     @BeforeEach
-    private void setUp() {
-        DmaapPublisherConfiguration dmaapPublisherConfiguration = new ImmutableDmaapPublisherConfiguration.Builder() //
-                .dmaapContentType("application/json") //
-                .dmaapHostName("54.45.33.2") //
-                .dmaapPortNumber(1234) //
-                .dmaapProtocol("https") //
-                .dmaapUserName("DFC") //
-                .dmaapUserPassword("DFC") //
-                .dmaapTopicName("unauthenticated.VES_NOTIFICATION_OUTPUT") //
+    private void setUp() throws DatafileTaskException {
+        final PublisherConfiguration dmaapPublisherConfiguration = ImmutablePublisherConfiguration.builder() //
+                .publishUrl(publishUrl) //
+                .logUrl("") //
+                .userName("userName") //
+                .passWord("passWord") //
                 .trustStorePath("trustStorePath") //
                 .trustStorePasswordPath("trustStorePasswordPath") //
                 .keyStorePath("keyStorePath") //
                 .keyStorePasswordPath("keyStorePasswordPath") //
                 .enableDmaapCertAuth(true) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
                 .build(); //
-        doReturn(dmaapPublisherConfiguration).when(appConfig).getDmaapPublisherConfiguration();
+        final ConsumerConfiguration dmaapConsumerConfiguration = ImmutableConsumerConfiguration.builder() //
+                .topicUrl("topicUrl").trustStorePath("trustStorePath") //
+                .trustStorePasswordPath("trustStorePasswordPath") //
+                .keyStorePath("keyStorePath") //
+                .keyStorePasswordPath("keyStorePasswordPath") //
+                .enableDmaapCertAuth(true) //
+                .build();
+
+        doReturn(dmaapPublisherConfiguration).when(appConfig).getPublisherConfiguration(CHANGE_IDENTIFIER);
+        doReturn(dmaapConsumerConfiguration).when(appConfig).getDmaapConsumerConfiguration();
+        doReturn(true).when(appConfig).isFeedConfigured(CHANGE_IDENTIFIER);
 
         consumerMock = mock(DMaaPMessageConsumer.class);
         publishedCheckerMock = mock(PublishedChecker.class);
@@ -109,7 +123,7 @@ public class ScheduledTasksTest {
                 .sourceName("") //
                 .startEpochMicrosec("") //
                 .timeZoneOffset("") //
-                .changeIdentifier("") //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
                 .changeType("") //
                 .build();
     }
@@ -164,11 +178,12 @@ public class ScheduledTasksTest {
                 .compression("") //
                 .fileFormatType("") //
                 .fileFormatVersion("") //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
                 .context(new HashMap<String, String>()).build();
     }
 
     @Test
-    public void notingToConsume() {
+    public void notingToConsume() throws DatafileTaskException {
         doReturn(consumerMock).when(testedObject).createConsumerTask();
         doReturn(Flux.empty()).when(consumerMock).getMessageRouterResponse();
 
@@ -180,7 +195,7 @@ public class ScheduledTasksTest {
     }
 
     @Test
-    public void consume_successfulCase() {
+    public void consume_successfulCase() throws DatafileTaskException {
         final int noOfEvents = 200;
         final int noOfFilesPerEvent = 200;
         final int noOfFiles = noOfEvents * noOfFilesPerEvent;
@@ -188,7 +203,7 @@ public class ScheduledTasksTest {
         Flux<FileReadyMessage> fileReadyMessages = fileReadyMessageFlux(noOfEvents, noOfFilesPerEvent, true);
         doReturn(fileReadyMessages).when(consumerMock).getMessageRouterResponse();
 
-        doReturn(false).when(publishedCheckerMock).isFilePublished(anyString(), any());
+        doReturn(false).when(publishedCheckerMock).isFilePublished(anyString(), anyString(), any());
 
         Mono<FilePublishInformation> collectedFile = Mono.just(filePublishInformation());
         doReturn(collectedFile).when(fileCollectorMock).collectFile(notNull(), anyLong(), notNull(), notNull());
@@ -212,11 +227,11 @@ public class ScheduledTasksTest {
     }
 
     @Test
-    public void consume_fetchFailedOnce() {
+    public void consume_fetchFailedOnce() throws DatafileTaskException {
         Flux<FileReadyMessage> fileReadyMessages = fileReadyMessageFlux(2, 2, true); // 4 files
         doReturn(fileReadyMessages).when(consumerMock).getMessageRouterResponse();
 
-        doReturn(false).when(publishedCheckerMock).isFilePublished(anyString(), any());
+        doReturn(false).when(publishedCheckerMock).isFilePublished(anyString(), anyString(), any());
 
         Mono<FilePublishInformation> collectedFile = Mono.just(filePublishInformation());
         Mono<Object> error = Mono.error(new Exception("problem"));
@@ -246,12 +261,12 @@ public class ScheduledTasksTest {
     }
 
     @Test
-    public void consume_publishFailedOnce() {
+    public void consume_publishFailedOnce() throws DatafileTaskException {
 
         Flux<FileReadyMessage> fileReadyMessages = fileReadyMessageFlux(2, 2, true); // 4 files
         doReturn(fileReadyMessages).when(consumerMock).getMessageRouterResponse();
 
-        doReturn(false).when(publishedCheckerMock).isFilePublished(anyString(), any());
+        doReturn(false).when(publishedCheckerMock).isFilePublished(anyString(), anyString(), any());
 
         Mono<FilePublishInformation> collectedFile = Mono.just(filePublishInformation());
         doReturn(collectedFile).when(fileCollectorMock).collectFile(notNull(), anyLong(), notNull(), notNull());
@@ -279,7 +294,7 @@ public class ScheduledTasksTest {
     }
 
     @Test
-    public void consume_successfulCase_sameFileNames() {
+    public void consume_successfulCase_sameFileNames() throws DatafileTaskException {
         final int noOfEvents = 1;
         final int noOfFilesPerEvent = 100;
 
@@ -287,7 +302,7 @@ public class ScheduledTasksTest {
         Flux<FileReadyMessage> fileReadyMessages = fileReadyMessageFlux(noOfEvents, noOfFilesPerEvent, false);
         doReturn(fileReadyMessages).when(consumerMock).getMessageRouterResponse();
 
-        doReturn(false).when(publishedCheckerMock).isFilePublished(anyString(), any());
+        doReturn(false).when(publishedCheckerMock).isFilePublished(anyString(), anyString(), any());
 
         Mono<FilePublishInformation> collectedFile = Mono.just(filePublishInformation());
         doReturn(collectedFile).when(fileCollectorMock).collectFile(notNull(), anyLong(), notNull(), notNull());
@@ -303,7 +318,7 @@ public class ScheduledTasksTest {
         verify(consumerMock, times(1)).getMessageRouterResponse();
         verify(fileCollectorMock, times(1)).collectFile(notNull(), anyLong(), notNull(), notNull());
         verify(dataRouterMock, times(1)).publishFile(notNull(), anyLong(), notNull());
-        verify(publishedCheckerMock, times(1)).isFilePublished(notNull(), notNull());
+        verify(publishedCheckerMock, times(1)).isFilePublished(notNull(), anyString(), notNull());
         verifyNoMoreInteractions(dataRouterMock);
         verifyNoMoreInteractions(fileCollectorMock);
         verifyNoMoreInteractions(consumerMock);

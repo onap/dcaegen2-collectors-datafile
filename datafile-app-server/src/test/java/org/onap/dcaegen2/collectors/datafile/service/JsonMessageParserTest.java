@@ -22,9 +22,12 @@ import static org.mockito.Mockito.spy;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
@@ -36,6 +39,7 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
+
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -65,7 +69,7 @@ class JsonMessageParserTest {
     private static final String NOTIFICATION_FIELDS_VERSION = "1.0";
 
     @Test
-    void whenPassingCorrectJson_oneFileReadyMessage() {
+    void whenPassingCorrectJson_oneFileReadyMessage() throws URISyntaxException {
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
                 .name(PM_FILE_NAME) //
                 .location(LOCATION) //

@@ -31,7 +31,8 @@ import java.util.Set;
  */
 public abstract class JsonSerializer {
 
-
+    private JsonSerializer() {}
+    
     private static Gson gson =
         new GsonBuilder() //
         .serializeNulls() //

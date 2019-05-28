@@ -55,7 +55,7 @@ public class SftpClient implements FileCollectClient {
 
         try {
             sftpChannel.get(remoteFile, localFile.toString());
-            logger.debug("File {} Download Successfull from xNF", localFile.getFileName());
+            logger.trace("File {} Download Successfull from xNF", localFile.getFileName());
         } catch (SftpException e) {
             boolean retry = e.id != ChannelSftp.SSH_FX_NO_SUCH_FILE &&  e.id != ChannelSftp.SSH_FX_PERMISSION_DENIED && e.id != ChannelSftp.SSH_FX_OP_UNSUPPORTED;
             throw new DatafileTaskException("Unable to get file from xNF. Data: " + fileServerData, e, retry);
@@ -90,11 +90,11 @@ public class SftpClient implements FileCollectClient {
         }
     }
 
-    private int getPort(Optional<Integer> port) {
+    private static int getPort(Optional<Integer> port) {
         return port.isPresent() ? port.get() : FTPS_DEFAULT_PORT;
     }
 
-    private Session setUpSession(FileServerData fileServerData) throws JSchException {
+    private static Session setUpSession(FileServerData fileServerData) throws JSchException {
         JSch jsch = new JSch();
 
         Session newSession =
@@ -105,7 +105,7 @@ public class SftpClient implements FileCollectClient {
         return newSession;
     }
 
-    private ChannelSftp getChannel(Session session) throws JSchException {
+    private static ChannelSftp getChannel(Session session) throws JSchException {
         Channel channel = session.openChannel("sftp");
         channel.connect();
         return (ChannelSftp) channel;
