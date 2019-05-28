@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c0803d67_67071b94",
+        "filename": "datafile-app-server/config/datafile_endpoints.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-05-28T07:04:24Z",
+      "side": 1,
+      "message": "When I did it I had the assumption that the DMAAP plugin would create the topic. We can simplify this if we want.\nDone.",
+      "parentUuid": "de4e5948_aed85d8c",
+      "range": {
+        "startLine": 17,
+        "startChar": 6,
+        "endLine": 17,
+        "endChar": 25
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d6f85d1f_23b45dc1",
         "filename": "datafile-app-server/config/datafile_endpoints.json",
         "patchSetId": 2
@@ -45,6 +69,30 @@
       "revId": "e069605adaedb963a7d02988f52ffe350875a770",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06ffc12c_7c253d85",
+        "filename": "datafile-app-server/config/datafile_endpoints.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-05-28T07:04:24Z",
+      "side": 1,
+      "message": "Yes",
+      "parentUuid": "d6f85d1f_23b45dc1",
+      "range": {
+        "startLine": 29,
+        "startChar": 6,
+        "endLine": 31,
+        "endChar": 33
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "2981c796_e12ce679",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/ConsumerConfiguration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-05-28T07:04:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94134f8d_847be381",
+      "range": {
+        "startLine": 99,
+        "startChar": 38,
+        "endLine": 99,
+        "endChar": 47
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c06a2c31_9ac3c9c0",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/PublisherConfiguration.java",
         "patchSetId": 2
@@ -91,6 +163,30 @@
       "revId": "e069605adaedb963a7d02988f52ffe350875a770",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ecfb7c96_9357cc1d",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/PublisherConfiguration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-05-28T07:04:24Z",
+      "side": 1,
+      "message": "Yes, and it is set to different things too. :)",
+      "parentUuid": "c06a2c31_9ac3c9c0",
+      "range": {
+        "startLine": 58,
+        "startChar": 17,
+        "endLine": 58,
+        "endChar": 33
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "6797c007_f3d47c14",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisherTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-05-28T07:04:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38d9edfe_d140c0de",
+      "range": {
+        "startLine": 67,
+        "startChar": 47,
+        "endLine": 67,
+        "endChar": 80
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f2d3e047_f38f05a7",
         "filename": "datafile-app-server/src/test/resources/datafile_endpoints_test.json",
         "patchSetId": 2
@@ -137,6 +257,30 @@
       "revId": "e069605adaedb963a7d02988f52ffe350875a770",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "949ebdbf_3a3676e2",
+        "filename": "datafile-app-server/src/test/resources/datafile_endpoints_test.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-05-28T07:04:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2d3e047_f38f05a7",
+      "range": {
+        "startLine": 14,
+        "startChar": 5,
+        "endLine": 14,
+        "endChar": 8
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -163,6 +307,30 @@
     },
     {
       "key": {
+        "uuid": "91c2fb44_d925269e",
+        "filename": "datafile-app-server/src/test/resources/datafile_endpoints_test.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-05-28T07:04:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88e0ca7e_418a81ed",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 25
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "eb2898ad_d5df3d19",
         "filename": "datafile-app-server/src/test/resources/datafile_endpoints_test.json",
         "patchSetId": 2
@@ -183,6 +351,30 @@
       "revId": "e069605adaedb963a7d02988f52ffe350875a770",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "547ae43f_36952c5b",
+        "filename": "datafile-app-server/src/test/resources/datafile_endpoints_test.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-05-28T07:04:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb2898ad_d5df3d19",
+      "range": {
+        "startLine": 28,
+        "startChar": 6,
+        "endLine": 30,
+        "endChar": 33
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -209,6 +401,30 @@
     },
     {
       "key": {
+        "uuid": "8015f82b_579516e0",
+        "filename": "datafile-app-server/src/test/resources/datafile_endpoints_test_2producers.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-05-28T07:04:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d13019e0_28079382",
+      "range": {
+        "startLine": 26,
+        "startChar": 6,
+        "endLine": 26,
+        "endChar": 25
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7695b726_6b8060d1",
         "filename": "datafile-app-server/src/test/resources/datafile_endpoints_test_2producers.json",
         "patchSetId": 2
@@ -229,6 +445,30 @@
       "revId": "e069605adaedb963a7d02988f52ffe350875a770",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "957f90f5_b8b53335",
+        "filename": "datafile-app-server/src/test/resources/datafile_endpoints_test_2producers.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-05-28T07:04:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7695b726_6b8060d1",
+      "range": {
+        "startLine": 46,
+        "startChar": 6,
+        "endLine": 48,
+        "endChar": 33
+      },
+      "revId": "e069605adaedb963a7d02988f52ffe350875a770",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
