@@ -71,7 +71,7 @@ public class ScheduleController {
 
     public Mono<ResponseEntity<String>> startTasks() {
         return Mono.fromSupplier(schedulerConfig::tryToStartTask) //
-                .map(this::createStartTaskResponse);
+                .map(ScheduleController::createStartTaskResponse);
     }
 
     /**
@@ -90,7 +90,7 @@ public class ScheduleController {
     }
 
     @ApiOperation(value = "Sends success or error response on starting task execution")
-    private ResponseEntity<String> createStartTaskResponse(boolean wasScheduled) {
+    private static ResponseEntity<String> createStartTaskResponse(boolean wasScheduled) {
         if (wasScheduled) {
             return new ResponseEntity<>("Datafile Service has been started!", HttpStatus.CREATED);
         } else {
