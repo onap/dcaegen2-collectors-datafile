@@ -46,6 +46,29 @@
       "revId": "1fb8e38651f21adcd3159c0b9ca927fc7f9338af",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "817c99b0_e6c385ab",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-05-28T10:26:33Z",
+      "side": 1,
+      "message": "This and some other issues are already fixed in this commit:\nhttps://gerrit.onap.org/r/c/dcaegen2/collectors/datafile/+/88521/4/datafile-app-server/pom.xml\nPlease remove this change, this will only cause merge conflicts (there is also another change needed to get the actutor working).",
+      "range": {
+        "startLine": 105,
+        "startChar": 4,
+        "endLine": 109,
+        "endChar": 17
+      },
+      "revId": "1fb8e38651f21adcd3159c0b9ca927fc7f9338af",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
