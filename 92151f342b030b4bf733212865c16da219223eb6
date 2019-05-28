@@ -1,0 +1,567 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "12ac4846_88b6cf5e",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "Trailing whitespace",
+      "range": {
+        "startLine": 67,
+        "startChar": 17,
+        "endLine": 67,
+        "endChar": 18
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d02a4ceb_fe2fcf7e",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\n{\u0027 at column 5 should be on the previous line.",
+      "range": {
+        "startLine": 119,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 5
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "749ceb51_537cefe7",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "Out of curiosity; why the change from \"this\" to \"AppConfig\"?",
+      "range": {
+        "startLine": 150,
+        "startChar": 31,
+        "endLine": 150,
+        "endChar": 40
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a8ba28d3_50b2e4d4",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\nLine is longer than 120 characters (found 130).",
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0de5096_ffc3adc1",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\nLine is longer than 120 characters",
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3bdf3269_4d95c42f",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\nLine is longer than 120 characters",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 128
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "676feb5f_8f9984d6",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\nLine is longer than 120 characters",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 124
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "51eeec24_25f29a20",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\nLine is longer than 120 characters",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 127
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d3942254_0c30265e",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "I see a lot of private and other methods that have been changed to static and wonder why this has been done?",
+      "range": {
+        "startLine": 83,
+        "startChar": 12,
+        "endLine": 83,
+        "endChar": 19
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "272f5f73_6c161030",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\nLine is longer than 120 characters",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 121
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a48c1869_5c9efa45",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\nLine is longer than 120 characters",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 123
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "59793506_ee3b4bea",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/ConsumerConfiguration.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "Why are these no longer on separate rows like the rest of the parameters?",
+      "range": {
+        "startLine": 71,
+        "startChar": 48,
+        "endLine": 71,
+        "endChar": 113
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03bf4fc2_8da6df2d",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/PublisherConfiguration.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\n\u0027package\u0027 should be separated from previous statement.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 60
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "440a557c_2aa6af04",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SchedulerConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\nWrong lexicographical order for \u0027io.swagger.annotations.ApiOperation\u0027 import. Should be before \u0027org.springframework.scheduling.annotation.EnableScheduling\u0027.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 0
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "158a80ec_3bf8e2fc",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SchedulerConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\nUnused @param tag for \u0027cloudConfiguration\u0027.",
+      "range": {
+        "startLine": 69,
+        "startChar": 7,
+        "endLine": 69,
+        "endChar": 55
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "35a9ebd1_958a6014",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/JsonSerializer.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "Trailing whitespaces",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 4
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4a0f0af_ccb2cf47",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/JsonSerializer.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\n\u0027METHOD_DEF\u0027 should be separated from previous statement.",
+      "range": {
+        "startLine": 60,
+        "startChar": 1,
+        "endLine": 60,
+        "endChar": 17
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7edc216_43661f71",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/JsonSerializer.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\nParameter name \u0027f\u0027 must match pattern \u0027^[a-z][a-z0-9][a-zA-Z0-9]*$\u0027.",
+      "range": {
+        "startLine": 61,
+        "startChar": 55,
+        "endLine": 61,
+        "endChar": 56
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e0b012d1_86d835db",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/JsonMessageParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\nLine is longer than 120 characters (found 122).",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 206,
+        "endChar": 126
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e1f912b_aee559bd",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/JsonMessageParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\nLine is longer than 120 characters",
+      "range": {
+        "startLine": 258,
+        "startChar": 0,
+        "endLine": 258,
+        "endChar": 122
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e568569a_e9f4c1a2",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollector.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "Sonar warning:\nEither log or rethrow this exception.",
+      "range": {
+        "startLine": 111,
+        "startChar": 17,
+        "endLine": 111,
+        "endChar": 36
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d235aed5_0578fb6f",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfigTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\nWrong lexicographical order for \u0027ch.qos.logback.core.read.ListAppender\u0027 import. Should be before \u0027org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration\u0027.",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 45
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e5cff31_cba2d94b",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/SchedulerConfigTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "CheckStyle warning:\nLine is longer than 120 characters (found 141).",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 141
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "762631d4_ba282cc2",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisherTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "Could be replaced with FEED_ID constant",
+      "range": {
+        "startLine": 98,
+        "startChar": 118,
+        "endLine": 98,
+        "endChar": 119
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a28b33f3_5daf051d",
+        "filename": "datafile-app-server/src/test/resources/datafile_endpoints_test.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-05-28T13:32:30Z",
+      "side": 1,
+      "message": "Trailing whitespaces",
+      "range": {
+        "startLine": 14,
+        "startChar": 5,
+        "endLine": 14,
+        "endChar": 7
+      },
+      "revId": "92151f342b030b4bf733212865c16da219223eb6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
