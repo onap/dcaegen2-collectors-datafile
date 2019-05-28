@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b73543da_f7bf69d9",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-05-28T08:31:02Z",
+      "side": 1,
+      "message": "These swagger ui dependencies are already included in the upper level pom file. So it is not necessary to put them here.",
+      "range": {
+        "startLine": 104,
+        "startChar": 16,
+        "endLine": 104,
+        "endChar": 17
+      },
+      "revId": "1fb8e38651f21adcd3159c0b9ca927fc7f9338af",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
