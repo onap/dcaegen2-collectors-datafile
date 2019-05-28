@@ -16,7 +16,6 @@
 
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
-import io.swagger.annotations.ApiOperation;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -24,7 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
+
 import javax.annotation.PostConstruct;
+
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
 import org.slf4j.Logger;
@@ -36,6 +37,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
+import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Mono;
 
 /**
@@ -49,7 +52,6 @@ import reactor.core.publisher.Mono;
 public class SchedulerConfig {
 
     private static final Duration SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS = Duration.ofSeconds(15);
-    private static final Duration SCHEDULING_REQUEST_FOR_CONFIGURATION_DELAY = Duration.ofMinutes(5);
     private static final Duration SCHEDULING_DELAY_FOR_DATAFILE_PURGE_CACHE = Duration.ofHours(1);
     private static final Logger logger = LoggerFactory.getLogger(SchedulerConfig.class);
     private static List<ScheduledFuture<?>> scheduledFutureList = new ArrayList<>();
@@ -57,21 +59,21 @@ public class SchedulerConfig {
 
     private final TaskScheduler taskScheduler;
     private final ScheduledTasks scheduledTask;
-    private final CloudConfiguration cloudConfiguration;
+    private final AppConfig configuration;
 
     /**
      * Constructor.
      *
      * @param taskScheduler The scheduler used to schedule the tasks.
      * @param scheduledTasks The scheduler that will actually handle the tasks.
-     * @param cloudConfiguration The DFC configuration.
+     * @param configuration The DFC configuration.
      */
     @Autowired
     public SchedulerConfig(TaskScheduler taskScheduler, ScheduledTasks scheduledTasks,
-            CloudConfiguration cloudConfiguration) {
+            AppConfig configuration) {
         this.taskScheduler = taskScheduler;
         this.scheduledTask = scheduledTasks;
-        this.cloudConfiguration = cloudConfiguration;
+        this.configuration = configuration;
     }
 
     /**
@@ -83,6 +85,7 @@ public class SchedulerConfig {
     public synchronized Mono<ResponseEntity<String>> getResponseFromCancellationOfTasks() {
         scheduledFutureList.forEach(x -> x.cancel(false));
         scheduledFutureList.clear();
+        configuration.stop();
         MDC.setContextMap(contextMap);
         logger.info("Stopped Datafile workflow");
         MDC.clear();
@@ -99,12 +102,11 @@ public class SchedulerConfig {
     public synchronized boolean tryToStartTask() {
         contextMap = MappedDiagnosticContext.initializeTraceContext();
         logger.info("Start scheduling Datafile workflow");
+        configuration.initialize();
+
         if (scheduledFutureList.isEmpty()) {
-            scheduledFutureList.add(taskScheduler.scheduleAtFixedRate(cloudConfiguration::runTask,
-                    Instant.now(), SCHEDULING_REQUEST_FOR_CONFIGURATION_DELAY));
-            scheduledFutureList.add(
-                    taskScheduler.scheduleWithFixedDelay(scheduledTask::executeDatafileMainTask,
-                            SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS));
+            scheduledFutureList.add(taskScheduler.scheduleWithFixedDelay(scheduledTask::executeDatafileMainTask,
+                    SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS));
             scheduledFutureList
                     .add(taskScheduler.scheduleWithFixedDelay(() -> scheduledTask.purgeCachedInformation(Instant.now()),
                             SCHEDULING_DELAY_FOR_DATAFILE_PURGE_CACHE));

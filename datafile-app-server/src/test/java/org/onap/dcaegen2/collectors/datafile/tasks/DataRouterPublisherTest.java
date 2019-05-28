@@ -47,14 +47,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
+import org.onap.dcaegen2.collectors.datafile.configuration.PublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.model.FilePublishInformation;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFilePublishInformation;
 import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerHttpClient;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.util.DefaultUriBuilderFactory;
-import org.springframework.web.util.UriBuilder;
 
 import reactor.test.StepVerifier;
 
@@ -65,6 +63,7 @@ import reactor.test.StepVerifier;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 class DataRouterPublisherTest {
+
     private static final String PRODUCT_NAME = "NrRadio";
     private static final String VENDOR_NAME = "Ericsson";
     private static final String LAST_EPOCH_MICROSEC = "8745745764578";
@@ -73,6 +72,7 @@ class DataRouterPublisherTest {
     private static final String TIME_ZONE_OFFSET = "UTC+05:00";
     private static final String PM_FILE_NAME = "A20161224.1030-1045.bin.gz";
     private static final String FTPES_ADDRESS = "ftpes://192.168.0.101:22/ftp/rop/" + PM_FILE_NAME;
+    private static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
     private static final String COMPRESSION = "gzip";
     private static final String FILE_FORMAT_TYPE = "org.3GPP.32.435#measCollec";
@@ -90,15 +90,17 @@ class DataRouterPublisherTest {
     private static FilePublishInformation filePublishInformation;
     private static DmaapProducerHttpClient httpClientMock;
     private static AppConfig appConfig;
-    private static DmaapPublisherConfiguration publisherConfigurationMock = mock(DmaapPublisherConfiguration.class);
+    private static PublisherConfiguration publisherConfigurationMock = mock(PublisherConfiguration.class);
     private static Map<String, String> context = new HashMap<>();
     private static DataRouterPublisher publisherTaskUnderTestSpy;
 
+    // "https://54.45.333.2:1234/publish/1";
+    private static final String PUBLISH_URL =
+            HTTPS_SCHEME + "://" + HOST + ":" + PORT + "/" + PUBLISH_TOPIC + "/" + FEED_ID;
+
     @BeforeAll
     public static void setUp() {
-        when(publisherConfigurationMock.dmaapHostName()).thenReturn(HOST);
-        when(publisherConfigurationMock.dmaapProtocol()).thenReturn(HTTPS_SCHEME);
-        when(publisherConfigurationMock.dmaapPortNumber()).thenReturn(PORT);
+        when(publisherConfigurationMock.publishUrl()).thenReturn(PUBLISH_URL);
 
         filePublishInformation = ImmutableFilePublishInformation.builder() //
                 .productName(PRODUCT_NAME) //
@@ -114,6 +116,7 @@ class DataRouterPublisherTest {
                 .fileFormatType(FILE_FORMAT_TYPE) //
                 .fileFormatVersion(FILE_FORMAT_VERSION) //
                 .context(context) //
+                .changeIdentifier(CHANGE_IDENTIFIER) //
                 .build(); //
         appConfig = mock(AppConfig.class);
         publisherTaskUnderTestSpy = spy(new DataRouterPublisher(appConfig));
@@ -128,7 +131,6 @@ class DataRouterPublisherTest {
                 .verifyComplete();
 
         ArgumentCaptor<HttpUriRequest> requestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
-        verify(httpClientMock).getBaseUri();
         verify(httpClientMock).addUserCredentialsToHead(any(HttpUriRequest.class));
         verify(httpClientMock).getDmaapProducerResponseWithRedirect(requestCaptor.capture(), any());
         verifyNoMoreInteractions(httpClientMock);
@@ -138,6 +140,7 @@ class DataRouterPublisherTest {
         assertEquals(HTTPS_SCHEME, actualUri.getScheme());
         assertEquals(HOST, actualUri.getHost());
         assertEquals(PORT, actualUri.getPort());
+
         Path actualPath = Paths.get(actualUri.getPath());
         assertTrue(PUBLISH_TOPIC.equals(actualPath.getName(0).toString()));
         assertTrue(FEED_ID.equals(actualPath.getName(1).toString()));
@@ -160,7 +163,8 @@ class DataRouterPublisherTest {
         assertEquals(FILE_FORMAT_TYPE, metaHash.get("fileFormatType"));
         assertEquals(FILE_FORMAT_VERSION, metaHash.get("fileFormatVersion"));
 
-        // Note that the following line checks the number of properties that are sent to the data router.
+        // Note that the following line checks the number of properties that are sent to the data
+        // router.
         // This should be 10 unless the API is updated (which is the fields checked above)
         assertEquals(10, metaHash.size());
     }
@@ -185,7 +189,6 @@ class DataRouterPublisherTest {
                 .expectNext(filePublishInformation) //
                 .verifyComplete();
 
-        verify(httpClientMock, times(2)).getBaseUri();
         verify(httpClientMock, times(2)).addUserCredentialsToHead(any(HttpUriRequest.class));
         verify(httpClientMock, times(2)).getDmaapProducerResponseWithRedirect(any(HttpUriRequest.class), any());
         verifyNoMoreInteractions(httpClientMock);
@@ -201,7 +204,6 @@ class DataRouterPublisherTest {
                 .expectErrorMessage("Retries exhausted: 1/1") //
                 .verify();
 
-        verify(httpClientMock, times(2)).getBaseUri();
         verify(httpClientMock, times(2)).addUserCredentialsToHead(any(HttpUriRequest.class));
         verify(httpClientMock, times(2)).getDmaapProducerResponseWithRedirect(any(HttpUriRequest.class), any());
         verifyNoMoreInteractions(httpClientMock);
@@ -211,12 +213,9 @@ class DataRouterPublisherTest {
     final void prepareMocksForTests(Exception exception, Integer firstResponse, Integer... nextHttpResponses)
             throws Exception {
         httpClientMock = mock(DmaapProducerHttpClient.class);
-        when(appConfig.getDmaapPublisherConfiguration()).thenReturn(publisherConfigurationMock);
-        doReturn(publisherConfigurationMock).when(publisherTaskUnderTestSpy).resolveConfiguration();
-        doReturn(httpClientMock).when(publisherTaskUnderTestSpy).resolveClient();
-
-        UriBuilder uriBuilder = new DefaultUriBuilderFactory().builder().scheme(HTTPS_SCHEME).host(HOST).port(PORT);
-        when(httpClientMock.getBaseUri()).thenReturn(uriBuilder);
+        when(appConfig.getPublisherConfiguration(CHANGE_IDENTIFIER)).thenReturn(publisherConfigurationMock);
+        doReturn(publisherConfigurationMock).when(publisherTaskUnderTestSpy).resolveConfiguration(CHANGE_IDENTIFIER);
+        doReturn(httpClientMock).when(publisherTaskUnderTestSpy).resolveClient(CHANGE_IDENTIFIER);
 
         HttpResponse httpResponseMock = mock(HttpResponse.class);
         if (exception == null) {

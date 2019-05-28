@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -35,25 +36,39 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
+
 import reactor.test.StepVerifier;
 
 public class SchedulerConfigTest {
 
+    private final AppConfig appConfigurationMock = mock(AppConfig.class);
+    private final TaskScheduler taskSchedulerMock = mock(TaskScheduler.class);
+    private final ScheduledTasks scheduledTasksMock = mock(ScheduledTasks.class);
+    private final SchedulerConfig schedulerUnderTest =
+            spy(new SchedulerConfig(taskSchedulerMock, scheduledTasksMock, appConfigurationMock));
+
+    @BeforeEach
+    public void setUp() {
+        doNothing().when(appConfigurationMock).stop();
+        doNothing().when(appConfigurationMock).initialize();
+    }
+
     @Test
     public void getResponseFromCancellationOfTasks_success() {
+
         List<ScheduledFuture<?>> scheduledFutureList = new ArrayList<>();
         ScheduledFuture<?> scheduledFutureMock = mock(ScheduledFuture.class);
         scheduledFutureList.add(scheduledFutureMock);
 
         SchedulerConfig.setScheduledFutureList(scheduledFutureList);
-
-        SchedulerConfig schedulerUnderTest = new SchedulerConfig(null, null, null);
 
         String msg = "Datafile Service has already been stopped!";
         StepVerifier.create(schedulerUnderTest.getResponseFromCancellationOfTasks())
@@ -68,23 +83,16 @@ public class SchedulerConfigTest {
 
     @Test
     public void tryToStartTaskWhenNotStarted_success() {
-        TaskScheduler taskSchedulerMock = mock(TaskScheduler.class);
-        ScheduledTasks scheduledTasksMock = mock(ScheduledTasks.class);
-        CloudConfiguration cloudConfigurationMock = mock(CloudConfiguration.class);
         List<ScheduledFuture<?>> scheduledFutureList = new ArrayList<>();
 
         SchedulerConfig.setScheduledFutureList(scheduledFutureList);
 
         SchedulerConfig schedulerUnderTestSpy =
-                spy(new SchedulerConfig(taskSchedulerMock, scheduledTasksMock, cloudConfigurationMock));
+                spy(new SchedulerConfig(taskSchedulerMock, scheduledTasksMock, appConfigurationMock));
 
         boolean actualResult = schedulerUnderTestSpy.tryToStartTask();
 
         assertTrue(actualResult);
-
-        ArgumentCaptor<Runnable> runTaskRunnableCaptor = ArgumentCaptor.forClass(Runnable.class);
-        verify(taskSchedulerMock).scheduleAtFixedRate(runTaskRunnableCaptor.capture(), any(Instant.class),
-                eq(Duration.ofMinutes(5)));
 
         ArgumentCaptor<Runnable> scheduleMainDatafileEventTaskCaptor = ArgumentCaptor.forClass(Runnable.class);
         verify(taskSchedulerMock).scheduleWithFixedDelay(scheduleMainDatafileEventTaskCaptor.capture(),
@@ -100,22 +108,22 @@ public class SchedulerConfigTest {
         verify(scheduledTasksMock).executeDatafileMainTask();
         verifyNoMoreInteractions(scheduledTasksMock);
 
-        runTaskRunnableCaptor.getValue().run();
-        verify(cloudConfigurationMock).runTask();
-        verifyNoMoreInteractions(cloudConfigurationMock);
+        verify(appConfigurationMock).initialize();
+        verifyNoMoreInteractions(appConfigurationMock);
 
-        assertEquals(3, scheduledFutureList.size());
+        assertEquals(2, scheduledFutureList.size());
     }
 
     @Test
     public void tryToStartTaskWhenAlreadyStarted_shouldReturnFalse() {
+        doNothing().when(appConfigurationMock).loadConfigurationFromFile();
         List<ScheduledFuture<?>> scheduledFutureList = new ArrayList<>();
         ScheduledFuture<?> scheduledFutureMock = mock(ScheduledFuture.class);
         scheduledFutureList.add(scheduledFutureMock);
 
         SchedulerConfig.setScheduledFutureList(scheduledFutureList);
 
-        SchedulerConfig schedulerUnderTest = new SchedulerConfig(null, null, null);
+        SchedulerConfig schedulerUnderTest = new SchedulerConfig(null, null, appConfigurationMock);
 
         boolean actualResult = schedulerUnderTest.tryToStartTask();
 
