@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eb6a83ba_0843046b",
+        "filename": "datafile-app-server/config/datafile_endpoints.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-05-29T07:28:05Z",
+      "side": 1,
+      "message": "The new blueprint includes ftpes config in this format:\ndmaap.ftp.ftpesConfiguration.keyCert\ndmaap.ftp.ftpesConfiguration.keyPassword\ndmaap.ftp.ftpesConfiguration.trustedCa\ndmaap.ftp.ftpesConfiguration.trustedCaPassword",
+      "range": {
+        "startLine": 3,
+        "startChar": 4,
+        "endLine": 3,
+        "endChar": 29
+      },
+      "revId": "b836660e2ff700c639e96b755ff47535123f1d10",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
