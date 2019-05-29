@@ -22,6 +22,29 @@
       "revId": "b836660e2ff700c639e96b755ff47535123f1d10",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ade95cee_4fe91a95",
+        "filename": "datafile-app-server/config/datafile_endpoints.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-05-29T08:16:58Z",
+      "side": 1,
+      "message": "The blueprint has it in this format:\n\"dmaap.dmaapProducerConfiguration\":\"PM_MEAS_FILESfeed00\"",
+      "range": {
+        "startLine": 12,
+        "startChar": 3,
+        "endLine": 15,
+        "endChar": 5
+      },
+      "revId": "b836660e2ff700c639e96b755ff47535123f1d10",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
