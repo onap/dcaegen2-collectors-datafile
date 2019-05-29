@@ -49,6 +49,29 @@
     },
     {
       "key": {
+        "uuid": "e25fcbbc_8c2dbac1",
+        "filename": "datafile-app-server/config/datafile_endpoints.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-05-29T09:14:49Z",
+      "side": 1,
+      "message": "Is there any particular reason to have \"eee\" or it is just a typo? I assume that is \"feedName\"",
+      "range": {
+        "startLine": 14,
+        "startChar": 10,
+        "endLine": 14,
+        "endChar": 19
+      },
+      "revId": "b836660e2ff700c639e96b755ff47535123f1d10",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ade95cee_4fe91a95",
         "filename": "datafile-app-server/config/datafile_endpoints.json",
         "patchSetId": 8
