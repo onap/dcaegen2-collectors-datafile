@@ -31,12 +31,12 @@ import java.util.Set;
  */
 public abstract class JsonSerializer {
 
+    private JsonSerializer() {}
 
-    private static Gson gson =
-        new GsonBuilder() //
-        .serializeNulls() //
-        .addSerializationExclusionStrategy(new FilePublishInformationExclusionStrategy()) //
-        .create(); //
+    private static Gson gson = new GsonBuilder() //
+            .serializeNulls() //
+            .addSerializationExclusionStrategy(new FilePublishInformationExclusionStrategy()) //
+            .create(); //
 
     /**
      * Serializes a <code>filePublishInformation</code>.
@@ -56,9 +56,10 @@ public abstract class JsonSerializer {
         private final Set<String> inclusions =
                 Sets.newHashSet("productName", "vendorName", "lastEpochMicrosec", "sourceName", "startEpochMicrosec",
                         "timeZoneOffset", "location", "compression", "fileFormatType", "fileFormatVersion");
+
         @Override
-        public boolean shouldSkipField(FieldAttributes f) {
-            return !inclusions.contains(f.getName());
+        public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+            return !inclusions.contains(fieldAttributes.getName());
         }
 
         @Override

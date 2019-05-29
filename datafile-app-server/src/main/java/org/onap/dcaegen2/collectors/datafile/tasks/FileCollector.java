@@ -74,12 +74,12 @@ public class FileCollector {
 
         return Mono.just(fileData) //
                 .cache() //
-                .flatMap(fd -> collectFile(fileData, contextMap)) //
+                .flatMap(fd -> tryCollectFile(fileData, contextMap)) //
                 .retryBackoff(numRetries, firstBackoff) //
-                .flatMap(this::checkCollectedFile);
+                .flatMap(FileCollector::checkCollectedFile);
     }
 
-    private Mono<FilePublishInformation> checkCollectedFile(Optional<FilePublishInformation> info) {
+    private static Mono<FilePublishInformation> checkCollectedFile(Optional<FilePublishInformation> info) {
         if (info.isPresent()) {
             return Mono.just(info.get());
         } else {
@@ -88,7 +88,7 @@ public class FileCollector {
         }
     }
 
-    private Mono<Optional<FilePublishInformation>> collectFile(FileData fileData, Map<String, String> context) {
+    private Mono<Optional<FilePublishInformation>> tryCollectFile(FileData fileData, Map<String, String> context) {
         MDC.setContextMap(context);
         logger.trace("starting to collectFile {}", fileData.name());
 
@@ -110,7 +110,7 @@ public class FileCollector {
             }
         } catch (Exception throwable) {
             logger.warn("Failed to close ftp client: {} {}, reason: {}", fileData.sourceName(), fileData.name(),
-                    throwable.toString());
+                    throwable.toString(), throwable);
             return Mono.just(Optional.of(getFilePublishInformation(fileData, localFile, context)));
         }
     }
@@ -126,7 +126,7 @@ public class FileCollector {
         }
     }
 
-    private FilePublishInformation getFilePublishInformation(FileData fileData, Path localFile,
+    private static FilePublishInformation getFilePublishInformation(FileData fileData, Path localFile,
             Map<String, String> context) {
         String location = fileData.location();
         MessageMetaData metaData = fileData.messageMetaData();
@@ -143,6 +143,7 @@ public class FileCollector {
                 .compression(fileData.compression()) //
                 .fileFormatType(fileData.fileFormatType()) //
                 .fileFormatVersion(fileData.fileFormatVersion()) //
+                .changeIdentifier(fileData.messageMetaData().changeIdentifier()) //
                 .context(context) //
                 .build();
     }

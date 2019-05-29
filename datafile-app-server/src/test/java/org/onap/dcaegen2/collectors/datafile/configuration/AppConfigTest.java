@@ -16,25 +16,51 @@
 
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
+import java.util.Map;
+import java.util.Properties;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
+import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.ImmutableEnvProperties;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.providers.CloudConfigurationProvider;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapConsumerConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
+
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 /**
  * Tests the AppConfig.
@@ -44,167 +70,285 @@ import org.junit.jupiter.api.Test;
  */
 class AppConfigTest {
 
-    private static final String DATAFILE_ENDPOINTS = "datafile_endpoints.json";
-    private static final boolean CORRECT_JSON = true;
-    private static final boolean INCORRECT_JSON = false;
+    private static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
-    private static AppConfig appConfigUnderTest;
 
-    private static String filePath =
-            Objects.requireNonNull(AppConfigTest.class.getClassLoader().getResource(DATAFILE_ENDPOINTS)).getFile();
+    private static final ImmutableDmaapConsumerConfiguration CORRECT_DMAAP_CONSUMER_CONFIG = //
+            new ImmutableDmaapConsumerConfiguration.Builder() //
+                    .timeoutMs(-1) //
+                    .dmaapHostName("message-router.onap.svc.cluster.local") //
+                    .dmaapUserName("admin") //
+                    .dmaapUserPassword("admin") //
+                    .dmaapTopicName("events/unauthenticated.VES_NOTIFICATION_OUTPUT") //
+                    .dmaapPortNumber(2222) //
+                    .dmaapContentType("application/json") //
+                    .messageLimit(-1) //
+                    .dmaapProtocol("http") //
+                    .consumerId("C12") //
+                    .consumerGroup("OpenDcae-c12") //
+                    .trustStorePath("trustStorePath") //
+                    .trustStorePasswordPath("trustStorePasswordPath") //
+                    .keyStorePath("keyStorePath") //
+                    .keyStorePasswordPath("keyStorePasswordPath") //
+                    .enableDmaapCertAuth(true) //
+                    .build();
+
+    private static final ConsumerConfiguration CORRECT_CONSUMER_CONFIG = ImmutableConsumerConfiguration.builder() //
+            .topicUrl(
+                    "http://admin:admin@message-router.onap.svc.cluster.local:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12")
+            .trustStorePath("trustStorePath") //
+            .trustStorePasswordPath("trustStorePasswordPath") //
+            .keyStorePath("keyStorePath") //
+            .keyStorePasswordPath("keyStorePasswordPath") //
+            .enableDmaapCertAuth(true) //
+            .build();
+
+    private static final PublisherConfiguration CORRECT_PUBLISHER_CONFIG = //
+            ImmutablePublisherConfiguration.builder() //
+                    .publishUrl("https://message-router.onap.svc.cluster.local:3907/publish/1") //
+                    .logUrl("https://dmaap.example.com/feedlog/972").trustStorePath("trustStorePath") //
+                    .trustStorePasswordPath("trustStorePasswordPath") //
+                    .keyStorePath("keyStorePath") //
+                    .keyStorePasswordPath("keyStorePasswordPath") //
+                    .enableDmaapCertAuth(true) //
+                    .changeIdentifier("PM_MEAS_FILES") //
+                    .userName("user") //
+                    .passWord("password") //
+                    .build();
+
+    private static final ImmutableFtpesConfig CORRECT_FTPES_CONFIGURATION = //
+            new ImmutableFtpesConfig.Builder() //
+                    .keyCert("/config/dfc.jks") //
+                    .keyPassword("secret") //
+                    .trustedCa("config/ftp.jks") //
+                    .trustedCaPassword("secret") //
+                    .build();
+
+    private static final ImmutableDmaapPublisherConfiguration CORRECT_DMAAP_PUBLISHER_CONFIG = //
+            new ImmutableDmaapPublisherConfiguration.Builder() //
+                    .dmaapTopicName("/publish/1") //
+                    .dmaapUserPassword("password") //
+                    .dmaapPortNumber(3907) //
+                    .dmaapProtocol("https") //
+                    .dmaapContentType("application/octet-stream") //
+                    .dmaapHostName("message-router.onap.svc.cluster.local") //
+                    .dmaapUserName("user") //
+                    .trustStorePath("trustStorePath") //
+                    .trustStorePasswordPath("trustStorePasswordPath") //
+                    .keyStorePath("keyStorePath") //
+                    .keyStorePasswordPath("keyStorePasswordPath") //
+                    .enableDmaapCertAuth(true) //
+                    .build();
+
+    private static EnvProperties properties() {
+        return ImmutableEnvProperties.builder() //
+                .consulHost("host") //
+                .consulPort(123) //
+                .cbsName("cbsName") //
+                .appName("appName") //
+                .build();
+    }
+
+    private AppConfig appConfigUnderTest;
+    private CloudConfigurationProvider cloudConfigurationProvider = mock(CloudConfigurationProvider.class);
+    private final Map<String, String> context = MappedDiagnosticContext.initializeTraceContext();
+
 
     @BeforeEach
     public void setUp() {
         appConfigUnderTest = spy(AppConfig.class);
+        appConfigUnderTest.setCloudConfigurationProvider(cloudConfigurationProvider);
+        appConfigUnderTest.systemEnvironment = new Properties();
     }
 
     @Test
-    public void whenApplicationWasStarted_FilePathIsSet() {
+    public void whenTheConfigurationFits() throws IOException, DatafileTaskException {
         // When
-        appConfigUnderTest.setFilepath(filePath);
+        doReturn(getCorrectJson()).when(appConfigUnderTest).createInputStream(any());
+        appConfigUnderTest.initialize();
 
         // Then
-        verify(appConfigUnderTest, times(1)).setFilepath(anyString());
-        verify(appConfigUnderTest, times(0)).loadConfigurationFromFile();
-        Assertions.assertEquals(filePath, appConfigUnderTest.getFilepath());
+        verify(appConfigUnderTest, times(1)).loadConfigurationFromFile();
+
+        ConsumerConfiguration consumerCfg = appConfigUnderTest.getDmaapConsumerConfiguration();
+        Assertions.assertNotNull(consumerCfg);
+        assertThat(consumerCfg.toDmaap()).isEqualToComparingFieldByField(CORRECT_DMAAP_CONSUMER_CONFIG);
+        assertThat(consumerCfg).isEqualToComparingFieldByField(CORRECT_CONSUMER_CONFIG);
+
+        PublisherConfiguration publisherCfg = appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER);
+        Assertions.assertNotNull(publisherCfg);
+        assertThat(publisherCfg).isEqualToComparingFieldByField(CORRECT_PUBLISHER_CONFIG);
+        assertThat(publisherCfg.toDmaap()).isEqualToComparingFieldByField(CORRECT_DMAAP_PUBLISHER_CONFIG);
+
+        FtpesConfig ftpesConfig = appConfigUnderTest.getFtpesConfiguration();
+        assertThat(ftpesConfig).isNotNull();
+        assertThat(ftpesConfig).isEqualToComparingFieldByField(CORRECT_FTPES_CONFIGURATION);
     }
 
     @Test
-    public void whenTheConfigurationFits_GetFtpsAndDmaapObjectRepresentationConfiguration() throws IOException {
-        // Given
-        InputStream inputStream =
-                new ByteArrayInputStream((getJsonConfig(CORRECT_JSON).getBytes(StandardCharsets.UTF_8)));
-
+    public void whenTheConfigurationFits_twoProducers() throws IOException, DatafileTaskException {
         // When
-        appConfigUnderTest.setFilepath(filePath);
-        doReturn(inputStream).when(appConfigUnderTest).createInputStream(any());
+        doReturn(getCorrectJsonTwoProducers()).when(appConfigUnderTest).createInputStream(any());
         appConfigUnderTest.loadConfigurationFromFile();
 
         // Then
-        verify(appConfigUnderTest, times(1)).setFilepath(anyString());
         verify(appConfigUnderTest, times(1)).loadConfigurationFromFile();
         Assertions.assertNotNull(appConfigUnderTest.getDmaapConsumerConfiguration());
-        Assertions.assertNotNull(appConfigUnderTest.getDmaapPublisherConfiguration());
-        Assertions.assertEquals(appConfigUnderTest.getDmaapPublisherConfiguration(),
-                appConfigUnderTest.getDmaapPublisherConfiguration());
-        Assertions.assertEquals(appConfigUnderTest.getDmaapConsumerConfiguration(),
-                appConfigUnderTest.getDmaapConsumerConfiguration());
-        Assertions.assertEquals(appConfigUnderTest.getFtpesConfiguration(), appConfigUnderTest.getFtpesConfiguration());
+        Assertions.assertNotNull(appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER));
+        Assertions.assertNotNull(appConfigUnderTest.getPublisherConfiguration("XX_FILES"));
+        Assertions.assertNotNull(appConfigUnderTest.getPublisherConfiguration("YY_FILES"));
+
+        assertThat(appConfigUnderTest.getPublisherConfiguration("XX_FILES").publishUrl())
+                .isEqualTo("feed01::publish_url");
+        assertThat(appConfigUnderTest.getPublisherConfiguration("YY_FILES").publishUrl())
+                .isEqualTo("feed01::publish_url");
     }
 
     @Test
-    public void whenFileIsNotExist_ThrowIoException() {
+    public void whenFileIsNotExist_ThrowException() throws DatafileTaskException {
         // Given
-        filePath = "/temp.json";
-        appConfigUnderTest.setFilepath(filePath);
+        appConfigUnderTest.setFilepath("/temp.json");
 
         // When
         appConfigUnderTest.loadConfigurationFromFile();
 
         // Then
-        verify(appConfigUnderTest, times(1)).setFilepath(anyString());
-        verify(appConfigUnderTest, times(1)).loadConfigurationFromFile();
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
-        Assertions.assertNull(appConfigUnderTest.getDmaapPublisherConfiguration());
-        Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
+        assertThatThrownBy(() -> appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER))
+                .hasMessageContaining("No PublishingConfiguration loaded, changeIdentifier: PM_MEAS_FILES");
 
+        Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
     }
 
     @Test
-    public void whenFileIsExistsButJsonIsIncorrect() throws IOException {
-        // Given
-        InputStream inputStream =
-                new ByteArrayInputStream((getJsonConfig(INCORRECT_JSON).getBytes(StandardCharsets.UTF_8)));
+    public void whenFileIsExistsButJsonIsIncorrect() throws IOException, DatafileTaskException {
 
         // When
-        appConfigUnderTest.setFilepath(filePath);
-        doReturn(inputStream).when(appConfigUnderTest).createInputStream(any());
+        doReturn(getIncorrectJson()).when(appConfigUnderTest).createInputStream(any());
         appConfigUnderTest.loadConfigurationFromFile();
 
         // Then
-        verify(appConfigUnderTest, times(1)).setFilepath(anyString());
         verify(appConfigUnderTest, times(1)).loadConfigurationFromFile();
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
-        Assertions.assertNull(appConfigUnderTest.getDmaapPublisherConfiguration());
+        assertThatThrownBy(() -> appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER))
+                .hasMessageContaining(CHANGE_IDENTIFIER);
         Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
-
     }
 
-
     @Test
-    public void whenTheConfigurationFits_ButRootElementIsNotAJsonObject() throws IOException {
-        // Given
-        InputStream inputStream =
-                new ByteArrayInputStream((getJsonConfig(CORRECT_JSON).getBytes(StandardCharsets.UTF_8)));
+    public void whenTheConfigurationFits_ButRootElementIsNotAJsonObject() throws IOException, DatafileTaskException {
+
         // When
-        appConfigUnderTest.setFilepath(filePath);
-        doReturn(inputStream).when(appConfigUnderTest).createInputStream(any());
+        doReturn(getCorrectJson()).when(appConfigUnderTest).createInputStream(any());
         JsonElement jsonElement = mock(JsonElement.class);
         when(jsonElement.isJsonObject()).thenReturn(false);
         doReturn(jsonElement).when(appConfigUnderTest).getJsonElement(any(JsonParser.class), any(InputStream.class));
         appConfigUnderTest.loadConfigurationFromFile();
 
         // Then
-        verify(appConfigUnderTest, times(1)).setFilepath(anyString());
         verify(appConfigUnderTest, times(1)).loadConfigurationFromFile();
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
-        Assertions.assertNull(appConfigUnderTest.getDmaapPublisherConfiguration());
+        assertThatThrownBy(() -> appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER))
+                .hasMessageContaining(CHANGE_IDENTIFIER);
         Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
     }
 
-    private String getJsonConfig(boolean correct) {
-        JsonObject dmaapConsumerConfigData = new JsonObject();
-        dmaapConsumerConfigData.addProperty("dmaapHostName", "localhost");
-        dmaapConsumerConfigData.addProperty("dmaapPortNumber", 2222);
-        dmaapConsumerConfigData.addProperty("dmaapTopicName", "/events/unauthenticated.VES_NOTIFICATION_OUTPUT");
-        dmaapConsumerConfigData.addProperty("dmaapProtocol", "http");
-        dmaapConsumerConfigData.addProperty("dmaapUserName", "admin");
-        dmaapConsumerConfigData.addProperty("dmaapUserPassword", "admin");
-        dmaapConsumerConfigData.addProperty("dmaapContentType", "application/json");
-        dmaapConsumerConfigData.addProperty("consumerId", "C12");
-        dmaapConsumerConfigData.addProperty("consumerGroup", "OpenDcae-c12");
-        dmaapConsumerConfigData.addProperty("timeoutMs", -1);
-        dmaapConsumerConfigData.addProperty("messageLimit", 1);
+    @Test
+    public void whenPeriodicConfigRefreshNoEnvironmentVariables() {
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
 
-        JsonObject dmaapProducerConfigData = new JsonObject();
-        dmaapProducerConfigData.addProperty("dmaapHostName", "localhost");
-        dmaapProducerConfigData.addProperty("dmaapPortNumber", 3907);
-        dmaapProducerConfigData.addProperty("dmaapTopicName", "publish");
-        dmaapProducerConfigData.addProperty("dmaapProtocol", "https");
-        if (correct) {
-            dmaapProducerConfigData.addProperty("dmaapUserName", "dradmin");
-            dmaapProducerConfigData.addProperty("dmaapUserPassword", "dradmin");
-            dmaapProducerConfigData.addProperty("dmaapContentType", "application/octet-stream");
-        }
+        Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
 
-        JsonObject dmaapConfigs = new JsonObject();
-        dmaapConfigs.add("dmaapConsumerConfiguration", dmaapConsumerConfigData);
-        dmaapConfigs.add("dmaapProducerConfiguration", dmaapProducerConfigData);
+        StepVerifier //
+                .create(task) //
+                .expectSubscription() //
+                .expectNextCount(0) //
+                .verifyComplete();
 
-        JsonObject ftpesConfigData = new JsonObject();
-        ftpesConfigData.addProperty("keyCert", "config/dfc.jks");
-        ftpesConfigData.addProperty("keyPassword", "secret");
-        ftpesConfigData.addProperty("trustedCa", "config/ftp.jks");
-        ftpesConfigData.addProperty("trustedCaPassword", "secret");
+        assertTrue(logAppender.list.toString().contains("$CONSUL_HOST environment has not been defined"));
+    }
 
-        JsonObject security = new JsonObject();
-        security.addProperty("trustStorePath", "trustStorePath");
-        security.addProperty("trustStorePasswordPath", "trustStorePasswordPath");
-        security.addProperty("keyStorePath", "keyStorePath");
-        security.addProperty("keyStorePasswordPath", "keyStorePasswordPath");
-        security.addProperty("enableDmaapCertAuth", "enableDmaapCertAuth");
+    @Test
+    public void whenPeriodicConfigRefreshNoConsul() {
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
 
-        JsonObject ftpesConfiguration = new JsonObject();
-        ftpesConfiguration.add("ftpesConfiguration", ftpesConfigData);
+        doReturn(Mono.just(properties())).when(appConfigUnderTest).readEnvironmentVariables(any(), any());
+        Mono<JsonObject> err = Mono.error(new IOException());
+        doReturn(err).when(cloudConfigurationProvider).callForServiceConfigurationReactive(any());
 
-        JsonObject configs = new JsonObject();
-        configs.add("dmaap", dmaapConfigs);
-        configs.add("ftp", ftpesConfiguration);
-        configs.add("security", security);
+        Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
 
-        JsonObject completeJson = new JsonObject();
-        completeJson.add("configs", configs);
+        StepVerifier //
+                .create(task) //
+                .expectSubscription() //
+                .expectNextCount(0) //
+                .verifyComplete();
 
-        return completeJson.toString();
+        assertTrue(logAppender.list.toString()
+                .contains("Could not refresh application configuration java.io.IOException"));
+    }
+
+    @Test
+    public void whenPeriodicConfigRefreshSuccess() throws JsonIOException, JsonSyntaxException, IOException {
+        doReturn(Mono.just(properties())).when(appConfigUnderTest).readEnvironmentVariables(any(), any());
+
+        Mono<JsonObject> json = Mono.just(getJsonRootObject());
+
+        doReturn(json, json).when(cloudConfigurationProvider).callForServiceConfigurationReactive(any());
+
+        Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
+
+        StepVerifier //
+                .create(task) //
+                .expectSubscription() //
+                .expectNext(appConfigUnderTest) //
+                .verifyComplete();
+
+        Assertions.assertNotNull(appConfigUnderTest.getDmaapConsumerConfiguration());
+    }
+
+    @Test
+    public void whenPeriodicConfigRefreshSuccess2() throws JsonIOException, JsonSyntaxException, IOException {
+        doReturn(Mono.just(properties())).when(appConfigUnderTest).readEnvironmentVariables(any(), any());
+
+        Mono<JsonObject> json = Mono.just(getJsonRootObject());
+        Mono<JsonObject> err = Mono.error(new IOException()); // no config entry created by the
+                                                              // dmaap plugin
+
+        doReturn(json, err).when(cloudConfigurationProvider).callForServiceConfigurationReactive(any());
+
+        Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
+
+        StepVerifier //
+                .create(task) //
+                .expectSubscription() //
+                .expectNext(appConfigUnderTest) //
+                .verifyComplete();
+
+        Assertions.assertNotNull(appConfigUnderTest.getDmaapConsumerConfiguration());
+    }
+
+    private JsonObject getJsonRootObject() throws JsonIOException, JsonSyntaxException, IOException {
+        JsonObject rootObject = (new JsonParser()).parse(new InputStreamReader(getCorrectJson())).getAsJsonObject();
+        return rootObject;
+    }
+
+    private static InputStream getCorrectJson() throws IOException {
+        URL url = CloudConfigParser.class.getClassLoader().getResource("datafile_endpoints_test.json");
+        String string = Resources.toString(url, Charsets.UTF_8);
+        return new ByteArrayInputStream((string.getBytes(StandardCharsets.UTF_8)));
+    }
+
+    private static InputStream getCorrectJsonTwoProducers() throws IOException {
+        URL url = CloudConfigParser.class.getClassLoader().getResource("datafile_endpoints_test_2producers.json");
+        String string = Resources.toString(url, Charsets.UTF_8);
+        return new ByteArrayInputStream((string.getBytes(StandardCharsets.UTF_8)));
+    }
+
+    private static InputStream getIncorrectJson() {
+        String string = "{" + //
+                "    \"configs\": {" + //
+                "        \"dmaap\": {"; //
+        return new ByteArrayInputStream((string.getBytes(StandardCharsets.UTF_8)));
     }
 }
