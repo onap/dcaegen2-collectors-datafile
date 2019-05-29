@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "73a80379_6b0d4ba9",
+        "filename": "datafile-app-server/config/datafile_endpoints.json",
+        "patchSetId": 8
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-05-29T08:17:06Z",
+      "side": 1,
+      "message": "As decided in the standup meeting, the blueprint will be fixed in a later commit.",
+      "parentUuid": "eb6a83ba_0843046b",
+      "range": {
+        "startLine": 3,
+        "startChar": 4,
+        "endLine": 3,
+        "endChar": 29
+      },
+      "revId": "b836660e2ff700c639e96b755ff47535123f1d10",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ade95cee_4fe91a95",
         "filename": "datafile-app-server/config/datafile_endpoints.json",
         "patchSetId": 8
