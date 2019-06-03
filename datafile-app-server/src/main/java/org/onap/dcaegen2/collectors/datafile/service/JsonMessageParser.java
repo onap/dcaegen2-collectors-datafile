@@ -22,13 +22,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
-
 import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
@@ -39,7 +37,6 @@ import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -50,6 +47,8 @@ import reactor.core.publisher.Mono;
  */
 public class JsonMessageParser {
     private static final Logger logger = LoggerFactory.getLogger(JsonMessageParser.class);
+
+    public static final String ERROR_MSG_VES_EVENT_PARSING = "VES event parsing. ";
 
     private static final String COMMON_EVENT_HEADER = "commonEventHeader";
     private static final String EVENT_NAME = "eventName";
@@ -152,10 +151,10 @@ public class JsonMessageParser {
                 }
             }
 
-            logger.error("VES event parsing. Missing arrayOfNamedHashMap in message. {}", message);
+            logger.error(ERROR_MSG_VES_EVENT_PARSING + "Missing arrayOfNamedHashMap in message. {}", message);
             return Mono.empty();
         }
-        logger.error("VES event parsing. FileReady event has incorrect JsonObject. {}", message);
+        logger.error(ERROR_MSG_VES_EVENT_PARSING + "FileReady event has incorrect JsonObject. {}", message);
         return Mono.empty();
     }
 
@@ -186,12 +185,12 @@ public class JsonMessageParser {
         if (missingValues.isEmpty() && isChangeTypeCorrect(changeType)) {
             return Optional.of(messageMetaData);
         } else {
-            String errorMessage = "VES event parsing.";
+            String errorMessage = ERROR_MSG_VES_EVENT_PARSING;
             if (!missingValues.isEmpty()) {
-                errorMessage += " Missing data: " + missingValues;
+                errorMessage += "Missing data: " + missingValues + ".";
             }
             if (!isChangeTypeCorrect(changeType)) {
-                errorMessage += " Change type is wrong: " + changeType + " expected: " + FILE_READY_CHANGE_TYPE;
+                errorMessage += " Change type is wrong: " + changeType + " Expected: " + FILE_READY_CHANGE_TYPE;
             }
             errorMessage += " Message: {}";
             logger.error(errorMessage, message);
@@ -224,11 +223,17 @@ public class JsonMessageParser {
         JsonObject data = fileInfo.getAsJsonObject(HASH_MAP);
 
         String location = getValueFromJson(data, LOCATION, missingValues);
+        if (StringUtils.isEmpty(location)) {
+            logger.error(ERROR_MSG_VES_EVENT_PARSING + "File information wrong. Missing location. Data: {} {}",
+                    messageMetaData, fileInfo);
+            return Optional.empty();
+        }
         Scheme scheme;
         try {
             scheme = Scheme.getSchemeFromString(URI.create(location).getScheme());
         } catch (Exception e) {
-            logger.error("VES event parsing.", e);
+            logger.error(ERROR_MSG_VES_EVENT_PARSING + "{}. Location: {} Data: {}", e.getMessage(), location,
+                    messageMetaData, e);
             return Optional.empty();
         }
         FileData fileData = ImmutableFileData.builder() //
@@ -243,14 +248,14 @@ public class JsonMessageParser {
         if (missingValues.isEmpty()) {
             return Optional.of(fileData);
         }
-        logger.error("VES event parsing. File information wrong. Missing data: {} Data: {}", missingValues, fileInfo);
+        logger.error(ERROR_MSG_VES_EVENT_PARSING + "File information wrong. Missing data: {} Data: {}", missingValues,
+                fileInfo);
         return Optional.empty();
     }
 
     /**
-     * Gets data from the event name. Defined as:
-     * {DomainAbbreviation}_{productName}-{vendorName}_{Description}, example:
-     * Noti_RnNode-Ericsson_FileReady
+     * Gets data from the event name. Defined as: {DomainAbbreviation}_{productName}-{vendorName}_{Description},
+     * example: Noti_RnNode-Ericsson_FileReady
      *
      * @param dataType The type of data to get, {@link DmaapConsumerJsonParser.EventNameDataType}.
      * @param eventName The event name to get the data from.
@@ -264,7 +269,10 @@ public class JsonMessageParser {
             return eventArray[dataType.index];
         } else {
             missingValues.add(dataType.toString());
-            logger.error("Can not get {} from eventName, eventName is not in correct format: {}", dataType, eventName);
+            logger.error(
+                    ERROR_MSG_VES_EVENT_PARSING
+                            + "Can not get {} from eventName, eventName is not in correct format: {}",
+                    dataType, eventName);
         }
         return "";
     }

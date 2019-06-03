@@ -1,4 +1,4 @@
-/*
+/*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018 Nordix Foundation. All rights reserved.
  * ===============================================================================================
@@ -37,10 +37,8 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 /**
- * PublishRedirectStrategy implementation
- * that automatically redirects all HEAD, GET, POST, PUT, and DELETE requests.
- * This strategy relaxes restrictions on automatic redirection of
- * POST methods imposed by the HTTP specification.
+ * PublishRedirectStrategy implementation that automatically redirects all HEAD, GET, POST, PUT, and DELETE requests.
+ * This strategy relaxes restrictions on automatic redirection of POST methods imposed by the HTTP specification.
  *
  */
 @Contract(threading = ThreadingBehavior.IMMUTABLE)
@@ -50,6 +48,17 @@ public class PublishRedirectStrategy extends DefaultRedirectStrategy {
     private final Map<String, String> contextMap;
 
     /**
+     * Redirectable methods.
+     */
+    private static final String[] REDIRECT_METHODS = new String[] { //
+            HttpPut.METHOD_NAME, //
+            HttpGet.METHOD_NAME, //
+            HttpPost.METHOD_NAME, //
+            HttpHead.METHOD_NAME, //
+            HttpDelete.METHOD_NAME //
+    };
+
+    /**
      * Constructor PublishRedirectStrategy.
      *
      * @param contextMap - MDC context map
@@ -57,17 +66,6 @@ public class PublishRedirectStrategy extends DefaultRedirectStrategy {
     public PublishRedirectStrategy(Map<String, String> contextMap) {
         this.contextMap = contextMap;
     }
-
-    /**
-     * Redirectable methods.
-     */
-    private static final String[] REDIRECT_METHODS = new String[] { //
-        HttpPut.METHOD_NAME, //
-        HttpGet.METHOD_NAME, //
-        HttpPost.METHOD_NAME, //
-        HttpHead.METHOD_NAME, //
-        HttpDelete.METHOD_NAME //
-    };
 
     @Override
     protected boolean isRedirectable(final String method) {
@@ -81,7 +79,7 @@ public class PublishRedirectStrategy extends DefaultRedirectStrategy {
 
     @Override
     public HttpUriRequest getRedirect(final HttpRequest request, final HttpResponse response, final HttpContext context)
-        throws ProtocolException {
+            throws ProtocolException {
         MDC.setContextMap(contextMap);
         final URI uri = getLocationURI(request, response, context);
         logger.trace("getRedirect...: {}", request);
