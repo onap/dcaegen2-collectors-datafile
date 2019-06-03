@@ -16,6 +16,8 @@ topology_template:
       default: 256
     datafile.policy:
       type: string
+    dmaap.dmaapProducerConfiguration:
+      type: string
     ftp.ftpesConfiguration.keyCert:
       type: string
     ftp.ftpesConfiguration.keyPassword:
@@ -51,7 +53,7 @@ topology_template:
       type: string
     service_name:
       type: string
-    streams_consumer.datafile_consume_mr.message_router_topic:
+    streams_subscribes:
       type: string
   substitution_mappings:
     node_type: tosca.dcae.nodes.dockerApp.dcaegen2.collectors.datafile.datafile-app-server
@@ -63,9 +65,6 @@ topology_template:
       policy:
       - dcaegen2.collectors.datafile.datafile-app-server
       - policy
-      stream_publish_0:
-      - dcaegen2.collectors.datafile.datafile-app-server
-      - stream_publish_0
       stream_subscribe_0:
       - dcaegen2.collectors.datafile.datafile-app-server
       - stream_subscribe_0
@@ -76,6 +75,8 @@ topology_template:
         application_config:
           datafile.policy:
             get_input: datafile.policy
+          dmaap.dmaapProducerConfiguration:
+            get_input: dmaap.dmaapProducerConfiguration
           ftp.ftpesConfiguration.keyCert:
             get_input: ftp.ftpesConfiguration.keyCert
           ftp.ftpesConfiguration.keyPassword:
@@ -97,19 +98,7 @@ topology_template:
           service_name:
             get_input: service_name
           services_calls: {}
-          streams_consumer.datafile_consume_mr.message_router_topic:
-            get_input: streams_consumer.datafile_consume_mr.message_router_topic
-          streams_publishes:
-            datafile_publish_dr:
-              dmaap_info:
-                concat:
-                - '<<'
-                - get_property:
-                  - SELF
-                  - stream_publish_0
-                  - node_name
-                - '>>'
-              type: data_router
+          streams_publishes: {}
           streams_subscribes:
             datafile_subscribe_mr:
               aaf_password:
@@ -141,18 +130,7 @@ topology_template:
         location_id:
           get_input: location_id
         service_component_type: dcaegen2.collectors.datafile.datafile-app-server
-        streams_publishes:
-        - location:
-            get_property:
-            - SELF
-            - stream_publish_0
-            - location
-          name:
-            get_property:
-            - SELF
-            - stream_publish_0
-            - node_name
-          type: data_router
+        streams_publishes: []
         streams_subscribes:
         - client_role:
             get_property:
