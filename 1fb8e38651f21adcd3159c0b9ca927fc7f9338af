@@ -69,6 +69,30 @@
       "revId": "1fb8e38651f21adcd3159c0b9ca927fc7f9338af",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12cf5b99_a74bf95a",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-06-03T09:42:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "817c99b0_e6c385ab",
+      "range": {
+        "startLine": 105,
+        "startChar": 4,
+        "endLine": 109,
+        "endChar": 17
+      },
+      "revId": "1fb8e38651f21adcd3159c0b9ca927fc7f9338af",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
