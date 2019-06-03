@@ -13,14 +13,6 @@
         "format": "VES_specification",
         "version": "7.30.1"
       }
-    ],
-    "publishes": [
-      {
-        "type": "data_router",
-        "config_key": "datafile_publish_dr",
-        "format": "3GPP_XML",
-        "version": "1.0.0"
-      }
     ]
   },
   "services": {
@@ -53,8 +45,19 @@
       "required": true
     },
     {
-      "name": "streams_consumer.datafile_consume_mr.message_router_topic",
-      "value": "/events/unauthenticated.VES_NOTIFICATION_OUTPUT",
+      "name": "dmaap.dmaapProducerConfiguration",
+      "value": [{"changeIdentifier": "PM_MEAS_FILES", "feedName": "bulk_pm_feed"}],
+      "description": "datafile collector consume VES event to message router topic ",
+      "designer_editable": true,
+      "sourced_at_deployment": false,
+      "policy_editable": false,
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "streams_subscribes",
+      "value": {"dmaap_subscriber": {"dmmap_info": {"topic_url":
+      "http://message-router.onap.svc.cluster.local:3904/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12"}}},
       "description": "datafile collector consume VES event to message router topic ",
       "designer_editable": true,
       "sourced_at_deployment": false,
