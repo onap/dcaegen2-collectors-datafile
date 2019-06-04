@@ -1,0 +1,11 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Maxime Bonneau <maxime.bonneau@est.tech>
+Code-Review+1: Martin Yan <martin.c.yan@est.tech>
+Code-Review+1: Yongchao Wu <yongchao.wu@est.tech>
+Code-Review+1: Muhammad Rehan Raza <muhammad.rehan.raza@est.tech>
+Code-Review+2: Henrik Andersson <henrik.b.andersson@est.tech>
+Submitted-by: Henrik Andersson <henrik.b.andersson@est.tech>
+Submitted-at: Tue, 04 Jun 2019 06:57:26 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/dcaegen2/collectors/datafile/+/89120
+Project: dcaegen2/collectors/datafile
+Branch: refs/heads/master
