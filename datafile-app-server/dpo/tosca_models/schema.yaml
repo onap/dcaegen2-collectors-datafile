@@ -177,9 +177,6 @@ node_types:
     - stream_subscribe_0:
         capability: dcae.capabilities.dmmap.topic
         relationship: dcae.relationships.subscribe_to_events
-    - stream_publish_0:
-        capability: dcae.capabilities.dmmap.feed
-        relationship: dcae.relationships.publish_files
     - policy:
         capability: dcae.capabilities.policy
         relationship: cloudify.relationships.depends_on
@@ -507,6 +504,8 @@ node_types:
     properties:
       datafile.policy:
         type: string
+      dmaap.dmaapProducerConfiguration:
+        type: string
       ftp.ftpesConfiguration.keyCert:
         type: string
       ftp.ftpesConfiguration.keyPassword:
@@ -527,15 +526,12 @@ node_types:
         type: string
       service_name:
         type: string
-      streams_consumer.datafile_consume_mr.message_router_topic:
+      streams_subscribes:
         type: string
     requirements:
     - stream_subscribe_0:
         capability: dcae.capabilities.dmmap.topic
         relationship: dcae.relationships.subscribe_to_events
-    - stream_publish_0:
-        capability: dcae.capabilities.dmmap.feed
-        relationship: dcae.relationships.publish_files
     - policy:
         capability: dcae.capabilities.policy
         relationship: cloudify.relationships.depends_on
