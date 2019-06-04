@@ -28,6 +28,7 @@ import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.ftp.FileCollectClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.FtpsClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.SftpClient;
+import org.onap.dcaegen2.collectors.datafile.model.Counters;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FilePublishInformation;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFilePublishInformation;
@@ -47,14 +48,16 @@ public class FileCollector {
 
     private static final Logger logger = LoggerFactory.getLogger(FileCollector.class);
     private final AppConfig datafileAppConfig;
+    private final Counters counters;
 
     /**
      * Constructor.
      *
      * @param datafileAppConfig application configuration
      */
-    public FileCollector(AppConfig datafileAppConfig) {
+    public FileCollector(AppConfig datafileAppConfig, Counters counters) {
         this.datafileAppConfig = datafileAppConfig;
+        this.counters = counters;
     }
 
     /**
@@ -99,10 +102,12 @@ public class FileCollector {
             currentClient.open();
             localFile.getParent().toFile().mkdir(); // Create parent directories
             currentClient.collectFile(remoteFile, localFile);
+            counters.incNoOfCollectedFiles();
             return Mono.just(Optional.of(getFilePublishInformation(fileData, localFile, context)));
         } catch (DatafileTaskException e) {
             logger.warn("Failed to download file: {} {}, reason: {}", fileData.sourceName(), fileData.name(),
                     e.toString());
+            counters.incNoOfFailedFtpAttempts();
             if (e.isRetryable()) {
                 return Mono.error(e);
             } else {

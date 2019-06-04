@@ -40,6 +40,7 @@ import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.ftp.FtpsClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
 import org.onap.dcaegen2.collectors.datafile.ftp.SftpClient;
+import org.onap.dcaegen2.collectors.datafile.model.Counters;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FilePublishInformation;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
@@ -93,6 +94,7 @@ public class FileCollectorTest {
     private SftpClient sftpClientMock = mock(SftpClient.class);
     private final Map<String, String> contextMap = new HashMap<>();
 
+    private final Counters counters = new Counters();
 
     private MessageMetaData createMessageMetaData() {
         return ImmutableMessageMetaData.builder() //
@@ -133,7 +135,7 @@ public class FileCollectorTest {
                 .compression(GZIP_COMPRESSION) //
                 .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
                 .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .context(new HashMap<String,String>()) //
+                .context(new HashMap<String, String>()) //
                 .changeIdentifier(CHANGE_IDENTIFIER) //
                 .build();
     }
@@ -152,7 +154,7 @@ public class FileCollectorTest {
 
     @Test
     public void whenFtpesFile_returnCorrectResponse() throws Exception {
-        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock));
+        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
         doReturn(ftpsClientMock).when(collectorUndetTest).createFtpsClient(any());
 
         FileData fileData = createFileData(FTPES_LOCATION_NO_PORT, Scheme.FTPS);
@@ -173,7 +175,7 @@ public class FileCollectorTest {
 
     @Test
     public void whenSftpFile_returnCorrectResponse() throws Exception {
-        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock));
+        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
         doReturn(sftpClientMock).when(collectorUndetTest).createSftpClient(any());
 
 
@@ -201,7 +203,7 @@ public class FileCollectorTest {
 
     @Test
     public void whenFtpesFileAlwaysFail_retryAndFail() throws Exception {
-        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock));
+        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
         doReturn(ftpsClientMock).when(collectorUndetTest).createFtpsClient(any());
 
         FileData fileData = createFileData(FTPES_LOCATION, Scheme.FTPS);
@@ -217,7 +219,7 @@ public class FileCollectorTest {
 
     @Test
     public void whenFtpesFileAlwaysFail_failWithoutRetry() throws Exception {
-        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock));
+        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, new Counters()));
         doReturn(ftpsClientMock).when(collectorUndetTest).createFtpsClient(any());
 
         final boolean retry = false;
@@ -234,7 +236,7 @@ public class FileCollectorTest {
 
     @Test
     public void whenFtpesFileFailOnce_retryAndReturnCorrectResponse() throws Exception {
-        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock));
+        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
         doReturn(ftpsClientMock).when(collectorUndetTest).createFtpsClient(any());
         doThrow(new DatafileTaskException("Unable to collect file.")).doNothing().when(ftpsClientMock)
                 .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);

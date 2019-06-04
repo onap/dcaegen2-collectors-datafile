@@ -19,6 +19,8 @@ package org.onap.dcaegen2.collectors.datafile.controllers;
 import static org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext.ENTRY;
 import static org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext.EXIT;
 
+import org.onap.dcaegen2.collectors.datafile.model.Counters;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -37,28 +39,25 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 /**
- * Controller to check the heartbeat of DFC.
- *
- * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/19/18
- * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
+ * REST Controller to check the heart beat and status of the DFC.
  */
 @RestController
-@Api(value = "HeartbeatController")
-public class HeartbeatController {
+@Api(value = "StatusController")
+public class StatusController {
 
-    private static final Logger logger = LoggerFactory.getLogger(HeartbeatController.class);
+    private static final Logger logger = LoggerFactory.getLogger(StatusController.class);
 
     private final ScheduledTasks scheduledTasks;
 
     @Autowired
-    public HeartbeatController(ScheduledTasks scheduledTasks) {
+    public StatusController(ScheduledTasks scheduledTasks) {
         this.scheduledTasks = scheduledTasks;
     }
 
     /**
-     * Checks the heartbeat of DFC.
+     * Checks the heart beat of DFC.
      *
-     * @return the heartbeat status of DFC.
+     * @return the heart beat status of DFC.
      */
     @GetMapping("/heartbeat")
     @ApiOperation(value = "Returns liveness of DATAFILE service")
@@ -66,18 +65,41 @@ public class HeartbeatController {
             @ApiResponse(code = 200, message = "DATAFILE service is living"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     public Mono<ResponseEntity<String>> heartbeat(@RequestHeader HttpHeaders headers) {
         MappedDiagnosticContext.initializeTraceContext(headers);
         logger.info(ENTRY, "Heartbeat request");
 
-        StringBuilder statusString = new StringBuilder("I'm living! Status: ");
-        statusString.append("numberOfFileCollectionTasks=").append(scheduledTasks.getCurrentNumberOfTasks())
-                .append(",");
-        statusString.append("fileCacheSize=").append(scheduledTasks.publishedFilesCacheSize());
+        String statusString = "I'm living!";
 
-        Mono<ResponseEntity<String>> response = Mono.just(new ResponseEntity<>(statusString.toString(), HttpStatus.OK));
+        Mono<ResponseEntity<String>> response = Mono.just(new ResponseEntity<>(statusString, HttpStatus.OK));
         logger.info(EXIT, "Heartbeat request");
         return response;
     }
+
+    /**
+     * Returns diagnostics and statistics information. It is intended for testing and trouble
+     * shooting.
+     *
+     * @return information.
+     */
+    @GetMapping("/status")
+    @ApiOperation(value = "Returns status and statistics of DATAFILE service")
+    @ApiResponses(value = { //
+            @ApiResponse(code = 200, message = "DATAFILE service is living"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
+    public Mono<ResponseEntity<String>> status(@RequestHeader HttpHeaders headers) {
+        MappedDiagnosticContext.initializeTraceContext(headers);
+        logger.info(ENTRY, "Status request");
+
+        Counters counters = scheduledTasks.getCounters();
+        Mono<ResponseEntity<String>> response = Mono.just(new ResponseEntity<>(counters.toString(), HttpStatus.OK));
+        logger.info(EXIT, "Status request");
+        return response;
+    }
+
+
+
 }
