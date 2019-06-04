@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c226179e_0b27b6e1",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/Scheme.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-06-04T13:44:27Z",
+      "side": 1,
+      "message": "nit: \n\"FTPES,\"",
+      "revId": "724d0798ab3415a18cba75dc2d51c01e328a0c60",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1777a991_9a5b7421",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-06-04T13:44:27Z",
+      "side": 1,
+      "message": "\"Publish of file \" \u003d\u003e \"Publishing file \"",
+      "revId": "724d0798ab3415a18cba75dc2d51c01e328a0c60",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab48870e_f949e7e8",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DataRouterPublisher.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-06-04T13:44:27Z",
+      "side": 1,
+      "message": "\"Publish of file \" \u003d\u003e \"Publishing file \"",
+      "revId": "724d0798ab3415a18cba75dc2d51c01e328a0c60",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1dced6a8_924a4f24",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/web/PublishRedirectStrategy.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-06-04T13:44:27Z",
+      "side": 1,
+      "message": "2018-2019",
+      "revId": "724d0798ab3415a18cba75dc2d51c01e328a0c60",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
