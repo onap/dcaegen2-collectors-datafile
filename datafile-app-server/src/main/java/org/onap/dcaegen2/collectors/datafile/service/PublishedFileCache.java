@@ -28,7 +28,7 @@ import java.util.Map;
  * the key was last used.
  */
 public class PublishedFileCache {
-    private final Map<Path, Instant> publishedFiles = Collections.synchronizedMap(new HashMap<Path, Instant>());
+    private final Map<Path, Instant> publishedFiles = new HashMap<Path, Instant>();
 
     /**
      * Adds a file to the cache.
@@ -36,7 +36,7 @@ public class PublishedFileCache {
      * @param path the name of the file to add.
      * @return <code>null</code> if the file is not already in the cache.
      */
-    public Instant put(Path path) {
+    public synchronized Instant put(Path path) {
         return publishedFiles.put(path, Instant.now());
     }
 
@@ -45,7 +45,7 @@ public class PublishedFileCache {
      *
      * @param localFileName name of the file to remove.
      */
-    public void remove(Path localFileName) {
+    public synchronized void remove(Path localFileName) {
         publishedFiles.remove(localFileName);
     }
 
@@ -54,7 +54,7 @@ public class PublishedFileCache {
      *
      * @param now the instant will determine which files that will be purged.
      */
-    public void purge(Instant now) {
+    public synchronized void purge(Instant now) {
         for (Iterator<Map.Entry<Path, Instant>> it = publishedFiles.entrySet().iterator(); it.hasNext();) {
             Map.Entry<Path, Instant> pair = it.next();
             if (isCachedPublishedFileOutdated(now, pair.getValue())) {
@@ -63,7 +63,7 @@ public class PublishedFileCache {
         }
     }
 
-    public int size() {
+    public synchronized int size() {
         return publishedFiles.size();
     }
 
