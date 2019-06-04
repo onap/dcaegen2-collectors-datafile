@@ -46,6 +46,30 @@
       "revId": "8cae76ef66f1928b3d5afb9a67bb330c5cd513c4",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9b42bc08_3317823a",
+        "filename": "datafile-app-server/dpo/spec/dmaap.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-06-04T09:57:30Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "c1671bac_a005ce58",
+      "range": {
+        "startLine": 8,
+        "startChar": 2,
+        "endLine": 13,
+        "endChar": 3
+      },
+      "revId": "8cae76ef66f1928b3d5afb9a67bb330c5cd513c4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
