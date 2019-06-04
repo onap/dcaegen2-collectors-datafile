@@ -117,7 +117,7 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement)))
                 .expectSubscription().expectNext(expectedMessage).verifyComplete();
     }
 
@@ -167,10 +167,11 @@ class JsonMessageParserTest {
         String messageString = "[" + parsedString + "," + parsedString + "]";
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
+        JsonElement jsonElement1 = new JsonParser().parse(messageString);
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement1)))
                 .expectSubscription().expectNext(expectedMessage).expectNext(expectedMessage).verifyComplete();
     }
 
@@ -197,7 +198,7 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement)))
                 .expectSubscription().expectNextCount(0).verifyComplete();
     }
 
@@ -246,8 +247,9 @@ class JsonMessageParserTest {
         String parsedString = message.getParsed();
         String messageString = "[{\"event\":{}}," + parsedString + "]";
         JsonMessageParser jsonMessageParserUnderTest = new JsonMessageParser();
+        JsonElement jsonElement = new JsonParser().parse(messageString);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement)))
                 .expectSubscription().expectNext(expectedMessage).verifyComplete();
     }
 
@@ -274,7 +276,7 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement)))
                 .expectSubscription().expectComplete().verify();
     }
 
@@ -301,7 +303,7 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement)))
                 .expectSubscription().expectNextCount(0).verifyComplete();
     }
 
@@ -321,7 +323,7 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement)))
                 .expectSubscription().expectNextCount(0).verifyComplete();
     }
 
@@ -348,7 +350,7 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement)))
                 .expectSubscription().expectNextCount(0).verifyComplete();
     }
 
@@ -375,7 +377,7 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement)))
                 .expectSubscription().expectNextCount(0).verifyComplete();
     }
 
@@ -435,7 +437,7 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement)))
                 .expectSubscription().expectNext(expectedMessage).verifyComplete();
     }
 
@@ -455,7 +457,7 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(incorrectMessageString)))
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement)))
                 .expectSubscription().expectComplete().verify();
     }
 
@@ -467,7 +469,7 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just("[{}]"))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
                 .expectComplete().verify();
     }
 
@@ -494,7 +496,7 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement)))
                 .expectSubscription().expectNextCount(0).expectComplete().verify();
     }
 
@@ -521,7 +523,7 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
                 .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement)))
                 .expectSubscription().expectComplete().verify();
     }
 }

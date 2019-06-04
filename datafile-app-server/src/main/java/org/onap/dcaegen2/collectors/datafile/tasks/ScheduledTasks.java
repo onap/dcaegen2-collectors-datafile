@@ -165,7 +165,7 @@ public class ScheduledTasks {
         return this.threadPoolQueueSize.get();
     }
 
-    protected DMaaPMessageConsumer createConsumerTask() throws DatafileTaskException {
+    protected DMaaPMessageConsumer createConsumerTask() {
         return new DMaaPMessageConsumer(this.applicationConfiguration);
     }
 

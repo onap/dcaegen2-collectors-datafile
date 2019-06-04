@@ -507,6 +507,8 @@ node_types:
     properties:
       datafile.policy:
         type: string
+      dmaap.dmaapProducerConfiguration:
+        type: string
       ftp.ftpesConfiguration.keyCert:
         type: string
       ftp.ftpesConfiguration.keyPassword:
@@ -527,7 +529,7 @@ node_types:
         type: string
       service_name:
         type: string
-      streams_consumer.datafile_consume_mr.message_router_topic:
+      streams_subscribes:
         type: string
     requirements:
     - stream_subscribe_0:

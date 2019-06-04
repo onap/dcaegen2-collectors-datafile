@@ -16,6 +16,8 @@ topology_template:
       default: 256
     datafile.policy:
       type: string
+    dmaap.dmaapProducerConfiguration:
+      type: string
     ftp.ftpesConfiguration.keyCert:
       type: string
     ftp.ftpesConfiguration.keyPassword:
@@ -51,7 +53,7 @@ topology_template:
       type: string
     service_name:
       type: string
-    streams_consumer.datafile_consume_mr.message_router_topic:
+    streams_subscribes:
       type: string
   substitution_mappings:
     node_type: tosca.dcae.nodes.dockerApp.dcaegen2.collectors.datafile.datafile-app-server
@@ -76,6 +78,8 @@ topology_template:
         application_config:
           datafile.policy:
             get_input: datafile.policy
+          dmaap.dmaapProducerConfiguration:
+            get_input: dmaap.dmaapProducerConfiguration
           ftp.ftpesConfiguration.keyCert:
             get_input: ftp.ftpesConfiguration.keyCert
           ftp.ftpesConfiguration.keyPassword:
@@ -97,8 +101,6 @@ topology_template:
           service_name:
             get_input: service_name
           services_calls: {}
-          streams_consumer.datafile_consume_mr.message_router_topic:
-            get_input: streams_consumer.datafile_consume_mr.message_router_topic
           streams_publishes:
             datafile_publish_dr:
               dmaap_info:

@@ -101,7 +101,7 @@ public class SftpClientTest {
 
             assertThatThrownBy(() -> sftpClient.collectFile("wrong", LOCAL_DUMMY_FILE))
                 .hasMessageStartingWith("Unable to get file from xNF. Data: FileServerData{serverAddress=127.0.0.1, "
-                    + "userId=bob, password=123, port=");
+                    + "userId=bob, password=####");
         }
     }
 

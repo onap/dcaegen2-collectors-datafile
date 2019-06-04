@@ -56,6 +56,7 @@ public abstract class ConsumerConfiguration {
             DmaapConsumerUrlPath path = parseDmaapUrlPath(urlPath);
 
             return new ImmutableDmaapConsumerConfiguration.Builder() //
+                    .endpointUrl(topicUrl())
                     .dmaapContentType("application/json") //
                     .dmaapPortNumber(url.getPort()) //
                     .dmaapHostName(url.getHost()) //

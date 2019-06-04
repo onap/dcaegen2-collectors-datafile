@@ -16,6 +16,7 @@ topology_template:
       type: tosca.dcae.nodes.dockerApp.dcaegen2.collectors.datafile.datafile-app-server
       properties:
         datafile.policy: ''
+        dmaap.dmaapProducerConfiguration: '[{''changeIdentifier'': ''PM_MEAS_FILES'', ''feedName'': ''bulk_pm_feed''}]'
         ftp.ftpesConfiguration.keyCert: config/dfc.jks
         ftp.ftpesConfiguration.keyPassword: secret
         ftp.ftpesConfiguration.trustedCa: config/ftp.jks
@@ -31,7 +32,7 @@ topology_template:
         security.trustStorePasswordPath: /opt/app/datafile/etc/cert/trust.pass
         security.trustStorePath: /opt/app/datafile/etc/cert/trust.jks
         service_name: datafile
-        streams_consumer.datafile_consume_mr.message_router_topic: /events/unauthenticated.VES_NOTIFICATION_OUTPUT
+        streams_subscribes: '{''dmaap_subscriber'': {''dmmap_info'': {''topic_url'': ''http://message-router.onap.svc.cluster.local:3904/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12''}}}'
       requirements:
       - stream_subscribe_0: topic0
       - stream_publish_0: feed1
