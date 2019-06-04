@@ -2,13 +2,13 @@
   "datafile_subscribe_mr": {
     "type": "message_router",
     "dmaap_info": {
-      "topic_url": "http://message-router.onap.svc.cluster.local:3904/events/unauthenticated.VES_NOTIFICATION_OUTPUT"
+      "topic_url": "http://message-router.onap.svc.cluster.local:3904/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12"
     }
   },
   "datafile_publish_dr": {
     "type": "data_router",
     "dmaap_info": {
-      "publish_url": "/publish"
+      "publish_url": ""
     }
   }
 }
