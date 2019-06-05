@@ -38,6 +38,7 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPSClient;
 import org.apache.commons.net.util.KeyManagerUtils;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
@@ -119,8 +120,7 @@ public class FtpsClient implements FileCollectClient {
         try (OutputStream output = createOutputStream(localFileName)) {
             logger.trace("begin to retrieve from xNF.");
             if (!realFtpsClient.retrieveFile(remoteFileName, output)) {
-                final boolean retry = false; // Skip retrying for all problems except IOException
-                throw new DatafileTaskException("Could not retrieve file " + remoteFileName, retry);
+                throw new NonRetryableDatafileTaskException("Could not retrieve file " + remoteFileName);
             }
         } catch (IOException e) {
             throw new DatafileTaskException("Could not fetch file: " + e, e);
