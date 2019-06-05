@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "be1af46d_d9e8e004",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5074
+      },
+      "writtenOn": "2019-06-05T11:25:20Z",
+      "side": 1,
+      "message": "Perhaps add info in the text that no retry will be made (I assume this text will be visible in the application.log)",
+      "range": {
+        "startLine": 66,
+        "startChar": 26,
+        "endLine": 66,
+        "endChar": 59
+      },
+      "revId": "af994cbafd76cf5228180aa4cfe06e5d5f13c429",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
