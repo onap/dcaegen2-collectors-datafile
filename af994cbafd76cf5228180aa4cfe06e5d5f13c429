@@ -22,6 +22,30 @@
       "revId": "af994cbafd76cf5228180aa4cfe06e5d5f13c429",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1b00bcad_ebfa91c9",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-06-05T11:52:47Z",
+      "side": 1,
+      "message": "Done (also in some other places).\nYes,the text will logged as warnings in the application log.",
+      "parentUuid": "be1af46d_d9e8e004",
+      "range": {
+        "startLine": 66,
+        "startChar": 26,
+        "endLine": 66,
+        "endChar": 59
+      },
+      "revId": "af994cbafd76cf5228180aa4cfe06e5d5f13c429",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
