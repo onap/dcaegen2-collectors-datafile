@@ -124,3 +124,4 @@ node_templates:
       tls_info:
         cert_directory: '/opt/app/datafile/etc/cert/'
         use_tls: true
+

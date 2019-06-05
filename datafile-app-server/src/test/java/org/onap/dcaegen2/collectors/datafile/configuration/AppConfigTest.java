@@ -27,6 +27,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.google.gson.JsonElement;
@@ -34,7 +36,6 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,7 +44,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Properties;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,9 +55,6 @@ import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuratio
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.providers.CloudConfigurationProvider;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapConsumerConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
-
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -209,14 +206,19 @@ class AppConfigTest {
         // Given
         appConfigUnderTest.setFilepath("/temp.json");
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
+
         // When
         appConfigUnderTest.loadConfigurationFromFile();
 
         // Then
+        assertTrue("Error message missing in log.",
+                logAppender.list.toString().contains("[WARN] Local configuration file not loaded: /temp.json"));
+        logAppender.stop();
+
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         assertThatThrownBy(() -> appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER))
                 .hasMessageContaining("No PublishingConfiguration loaded, changeIdentifier: PM_MEAS_FILES");
-
         Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
     }
 
@@ -270,12 +272,12 @@ class AppConfigTest {
 
     @Test
     public void whenPeriodicConfigRefreshNoConsul() {
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
 
         doReturn(Mono.just(properties())).when(appConfigUnderTest).readEnvironmentVariables(any(), any());
         Mono<JsonObject> err = Mono.error(new IOException());
         doReturn(err).when(cloudConfigurationProvider).callForServiceConfigurationReactive(any());
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
         Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
 
         StepVerifier //
@@ -312,8 +314,7 @@ class AppConfigTest {
         doReturn(Mono.just(properties())).when(appConfigUnderTest).readEnvironmentVariables(any(), any());
 
         Mono<JsonObject> json = Mono.just(getJsonRootObject());
-        Mono<JsonObject> err = Mono.error(new IOException()); // no config entry created by the
-                                                              // dmaap plugin
+        Mono<JsonObject> err = Mono.error(new IOException()); // no config entry created by the dmaap plugin
 
         doReturn(json, err).when(cloudConfigurationProvider).callForServiceConfigurationReactive(any());
 

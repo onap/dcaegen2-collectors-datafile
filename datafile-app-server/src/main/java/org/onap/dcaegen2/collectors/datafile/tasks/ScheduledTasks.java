@@ -22,7 +22,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
@@ -35,7 +34,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -43,8 +41,8 @@ import reactor.core.scheduler.Schedulers;
 
 
 /**
- * This implements the main flow of the data file collector. Fetch file ready events from the
- * message router, fetch new files from the PNF publish these in the data router.
+ * This implements the main flow of the data file collector. Fetch file ready events from the message router, fetch new
+ * files from the PNF publish these in the data router.
  */
 @Component
 public class ScheduledTasks {
@@ -82,7 +80,8 @@ public class ScheduledTasks {
         try {
             if (getCurrentNumberOfTasks() > MAX_TASKS_FOR_POLLING || this.threadPoolQueueSize.get() > 0) {
                 logger.info(
-                        "Skipping consuming new files; current number of tasks: {}, number of subscriptions: {}, published files: {}, number of queued VES events: {}",
+                        "Skipping consuming new files; current number of tasks: {}, number of subscriptions: {}, "
+                                + "published files: {}, number of queued VES events: {}",
                         getCurrentNumberOfTasks(), this.currentNumberOfSubscriptions.get(), publishedFilesCache.size(),
                         threadPoolQueueSize.get());
                 return;
@@ -106,7 +105,7 @@ public class ScheduledTasks {
                                 currentNumberOfSubscriptions.decrementAndGet();
                             });
         } catch (Exception e) {
-            logger.error("Unexpected exception: ", e);
+            logger.error("Unexpected exception: {}", e.toString(), e);
         }
     }
 
@@ -264,7 +263,7 @@ public class ScheduledTasks {
     /**
      * Fetch more messages from the message router. This is done in a polling/blocking fashion.
      */
-    private Flux<FileReadyMessage> fetchMoreFileReadyMessages() {
+    Flux<FileReadyMessage> fetchMoreFileReadyMessages() {
         logger.info(
                 "Consuming new file ready messages, current number of tasks: {}, published files: {}, "
                         + "number of subscriptions: {}",

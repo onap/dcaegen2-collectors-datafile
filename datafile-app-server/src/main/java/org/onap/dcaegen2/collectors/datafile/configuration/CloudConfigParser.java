@@ -21,13 +21,11 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 
 
@@ -68,7 +66,8 @@ public class CloudConfigParser {
                     .passWord(getAsString(feedConfig, "password")) //
                     .userName(getAsString(feedConfig, "username")) //
                     .trustStorePath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_TRUST_STORE_PATH)) //
-                    .trustStorePasswordPath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_TRUST_STORE_PASS_PATH)) //
+                    .trustStorePasswordPath(
+                            getAsString(serviceConfigurationRoot, DMAAP_SECURITY_TRUST_STORE_PASS_PATH)) //
                     .keyStorePath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_KEY_STORE_PATH)) //
                     .keyStorePasswordPath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_KEY_STORE_PASS_PATH)) //
                     .enableDmaapCertAuth(
@@ -126,8 +125,7 @@ public class CloudConfigParser {
     private JsonObject getFeedConfig(String feedName) throws DatafileTaskException {
         JsonElement elem = dmaapConfigurationRoot.get(feedName);
         if (elem == null) {
-            elem = get(serviceConfigurationRoot, feedName); // Fallback, try to find it under
-                                                            // serviceConfigurationRoot
+            elem = get(serviceConfigurationRoot, feedName); // Fallback, try to find it under serviceConfigurationRoot
         }
         return elem.getAsJsonObject();
     }

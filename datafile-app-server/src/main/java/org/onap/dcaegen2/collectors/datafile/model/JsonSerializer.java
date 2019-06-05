@@ -23,7 +23,6 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.util.Set;
 
 /**
@@ -31,12 +30,12 @@ import java.util.Set;
  */
 public abstract class JsonSerializer {
 
-    private JsonSerializer() {}
-
     private static Gson gson = new GsonBuilder() //
             .serializeNulls() //
             .addSerializationExclusionStrategy(new FilePublishInformationExclusionStrategy()) //
             .create(); //
+
+    private JsonSerializer() {}
 
     /**
      * Serializes a <code>filePublishInformation</code>.
