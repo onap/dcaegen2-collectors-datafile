@@ -22,7 +22,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapterFactory;
-
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -32,10 +31,8 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ServiceLoader;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
@@ -49,7 +46,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
-
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -174,11 +170,11 @@ public class AppConfig {
     }
 
     /**
-     * parse configuration
+     * Parse configuration.
      *
-     * @param serviceConfigRootObject
-     * @param dmaapConfigRootObject if there is no dmaapConfigRootObject, the dmaap feeds are taken
-     *        from the serviceConfigRootObject
+     * @param serviceConfigRootObject the DFC service's configuration
+     * @param dmaapConfigRootObject if there is no dmaapConfigRootObject, the dmaap feeds are taken from the
+     *        serviceConfigRootObject
      * @return this which is updated if successful
      */
     private AppConfig parseCloudConfig(JsonObject serviceConfigRootObject, JsonObject dmaapConfigRootObject) {

@@ -16,6 +16,7 @@
 
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
+import io.swagger.annotations.ApiOperation;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -23,9 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
-
 import javax.annotation.PostConstruct;
-
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
 import org.slf4j.Logger;
@@ -37,8 +36,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
-import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Mono;
 
 /**

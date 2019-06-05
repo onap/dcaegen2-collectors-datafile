@@ -18,7 +18,6 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
@@ -96,7 +95,7 @@ public abstract class ConsumerConfiguration {
             throw new DatafileTaskException("The path has incorrect syntax: " + urlPath);
         }
 
-        final String dmaapTopicName =  tokens[1] + "/" + tokens[2]; // ex. // /events/unauthenticated.VES_NOTIFICATION_OUTPUT
+        final String dmaapTopicName =  tokens[1] + "/" + tokens[2]; // e.g. /events/unauthenticated.VES_NOTIFICATION_OUTPUT
         final String consumerGroup = tokens[3]; // ex. OpenDcae-c12
         final String consumerId = tokens[4]; // ex. C12
         return new DmaapConsumerUrlPath(dmaapTopicName, consumerGroup, consumerId);
