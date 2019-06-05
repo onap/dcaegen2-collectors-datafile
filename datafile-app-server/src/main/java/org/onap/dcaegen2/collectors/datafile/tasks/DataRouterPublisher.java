@@ -23,20 +23,21 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.time.Duration;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.FileEntity;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.PublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.onap.dcaegen2.collectors.datafile.model.Counters;
 import org.onap.dcaegen2.collectors.datafile.model.FilePublishInformation;
 import org.onap.dcaegen2.collectors.datafile.model.JsonSerializer;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
@@ -65,9 +66,11 @@ public class DataRouterPublisher {
 
     private static final Logger logger = LoggerFactory.getLogger(DataRouterPublisher.class);
     private final AppConfig datafileAppConfig;
+    private final Counters counters;
 
-    public DataRouterPublisher(AppConfig datafileAppConfig) {
+    public DataRouterPublisher(AppConfig datafileAppConfig, Counters counters) {
         this.datafileAppConfig = datafileAppConfig;
+        this.counters = counters;
     }
 
     /**
@@ -101,8 +104,10 @@ public class DataRouterPublisher {
             HttpResponse response =
                     dmaapProducerHttpClient.getDmaapProducerResponseWithRedirect(put, publishInfo.getContext());
             logger.trace("{}", response);
+            counters.incTotalPublishedFiles();
             return Mono.just(HttpStatus.valueOf(response.getStatusLine().getStatusCode()));
         } catch (Exception e) {
+            counters.incNoOfFailedPublishAttempts();
             logger.warn("Unable to send file to DataRouter. Data: {}", publishInfo.getInternalLocation(), e);
             return Mono.error(e);
         }
@@ -115,22 +120,22 @@ public class DataRouterPublisher {
         put.addHeader(X_DMAAP_DR_META, metaData.toString());
         URI uri = new DefaultUriBuilderFactory(
                 datafileAppConfig.getPublisherConfiguration(publishInfo.getChangeIdentifier()).publishUrl()) //
-                .builder() //
-                .pathSegment(publishInfo.getName()) //
-                .build();
+                        .builder() //
+                        .pathSegment(publishInfo.getName()) //
+                        .build();
         put.setURI(uri);
 
         MappedDiagnosticContext.appendTraceInfo(put);
     }
 
     private void prepareBody(FilePublishInformation publishInfo, HttpPut put) throws IOException {
-        Path fileLocation = publishInfo.getInternalLocation();
-        try (InputStream fileInputStream = createInputStream(fileLocation)) {
-            put.setEntity(new ByteArrayEntity(IOUtils.toByteArray(fileInputStream)));
-        }
+        File file = createInputFile(publishInfo.getInternalLocation());
+        FileEntity entity = new FileEntity(file, ContentType.DEFAULT_BINARY);
+        put.setEntity(entity);
     }
 
-    private static Mono<FilePublishInformation> handleHttpResponse(HttpStatus response, FilePublishInformation publishInfo) {
+    private static Mono<FilePublishInformation> handleHttpResponse(HttpStatus response,
+            FilePublishInformation publishInfo) {
         MDC.setContextMap(publishInfo.getContext());
         if (HttpUtils.isSuccessfulResponseCode(response.value())) {
             logger.trace("Publish to DR successful!");
@@ -141,9 +146,9 @@ public class DataRouterPublisher {
         }
     }
 
-    InputStream createInputStream(Path filePath) throws IOException {
+    File createInputFile(Path filePath) throws IOException {
         FileSystemResource realResource = new FileSystemResource(filePath);
-        return realResource.getInputStream();
+        return realResource.getFile();
     }
 
     PublisherConfiguration resolveConfiguration(String changeIdentifer) throws DatafileTaskException {
