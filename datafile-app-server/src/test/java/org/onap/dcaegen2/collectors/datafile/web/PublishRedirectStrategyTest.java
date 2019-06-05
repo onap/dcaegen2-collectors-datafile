@@ -19,6 +19,7 @@ package org.onap.dcaegen2.collectors.datafile.web;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.http.Header;

@@ -37,6 +37,9 @@ public class JsonMessage {
     private String notificationFieldsVersion;
     private List<AdditionalField> arrayOfAdditionalFields;
 
+    public List<AdditionalField> getAdditionalFields() {
+        return arrayOfAdditionalFields;
+    }
 
     @Override
     public String toString() {
@@ -51,7 +54,7 @@ public class JsonMessage {
     public String getParsed() {
         StringBuffer additionalFieldsString = new StringBuffer();
         if (arrayOfAdditionalFields.size() > 0) {
-            additionalFieldsString.append("\"arrayOfNamedHashMap\": [");
+            additionalFieldsString.append("\"arrayOfNamedHashMap\":[");
             for (Iterator<AdditionalField> iterator = arrayOfAdditionalFields.iterator(); iterator.hasNext();) {
                 AdditionalField additionalField = iterator.next();
                 additionalFieldsString.append(additionalField.toString());

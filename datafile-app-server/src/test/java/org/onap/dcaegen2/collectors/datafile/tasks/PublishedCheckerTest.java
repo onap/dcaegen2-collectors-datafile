@@ -36,7 +36,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -70,7 +69,7 @@ public class PublishedCheckerTest {
 
 
     @BeforeAll
-    public static void setUp() throws DatafileTaskException {
+    private static void setUp() throws DatafileTaskException {
         when(publisherConfigurationMock.publishUrl()).thenReturn(PUBLISH_URL);
 
         appConfigMock = mock(AppConfig.class);
