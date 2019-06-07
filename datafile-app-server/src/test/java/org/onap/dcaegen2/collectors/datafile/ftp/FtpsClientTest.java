@@ -205,7 +205,8 @@ public class FtpsClientTest {
         doReturn(false).when(ftpsClientMock).retrieveFile(REMOTE_FILE_PATH, outputStreamMock);
 
         assertThatThrownBy(() -> clientUnderTestSpy.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH))
-            .hasMessage("Could not retrieve file /dir/sample.txt");
+            .hasMessageContaining(REMOTE_FILE_PATH)
+            .hasMessageContaining("No retry");
 
         verifyFtpsClientMock_openOk();
         verify(ftpsClientMock, times(1)).retrieveFile(ArgumentMatchers.eq(REMOTE_FILE_PATH), any());
