@@ -45,7 +45,7 @@
 
   <properties>
     <java.version>8</java.version>
-    <sdk.version>1.1.1-SNAPSHOT</sdk.version>
+    <sdk.version>1.1.6-SNAPSHOT</sdk.version>
     <apache.httpcomponents.version>4.1.4</apache.httpcomponents.version>
     <apache.commons.version>3.6</apache.commons.version>
     <immutable.version>2.7.1</immutable.version>
@@ -223,6 +223,61 @@
         <groupId>io.springfox</groupId>
         <artifactId>springfox-swagger-ui</artifactId>
         <version>${springfox.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.onap.dcaegen2.services.sdk.rest.services</groupId>
+        <artifactId>cbs-client</artifactId>
+        <version>${sdk.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.onap.dcaegen2.services.sdk.rest.services</groupId>
+        <artifactId>common-dependency</artifactId>
+        <version>${sdk.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.onap.dcaegen2.services.sdk.rest.services</groupId>
+        <artifactId>dmaap-client</artifactId>
+        <version>${sdk.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.validation</groupId>
+        <artifactId>validation-api</artifactId>
+        <version>2.0.1.Final</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-web</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.spotify</groupId>
+        <artifactId>docker-client</artifactId>
+        <version>8.7.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-core</artifactId>
+        <version>9.0.14</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webflux</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-autoconfigure</artifactId>
+        <version>${spring-boot.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

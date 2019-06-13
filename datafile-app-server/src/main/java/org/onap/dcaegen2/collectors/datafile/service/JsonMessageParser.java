@@ -92,8 +92,9 @@ public class JsonMessageParser {
      * @param rawMessage the Json message to parse.
      * @return a <code>Flux</code> containing messages.
      */
-    public Flux<FileReadyMessage> getMessagesFromJson(Mono<String> rawMessage) {
-        return rawMessage.flatMapMany(JsonMessageParser::getJsonParserMessage).flatMap(this::createMessageData);
+
+    public Flux<FileReadyMessage> getMessagesFromJson(Mono<JsonElement> rawMessage) {
+        return rawMessage.flatMapMany(this::createMessageData);
     }
 
     Optional<JsonObject> getJsonObjectFromAnArray(JsonElement element) {
@@ -124,9 +125,6 @@ public class JsonMessageParser {
                 : getMessagesFromJsonArray(jsonElement);
     }
 
-    private static Mono<JsonElement> getJsonParserMessage(String message) {
-        return StringUtils.isEmpty(message) ? Mono.empty() : Mono.fromSupplier(() -> new JsonParser().parse(message));
-    }
 
     private static Flux<FileReadyMessage> createMessages(Flux<JsonObject> jsonObject) {
         return jsonObject.flatMap(monoJsonP -> containsNotificationFields(monoJsonP) ? transformMessages(monoJsonP)
