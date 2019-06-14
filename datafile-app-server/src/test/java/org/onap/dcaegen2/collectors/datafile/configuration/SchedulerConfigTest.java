@@ -44,7 +44,6 @@ import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
-
 import reactor.test.StepVerifier;
 
 public class SchedulerConfigTest {
@@ -53,7 +52,7 @@ public class SchedulerConfigTest {
     private final TaskScheduler taskSchedulerMock = mock(TaskScheduler.class);
     private final ScheduledTasks scheduledTasksMock = mock(ScheduledTasks.class);
     private final SchedulerConfig schedulerUnderTest =
-            spy(new SchedulerConfig(taskSchedulerMock, scheduledTasksMock, appConfigurationMock));
+        spy(new SchedulerConfig(taskSchedulerMock, scheduledTasksMock, appConfigurationMock));
 
     @BeforeEach
     public void setUp() {
@@ -72,8 +71,8 @@ public class SchedulerConfigTest {
 
         String msg = "Datafile Service has already been stopped!";
         StepVerifier.create(schedulerUnderTest.getResponseFromCancellationOfTasks())
-                .expectNext(new ResponseEntity<String>(msg, HttpStatus.CREATED)) //
-                .verifyComplete();
+            .expectNext(new ResponseEntity<String>(msg, HttpStatus.CREATED)) //
+            .verifyComplete();
 
         verify(scheduledFutureMock).cancel(false);
         verifyNoMoreInteractions(scheduledFutureMock);
@@ -88,7 +87,7 @@ public class SchedulerConfigTest {
         SchedulerConfig.setScheduledFutureList(scheduledFutureList);
 
         SchedulerConfig schedulerUnderTestSpy =
-                spy(new SchedulerConfig(taskSchedulerMock, scheduledTasksMock, appConfigurationMock));
+            spy(new SchedulerConfig(taskSchedulerMock, scheduledTasksMock, appConfigurationMock));
 
         boolean actualResult = schedulerUnderTestSpy.tryToStartTask();
 
@@ -96,10 +95,10 @@ public class SchedulerConfigTest {
 
         ArgumentCaptor<Runnable> scheduleMainDatafileEventTaskCaptor = ArgumentCaptor.forClass(Runnable.class);
         verify(taskSchedulerMock).scheduleWithFixedDelay(scheduleMainDatafileEventTaskCaptor.capture(),
-                eq(Duration.ofSeconds(15)));
+            eq(Duration.ofSeconds(15)));
         ArgumentCaptor<Runnable> purgeCachedInformationCaptor = ArgumentCaptor.forClass(Runnable.class);
         verify(taskSchedulerMock).scheduleWithFixedDelay(purgeCachedInformationCaptor.capture(),
-                eq(Duration.ofHours(1)));
+            eq(Duration.ofHours(1)));
         verifyNoMoreInteractions(taskSchedulerMock);
 
         scheduleMainDatafileEventTaskCaptor.getValue().run();

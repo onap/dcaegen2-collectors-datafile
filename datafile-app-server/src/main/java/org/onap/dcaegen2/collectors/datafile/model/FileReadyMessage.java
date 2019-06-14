@@ -21,6 +21,7 @@
 package org.onap.dcaegen2.collectors.datafile.model;
 
 import java.util.List;
+
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 

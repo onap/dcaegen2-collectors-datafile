@@ -73,7 +73,7 @@ public class PublishedChecker {
      * @throws DatafileTaskException if the check fails
      */
     public boolean isFilePublished(String fileName, String changeIdentifier, Map<String, String> contextMap)
-            throws DatafileTaskException {
+        throws DatafileTaskException {
         MDC.setContextMap(contextMap);
         PublisherConfiguration publisherConfig = resolveConfiguration(changeIdentifier);
 
@@ -86,8 +86,8 @@ public class PublishedChecker {
             getRequest.setURI(getPublishedQueryUri(fileName, publisherConfig));
             producerClient.addUserCredentialsToHead(getRequest);
 
-            HttpResponse response = producerClient.getDmaapProducerResponseWithCustomTimeout(getRequest,
-                    WEB_CLIENT_TIMEOUT, contextMap);
+            HttpResponse response =
+                producerClient.getDmaapProducerResponseWithCustomTimeout(getRequest, WEB_CLIENT_TIMEOUT, contextMap);
 
             logger.trace("{}", response);
             int status = response.getStatusLine().getStatusCode();
@@ -104,9 +104,9 @@ public class PublishedChecker {
 
     private static URI getPublishedQueryUri(String fileName, PublisherConfiguration config) throws URISyntaxException {
         return new URIBuilder(config.logUrl()) //
-                .addParameter("type", "pub") //
-                .addParameter("filename", fileName) //
-                .build();
+            .addParameter("type", "pub") //
+            .addParameter("filename", fileName) //
+            .build();
     }
 
     protected PublisherConfiguration resolveConfiguration(String changeIdentifier) throws DatafileTaskException {
@@ -114,7 +114,7 @@ public class PublishedChecker {
     }
 
     protected DmaapProducerHttpClient resolveClient(PublisherConfiguration publisherConfig)
-            throws DatafileTaskException {
+        throws DatafileTaskException {
         try {
             return new DmaapProducerHttpClient(publisherConfig.toDmaap());
         } catch (MalformedURLException e) {

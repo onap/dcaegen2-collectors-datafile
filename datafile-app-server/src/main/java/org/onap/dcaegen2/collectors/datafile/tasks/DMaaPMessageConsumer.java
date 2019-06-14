@@ -51,7 +51,7 @@ public class DMaaPMessageConsumer {
     }
 
     protected DMaaPMessageConsumer(DMaaPConsumerReactiveHttpClient dmaaPConsumerReactiveHttpClient,
-            JsonMessageParser messageParser) {
+        JsonMessageParser messageParser) {
         this.dmaaPConsumerReactiveHttpClient = dmaaPConsumerReactiveHttpClient;
         this.jsonMessageParser = messageParser;
     }
@@ -72,7 +72,7 @@ public class DMaaPMessageConsumer {
     }
 
     private static DMaaPConsumerReactiveHttpClient createHttpClient(AppConfig datafileAppConfig)
-           throws DatafileTaskException {
+        throws DatafileTaskException {
         DmaapConsumerConfiguration config = datafileAppConfig.getDmaapConsumerConfiguration().toDmaap();
         WebClient client = new DmaapWebClient().fromConfiguration(config).build();
         return new DMaaPConsumerReactiveHttpClient(config, client);

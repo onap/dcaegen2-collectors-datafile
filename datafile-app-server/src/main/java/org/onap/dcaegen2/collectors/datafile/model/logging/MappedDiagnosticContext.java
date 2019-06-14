@@ -40,7 +40,8 @@ public final class MappedDiagnosticContext {
 
     private static final Logger logger = LoggerFactory.getLogger(MappedDiagnosticContext.class);
 
-    private MappedDiagnosticContext() {}
+    private MappedDiagnosticContext() {
+    }
 
     /**
      * Inserts the relevant trace information in the HTTP header.
@@ -78,6 +79,7 @@ public final class MappedDiagnosticContext {
 
     /**
      * Initialize the MDC when a new context is started.
+     * 
      * @return a copy of the new trace context
      */
     public static Map<String, String> initializeTraceContext() {
@@ -88,6 +90,7 @@ public final class MappedDiagnosticContext {
 
     /**
      * Updates the request ID in the current context.
+     * 
      * @param newRequestId the new value of the request ID
      * @return a copy the updated context
      */

@@ -23,12 +23,15 @@ import static org.mockito.Mockito.spy;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
@@ -41,6 +44,7 @@ import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
 import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
+
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -73,468 +77,468 @@ class JsonMessageParserTest {
     @Test
     void whenPassingCorrectJson_oneFileReadyMessage() throws URISyntaxException {
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
-                .name(PM_FILE_NAME) //
-                .location(LOCATION) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .location(LOCATION) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType(CHANGE_TYPE) //
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
-                .addAdditionalField(additionalField) //
-                .build();
+            .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType(CHANGE_TYPE) //
+            .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+            .addAdditionalField(additionalField) //
+            .build();
 
         MessageMetaData messageMetaData = ImmutableMessageMetaData.builder() //
-                .productName(PRODUCT_NAME) //
-                .vendorName(VENDOR_NAME) //
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
-                .sourceName(SOURCE_NAME) //
-                .startEpochMicrosec(START_EPOCH_MICROSEC) //
-                .timeZoneOffset(TIME_ZONE_OFFSET) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType(CHANGE_TYPE) //
-                .build();
+            .productName(PRODUCT_NAME) //
+            .vendorName(VENDOR_NAME) //
+            .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+            .sourceName(SOURCE_NAME) //
+            .startEpochMicrosec(START_EPOCH_MICROSEC) //
+            .timeZoneOffset(TIME_ZONE_OFFSET) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType(CHANGE_TYPE) //
+            .build();
         FileData expectedFileData = ImmutableFileData.builder() //
-                .name(PM_FILE_NAME) //
-                .location(LOCATION) //
-                .scheme(Scheme.FTPS) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .messageMetaData(messageMetaData) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .location(LOCATION) //
+            .scheme(Scheme.FTPS) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .messageMetaData(messageMetaData) //
+            .build();
         List<FileData> files = new ArrayList<>();
         files.add(expectedFileData);
         FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder() //
-                .files(files) //
-                .build();
+            .files(files) //
+            .build();
 
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
-                .getJsonObjectFromAnArray(jsonElement);
+            .getJsonObjectFromAnArray(jsonElement);
 
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-                .expectSubscription().expectNext(expectedMessage).verifyComplete();
+            .expectSubscription().expectNext(expectedMessage).verifyComplete();
     }
 
     @Test
     void whenPassingCorrectJsonWithTwoEvents_twoMessages() {
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
-                .name(PM_FILE_NAME) //
-                .location(LOCATION) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .location(LOCATION) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType(CHANGE_TYPE) //
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
-                .addAdditionalField(additionalField) //
-                .build();
+            .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType(CHANGE_TYPE) //
+            .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+            .addAdditionalField(additionalField) //
+            .build();
 
         MessageMetaData messageMetaData = ImmutableMessageMetaData.builder() //
-                .productName(PRODUCT_NAME) //
-                .vendorName(VENDOR_NAME) //
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
-                .sourceName(SOURCE_NAME) //
-                .startEpochMicrosec(START_EPOCH_MICROSEC) //
-                .timeZoneOffset(TIME_ZONE_OFFSET) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType(CHANGE_TYPE) //
-                .build();
+            .productName(PRODUCT_NAME) //
+            .vendorName(VENDOR_NAME) //
+            .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+            .sourceName(SOURCE_NAME) //
+            .startEpochMicrosec(START_EPOCH_MICROSEC) //
+            .timeZoneOffset(TIME_ZONE_OFFSET) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType(CHANGE_TYPE) //
+            .build();
         FileData expectedFileData = ImmutableFileData.builder() //
-                .name(PM_FILE_NAME) //
-                .location(LOCATION) //
-                .scheme(Scheme.FTPS) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .messageMetaData(messageMetaData) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .location(LOCATION) //
+            .scheme(Scheme.FTPS) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .messageMetaData(messageMetaData) //
+            .build();
         List<FileData> files = new ArrayList<>();
         files.add(expectedFileData);
         FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder() //
-                .files(files) //
-                .build();
+            .files(files) //
+            .build();
 
         String parsedString = message.getParsed();
         String messageString = "[" + parsedString + "," + parsedString + "]";
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
-                .getJsonObjectFromAnArray(jsonElement);
+            .getJsonObjectFromAnArray(jsonElement);
 
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-                .expectSubscription().expectNext(expectedMessage).expectNext(expectedMessage).verifyComplete();
+            .expectSubscription().expectNext(expectedMessage).expectNext(expectedMessage).verifyComplete();
     }
 
     @Test
     void whenPassingCorrectJsonWithoutLocation_noMessage() {
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
-                .name(PM_FILE_NAME) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType(CHANGE_TYPE) //
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
-                .addAdditionalField(additionalField) //
-                .build();
+            .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType(CHANGE_TYPE) //
+            .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+            .addAdditionalField(additionalField) //
+            .build();
 
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
-                .getJsonObjectFromAnArray(jsonElement);
+            .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-                .expectSubscription().expectNextCount(0).verifyComplete();
+            .expectSubscription().expectNextCount(0).verifyComplete();
 
         assertTrue(logAppender.list.toString()
-                .contains("[ERROR] VES event parsing. File information wrong. " + "Missing location."));
+            .contains("[ERROR] VES event parsing. File information wrong. " + "Missing location."));
         assertTrue(logAppender.list.get(0).toString().contains("sourceName=5GRAN_DU"));
     }
 
     @Test
     void whenPassingCorrectJsonWrongScheme_noMessage() {
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
-                .name(PM_FILE_NAME) //
-                .location("http://location.xml") //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .location("http://location.xml") //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType(CHANGE_TYPE) //
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
-                .addAdditionalField(additionalField) //
-                .build();
+            .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType(CHANGE_TYPE) //
+            .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+            .addAdditionalField(additionalField) //
+            .build();
 
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
-                .getJsonObjectFromAnArray(jsonElement);
+            .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-                .expectSubscription().expectNextCount(0).verifyComplete();
+            .expectSubscription().expectNextCount(0).verifyComplete();
 
         assertTrue("Error missing in log",
-                logAppender.list.toString()
-                        .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
-                                + Scheme.DFC_DOES_NOT_SUPPORT_PROTOCOL_ERROR_MSG + "http"
-                                + Scheme.SUPPORTED_PROTOCOLS_ERROR_MESSAGE + ". Location: http://location.xml"));
+            logAppender.list.toString()
+                .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                    + Scheme.DFC_DOES_NOT_SUPPORT_PROTOCOL_ERROR_MSG + "http" + Scheme.SUPPORTED_PROTOCOLS_ERROR_MESSAGE
+                    + ". Location: http://location.xml"));
         assertTrue("Missing sourceName in log", logAppender.list.toString().contains("sourceName=5GRAN_DU"));
     }
 
     @Test
     void whenPassingCorrectJsonWithTwoEventsFirstNoHeader_oneFileDatan() {
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
-                .name(PM_FILE_NAME) //
-                .location(LOCATION) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .location(LOCATION) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType(CHANGE_TYPE) //
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
-                .addAdditionalField(additionalField) //
-                .build();
+            .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType(CHANGE_TYPE) //
+            .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+            .addAdditionalField(additionalField) //
+            .build();
 
         MessageMetaData messageMetaData = ImmutableMessageMetaData.builder() //
-                .productName(PRODUCT_NAME) //
-                .vendorName(VENDOR_NAME) //
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
-                .sourceName(SOURCE_NAME) //
-                .startEpochMicrosec(START_EPOCH_MICROSEC) //
-                .timeZoneOffset(TIME_ZONE_OFFSET) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType(CHANGE_TYPE) //
-                .build();
+            .productName(PRODUCT_NAME) //
+            .vendorName(VENDOR_NAME) //
+            .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+            .sourceName(SOURCE_NAME) //
+            .startEpochMicrosec(START_EPOCH_MICROSEC) //
+            .timeZoneOffset(TIME_ZONE_OFFSET) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType(CHANGE_TYPE) //
+            .build();
         FileData expectedFileData = ImmutableFileData.builder() //
-                .name(PM_FILE_NAME) //
-                .location(LOCATION) //
-                .scheme(Scheme.FTPS) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .messageMetaData(messageMetaData) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .location(LOCATION) //
+            .scheme(Scheme.FTPS) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .messageMetaData(messageMetaData) //
+            .build();
         List<FileData> files = new ArrayList<>();
         files.add(expectedFileData);
         FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder() //
-                .files(files) //
-                .build();
+            .files(files) //
+            .build();
 
         String parsedString = message.getParsed();
         String messageString = "[{\"event\":{}}," + parsedString + "]";
         JsonMessageParser jsonMessageParserUnderTest = new JsonMessageParser();
 
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-                .expectSubscription().expectNext(expectedMessage).verifyComplete();
+            .expectSubscription().expectNext(expectedMessage).verifyComplete();
     }
 
     @Test
     void whenPassingCorrectJsonWithFaultyEventName_noFileData() {
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
-                .location(LOCATION) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .build();
+            .location(LOCATION) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //
-                .eventName("Faulty event name") //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType(CHANGE_TYPE) //
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
-                .addAdditionalField(additionalField) //
-                .build();
+            .eventName("Faulty event name") //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType(CHANGE_TYPE) //
+            .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+            .addAdditionalField(additionalField) //
+            .build();
 
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
-                .getJsonObjectFromAnArray(jsonElement);
+            .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-                .expectSubscription().expectComplete().verify();
+            .expectSubscription().expectComplete().verify();
 
-        assertTrue("Error missing in log", logAppender.list.toString().contains(ERROR_LOG_TAG
-                + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+        assertTrue("Error missing in log",
+            logAppender.list.toString().contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
                 + "Can not get PRODUCT_NAME from eventName, eventName is not in correct format: Faulty event name"));
     }
 
     @Test
     void whenPassingCorrectJsonWithoutName_noFileData() {
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
-                .location(LOCATION) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .build();
+            .location(LOCATION) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType(CHANGE_TYPE) //
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
-                .addAdditionalField(additionalField) //
-                .build();
+            .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType(CHANGE_TYPE) //
+            .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+            .addAdditionalField(additionalField) //
+            .build();
 
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
-                .getJsonObjectFromAnArray(jsonElement);
+            .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-                .expectSubscription().expectNextCount(0).verifyComplete();
+            .expectSubscription().expectNextCount(0).verifyComplete();
 
         assertTrue("Error missing in log",
-                logAppender.list.toString()
-                        .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
-                                + "File information wrong. Missing data: [name] Data: "
-                                + message.getAdditionalFields().get(0).toString()));
+            logAppender.list.toString()
+                .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                    + "File information wrong. Missing data: [name] Data: "
+                    + message.getAdditionalFields().get(0).toString()));
     }
 
     @Test
     void whenPassingCorrectJsonWithoutAdditionalFields_noFileData() {
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType(CHANGE_TYPE) //
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
-                .build();
+            .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType(CHANGE_TYPE) //
+            .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+            .build();
 
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
-                .getJsonObjectFromAnArray(jsonElement);
+            .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-                .expectSubscription().expectNextCount(0).verifyComplete();
+            .expectSubscription().expectNextCount(0).verifyComplete();
 
         assertTrue("Error missing in log",
-                logAppender.list.toString().contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
-                        + "Missing arrayOfNamedHashMap in message. " + message.getParsed()));
+            logAppender.list.toString().contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                + "Missing arrayOfNamedHashMap in message. " + message.getParsed()));
     }
 
     @Test
     void whenPassingCorrectJsonWithoutCompression_noFileData() {
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
-                .name(PM_FILE_NAME) //
-                .location(LOCATION) //
-                .fileFormatType(FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .location(LOCATION) //
+            .fileFormatType(FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType(CHANGE_TYPE) //
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
-                .addAdditionalField(additionalField) //
-                .build();
+            .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType(CHANGE_TYPE) //
+            .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+            .addAdditionalField(additionalField) //
+            .build();
 
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
-                .getJsonObjectFromAnArray(jsonElement);
+            .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-                .expectSubscription().expectNextCount(0).verifyComplete();
+            .expectSubscription().expectNextCount(0).verifyComplete();
 
         assertTrue("Error missing in log",
-                logAppender.list.toString()
-                        .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
-                                + "File information wrong. Missing data: [compression] Data: "
-                                + message.getAdditionalFields().get(0).toString()));
+            logAppender.list.toString()
+                .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                    + "File information wrong. Missing data: [compression] Data: "
+                    + message.getAdditionalFields().get(0).toString()));
     }
 
     @Test
     void whenPassingCorrectJsonWithoutFileFormatType_noFileData() {
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
-                .name(PM_FILE_NAME) //
-                .location(LOCATION) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .location(LOCATION) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType(CHANGE_TYPE) //
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
-                .addAdditionalField(additionalField) //
-                .build();
+            .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType(CHANGE_TYPE) //
+            .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+            .addAdditionalField(additionalField) //
+            .build();
 
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
-                .getJsonObjectFromAnArray(jsonElement);
+            .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-                .expectSubscription().expectNextCount(0).verifyComplete();
+            .expectSubscription().expectNextCount(0).verifyComplete();
 
         assertTrue("Error missing in log",
-                logAppender.list.toString()
-                        .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
-                                + "File information wrong. Missing data: [fileFormatType] Data: "
-                                + message.getAdditionalFields().get(0).toString()));
+            logAppender.list.toString()
+                .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                    + "File information wrong. Missing data: [fileFormatType] Data: "
+                    + message.getAdditionalFields().get(0).toString()));
     }
 
     @Test
     void whenPassingOneCorrectJsonWithoutFileFormatVersionAndOneCorrect_oneFileData() {
         AdditionalField additionalFaultyField = new JsonMessage.AdditionalFieldBuilder() //
-                .name(PM_FILE_NAME) //
-                .location(LOCATION) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(FILE_FORMAT_TYPE) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .location(LOCATION) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(FILE_FORMAT_TYPE) //
+            .build();
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
-                .name(PM_FILE_NAME) //
-                .location(LOCATION) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .location(LOCATION) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType(CHANGE_TYPE) //
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
-                .addAdditionalField(additionalFaultyField) //
-                .addAdditionalField(additionalField) //
-                .build();
+            .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType(CHANGE_TYPE) //
+            .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+            .addAdditionalField(additionalFaultyField) //
+            .addAdditionalField(additionalField) //
+            .build();
 
         MessageMetaData messageMetaData = ImmutableMessageMetaData.builder() //
-                .productName(PRODUCT_NAME) //
-                .vendorName(VENDOR_NAME) //
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
-                .sourceName(SOURCE_NAME) //
-                .startEpochMicrosec(START_EPOCH_MICROSEC) //
-                .timeZoneOffset(TIME_ZONE_OFFSET) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType(CHANGE_TYPE) //
-                .build();
+            .productName(PRODUCT_NAME) //
+            .vendorName(VENDOR_NAME) //
+            .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+            .sourceName(SOURCE_NAME) //
+            .startEpochMicrosec(START_EPOCH_MICROSEC) //
+            .timeZoneOffset(TIME_ZONE_OFFSET) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType(CHANGE_TYPE) //
+            .build();
         FileData expectedFileData = ImmutableFileData.builder() //
-                .name(PM_FILE_NAME) //
-                .location(LOCATION) //
-                .scheme(Scheme.FTPS) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .messageMetaData(messageMetaData) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .location(LOCATION) //
+            .scheme(Scheme.FTPS) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .messageMetaData(messageMetaData) //
+            .build();
         List<FileData> files = new ArrayList<>();
         files.add(expectedFileData);
         FileReadyMessage expectedMessage = ImmutableFileReadyMessage.builder() //
-                .files(files) //
-                .build();
+            .files(files) //
+            .build();
 
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
-                .getJsonObjectFromAnArray(jsonElement);
+            .getJsonObjectFromAnArray(jsonElement);
 
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-                .expectSubscription().expectNext(expectedMessage).verifyComplete();
+            .expectSubscription().expectNext(expectedMessage).verifyComplete();
     }
 
     @Test
     void whenPassingJsonWithoutMandatoryHeaderInformation_noFileData() {
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
-                .build();
+            .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+            .build();
 
         String incorrectMessageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
-                .getJsonObjectFromAnArray(jsonElement);
+            .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(incorrectMessageString)))
-                .expectSubscription().expectComplete().verify();
+            .expectSubscription().expectComplete().verify();
 
         assertTrue("Error missing in log",
-                logAppender.list.toString()
-                        .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
-                                + "Missing data: [changeIdentifier, changeType, notificationFieldsVersion]. "
-                                + "Change type is wrong:  Expected: FileReady Message: " + message.getParsed()));
+            logAppender.list.toString()
+                .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                    + "Missing data: [changeIdentifier, changeType, notificationFieldsVersion]. "
+                    + "Change type is wrong:  Expected: FileReady Message: " + message.getParsed()));
     }
 
     @Test
@@ -543,47 +547,46 @@ class JsonMessageParserTest {
         JsonElement jsonElement = new JsonParser().parse("{}");
 
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
-                .getJsonObjectFromAnArray(jsonElement);
+            .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just("[{}]"))).expectSubscription()
-                .expectComplete().verify();
+            .expectComplete().verify();
 
         assertTrue("Error missing in log",
-                logAppender.list.toString().contains(ERROR_LOG_TAG + "Incorrect JsonObject - missing header. "));
+            logAppender.list.toString().contains(ERROR_LOG_TAG + "Incorrect JsonObject - missing header. "));
     }
 
     @Test
     void whenPassingCorrectJsonWithIncorrectChangeType_noFileData() {
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
-                .name(PM_FILE_NAME) //
-                .location(LOCATION) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .location(LOCATION) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType(INCORRECT_CHANGE_TYPE) //
-                .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
-                .addAdditionalField(additionalField) //
-                .build();
+            .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType(INCORRECT_CHANGE_TYPE) //
+            .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+            .addAdditionalField(additionalField) //
+            .build();
 
         String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
-                .getJsonObjectFromAnArray(jsonElement);
+            .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-                .expectSubscription().expectNextCount(0).expectComplete().verify();
+            .expectSubscription().expectNextCount(0).expectComplete().verify();
 
         assertTrue("Error missing in log",
-                logAppender.list.toString()
-                        .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
-                                + " Change type is wrong: " + INCORRECT_CHANGE_TYPE + " Expected: FileReady Message: "
-                                + message.getParsed()));
+            logAppender.list.toString()
+                .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING + " Change type is wrong: "
+                    + INCORRECT_CHANGE_TYPE + " Expected: FileReady Message: " + message.getParsed()));
     }
 }

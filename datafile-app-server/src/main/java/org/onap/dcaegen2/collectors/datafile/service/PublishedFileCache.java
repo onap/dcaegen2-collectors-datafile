@@ -18,7 +18,6 @@ package org.onap.dcaegen2.collectors.datafile.service;
 
 import java.nio.file.Path;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;

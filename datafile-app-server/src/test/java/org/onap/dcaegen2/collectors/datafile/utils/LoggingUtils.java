@@ -23,13 +23,14 @@ package org.onap.dcaegen2.collectors.datafile.utils;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+
 import org.slf4j.LoggerFactory;
 
 public class LoggingUtils {
 
     /**
      * Returns a ListAppender that contains all logging events. Call this method at the very beginning of the test
-     * */
+     */
     public static ListAppender<ILoggingEvent> getLogListAppender(Class<?> logClass) {
         Logger logger = (Logger) LoggerFactory.getLogger(logClass);
         ListAppender<ILoggingEvent> listAppender = new ListAppender<>();

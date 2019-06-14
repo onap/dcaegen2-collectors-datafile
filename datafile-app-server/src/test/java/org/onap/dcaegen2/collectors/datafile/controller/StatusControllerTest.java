@@ -26,10 +26,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.controllers.StatusController;
@@ -63,7 +63,6 @@ public class StatusControllerTest {
         assertFalse(StringUtils.isBlank(MDC.get(MdcVariables.INVOCATION_ID)));
     }
 
-
     @Test
     public void status() {
         ScheduledTasks scheduledTasksMock = mock(ScheduledTasks.class);
@@ -82,7 +81,6 @@ public class StatusControllerTest {
         assertFalse(StringUtils.isBlank(MDC.get(MdcVariables.REQUEST_ID)));
         assertFalse(StringUtils.isBlank(MDC.get(MdcVariables.INVOCATION_ID)));
     }
-
 
     private void validateLogging(ListAppender<ILoggingEvent> logAppender) {
         assertEquals(logAppender.list.get(0).getMarker().getName(), "ENTRY");

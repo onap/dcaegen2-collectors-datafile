@@ -18,6 +18,7 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
@@ -55,23 +56,23 @@ public abstract class ConsumerConfiguration {
             DmaapConsumerUrlPath path = parseDmaapUrlPath(urlPath);
 
             return new ImmutableDmaapConsumerConfiguration.Builder() //
-                    .dmaapContentType("application/json") //
-                    .dmaapPortNumber(url.getPort()) //
-                    .dmaapHostName(url.getHost()) //
-                    .dmaapTopicName(path.dmaapTopicName) //
-                    .dmaapProtocol(url.getProtocol()) //
-                    .dmaapUserName(userName) //
-                    .dmaapUserPassword(passwd) //
-                    .trustStorePath(this.trustStorePath()) //
-                    .trustStorePasswordPath(this.trustStorePasswordPath()) //
-                    .keyStorePath(this.keyStorePath()) //
-                    .keyStorePasswordPath(this.keyStorePasswordPath()) //
-                    .enableDmaapCertAuth(this.enableDmaapCertAuth()) //
-                    .consumerId(path.consumerId) //
-                    .consumerGroup(path.consumerGroup) //
-                    .timeoutMs(-1) //
-                    .messageLimit(-1) //
-                    .build();
+                .dmaapContentType("application/json") //
+                .dmaapPortNumber(url.getPort()) //
+                .dmaapHostName(url.getHost()) //
+                .dmaapTopicName(path.dmaapTopicName) //
+                .dmaapProtocol(url.getProtocol()) //
+                .dmaapUserName(userName) //
+                .dmaapUserPassword(passwd) //
+                .trustStorePath(this.trustStorePath()) //
+                .trustStorePasswordPath(this.trustStorePasswordPath()) //
+                .keyStorePath(this.keyStorePath()) //
+                .keyStorePasswordPath(this.keyStorePasswordPath()) //
+                .enableDmaapCertAuth(this.enableDmaapCertAuth()) //
+                .consumerId(path.consumerId) //
+                .consumerGroup(path.consumerGroup) //
+                .timeoutMs(-1) //
+                .messageLimit(-1) //
+                .build();
         } catch (MalformedURLException e) {
             throw new DatafileTaskException("Could not parse the URL", e);
         }
@@ -90,12 +91,14 @@ public abstract class ConsumerConfiguration {
     }
 
     private DmaapConsumerUrlPath parseDmaapUrlPath(String urlPath) throws DatafileTaskException {
-        String[] tokens = urlPath.split("/"); // UrlPath: /events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12
+        String[] tokens = urlPath.split("/"); // UrlPath:
+                                              // /events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12
         if (tokens.length != 5) {
             throw new DatafileTaskException("The path has incorrect syntax: " + urlPath);
         }
 
-        final String dmaapTopicName =  tokens[1] + "/" + tokens[2]; // e.g. /events/unauthenticated.VES_NOTIFICATION_OUTPUT
+        final String dmaapTopicName = tokens[1] + "/" + tokens[2]; // e.g.
+                                                                   // /events/unauthenticated.VES_NOTIFICATION_OUTPUT
         final String consumerGroup = tokens[3]; // ex. OpenDcae-c12
         final String consumerId = tokens[4]; // ex. C12
         return new DmaapConsumerUrlPath(dmaapTopicName, consumerGroup, consumerId);

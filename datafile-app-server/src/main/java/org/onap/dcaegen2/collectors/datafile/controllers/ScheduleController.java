@@ -20,6 +20,7 @@ package org.onap.dcaegen2.collectors.datafile.controllers;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
 import org.onap.dcaegen2.collectors.datafile.configuration.SchedulerConfig;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.slf4j.Logger;
@@ -71,7 +72,7 @@ public class ScheduleController {
 
     public Mono<ResponseEntity<String>> startTasks() {
         return Mono.fromSupplier(schedulerConfig::tryToStartTask) //
-                .map(ScheduleController::createStartTaskResponse);
+            .map(ScheduleController::createStartTaskResponse);
     }
 
     /**
@@ -84,7 +85,7 @@ public class ScheduleController {
     public Mono<ResponseEntity<String>> stopTask(@RequestHeader HttpHeaders headers) {
         MappedDiagnosticContext.initializeTraceContext(headers);
         logger.info(MappedDiagnosticContext.ENTRY, "Stop request");
-        Mono<ResponseEntity<String>> response =  schedulerConfig.getResponseFromCancellationOfTasks();
+        Mono<ResponseEntity<String>> response = schedulerConfig.getResponseFromCancellationOfTasks();
         logger.info(MappedDiagnosticContext.EXIT, "Stop request");
         return response;
     }

@@ -72,7 +72,7 @@ public class FtpsClient implements FileCollectClient {
      * @param trustedCaPassword password for the PNF's trusted keystore.
      */
     public FtpsClient(FileServerData fileServerData, String keyCertPath, String keyCertPassword, Path trustedCaPath,
-            String trustedCaPassword) {
+        String trustedCaPassword) {
         this.fileServerData = fileServerData;
         this.keyCertPath = keyCertPath;
         this.keyCertPassword = keyCertPassword;
@@ -120,7 +120,8 @@ public class FtpsClient implements FileCollectClient {
         try (OutputStream output = createOutputStream(localFileName)) {
             logger.trace("begin to retrieve from xNF.");
             if (!realFtpsClient.retrieveFile(remoteFileName, output)) {
-                throw new NonRetryableDatafileTaskException("Could not retrieve file. No retry attempts will be done, file :" + remoteFileName);
+                throw new NonRetryableDatafileTaskException(
+                    "Could not retrieve file. No retry attempts will be done, file :" + remoteFileName);
             }
         } catch (IOException e) {
             throw new DatafileTaskException("Could not fetch file: " + e, e);
@@ -151,14 +152,14 @@ public class FtpsClient implements FileCollectClient {
             realFtpsClient.setBufferSize(1024 * 1024);
         } else {
             throw new DatafileTaskException("Unable to connect to xNF. " + fileServerData.serverAddress()
-                    + " xNF reply code: " + realFtpsClient.getReplyCode());
+                + " xNF reply code: " + realFtpsClient.getReplyCode());
         }
 
         logger.trace("setUpConnection successfully!");
     }
 
     private TrustManager createTrustManager(Path trustedCaPath, String trustedCaPassword)
-            throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
+        throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
         logger.trace("Creating trust manager from file: {}", trustedCaPath);
         try (InputStream fis = createInputStream(trustedCaPath)) {
             KeyStore keyStore = KeyStore.getInstance("JKS");
@@ -185,7 +186,7 @@ public class FtpsClient implements FileCollectClient {
     }
 
     protected TrustManager getTrustManager(Path trustedCaPath, String trustedCaPassword)
-            throws KeyStoreException, NoSuchAlgorithmException, IOException, CertificateException {
+        throws KeyStoreException, NoSuchAlgorithmException, IOException, CertificateException {
         synchronized (FtpsClient.class) {
             if (theTrustManager == null) {
                 theTrustManager = createTrustManager(trustedCaPath, trustedCaPassword);
@@ -195,7 +196,7 @@ public class FtpsClient implements FileCollectClient {
     }
 
     protected KeyManager createKeyManager(String keyCertPath, String keyCertPassword)
-            throws IOException, GeneralSecurityException {
+        throws IOException, GeneralSecurityException {
         return KeyManagerUtils.createClientKeyManager(new File(keyCertPath), keyCertPassword);
     }
 }

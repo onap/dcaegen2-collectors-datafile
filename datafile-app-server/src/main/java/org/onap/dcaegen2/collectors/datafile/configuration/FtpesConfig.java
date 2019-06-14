@@ -26,7 +26,6 @@ import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 import org.springframework.stereotype.Component;
 
-
 @Component
 @Value.Immutable
 @Value.Style(builder = "new", redactedMask = "####")

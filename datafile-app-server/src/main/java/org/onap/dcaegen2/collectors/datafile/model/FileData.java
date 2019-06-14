@@ -108,9 +108,9 @@ public abstract class FileData {
         URI uri = URI.create(location());
         Optional<String[]> userInfo = getUserNameAndPasswordIfGiven(uri.getUserInfo());
         ImmutableFileServerData.Builder builder = ImmutableFileServerData.builder() //
-                .serverAddress(uri.getHost()) //
-                .userId(userInfo.isPresent() ? userInfo.get()[0] : "") //
-                .password(userInfo.isPresent() ? userInfo.get()[1] : "");
+            .serverAddress(uri.getHost()) //
+            .userId(userInfo.isPresent() ? userInfo.get()[0] : "") //
+            .password(userInfo.isPresent() ? userInfo.get()[1] : "");
         if (uri.getPort() > 0) {
             builder.port(uri.getPort());
         }

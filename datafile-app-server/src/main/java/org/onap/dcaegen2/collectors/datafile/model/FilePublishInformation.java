@@ -34,7 +34,7 @@ import org.immutables.value.Value;
 @Value.Immutable
 @Gson.TypeAdapters
 @Value.Style(redactedMask = "####")
-public interface FilePublishInformation  {
+public interface FilePublishInformation {
 
     @SerializedName("productName")
     String getProductName();

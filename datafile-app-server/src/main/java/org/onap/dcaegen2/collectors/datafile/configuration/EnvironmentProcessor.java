@@ -26,7 +26,6 @@ import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuratio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-
 import reactor.core.publisher.Mono;
 
 /**
@@ -39,7 +38,8 @@ class EnvironmentProcessor {
     private static final int DEFAULT_CONSUL_PORT = 8500;
     private static final Logger logger = LoggerFactory.getLogger(EnvironmentProcessor.class);
 
-    private EnvironmentProcessor() {}
+    private EnvironmentProcessor() {
+    }
 
     static Mono<EnvProperties> readEnvironmentVariables(Properties systemEnvironment, Map<String, String> contextMap) {
         MDC.setContextMap(contextMap);
@@ -47,11 +47,11 @@ class EnvironmentProcessor {
         EnvProperties envProperties;
         try {
             envProperties = ImmutableEnvProperties.builder() //
-                    .consulHost(getConsulHost(systemEnvironment)) //
-                    .consulPort(getConsultPort(systemEnvironment)) //
-                    .cbsName(getConfigBindingService(systemEnvironment)) //
-                    .appName(getService(systemEnvironment)) //
-                    .build();
+                .consulHost(getConsulHost(systemEnvironment)) //
+                .consulPort(getConsultPort(systemEnvironment)) //
+                .cbsName(getConfigBindingService(systemEnvironment)) //
+                .appName(getService(systemEnvironment)) //
+                .build();
         } catch (EnvironmentLoaderException e) {
             return Mono.error(e);
         }
@@ -61,27 +61,27 @@ class EnvironmentProcessor {
 
     private static String getConsulHost(Properties systemEnvironments) throws EnvironmentLoaderException {
         return Optional.ofNullable(systemEnvironments.getProperty("CONSUL_HOST"))
-                .orElseThrow(() -> new EnvironmentLoaderException("$CONSUL_HOST environment has not been defined"));
+            .orElseThrow(() -> new EnvironmentLoaderException("$CONSUL_HOST environment has not been defined"));
     }
 
     private static Integer getConsultPort(Properties systemEnvironments) {
         return Optional.ofNullable(systemEnvironments.getProperty("CONSUL_PORT")) //
-                .map(Integer::valueOf) //
-                .orElseGet(EnvironmentProcessor::getDefaultPortOfConsul);
+            .map(Integer::valueOf) //
+            .orElseGet(EnvironmentProcessor::getDefaultPortOfConsul);
     }
 
     private static String getConfigBindingService(Properties systemEnvironments) throws EnvironmentLoaderException {
         return Optional.ofNullable(systemEnvironments.getProperty("CONFIG_BINDING_SERVICE")) //
-                .orElseThrow(() -> new EnvironmentLoaderException(
-                        "$CONFIG_BINDING_SERVICE environment has not been defined"));
+            .orElseThrow(
+                () -> new EnvironmentLoaderException("$CONFIG_BINDING_SERVICE environment has not been defined"));
     }
 
     private static String getService(Properties systemEnvironments) throws EnvironmentLoaderException {
         return Optional
-                .ofNullable(Optional.ofNullable(systemEnvironments.getProperty("HOSTNAME"))
-                        .orElse(systemEnvironments.getProperty("SERVICE_NAME")))
-                .orElseThrow(() -> new EnvironmentLoaderException(
-                        "Neither $HOSTNAME/$SERVICE_NAME have not been defined as system environment"));
+            .ofNullable(Optional.ofNullable(systemEnvironments.getProperty("HOSTNAME"))
+                .orElse(systemEnvironments.getProperty("SERVICE_NAME")))
+            .orElseThrow(() -> new EnvironmentLoaderException(
+                "Neither $HOSTNAME/$SERVICE_NAME have not been defined as system environment"));
     }
 
     private static Integer getDefaultPortOfConsul() {

@@ -22,11 +22,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
+
 import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
@@ -37,6 +39,7 @@ import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -109,8 +112,7 @@ public class JsonMessageParser {
 
     private Flux<FileReadyMessage> getMessagesFromJsonArray(JsonElement jsonElement) {
         return createMessages(Flux.fromStream(StreamSupport.stream(jsonElement.getAsJsonArray().spliterator(), false)
-                .map(jsonElementFromArray -> getJsonObjectFromAnArray(jsonElementFromArray)
-                        .orElseGet(JsonObject::new))));
+            .map(jsonElementFromArray -> getJsonObjectFromAnArray(jsonElementFromArray).orElseGet(JsonObject::new))));
     }
 
     /**
@@ -121,7 +123,7 @@ public class JsonMessageParser {
      */
     private Flux<FileReadyMessage> createMessageData(JsonElement jsonElement) {
         return jsonElement.isJsonObject() ? createMessages(Flux.just(jsonElement.getAsJsonObject()))
-                : getMessagesFromJsonArray(jsonElement);
+            : getMessagesFromJsonArray(jsonElement);
     }
 
     private static Mono<JsonElement> getJsonParserMessage(String message) {
@@ -130,9 +132,8 @@ public class JsonMessageParser {
 
     private static Flux<FileReadyMessage> createMessages(Flux<JsonObject> jsonObject) {
         return jsonObject.flatMap(monoJsonP -> containsNotificationFields(monoJsonP) ? transformMessages(monoJsonP)
-                : logErrorAndReturnEmptyMessageFlux("Incorrect JsonObject - missing header. " + jsonObject));
+            : logErrorAndReturnEmptyMessageFlux("Incorrect JsonObject - missing header. " + jsonObject));
     }
-
 
     private static Mono<FileReadyMessage> transformMessages(JsonObject message) {
         Optional<MessageMetaData> optionalMessageMetaData = getMessageMetaData(message);
@@ -144,8 +145,8 @@ public class JsonMessageParser {
                 List<FileData> allFileDataFromJson = getAllFileDataFromJson(arrayOfNamedHashMap, messageMetaData);
                 if (!allFileDataFromJson.isEmpty()) {
                     return Mono.just(ImmutableFileReadyMessage.builder() //
-                            .files(allFileDataFromJson) //
-                            .build());
+                        .files(allFileDataFromJson) //
+                        .build());
                 } else {
                     return Mono.empty();
                 }
@@ -157,7 +158,6 @@ public class JsonMessageParser {
         logger.error(ERROR_MSG_VES_EVENT_PARSING + "FileReady event has incorrect JsonObject. {}", message);
         return Mono.empty();
     }
-
 
     private static Optional<MessageMetaData> getMessageMetaData(JsonObject message) {
         List<String> missingValues = new ArrayList<>();
@@ -173,15 +173,15 @@ public class JsonMessageParser {
         getValueFromJson(notificationFields, NOTIFICATION_FIELDS_VERSION, missingValues);
 
         MessageMetaData messageMetaData = ImmutableMessageMetaData.builder() //
-                .productName(getDataFromEventName(EventNameDataType.PRODUCT_NAME, eventName, missingValues)) //
-                .vendorName(getDataFromEventName(EventNameDataType.VENDOR_NAME, eventName, missingValues)) //
-                .lastEpochMicrosec(getValueFromJson(commonEventHeader, LAST_EPOCH_MICROSEC, missingValues)) //
-                .sourceName(getValueFromJson(commonEventHeader, SOURCE_NAME, missingValues)) //
-                .startEpochMicrosec(getValueFromJson(commonEventHeader, START_EPOCH_MICROSEC, missingValues)) //
-                .timeZoneOffset(getValueFromJson(commonEventHeader, TIME_ZONE_OFFSET, missingValues)) //
-                .changeIdentifier(changeIdentifier) //
-                .changeType(changeType) //
-                .build();
+            .productName(getDataFromEventName(EventNameDataType.PRODUCT_NAME, eventName, missingValues)) //
+            .vendorName(getDataFromEventName(EventNameDataType.VENDOR_NAME, eventName, missingValues)) //
+            .lastEpochMicrosec(getValueFromJson(commonEventHeader, LAST_EPOCH_MICROSEC, missingValues)) //
+            .sourceName(getValueFromJson(commonEventHeader, SOURCE_NAME, missingValues)) //
+            .startEpochMicrosec(getValueFromJson(commonEventHeader, START_EPOCH_MICROSEC, missingValues)) //
+            .timeZoneOffset(getValueFromJson(commonEventHeader, TIME_ZONE_OFFSET, missingValues)) //
+            .changeIdentifier(changeIdentifier) //
+            .changeType(changeType) //
+            .build();
         if (missingValues.isEmpty() && isChangeTypeCorrect(changeType)) {
             return Optional.of(messageMetaData);
         } else {
@@ -203,7 +203,7 @@ public class JsonMessageParser {
     }
 
     private static List<FileData> getAllFileDataFromJson(JsonArray arrayOfAdditionalFields,
-            MessageMetaData messageMetaData) {
+        MessageMetaData messageMetaData) {
         List<FileData> res = new ArrayList<>();
         for (int i = 0; i < arrayOfAdditionalFields.size(); i++) {
             JsonObject fileInfo = (JsonObject) arrayOfAdditionalFields.get(i);
@@ -225,7 +225,7 @@ public class JsonMessageParser {
         String location = getValueFromJson(data, LOCATION, missingValues);
         if (StringUtils.isEmpty(location)) {
             logger.error(ERROR_MSG_VES_EVENT_PARSING + "File information wrong. Missing location. Data: {} {}",
-                    messageMetaData, fileInfo);
+                messageMetaData, fileInfo);
             return Optional.empty();
         }
         Scheme scheme;
@@ -233,23 +233,23 @@ public class JsonMessageParser {
             scheme = Scheme.getSchemeFromString(URI.create(location).getScheme());
         } catch (Exception e) {
             logger.error(ERROR_MSG_VES_EVENT_PARSING + "{}. Location: {} Data: {}", e.getMessage(), location,
-                    messageMetaData, e);
+                messageMetaData, e);
             return Optional.empty();
         }
         FileData fileData = ImmutableFileData.builder() //
-                .name(getValueFromJson(fileInfo, NAME, missingValues)) //
-                .fileFormatType(getValueFromJson(data, FILE_FORMAT_TYPE, missingValues)) //
-                .fileFormatVersion(getValueFromJson(data, FILE_FORMAT_VERSION, missingValues)) //
-                .location(location) //
-                .scheme(scheme) //
-                .compression(getValueFromJson(data, COMPRESSION, missingValues)) //
-                .messageMetaData(messageMetaData) //
-                .build();
+            .name(getValueFromJson(fileInfo, NAME, missingValues)) //
+            .fileFormatType(getValueFromJson(data, FILE_FORMAT_TYPE, missingValues)) //
+            .fileFormatVersion(getValueFromJson(data, FILE_FORMAT_VERSION, missingValues)) //
+            .location(location) //
+            .scheme(scheme) //
+            .compression(getValueFromJson(data, COMPRESSION, missingValues)) //
+            .messageMetaData(messageMetaData) //
+            .build();
         if (missingValues.isEmpty()) {
             return Optional.of(fileData);
         }
         logger.error(ERROR_MSG_VES_EVENT_PARSING + "File information wrong. Missing data: {} Data: {}", missingValues,
-                fileInfo);
+            fileInfo);
         return Optional.empty();
     }
 
@@ -263,16 +263,15 @@ public class JsonMessageParser {
      * @return String of data from event name
      */
     private static String getDataFromEventName(EventNameDataType dataType, String eventName,
-            List<String> missingValues) {
+        List<String> missingValues) {
         String[] eventArray = eventName.split("_|-");
         if (eventArray.length >= 4) {
             return eventArray[dataType.index];
         } else {
             missingValues.add(dataType.toString());
             logger.error(
-                    ERROR_MSG_VES_EVENT_PARSING
-                            + "Can not get {} from eventName, eventName is not in correct format: {}",
-                    dataType, eventName);
+                ERROR_MSG_VES_EVENT_PARSING + "Can not get {} from eventName, eventName is not in correct format: {}",
+                dataType, eventName);
         }
         return "";
     }

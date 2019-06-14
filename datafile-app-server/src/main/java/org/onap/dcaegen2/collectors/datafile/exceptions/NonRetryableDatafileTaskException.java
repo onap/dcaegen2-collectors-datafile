@@ -18,7 +18,6 @@
 
 package org.onap.dcaegen2.collectors.datafile.exceptions;
 
-
 public class NonRetryableDatafileTaskException extends DatafileTaskException {
 
     private static final long serialVersionUID = 1L;

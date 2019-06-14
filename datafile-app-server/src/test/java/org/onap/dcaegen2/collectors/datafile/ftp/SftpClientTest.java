@@ -31,9 +31,11 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
+
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -58,13 +60,13 @@ public class SftpClientTest {
 
     @Test
     public void openWithPort_success()
-            throws DatafileTaskException, IOException, JSchException, SftpException, Exception {
+        throws DatafileTaskException, IOException, JSchException, SftpException, Exception {
         FileServerData expectedFileServerData = ImmutableFileServerData.builder() //
-                .serverAddress(HOST) //
-                .userId(USERNAME) //
-                .password(PASSWORD) //
-                .port(SFTP_PORT) //
-                .build();
+            .serverAddress(HOST) //
+            .userId(USERNAME) //
+            .password(PASSWORD) //
+            .port(SFTP_PORT) //
+            .build();
 
         SftpClient sftpClientSpy = spy(new SftpClient(expectedFileServerData));
 
@@ -87,13 +89,13 @@ public class SftpClientTest {
 
     @Test
     public void openWithoutPort_success()
-            throws DatafileTaskException, IOException, JSchException, SftpException, Exception {
+        throws DatafileTaskException, IOException, JSchException, SftpException, Exception {
         FileServerData expectedFileServerData = ImmutableFileServerData.builder() //
-                .serverAddress(HOST) //
-                .userId(USERNAME) //
-                .password(PASSWORD) //
-                .port(Optional.empty()) //
-                .build();
+            .serverAddress(HOST) //
+            .userId(USERNAME) //
+            .password(PASSWORD) //
+            .port(Optional.empty()) //
+            .build();
 
         SftpClient sftpClientSpy = spy(new SftpClient(expectedFileServerData));
 
@@ -108,13 +110,13 @@ public class SftpClientTest {
 
     @Test
     public void open_throwsException()
-            throws DatafileTaskException, IOException, JSchException, SftpException, Exception {
+        throws DatafileTaskException, IOException, JSchException, SftpException, Exception {
         FileServerData expectedFileServerData = ImmutableFileServerData.builder() //
-                .serverAddress(HOST) //
-                .userId(USERNAME) //
-                .password(PASSWORD) //
-                .port(SFTP_PORT) //
-                .build();
+            .serverAddress(HOST) //
+            .userId(USERNAME) //
+            .password(PASSWORD) //
+            .port(SFTP_PORT) //
+            .build();
 
         SftpClient sftpClientSpy = spy(new SftpClient(expectedFileServerData));
 
@@ -128,11 +130,11 @@ public class SftpClientTest {
     @Test
     public void collectFile_succes() throws DatafileTaskException, SftpException {
         FileServerData expectedFileServerData = ImmutableFileServerData.builder() //
-                .serverAddress(HOST) //
-                .userId(USERNAME) //
-                .password(PASSWORD) //
-                .port(SFTP_PORT) //
-                .build();
+            .serverAddress(HOST) //
+            .userId(USERNAME) //
+            .password(PASSWORD) //
+            .port(SFTP_PORT) //
+            .build();
         SftpClient sftpClient = new SftpClient(expectedFileServerData);
 
         sftpClient.sftpChannel = channelMock;
@@ -145,24 +147,24 @@ public class SftpClientTest {
 
     @Test
     public void collectFile_throwsExceptionWithoutRetry()
-            throws IOException, JSchException, SftpException, DatafileTaskException {
+        throws IOException, JSchException, SftpException, DatafileTaskException {
         FileServerData expectedFileServerData = ImmutableFileServerData.builder() //
-                .serverAddress(HOST) //
-                .userId(USERNAME) //
-                .password(PASSWORD) //
-                .port(SFTP_PORT) //
-                .build();
+            .serverAddress(HOST) //
+            .userId(USERNAME) //
+            .password(PASSWORD) //
+            .port(SFTP_PORT) //
+            .build();
 
         try (SftpClient sftpClient = new SftpClient(expectedFileServerData)) {
             sftpClient.sftpChannel = channelMock;
             doThrow(new SftpException(ChannelSftp.SSH_FX_NO_SUCH_FILE, "Failed")).when(channelMock).get(anyString(),
-                    anyString());
+                anyString());
 
             assertThatThrownBy(() -> sftpClient.collectFile("remoteFile", Paths.get("localFile")))
-                    .isInstanceOf(DatafileTaskException.class)
-                    .hasMessageStartingWith("Unable to get file from xNF. No retry attempts will be done")
-                    .hasMessageContaining("Data: FileServerData{serverAddress=" + HOST + ", " + "userId=" + USERNAME
-                            + ", password=####, port=" + SFTP_PORT);
+                .isInstanceOf(DatafileTaskException.class)
+                .hasMessageStartingWith("Unable to get file from xNF. No retry attempts will be done")
+                .hasMessageContaining("Data: FileServerData{serverAddress=" + HOST + ", " + "userId=" + USERNAME
+                    + ", password=####, port=" + SFTP_PORT);
         }
     }
 

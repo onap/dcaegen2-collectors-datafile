@@ -29,6 +29,7 @@ import static org.mockito.Mockito.when;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.google.gson.JsonElement;
@@ -36,6 +37,7 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,6 +46,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Properties;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,6 +58,7 @@ import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuratio
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.providers.CloudConfigurationProvider;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapConsumerConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -69,30 +73,19 @@ class AppConfigTest {
 
     private static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
-
     private static final ImmutableDmaapConsumerConfiguration CORRECT_DMAAP_CONSUMER_CONFIG = //
-            new ImmutableDmaapConsumerConfiguration.Builder() //
-                    .timeoutMs(-1) //
-                    .dmaapHostName("message-router.onap.svc.cluster.local") //
-                    .dmaapUserName("admin") //
-                    .dmaapUserPassword("admin") //
-                    .dmaapTopicName("events/unauthenticated.VES_NOTIFICATION_OUTPUT") //
-                    .dmaapPortNumber(2222) //
-                    .dmaapContentType("application/json") //
-                    .messageLimit(-1) //
-                    .dmaapProtocol("http") //
-                    .consumerId("C12") //
-                    .consumerGroup("OpenDcae-c12") //
-                    .trustStorePath("trustStorePath") //
-                    .trustStorePasswordPath("trustStorePasswordPath") //
-                    .keyStorePath("keyStorePath") //
-                    .keyStorePasswordPath("keyStorePasswordPath") //
-                    .enableDmaapCertAuth(true) //
-                    .build();
-
-    private static final ConsumerConfiguration CORRECT_CONSUMER_CONFIG = ImmutableConsumerConfiguration.builder() //
-            .topicUrl(
-                    "http://admin:admin@message-router.onap.svc.cluster.local:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12")
+        new ImmutableDmaapConsumerConfiguration.Builder() //
+            .timeoutMs(-1) //
+            .dmaapHostName("message-router.onap.svc.cluster.local") //
+            .dmaapUserName("admin") //
+            .dmaapUserPassword("admin") //
+            .dmaapTopicName("events/unauthenticated.VES_NOTIFICATION_OUTPUT") //
+            .dmaapPortNumber(2222) //
+            .dmaapContentType("application/json") //
+            .messageLimit(-1) //
+            .dmaapProtocol("http") //
+            .consumerId("C12") //
+            .consumerGroup("OpenDcae-c12") //
             .trustStorePath("trustStorePath") //
             .trustStorePasswordPath("trustStorePasswordPath") //
             .keyStorePath("keyStorePath") //
@@ -100,56 +93,65 @@ class AppConfigTest {
             .enableDmaapCertAuth(true) //
             .build();
 
+    private static final ConsumerConfiguration CORRECT_CONSUMER_CONFIG = ImmutableConsumerConfiguration.builder() //
+        .topicUrl(
+            "http://admin:admin@message-router.onap.svc.cluster.local:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12")
+        .trustStorePath("trustStorePath") //
+        .trustStorePasswordPath("trustStorePasswordPath") //
+        .keyStorePath("keyStorePath") //
+        .keyStorePasswordPath("keyStorePasswordPath") //
+        .enableDmaapCertAuth(true) //
+        .build();
+
     private static final PublisherConfiguration CORRECT_PUBLISHER_CONFIG = //
-            ImmutablePublisherConfiguration.builder() //
-                    .publishUrl("https://message-router.onap.svc.cluster.local:3907/publish/1") //
-                    .logUrl("https://dmaap.example.com/feedlog/972").trustStorePath("trustStorePath") //
-                    .trustStorePasswordPath("trustStorePasswordPath") //
-                    .keyStorePath("keyStorePath") //
-                    .keyStorePasswordPath("keyStorePasswordPath") //
-                    .enableDmaapCertAuth(true) //
-                    .changeIdentifier("PM_MEAS_FILES") //
-                    .userName("user") //
-                    .passWord("password") //
-                    .build();
+        ImmutablePublisherConfiguration.builder() //
+            .publishUrl("https://message-router.onap.svc.cluster.local:3907/publish/1") //
+            .logUrl("https://dmaap.example.com/feedlog/972").trustStorePath("trustStorePath") //
+            .trustStorePasswordPath("trustStorePasswordPath") //
+            .keyStorePath("keyStorePath") //
+            .keyStorePasswordPath("keyStorePasswordPath") //
+            .enableDmaapCertAuth(true) //
+            .changeIdentifier("PM_MEAS_FILES") //
+            .userName("user") //
+            .passWord("password") //
+            .build();
 
     private static final ImmutableFtpesConfig CORRECT_FTPES_CONFIGURATION = //
-            new ImmutableFtpesConfig.Builder() //
-                    .keyCert("/config/dfc.jks") //
-                    .keyPassword("secret") //
-                    .trustedCa("config/ftp.jks") //
-                    .trustedCaPassword("secret") //
-                    .build();
+        new ImmutableFtpesConfig.Builder() //
+            .keyCert("/config/dfc.jks") //
+            .keyPassword("secret") //
+            .trustedCa("config/ftp.jks") //
+            .trustedCaPassword("secret") //
+            .build();
 
     private static final ImmutableDmaapPublisherConfiguration CORRECT_DMAAP_PUBLISHER_CONFIG = //
-            new ImmutableDmaapPublisherConfiguration.Builder() //
-                    .dmaapTopicName("/publish/1") //
-                    .dmaapUserPassword("password") //
-                    .dmaapPortNumber(3907) //
-                    .dmaapProtocol("https") //
-                    .dmaapContentType("application/octet-stream") //
-                    .dmaapHostName("message-router.onap.svc.cluster.local") //
-                    .dmaapUserName("user") //
-                    .trustStorePath("trustStorePath") //
-                    .trustStorePasswordPath("trustStorePasswordPath") //
-                    .keyStorePath("keyStorePath") //
-                    .keyStorePasswordPath("keyStorePasswordPath") //
-                    .enableDmaapCertAuth(true) //
-                    .build();
+        new ImmutableDmaapPublisherConfiguration.Builder() //
+            .dmaapTopicName("/publish/1") //
+            .dmaapUserPassword("password") //
+            .dmaapPortNumber(3907) //
+            .dmaapProtocol("https") //
+            .dmaapContentType("application/octet-stream") //
+            .dmaapHostName("message-router.onap.svc.cluster.local") //
+            .dmaapUserName("user") //
+            .trustStorePath("trustStorePath") //
+            .trustStorePasswordPath("trustStorePasswordPath") //
+            .keyStorePath("keyStorePath") //
+            .keyStorePasswordPath("keyStorePasswordPath") //
+            .enableDmaapCertAuth(true) //
+            .build();
 
     private static EnvProperties properties() {
         return ImmutableEnvProperties.builder() //
-                .consulHost("host") //
-                .consulPort(123) //
-                .cbsName("cbsName") //
-                .appName("appName") //
-                .build();
+            .consulHost("host") //
+            .consulPort(123) //
+            .cbsName("cbsName") //
+            .appName("appName") //
+            .build();
     }
 
     private AppConfig appConfigUnderTest;
     private CloudConfigurationProvider cloudConfigurationProvider = mock(CloudConfigurationProvider.class);
     private final Map<String, String> context = MappedDiagnosticContext.initializeTraceContext();
-
 
     @BeforeEach
     public void setUp() {
@@ -196,9 +198,9 @@ class AppConfigTest {
         Assertions.assertNotNull(appConfigUnderTest.getPublisherConfiguration("YY_FILES"));
 
         assertThat(appConfigUnderTest.getPublisherConfiguration("XX_FILES").publishUrl())
-                .isEqualTo("feed01::publish_url");
+            .isEqualTo("feed01::publish_url");
         assertThat(appConfigUnderTest.getPublisherConfiguration("YY_FILES").publishUrl())
-                .isEqualTo("feed01::publish_url");
+            .isEqualTo("feed01::publish_url");
     }
 
     @Test
@@ -213,12 +215,12 @@ class AppConfigTest {
 
         // Then
         assertTrue("Error message missing in log.",
-                logAppender.list.toString().contains("[WARN] Local configuration file not loaded: /temp.json"));
+            logAppender.list.toString().contains("[WARN] Local configuration file not loaded: /temp.json"));
         logAppender.stop();
 
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         assertThatThrownBy(() -> appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER))
-                .hasMessageContaining("No PublishingConfiguration loaded, changeIdentifier: PM_MEAS_FILES");
+            .hasMessageContaining("No PublishingConfiguration loaded, changeIdentifier: PM_MEAS_FILES");
         Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
     }
 
@@ -233,7 +235,7 @@ class AppConfigTest {
         verify(appConfigUnderTest, times(1)).loadConfigurationFromFile();
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         assertThatThrownBy(() -> appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER))
-                .hasMessageContaining(CHANGE_IDENTIFIER);
+            .hasMessageContaining(CHANGE_IDENTIFIER);
         Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
     }
 
@@ -251,7 +253,7 @@ class AppConfigTest {
         verify(appConfigUnderTest, times(1)).loadConfigurationFromFile();
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         assertThatThrownBy(() -> appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER))
-                .hasMessageContaining(CHANGE_IDENTIFIER);
+            .hasMessageContaining(CHANGE_IDENTIFIER);
         Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
     }
 
@@ -262,10 +264,10 @@ class AppConfigTest {
         Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
 
         StepVerifier //
-                .create(task) //
-                .expectSubscription() //
-                .expectNextCount(0) //
-                .verifyComplete();
+            .create(task) //
+            .expectSubscription() //
+            .expectNextCount(0) //
+            .verifyComplete();
 
         assertTrue(logAppender.list.toString().contains("$CONSUL_HOST environment has not been defined"));
     }
@@ -281,13 +283,13 @@ class AppConfigTest {
         Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
 
         StepVerifier //
-                .create(task) //
-                .expectSubscription() //
-                .expectNextCount(0) //
-                .verifyComplete();
+            .create(task) //
+            .expectSubscription() //
+            .expectNextCount(0) //
+            .verifyComplete();
 
-        assertTrue(logAppender.list.toString()
-                .contains("Could not refresh application configuration java.io.IOException"));
+        assertTrue(
+            logAppender.list.toString().contains("Could not refresh application configuration java.io.IOException"));
     }
 
     @Test
@@ -301,10 +303,10 @@ class AppConfigTest {
         Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
 
         StepVerifier //
-                .create(task) //
-                .expectSubscription() //
-                .expectNext(appConfigUnderTest) //
-                .verifyComplete();
+            .create(task) //
+            .expectSubscription() //
+            .expectNext(appConfigUnderTest) //
+            .verifyComplete();
 
         Assertions.assertNotNull(appConfigUnderTest.getDmaapConsumerConfiguration());
     }
@@ -321,10 +323,10 @@ class AppConfigTest {
         Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
 
         StepVerifier //
-                .create(task) //
-                .expectSubscription() //
-                .expectNext(appConfigUnderTest) //
-                .verifyComplete();
+            .create(task) //
+            .expectSubscription() //
+            .expectNext(appConfigUnderTest) //
+            .verifyComplete();
 
         Assertions.assertNotNull(appConfigUnderTest.getDmaapConsumerConfiguration());
     }
@@ -348,8 +350,8 @@ class AppConfigTest {
 
     private static InputStream getIncorrectJson() {
         String string = "{" + //
-                "    \"configs\": {" + //
-                "        \"dmaap\": {"; //
+            "    \"configs\": {" + //
+            "        \"dmaap\": {"; //
         return new ByteArrayInputStream((string.getBytes(StandardCharsets.UTF_8)));
     }
 }

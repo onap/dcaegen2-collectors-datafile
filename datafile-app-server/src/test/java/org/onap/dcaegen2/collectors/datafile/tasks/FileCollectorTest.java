@@ -48,7 +48,6 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFilePublishInformation;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
-
 import reactor.test.StepVerifier;
 
 public class FileCollectorTest {
@@ -70,10 +69,10 @@ public class FileCollectorTest {
     private static final String USER = "usr";
     private static final String PWD = "pwd";
     private static final String FTPES_LOCATION =
-            FTPES_SCHEME + USER + ":" + PWD + "@" + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
+        FTPES_SCHEME + USER + ":" + PWD + "@" + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
 
     private static final String FTPES_LOCATION_NO_PORT =
-            FTPES_SCHEME + USER + ":" + PWD + "@" + SERVER_ADDRESS + REMOTE_FILE_LOCATION;
+        FTPES_SCHEME + USER + ":" + PWD + "@" + SERVER_ADDRESS + REMOTE_FILE_LOCATION;
     private static final String SFTP_LOCATION = SFTP_SCHEME + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
     private static final String SFTP_LOCATION_NO_PORT = SFTP_SCHEME + SERVER_ADDRESS + REMOTE_FILE_LOCATION;
 
@@ -99,46 +98,46 @@ public class FileCollectorTest {
 
     private MessageMetaData createMessageMetaData() {
         return ImmutableMessageMetaData.builder() //
-                .productName(PRODUCT_NAME) //
-                .vendorName(VENDOR_NAME) //
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
-                .sourceName(SOURCE_NAME) //
-                .startEpochMicrosec(START_EPOCH_MICROSEC) //
-                .timeZoneOffset(TIME_ZONE_OFFSET) //
-                .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER) //
-                .changeType(FILE_READY_CHANGE_TYPE) //
-                .build();
+            .productName(PRODUCT_NAME) //
+            .vendorName(VENDOR_NAME) //
+            .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+            .sourceName(SOURCE_NAME) //
+            .startEpochMicrosec(START_EPOCH_MICROSEC) //
+            .timeZoneOffset(TIME_ZONE_OFFSET) //
+            .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER) //
+            .changeType(FILE_READY_CHANGE_TYPE) //
+            .build();
     }
 
     private FileData createFileData(String location, Scheme scheme) {
         return ImmutableFileData.builder() //
-                .name(PM_FILE_NAME) //
-                .location(location) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .scheme(scheme) //
-                .messageMetaData(createMessageMetaData()) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .location(location) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .scheme(scheme) //
+            .messageMetaData(createMessageMetaData()) //
+            .build();
     }
 
     private FilePublishInformation createExpectedFilePublishInformation(String location) {
         return ImmutableFilePublishInformation.builder() //
-                .productName(PRODUCT_NAME) //
-                .vendorName(VENDOR_NAME) //
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
-                .sourceName(SOURCE_NAME) //
-                .startEpochMicrosec(START_EPOCH_MICROSEC) //
-                .timeZoneOffset(TIME_ZONE_OFFSET) //
-                .name(PM_FILE_NAME) //
-                .location(location) //
-                .internalLocation(LOCAL_FILE_LOCATION) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .context(new HashMap<String, String>()) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .build();
+            .productName(PRODUCT_NAME) //
+            .vendorName(VENDOR_NAME) //
+            .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+            .sourceName(SOURCE_NAME) //
+            .startEpochMicrosec(START_EPOCH_MICROSEC) //
+            .timeZoneOffset(TIME_ZONE_OFFSET) //
+            .name(PM_FILE_NAME) //
+            .location(location) //
+            .internalLocation(LOCAL_FILE_LOCATION) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .context(new HashMap<String, String>()) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .build();
     }
 
     /**
@@ -161,11 +160,11 @@ public class FileCollectorTest {
         FileData fileData = createFileData(FTPES_LOCATION_NO_PORT, Scheme.FTPS);
 
         FilePublishInformation expectedfilePublishInformation =
-                createExpectedFilePublishInformation(FTPES_LOCATION_NO_PORT);
+            createExpectedFilePublishInformation(FTPES_LOCATION_NO_PORT);
 
         StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
-                .expectNext(expectedfilePublishInformation) //
-                .verifyComplete();
+            .expectNext(expectedfilePublishInformation) //
+            .verifyComplete();
 
         verify(ftpsClientMock, times(1)).open();
         verify(ftpsClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
@@ -179,22 +178,21 @@ public class FileCollectorTest {
         FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
         doReturn(sftpClientMock).when(collectorUndetTest).createSftpClient(any());
 
-
         FileData fileData = createFileData(SFTP_LOCATION_NO_PORT, Scheme.SFTP);
         FilePublishInformation expectedfilePublishInformation =
-                createExpectedFilePublishInformation(SFTP_LOCATION_NO_PORT);
+            createExpectedFilePublishInformation(SFTP_LOCATION_NO_PORT);
 
         StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
-                .expectNext(expectedfilePublishInformation) //
-                .verifyComplete();
+            .expectNext(expectedfilePublishInformation) //
+            .verifyComplete();
 
         // The same again, but with port
         fileData = createFileData(SFTP_LOCATION, Scheme.SFTP);
         expectedfilePublishInformation = createExpectedFilePublishInformation(SFTP_LOCATION);
 
         StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
-                .expectNext(expectedfilePublishInformation) //
-                .verifyComplete();
+            .expectNext(expectedfilePublishInformation) //
+            .verifyComplete();
 
         verify(sftpClientMock, times(2)).open();
         verify(sftpClientMock, times(2)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
@@ -209,11 +207,11 @@ public class FileCollectorTest {
 
         FileData fileData = createFileData(FTPES_LOCATION, Scheme.FTPS);
         doThrow(new DatafileTaskException("Unable to collect file.")).when(ftpsClientMock)
-                .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+            .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
         StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
-                .expectErrorMessage("Retries exhausted: 3/3") //
-                .verify();
+            .expectErrorMessage("Retries exhausted: 3/3") //
+            .verify();
 
         verify(ftpsClientMock, times(4)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
     }
@@ -225,11 +223,11 @@ public class FileCollectorTest {
 
         FileData fileData = createFileData(FTPES_LOCATION, Scheme.FTPS);
         doThrow(new NonRetryableDatafileTaskException("Unable to collect file.")).when(ftpsClientMock)
-                .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+            .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
         StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
-                .expectErrorMessage("Non retryable file transfer failure") //
-                .verify();
+            .expectErrorMessage("Non retryable file transfer failure") //
+            .verify();
 
         verify(ftpsClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
     }
@@ -239,16 +237,16 @@ public class FileCollectorTest {
         FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
         doReturn(ftpsClientMock).when(collectorUndetTest).createFtpsClient(any());
         doThrow(new DatafileTaskException("Unable to collect file.")).doNothing().when(ftpsClientMock)
-                .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+            .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
         FilePublishInformation expectedfilePublishInformation =
-                createExpectedFilePublishInformation(FTPES_LOCATION_NO_PORT);
+            createExpectedFilePublishInformation(FTPES_LOCATION_NO_PORT);
 
         FileData fileData = createFileData(FTPES_LOCATION_NO_PORT, Scheme.FTPS);
 
         StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
-                .expectNext(expectedfilePublishInformation) //
-                .verifyComplete();
+            .expectNext(expectedfilePublishInformation) //
+            .verifyComplete();
 
         verify(ftpsClientMock, times(2)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
     }

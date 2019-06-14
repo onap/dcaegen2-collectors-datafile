@@ -37,6 +37,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
@@ -44,6 +45,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,6 +67,7 @@ import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
 import org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables;
 import org.slf4j.MDC;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -103,24 +106,24 @@ public class ScheduledTasksTest {
 
     private void setUpConfiguration() throws DatafileTaskException {
         final PublisherConfiguration dmaapPublisherConfiguration = ImmutablePublisherConfiguration.builder() //
-                .publishUrl(publishUrl) //
-                .logUrl("") //
-                .userName("userName") //
-                .passWord("passWord") //
-                .trustStorePath("trustStorePath") //
-                .trustStorePasswordPath("trustStorePasswordPath") //
-                .keyStorePath("keyStorePath") //
-                .keyStorePasswordPath("keyStorePasswordPath") //
-                .enableDmaapCertAuth(true) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .build(); //
+            .publishUrl(publishUrl) //
+            .logUrl("") //
+            .userName("userName") //
+            .passWord("passWord") //
+            .trustStorePath("trustStorePath") //
+            .trustStorePasswordPath("trustStorePasswordPath") //
+            .keyStorePath("keyStorePath") //
+            .keyStorePasswordPath("keyStorePasswordPath") //
+            .enableDmaapCertAuth(true) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .build(); //
         final ConsumerConfiguration dmaapConsumerConfiguration = ImmutableConsumerConfiguration.builder() //
-                .topicUrl("topicUrl").trustStorePath("trustStorePath") //
-                .trustStorePasswordPath("trustStorePasswordPath") //
-                .keyStorePath("keyStorePath") //
-                .keyStorePasswordPath("keyStorePasswordPath") //
-                .enableDmaapCertAuth(true) //
-                .build();
+            .topicUrl("topicUrl").trustStorePath("trustStorePath") //
+            .trustStorePasswordPath("trustStorePasswordPath") //
+            .keyStorePath("keyStorePath") //
+            .keyStorePasswordPath("keyStorePasswordPath") //
+            .enableDmaapCertAuth(true) //
+            .build();
 
         doReturn(dmaapPublisherConfiguration).when(appConfig).getPublisherConfiguration(CHANGE_IDENTIFIER);
         doReturn(dmaapConsumerConfiguration).when(appConfig).getDmaapConsumerConfiguration();
@@ -129,27 +132,27 @@ public class ScheduledTasksTest {
 
     private MessageMetaData messageMetaData() {
         return ImmutableMessageMetaData.builder() //
-                .productName("productName") //
-                .vendorName("") //
-                .lastEpochMicrosec("") //
-                .sourceName("") //
-                .startEpochMicrosec("") //
-                .timeZoneOffset("") //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .changeType("") //
-                .build();
+            .productName("productName") //
+            .vendorName("") //
+            .lastEpochMicrosec("") //
+            .sourceName("") //
+            .startEpochMicrosec("") //
+            .timeZoneOffset("") //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .changeType("") //
+            .build();
     }
 
     private FileData fileData(int instanceNumber) {
         return ImmutableFileData.builder() //
-                .name(PM_FILE_NAME + instanceNumber) //
-                .fileFormatType("") //
-                .fileFormatVersion("") //
-                .location("ftpes://192.168.0.101/ftp/rop/" + PM_FILE_NAME + instanceNumber) //
-                .scheme(Scheme.FTPS) //
-                .compression("") //
-                .messageMetaData(messageMetaData()) //
-                .build();
+            .name(PM_FILE_NAME + instanceNumber) //
+            .fileFormatType("") //
+            .fileFormatVersion("") //
+            .location("ftpes://192.168.0.101/ftp/rop/" + PM_FILE_NAME + instanceNumber) //
+            .scheme(Scheme.FTPS) //
+            .compression("") //
+            .messageMetaData(messageMetaData()) //
+            .build();
     }
 
     private List<FileData> files(int size, boolean uniqueNames) {
@@ -177,21 +180,21 @@ public class ScheduledTasksTest {
 
     private FilePublishInformation filePublishInformation() {
         return ImmutableFilePublishInformation //
-                .builder() //
-                .productName("") //
-                .vendorName("") //
-                .lastEpochMicrosec("") //
-                .sourceName("") //
-                .startEpochMicrosec("") //
-                .timeZoneOffset("") //
-                .name("") //
-                .location("") //
-                .internalLocation(Paths.get("internalLocation")) //
-                .compression("") //
-                .fileFormatType("") //
-                .fileFormatVersion("") //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .context(new HashMap<String, String>()).build();
+            .builder() //
+            .productName("") //
+            .vendorName("") //
+            .lastEpochMicrosec("") //
+            .sourceName("") //
+            .startEpochMicrosec("") //
+            .timeZoneOffset("") //
+            .name("") //
+            .location("") //
+            .internalLocation(Paths.get("internalLocation")) //
+            .compression("") //
+            .fileFormatType("") //
+            .fileFormatVersion("") //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .context(new HashMap<String, String>()).build();
     }
 
     @Test
@@ -256,24 +259,24 @@ public class ScheduledTasksTest {
     @Test
     public void executeDatafileMainTask_unconfiguredChangeIdentifier() throws DatafileTaskException {
         final PublisherConfiguration dmaapPublisherConfiguration = ImmutablePublisherConfiguration.builder() //
-                .publishUrl(publishUrl) //
-                .logUrl("") //
-                .userName("userName") //
-                .passWord("passWord") //
-                .trustStorePath("trustStorePath") //
-                .trustStorePasswordPath("trustStorePasswordPath") //
-                .keyStorePath("keyStorePath") //
-                .keyStorePasswordPath("keyStorePasswordPath") //
-                .enableDmaapCertAuth(true) //
-                .changeIdentifier("Different changeIdentifier") //
-                .build(); //
+            .publishUrl(publishUrl) //
+            .logUrl("") //
+            .userName("userName") //
+            .passWord("passWord") //
+            .trustStorePath("trustStorePath") //
+            .trustStorePasswordPath("trustStorePasswordPath") //
+            .keyStorePath("keyStorePath") //
+            .keyStorePasswordPath("keyStorePasswordPath") //
+            .enableDmaapCertAuth(true) //
+            .changeIdentifier("Different changeIdentifier") //
+            .build(); //
         final ConsumerConfiguration dmaapConsumerConfiguration = ImmutableConsumerConfiguration.builder() //
-                .topicUrl("topicUrl").trustStorePath("trustStorePath") //
-                .trustStorePasswordPath("trustStorePasswordPath") //
-                .keyStorePath("keyStorePath") //
-                .keyStorePasswordPath("keyStorePasswordPath") //
-                .enableDmaapCertAuth(true) //
-                .build();
+            .topicUrl("topicUrl").trustStorePath("trustStorePath") //
+            .trustStorePasswordPath("trustStorePasswordPath") //
+            .keyStorePath("keyStorePath") //
+            .keyStorePasswordPath("keyStorePasswordPath") //
+            .enableDmaapCertAuth(true) //
+            .build();
 
         doReturn(dmaapPublisherConfiguration).when(appConfig).getPublisherConfiguration(CHANGE_IDENTIFIER);
         doReturn(dmaapConsumerConfiguration).when(appConfig).getDmaapConsumerConfiguration();
@@ -290,7 +293,7 @@ public class ScheduledTasksTest {
         await().untilAsserted(() -> assertEquals(0, testedObject.getCurrentNumberOfSubscriptions()));
 
         assertTrue("Error missing in log", logAppender.list.toString().contains(
-                "[INFO] No feed is configured for: " + CHANGE_IDENTIFIER + ", file ignored: " + PM_FILE_NAME + "1"));
+            "[INFO] No feed is configured for: " + CHANGE_IDENTIFIER + ", file ignored: " + PM_FILE_NAME + "1"));
     }
 
     @Test
@@ -300,14 +303,14 @@ public class ScheduledTasksTest {
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduledTasks.class);
         StepVerifier //
-                .create(testedObject.createMainTask(contextMap)) //
-                .expectSubscription() //
-                .expectNextCount(0) //
-                .expectComplete() //
-                .verify(); //
+            .create(testedObject.createMainTask(contextMap)) //
+            .expectSubscription() //
+            .expectNextCount(0) //
+            .expectComplete() //
+            .verify(); //
 
-        assertTrue("Error missing in log", logAppender.list.toString().contains(
-                "[ERROR] Polling for file ready message failed, " + "exception: java.lang.Exception: Failed"));
+        assertTrue("Error missing in log", logAppender.list.toString()
+            .contains("[ERROR] Polling for file ready message failed, " + "exception: java.lang.Exception: Failed"));
     }
 
     @Test
@@ -328,11 +331,11 @@ public class ScheduledTasksTest {
         doReturn(collectedFile).when(dataRouterMock).publishFile(notNull(), anyLong(), notNull());
 
         StepVerifier //
-                .create(testedObject.createMainTask(contextMap)) //
-                .expectSubscription() //
-                .expectNextCount(noOfFiles) //
-                .expectComplete() //
-                .verify(); //
+            .create(testedObject.createMainTask(contextMap)) //
+            .expectSubscription() //
+            .expectNextCount(noOfFiles) //
+            .expectComplete() //
+            .verify(); //
 
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
         assertEquals(0, testedObject.getThreadPoolQueueSize());
@@ -358,18 +361,18 @@ public class ScheduledTasksTest {
 
         // First file collect will fail, 3 will succeed
         doReturn(error, collectedFile, collectedFile, collectedFile) //
-                .when(fileCollectorMock) //
-                .collectFile(any(FileData.class), anyLong(), any(Duration.class), notNull());
+            .when(fileCollectorMock) //
+            .collectFile(any(FileData.class), anyLong(), any(Duration.class), notNull());
 
         doReturn(collectedFile).when(dataRouterMock).publishFile(notNull(), anyLong(), notNull());
         doReturn(collectedFile).when(dataRouterMock).publishFile(notNull(), anyLong(), notNull());
 
         StepVerifier //
-                .create(testedObject.createMainTask(contextMap)) //
-                .expectSubscription() //
-                .expectNextCount(3) //
-                .expectComplete() //
-                .verify(); //
+            .create(testedObject.createMainTask(contextMap)) //
+            .expectSubscription() //
+            .expectNextCount(3) //
+            .expectComplete() //
+            .verify(); //
 
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
         verify(consumerMock, times(1)).getMessageRouterResponse();
@@ -395,16 +398,16 @@ public class ScheduledTasksTest {
         Mono<Object> error = Mono.error(new Exception("problem"));
         // One publish will fail, the rest will succeed
         doReturn(collectedFile, error, collectedFile, collectedFile) //
-                .when(dataRouterMock) //
-                .publishFile(notNull(), anyLong(), notNull());
+            .when(dataRouterMock) //
+            .publishFile(notNull(), anyLong(), notNull());
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduledTasks.class);
         StepVerifier //
-                .create(testedObject.createMainTask(contextMap)) //
-                .expectSubscription() //
-                .expectNextCount(3) // 3 completed files
-                .expectComplete() //
-                .verify(); //
+            .create(testedObject.createMainTask(contextMap)) //
+            .expectSubscription() //
+            .expectNextCount(3) // 3 completed files
+            .expectComplete() //
+            .verify(); //
 
         assertTrue("Error missing in log", logAppender.list.toString().contains("[ERROR] File publishing failed: "));
 
@@ -435,10 +438,10 @@ public class ScheduledTasksTest {
         doReturn(collectedFile).when(dataRouterMock).publishFile(notNull(), anyLong(), notNull());
 
         StepVerifier //
-                .create(testedObject.createMainTask(contextMap)).expectSubscription() //
-                .expectNextCount(1) // 99 is skipped
-                .expectComplete() //
-                .verify(); //
+            .create(testedObject.createMainTask(contextMap)).expectSubscription() //
+            .expectNextCount(1) // 99 is skipped
+            .expectComplete() //
+            .verify(); //
 
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
         verify(consumerMock, times(1)).getMessageRouterResponse();

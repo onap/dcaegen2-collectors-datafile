@@ -17,6 +17,7 @@
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import io.swagger.annotations.ApiOperation;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -24,7 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
+
 import javax.annotation.PostConstruct;
+
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
 import org.slf4j.Logger;
@@ -66,8 +69,7 @@ public class SchedulerConfig {
      * @param configuration The DFC configuration.
      */
     @Autowired
-    public SchedulerConfig(TaskScheduler taskScheduler, ScheduledTasks scheduledTasks,
-            AppConfig configuration) {
+    public SchedulerConfig(TaskScheduler taskScheduler, ScheduledTasks scheduledTasks, AppConfig configuration) {
         this.taskScheduler = taskScheduler;
         this.scheduledTask = scheduledTasks;
         this.configuration = configuration;
@@ -103,10 +105,9 @@ public class SchedulerConfig {
 
         if (scheduledFutureList.isEmpty()) {
             scheduledFutureList.add(taskScheduler.scheduleWithFixedDelay(scheduledTask::executeDatafileMainTask,
-                    SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS));
-            scheduledFutureList
-                    .add(taskScheduler.scheduleWithFixedDelay(() -> scheduledTask.purgeCachedInformation(Instant.now()),
-                            SCHEDULING_DELAY_FOR_DATAFILE_PURGE_CACHE));
+                SCHEDULING_DELAY_FOR_DATAFILE_COLLECTOR_TASKS));
+            scheduledFutureList.add(taskScheduler.scheduleWithFixedDelay(
+                () -> scheduledTask.purgeCachedInformation(Instant.now()), SCHEDULING_DELAY_FOR_DATAFILE_PURGE_CACHE));
             return true;
         } else {
             return false;

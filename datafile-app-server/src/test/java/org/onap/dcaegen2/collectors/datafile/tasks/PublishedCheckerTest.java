@@ -36,6 +36,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -67,7 +68,6 @@ public class PublishedCheckerTest {
 
     private PublishedChecker publishedCheckerUnderTestSpy;
 
-
     @BeforeAll
     private static void setUp() throws DatafileTaskException {
         when(publisherConfigurationMock.publishUrl()).thenReturn(PUBLISH_URL);
@@ -81,7 +81,7 @@ public class PublishedCheckerTest {
         prepareMocksForTests(HttpUtils.SC_OK, EMPTY_CONTENT, null);
 
         boolean isPublished =
-                publishedCheckerUnderTestSpy.isFilePublished(LOCAL_FILE_NAME, CHANGE_IDENTIFIER, CONTEXT_MAP);
+            publishedCheckerUnderTestSpy.isFilePublished(LOCAL_FILE_NAME, CHANGE_IDENTIFIER, CONTEXT_MAP);
 
         assertFalse(isPublished);
 
@@ -103,7 +103,7 @@ public class PublishedCheckerTest {
         prepareMocksForTests(HttpUtils.SC_BAD_REQUEST, EMPTY_CONTENT, null);
 
         boolean isPublished =
-                publishedCheckerUnderTestSpy.isFilePublished(LOCAL_FILE_NAME, CHANGE_IDENTIFIER, CONTEXT_MAP);
+            publishedCheckerUnderTestSpy.isFilePublished(LOCAL_FILE_NAME, CHANGE_IDENTIFIER, CONTEXT_MAP);
 
         assertFalse(isPublished);
     }
@@ -113,7 +113,7 @@ public class PublishedCheckerTest {
         prepareMocksForTests(HttpUtils.SC_OK, "[" + LOCAL_FILE_NAME + "]", null);
 
         boolean isPublished =
-                publishedCheckerUnderTestSpy.isFilePublished(LOCAL_FILE_NAME, CHANGE_IDENTIFIER, CONTEXT_MAP);
+            publishedCheckerUnderTestSpy.isFilePublished(LOCAL_FILE_NAME, CHANGE_IDENTIFIER, CONTEXT_MAP);
 
         assertTrue(isPublished);
     }
@@ -123,7 +123,7 @@ public class PublishedCheckerTest {
         prepareMocksForTests(HttpUtils.SC_OK, EMPTY_CONTENT, new DatafileTaskException(""));
 
         boolean isPublished =
-                publishedCheckerUnderTestSpy.isFilePublished(LOCAL_FILE_NAME, CHANGE_IDENTIFIER, CONTEXT_MAP);
+            publishedCheckerUnderTestSpy.isFilePublished(LOCAL_FILE_NAME, CHANGE_IDENTIFIER, CONTEXT_MAP);
 
         assertFalse(isPublished);
     }
@@ -138,10 +138,10 @@ public class PublishedCheckerTest {
         HttpResponse httpResponseMock = mock(HttpResponse.class);
         if (exception == null) {
             when(httpClientMock.getDmaapProducerResponseWithCustomTimeout(any(HttpUriRequest.class), any(), any()))
-                    .thenReturn(httpResponseMock);
+                .thenReturn(httpResponseMock);
         } else {
             when(httpClientMock.getDmaapProducerResponseWithCustomTimeout(any(HttpUriRequest.class), any(), any()))
-                    .thenThrow(exception);
+                .thenThrow(exception);
         }
         HttpEntity httpEntityMock = mock(HttpEntity.class);
         StatusLine statusLineMock = mock(StatusLine.class);

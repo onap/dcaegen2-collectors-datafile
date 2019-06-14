@@ -65,39 +65,39 @@ public class JsonMessage {
             additionalFieldsString.append("]");
         }
         return "{" //
-                + "\"event\":" //
-                + "{" //
-                + "\"commonEventHeader\":" //
-                + "{" //
-                + "\"domain\":\"notification\"," //
-                + "\"eventId\":\"<<SerialNumber>>-reg\"," //
-                + "\"eventName\":\"" + eventName + "\"," //
-                + "\"eventType\":\"fileReady\"," //
-                + "\"internalHeaderFields\":{}," //
-                + "\"lastEpochMicrosec\":1519837825682," //
-                + "\"nfNamingCode\":\"5GRAN\"," //
-                + "\"nfcNamingCode\":\"5DU\"," //
-                + "\"priority\":\"Normal\"," //
-                + "\"reportingEntityName\":\"5GRAN_DU\"," //
-                + "\"sequence\":0," //
-                + "\"sourceId\":\"<<SerialNumber>>\"," //
-                + "\"sourceName\":\"5GRAN_DU\"," //
-                + "\"timeZoneOffset\":\"UTC+05:00\"," //
-                + "\"startEpochMicrosec\":\"1519837825682\"," //
-                + "\"version\":3" //
-                + "}," //
-                + "\"notificationFields\":" //
-                + "{" //
-                + getAsStringIfParameterIsSet("changeIdentifier", changeIdentifier,
-                        changeType != null || notificationFieldsVersion != null || arrayOfAdditionalFields.size() > 0)
-                + getAsStringIfParameterIsSet("changeType", changeType,
-                        notificationFieldsVersion != null || arrayOfAdditionalFields.size() > 0)
-                + getAsStringIfParameterIsSet("notificationFieldsVersion", notificationFieldsVersion,
-                        arrayOfAdditionalFields.size() > 0)
-                + additionalFieldsString.toString() //
-                + "}" //
-                + "}" //
-                + "}";
+            + "\"event\":" //
+            + "{" //
+            + "\"commonEventHeader\":" //
+            + "{" //
+            + "\"domain\":\"notification\"," //
+            + "\"eventId\":\"<<SerialNumber>>-reg\"," //
+            + "\"eventName\":\"" + eventName + "\"," //
+            + "\"eventType\":\"fileReady\"," //
+            + "\"internalHeaderFields\":{}," //
+            + "\"lastEpochMicrosec\":1519837825682," //
+            + "\"nfNamingCode\":\"5GRAN\"," //
+            + "\"nfcNamingCode\":\"5DU\"," //
+            + "\"priority\":\"Normal\"," //
+            + "\"reportingEntityName\":\"5GRAN_DU\"," //
+            + "\"sequence\":0," //
+            + "\"sourceId\":\"<<SerialNumber>>\"," //
+            + "\"sourceName\":\"5GRAN_DU\"," //
+            + "\"timeZoneOffset\":\"UTC+05:00\"," //
+            + "\"startEpochMicrosec\":\"1519837825682\"," //
+            + "\"version\":3" //
+            + "}," //
+            + "\"notificationFields\":" //
+            + "{" //
+            + getAsStringIfParameterIsSet("changeIdentifier", changeIdentifier,
+                changeType != null || notificationFieldsVersion != null || arrayOfAdditionalFields.size() > 0)
+            + getAsStringIfParameterIsSet("changeType", changeType,
+                notificationFieldsVersion != null || arrayOfAdditionalFields.size() > 0)
+            + getAsStringIfParameterIsSet("notificationFieldsVersion", notificationFieldsVersion,
+                arrayOfAdditionalFields.size() > 0)
+            + additionalFieldsString.toString() //
+            + "}" //
+            + "}" //
+            + "}";
     }
 
     private JsonMessage(final JsonMessageBuilder builder) {
@@ -118,17 +118,17 @@ public class JsonMessage {
         @Override
         public String toString() {
             return "{" //
-                    + getAsStringIfParameterIsSet("name", name, true) //
-                    + "\"hashMap\":" //
-                    + "{"
-                    + getAsStringIfParameterIsSet("location", location,
-                            compression != null || fileFormatType != null || fileFormatVersion != null)
-                    + getAsStringIfParameterIsSet("compression", compression,
-                            fileFormatType != null || fileFormatVersion != null)
-                    + getAsStringIfParameterIsSet("fileFormatType", fileFormatType, fileFormatVersion != null)
-                    + getAsStringIfParameterIsSet("fileFormatVersion", fileFormatVersion, false) //
-                    + "}" //
-                    + "}";
+                + getAsStringIfParameterIsSet("name", name, true) //
+                + "\"hashMap\":" //
+                + "{"
+                + getAsStringIfParameterIsSet("location", location,
+                    compression != null || fileFormatType != null || fileFormatVersion != null)
+                + getAsStringIfParameterIsSet("compression", compression,
+                    fileFormatType != null || fileFormatVersion != null)
+                + getAsStringIfParameterIsSet("fileFormatType", fileFormatType, fileFormatVersion != null)
+                + getAsStringIfParameterIsSet("fileFormatVersion", fileFormatVersion, false) //
+                + "}" //
+                + "}";
         }
 
         private AdditionalField(AdditionalFieldBuilder builder) {
@@ -216,7 +216,7 @@ public class JsonMessage {
     }
 
     private static String getAsStringIfParameterIsSet(String parameterName, String parameterValue,
-            boolean withSeparator) {
+        boolean withSeparator) {
         String result = "";
         if (parameterValue != null) {
             result = "\"" + parameterName + "\":\"" + parameterValue + "\"";
@@ -236,27 +236,27 @@ public class JsonMessage {
      */
     public static void main(String[] args) {
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
-                .name("A20161224.1030-1045.bin.gz") //
-                .location("ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz") //
-                .compression("gzip") //
-                .fileFormatType("org.3GPP.32.435#measCollec") //
-                .fileFormatVersion("V10") //
-                .build();
+            .name("A20161224.1030-1045.bin.gz") //
+            .location("ftpes://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz") //
+            .compression("gzip") //
+            .fileFormatType("org.3GPP.32.435#measCollec") //
+            .fileFormatVersion("V10") //
+            .build();
         AdditionalField secondAdditionalField = new JsonMessage.AdditionalFieldBuilder() //
-                .name("A20161224.1030-1045.bin.gz") //
-                .location("sftp://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz") //
-                .compression("gzip") //
-                .fileFormatType("org.3GPP.32.435#measCollec") //
-                .fileFormatVersion("V10") //
-                .build();
+            .name("A20161224.1030-1045.bin.gz") //
+            .location("sftp://192.168.0.101:22/ftp/rop/A20161224.1030-1045.bin.gz") //
+            .compression("gzip") //
+            .fileFormatType("org.3GPP.32.435#measCollec") //
+            .fileFormatVersion("V10") //
+            .build();
         JsonMessage message = new JsonMessage.JsonMessageBuilder() //
-                .eventName("Noti_NrRadio-Ericsson_FileReady") //
-                .changeIdentifier("PM_MEAS_FILES") //
-                .changeType("FileReady") //
-                .notificationFieldsVersion("2.0") //
-                .addAdditionalField(additionalField) //
-                .addAdditionalField(secondAdditionalField) //
-                .build();
+            .eventName("Noti_NrRadio-Ericsson_FileReady") //
+            .changeIdentifier("PM_MEAS_FILES") //
+            .changeType("FileReady") //
+            .notificationFieldsVersion("2.0") //
+            .addAdditionalField(additionalField) //
+            .addAdditionalField(secondAdditionalField) //
+            .build();
         System.out.println(message.toString());
     }
 }

@@ -27,10 +27,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
-
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+
+import java.io.File;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -97,28 +98,28 @@ class DataRouterPublisherTest {
 
     // "https://54.45.333.2:1234/publish/1";
     private static final String PUBLISH_URL =
-            HTTPS_SCHEME + "://" + HOST + ":" + PORT + "/" + PUBLISH_TOPIC + "/" + FEED_ID;
+        HTTPS_SCHEME + "://" + HOST + ":" + PORT + "/" + PUBLISH_TOPIC + "/" + FEED_ID;
 
     @BeforeAll
     public static void setUp() {
         when(publisherConfigurationMock.publishUrl()).thenReturn(PUBLISH_URL);
 
         filePublishInformation = ImmutableFilePublishInformation.builder() //
-                .productName(PRODUCT_NAME) //
-                .vendorName(VENDOR_NAME) //
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
-                .sourceName(SOURCE_NAME) //
-                .startEpochMicrosec(START_EPOCH_MICROSEC) //
-                .timeZoneOffset(TIME_ZONE_OFFSET) //
-                .name(PM_FILE_NAME) //
-                .location(FTPES_ADDRESS) //
-                .internalLocation(Paths.get("target/" + PM_FILE_NAME)) //
-                .compression("gzip") //
-                .fileFormatType(FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .context(context) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .build(); //
+            .productName(PRODUCT_NAME) //
+            .vendorName(VENDOR_NAME) //
+            .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+            .sourceName(SOURCE_NAME) //
+            .startEpochMicrosec(START_EPOCH_MICROSEC) //
+            .timeZoneOffset(TIME_ZONE_OFFSET) //
+            .name(PM_FILE_NAME) //
+            .location(FTPES_ADDRESS) //
+            .internalLocation(Paths.get("target/" + PM_FILE_NAME)) //
+            .compression("gzip") //
+            .fileFormatType(FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .context(context) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .build(); //
         appConfig = mock(AppConfig.class);
         publisherTaskUnderTestSpy = spy(new DataRouterPublisher(appConfig, new Counters()));
     }
@@ -127,9 +128,9 @@ class DataRouterPublisherTest {
     public void whenPassedObjectFits_ReturnsCorrectStatus() throws Exception {
         prepareMocksForTests(null, Integer.valueOf(HttpStatus.OK.value()));
         StepVerifier //
-                .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0)))
-                .expectNext(filePublishInformation) //
-                .verifyComplete();
+            .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0)))
+            .expectNext(filePublishInformation) //
+            .verifyComplete();
 
         ArgumentCaptor<HttpUriRequest> requestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
         verify(httpClientMock).addUserCredentialsToHead(any(HttpUriRequest.class));
@@ -176,22 +177,22 @@ class DataRouterPublisherTest {
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(DataRouterPublisher.class);
         StepVerifier.create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 2, Duration.ofSeconds(0)))
-                .expectNext(filePublishInformation) //
-                .verifyComplete();
+            .expectNext(filePublishInformation) //
+            .verifyComplete();
 
-        assertTrue("Warning missing in log", logAppender.list.toString()
-                .contains("[WARN] Publishing file " + PM_FILE_NAME + " to DR unsuccessful."));
+        assertTrue("Warning missing in log",
+            logAppender.list.toString().contains("[WARN] Publishing file " + PM_FILE_NAME + " to DR unsuccessful."));
     }
 
     @Test
     public void whenPassedObjectFits_firstFailsThenSucceeds() throws Exception {
         prepareMocksForTests(null, Integer.valueOf(HttpStatus.BAD_GATEWAY.value()),
-                Integer.valueOf(HttpStatus.OK.value()));
+            Integer.valueOf(HttpStatus.OK.value()));
 
         StepVerifier //
-                .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0)))
-                .expectNext(filePublishInformation) //
-                .verifyComplete();
+            .create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0)))
+            .expectNext(filePublishInformation) //
+            .verifyComplete();
 
         verify(httpClientMock, times(2)).addUserCredentialsToHead(any(HttpUriRequest.class));
         verify(httpClientMock, times(2)).getDmaapProducerResponseWithRedirect(any(HttpUriRequest.class), any());
@@ -201,15 +202,15 @@ class DataRouterPublisherTest {
     @Test
     public void whenPassedObjectFits_firstFailsThenFails() throws Exception {
         prepareMocksForTests(null, Integer.valueOf(HttpStatus.BAD_GATEWAY.value()),
-                Integer.valueOf((HttpStatus.BAD_GATEWAY.value())));
+            Integer.valueOf((HttpStatus.BAD_GATEWAY.value())));
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(DataRouterPublisher.class);
         StepVerifier.create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0)))
-                .expectErrorMessage("Retries exhausted: 1/1") //
-                .verify();
+            .expectErrorMessage("Retries exhausted: 1/1") //
+            .verify();
 
         assertTrue("Warning missing in log", logAppender.list.toString().contains("[WARN] Publishing file "
-                + PM_FILE_NAME + " to DR unsuccessful. Response code: " + HttpStatus.BAD_GATEWAY));
+            + PM_FILE_NAME + " to DR unsuccessful. Response code: " + HttpStatus.BAD_GATEWAY));
 
         verify(httpClientMock, times(2)).addUserCredentialsToHead(any(HttpUriRequest.class));
         verify(httpClientMock, times(2)).getDmaapProducerResponseWithRedirect(any(HttpUriRequest.class), any());
@@ -218,7 +219,7 @@ class DataRouterPublisherTest {
 
     @SafeVarargs
     final void prepareMocksForTests(Exception exception, Integer firstResponse, Integer... nextHttpResponses)
-            throws Exception {
+        throws Exception {
         httpClientMock = mock(DmaapProducerHttpClient.class);
         when(appConfig.getPublisherConfiguration(CHANGE_IDENTIFIER)).thenReturn(publisherConfigurationMock);
         doReturn(publisherConfigurationMock).when(publisherTaskUnderTestSpy).resolveConfiguration(CHANGE_IDENTIFIER);
@@ -227,10 +228,10 @@ class DataRouterPublisherTest {
         HttpResponse httpResponseMock = mock(HttpResponse.class);
         if (exception == null) {
             when(httpClientMock.getDmaapProducerResponseWithRedirect(any(HttpUriRequest.class), any()))
-                    .thenReturn(httpResponseMock);
+                .thenReturn(httpResponseMock);
         } else {
             when(httpClientMock.getDmaapProducerResponseWithRedirect(any(HttpUriRequest.class), any()))
-                    .thenThrow(exception).thenReturn(httpResponseMock);
+                .thenThrow(exception).thenReturn(httpResponseMock);
         }
         StatusLine statusLineMock = mock(StatusLine.class);
         when(httpResponseMock.getStatusLine()).thenReturn(statusLineMock);

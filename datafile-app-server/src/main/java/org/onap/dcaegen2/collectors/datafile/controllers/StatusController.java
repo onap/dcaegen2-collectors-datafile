@@ -19,12 +19,12 @@ package org.onap.dcaegen2.collectors.datafile.controllers;
 import static org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext.ENTRY;
 import static org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext.EXIT;
 
-import org.onap.dcaegen2.collectors.datafile.model.Counters;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
+import org.onap.dcaegen2.collectors.datafile.model.Counters;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
 import org.slf4j.Logger;
@@ -61,7 +61,8 @@ public class StatusController {
      */
     @GetMapping("/heartbeat")
     @ApiOperation(value = "Returns liveness of DATAFILE service")
-    @ApiResponses(value = { //
+    @ApiResponses(
+        value = { //
             @ApiResponse(code = 200, message = "DATAFILE service is living"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
@@ -85,7 +86,8 @@ public class StatusController {
      */
     @GetMapping("/status")
     @ApiOperation(value = "Returns status and statistics of DATAFILE service")
-    @ApiResponses(value = { //
+    @ApiResponses(
+        value = { //
             @ApiResponse(code = 200, message = "DATAFILE service is living"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
@@ -99,7 +101,5 @@ public class StatusController {
         logger.info(EXIT, "Status request");
         return response;
     }
-
-
 
 }

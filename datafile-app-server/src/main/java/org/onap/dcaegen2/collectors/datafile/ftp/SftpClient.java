@@ -22,8 +22,10 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
+
 import java.nio.file.Path;
 import java.util.Optional;
+
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
 import org.slf4j.Logger;
@@ -57,12 +59,12 @@ public class SftpClient implements FileCollectClient {
             logger.trace("File {} Download Successfull from xNF", localFile.getFileName());
         } catch (SftpException e) {
             boolean retry = e.id != ChannelSftp.SSH_FX_NO_SUCH_FILE && e.id != ChannelSftp.SSH_FX_PERMISSION_DENIED
-                    && e.id != ChannelSftp.SSH_FX_OP_UNSUPPORTED;
+                && e.id != ChannelSftp.SSH_FX_OP_UNSUPPORTED;
             if (retry) {
                 throw new DatafileTaskException("Unable to get file from xNF. Data: " + fileServerData, e);
             } else {
                 throw new NonRetryableDatafileTaskException(
-                        "Unable to get file from xNF. No retry attempts will be done. Data: " + fileServerData, e);
+                    "Unable to get file from xNF. No retry attempts will be done. Data: " + fileServerData, e);
             }
         }
 
@@ -95,7 +97,7 @@ public class SftpClient implements FileCollectClient {
                 throw new DatafileTaskException("Could not open Sftp client. " + e);
             } else {
                 throw new NonRetryableDatafileTaskException(
-                        "Could not open Sftp client, no retry attempts will be done " + e);
+                    "Could not open Sftp client, no retry attempts will be done " + e);
             }
         }
     }
@@ -107,8 +109,8 @@ public class SftpClient implements FileCollectClient {
     private Session setUpSession(FileServerData fileServerData) throws JSchException {
         JSch jsch = createJsch();
 
-        Session newSession = jsch.getSession(fileServerData.userId(), fileServerData.serverAddress(),
-                getPort(fileServerData.port()));
+        Session newSession =
+            jsch.getSession(fileServerData.userId(), fileServerData.serverAddress(), getPort(fileServerData.port()));
         newSession.setConfig("StrictHostKeyChecking", "no");
         newSession.setPassword(fileServerData.password());
         newSession.connect();

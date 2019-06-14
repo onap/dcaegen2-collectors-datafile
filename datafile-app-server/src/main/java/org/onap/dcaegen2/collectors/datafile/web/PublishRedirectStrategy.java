@@ -18,6 +18,7 @@ package org.onap.dcaegen2.collectors.datafile.web;
 
 import java.net.URI;
 import java.util.Map;
+
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolException;
@@ -51,11 +52,11 @@ public class PublishRedirectStrategy extends DefaultRedirectStrategy {
      * Redirectable methods.
      */
     private static final String[] REDIRECT_METHODS = new String[] { //
-            HttpPut.METHOD_NAME, //
-            HttpGet.METHOD_NAME, //
-            HttpPost.METHOD_NAME, //
-            HttpHead.METHOD_NAME, //
-            HttpDelete.METHOD_NAME //
+        HttpPut.METHOD_NAME, //
+        HttpGet.METHOD_NAME, //
+        HttpPost.METHOD_NAME, //
+        HttpHead.METHOD_NAME, //
+        HttpDelete.METHOD_NAME //
     };
 
     /**
@@ -79,7 +80,7 @@ public class PublishRedirectStrategy extends DefaultRedirectStrategy {
 
     @Override
     public HttpUriRequest getRedirect(final HttpRequest request, final HttpResponse response, final HttpContext context)
-            throws ProtocolException {
+        throws ProtocolException {
         MDC.setContextMap(contextMap);
         final URI uri = getLocationURI(request, response, context);
         logger.trace("getRedirect...: {}", request);

@@ -21,13 +21,14 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 
+import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 
 /**
  * Parses the cloud configuration.
@@ -52,7 +53,7 @@ public class CloudConfigParser {
 
     public Map<String, PublisherConfiguration> getDmaapPublisherConfig() throws DatafileTaskException {
         Iterator<JsonElement> producerCfgs =
-                toArray(serviceConfigurationRoot.get("dmaap.dmaapProducerConfiguration")).iterator();
+            toArray(serviceConfigurationRoot.get("dmaap.dmaapProducerConfiguration")).iterator();
 
         Map<String, PublisherConfiguration> result = new HashMap<>();
 
@@ -62,19 +63,18 @@ public class CloudConfigParser {
             JsonObject feedConfig = getFeedConfig(feedName);
 
             PublisherConfiguration cfg = ImmutablePublisherConfiguration.builder() //
-                    .publishUrl(getAsString(feedConfig, "publish_url")) //
-                    .passWord(getAsString(feedConfig, "password")) //
-                    .userName(getAsString(feedConfig, "username")) //
-                    .trustStorePath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_TRUST_STORE_PATH)) //
-                    .trustStorePasswordPath(
-                            getAsString(serviceConfigurationRoot, DMAAP_SECURITY_TRUST_STORE_PASS_PATH)) //
-                    .keyStorePath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_KEY_STORE_PATH)) //
-                    .keyStorePasswordPath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_KEY_STORE_PASS_PATH)) //
-                    .enableDmaapCertAuth(
-                            get(serviceConfigurationRoot, DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH).getAsBoolean()) //
-                    .changeIdentifier(getAsString(producerCfg, "changeIdentifier")) //
-                    .logUrl(getAsString(feedConfig, "log_url")) //
-                    .build();
+                .publishUrl(getAsString(feedConfig, "publish_url")) //
+                .passWord(getAsString(feedConfig, "password")) //
+                .userName(getAsString(feedConfig, "username")) //
+                .trustStorePath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_TRUST_STORE_PATH)) //
+                .trustStorePasswordPath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_TRUST_STORE_PASS_PATH)) //
+                .keyStorePath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_KEY_STORE_PATH)) //
+                .keyStorePasswordPath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_KEY_STORE_PASS_PATH)) //
+                .enableDmaapCertAuth(
+                    get(serviceConfigurationRoot, DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH).getAsBoolean()) //
+                .changeIdentifier(getAsString(producerCfg, "changeIdentifier")) //
+                .logUrl(getAsString(feedConfig, "log_url")) //
+                .build();
 
             result.put(cfg.changeIdentifier(), cfg);
         }
@@ -92,22 +92,21 @@ public class CloudConfigParser {
         String topicUrl = getAsString(dmaapInfo, "topic_url");
 
         return ImmutableConsumerConfiguration.builder().topicUrl(topicUrl)
-                .trustStorePath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_TRUST_STORE_PATH))
-                .trustStorePasswordPath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_TRUST_STORE_PASS_PATH))
-                .keyStorePath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_KEY_STORE_PATH))
-                .keyStorePasswordPath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_KEY_STORE_PASS_PATH))
-                .enableDmaapCertAuth(
-                        get(serviceConfigurationRoot, DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH).getAsBoolean()) //
-                .build();
+            .trustStorePath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_TRUST_STORE_PATH))
+            .trustStorePasswordPath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_TRUST_STORE_PASS_PATH))
+            .keyStorePath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_KEY_STORE_PATH))
+            .keyStorePasswordPath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_KEY_STORE_PASS_PATH))
+            .enableDmaapCertAuth(get(serviceConfigurationRoot, DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH).getAsBoolean()) //
+            .build();
     }
 
     public FtpesConfig getFtpesConfig() throws DatafileTaskException {
         return new ImmutableFtpesConfig.Builder() //
-                .keyCert(getAsString(serviceConfigurationRoot, "dmaap.ftpesConfig.keyCert"))
-                .keyPassword(getAsString(serviceConfigurationRoot, "dmaap.ftpesConfig.keyPassword"))
-                .trustedCa(getAsString(serviceConfigurationRoot, "dmaap.ftpesConfig.trustedCa"))
-                .trustedCaPassword(getAsString(serviceConfigurationRoot, "dmaap.ftpesConfig.trustedCaPassword")) //
-                .build();
+            .keyCert(getAsString(serviceConfigurationRoot, "dmaap.ftpesConfig.keyCert"))
+            .keyPassword(getAsString(serviceConfigurationRoot, "dmaap.ftpesConfig.keyPassword"))
+            .trustedCa(getAsString(serviceConfigurationRoot, "dmaap.ftpesConfig.trustedCa"))
+            .trustedCaPassword(getAsString(serviceConfigurationRoot, "dmaap.ftpesConfig.trustedCaPassword")) //
+            .build();
     }
 
     private static JsonElement get(JsonObject obj, String memberName) throws DatafileTaskException {

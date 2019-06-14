@@ -36,56 +36,55 @@ public class FileDataTest {
     private static final String SERVER_ADDRESS = "192.168.0.101";
     private static final int PORT_22 = 22;
     private static final String LOCATION_WITH_USER =
-            FTPES_SCHEME + USER + ":" + PWD + "@" + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
+        FTPES_SCHEME + USER + ":" + PWD + "@" + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
     private static final String LOCATION_WITHOUT_USER =
-            FTPES_SCHEME + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
-
+        FTPES_SCHEME + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
 
     private MessageMetaData messageMetaData() {
         return ImmutableMessageMetaData.builder() //
-                .productName("PRODUCT_NAME") //
-                .vendorName("VENDOR_NAME") //
-                .lastEpochMicrosec("LAST_EPOCH_MICROSEC") //
-                .sourceName("SOURCE_NAME") //
-                .startEpochMicrosec("START_EPOCH_MICROSEC") //
-                .timeZoneOffset("TIME_ZONE_OFFSET") //
-                .changeIdentifier("PM_MEAS_CHANGE_IDENTIFIER") //
-                .changeType("FILE_READY_CHANGE_TYPE") //
-                .build();
+            .productName("PRODUCT_NAME") //
+            .vendorName("VENDOR_NAME") //
+            .lastEpochMicrosec("LAST_EPOCH_MICROSEC") //
+            .sourceName("SOURCE_NAME") //
+            .startEpochMicrosec("START_EPOCH_MICROSEC") //
+            .timeZoneOffset("TIME_ZONE_OFFSET") //
+            .changeIdentifier("PM_MEAS_CHANGE_IDENTIFIER") //
+            .changeType("FILE_READY_CHANGE_TYPE") //
+            .build();
     }
 
     private FileData properFileDataWithUser() {
         return ImmutableFileData.builder() //
-                .name("name") //
-                .location(LOCATION_WITH_USER) //
-                .compression("comp") //
-                .fileFormatType("type") //
-                .fileFormatVersion("version") //
-                .scheme(Scheme.FTPS) //
-                .messageMetaData(messageMetaData()) //
-                .build();
+            .name("name") //
+            .location(LOCATION_WITH_USER) //
+            .compression("comp") //
+            .fileFormatType("type") //
+            .fileFormatVersion("version") //
+            .scheme(Scheme.FTPS) //
+            .messageMetaData(messageMetaData()) //
+            .build();
     }
 
     private FileData properFileDataWithoutUser() {
         return ImmutableFileData.builder() //
-                .name("name") //
-                .location(LOCATION_WITHOUT_USER) //
-                .compression("comp") //
-                .fileFormatType("type") //
-                .fileFormatVersion("version") //
-                .scheme(Scheme.FTPS) //
-                .messageMetaData(messageMetaData()) //
-                .build();
+            .name("name") //
+            .location(LOCATION_WITHOUT_USER) //
+            .compression("comp") //
+            .fileFormatType("type") //
+            .fileFormatVersion("version") //
+            .scheme(Scheme.FTPS) //
+            .messageMetaData(messageMetaData()) //
+            .build();
     }
 
     @Test
     public void fileServerData_properLocationWithUser() {
         ImmutableFileServerData expectedFileServerData = ImmutableFileServerData.builder() //
-                .serverAddress(SERVER_ADDRESS) //
-                .port(PORT_22) //
-                .userId(USER) //
-                .password(PWD) //
-                .build();
+            .serverAddress(SERVER_ADDRESS) //
+            .port(PORT_22) //
+            .userId(USER) //
+            .password(PWD) //
+            .build();
 
         FileServerData actualFileServerData = properFileDataWithUser().fileServerData();
         assertEquals(expectedFileServerData, actualFileServerData);
@@ -94,11 +93,11 @@ public class FileDataTest {
     @Test
     public void fileServerData_properLocationWithoutUser() {
         ImmutableFileServerData expectedFileServerData = ImmutableFileServerData.builder() //
-                .serverAddress(SERVER_ADDRESS) //
-                .port(PORT_22) //
-                .userId("") //
-                .password("") //
-                .build();
+            .serverAddress(SERVER_ADDRESS) //
+            .port(PORT_22) //
+            .userId("") //
+            .password("") //
+            .build();
 
         FileServerData actualFileServerData = properFileDataWithoutUser().fileServerData();
         assertEquals(expectedFileServerData, actualFileServerData);
@@ -114,12 +113,11 @@ public class FileDataTest {
     @Test
     public void fileServerData_properLocationWithoutPort() {
         ImmutableFileServerData fileServerData = ImmutableFileServerData.builder() //
-                .serverAddress(SERVER_ADDRESS) //
-                .userId("") //
-                .password("") //
-                .build();
+            .serverAddress(SERVER_ADDRESS) //
+            .userId("") //
+            .password("") //
+            .build();
 
         assertFalse(fileServerData.port().isPresent());
     }
 }
-

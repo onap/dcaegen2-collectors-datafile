@@ -24,7 +24,6 @@ import org.immutables.value.Value;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
 
-
 @Value.Immutable
 @Value.Style(redactedMask = "####")
 @Gson.TypeAdapters
@@ -56,19 +55,19 @@ public interface PublisherConfiguration {
         String urlPath = url.getPath();
 
         return new ImmutableDmaapPublisherConfiguration.Builder() //
-                .dmaapContentType("application/octet-stream") //
-                .dmaapPortNumber(url.getPort()) //
-                .dmaapHostName(url.getHost()) //
-                .dmaapTopicName(urlPath) //
-                .dmaapProtocol(url.getProtocol()) //
-                .dmaapUserName(this.userName()) //
-                .dmaapUserPassword(this.passWord()) //
-                .trustStorePath(this.trustStorePath()) //
-                .trustStorePasswordPath(this.trustStorePasswordPath()) //
-                .keyStorePath(this.keyStorePath()) //
-                .keyStorePasswordPath(this.keyStorePasswordPath()) //
-                .enableDmaapCertAuth(this.enableDmaapCertAuth()) //
-                .build();
+            .dmaapContentType("application/octet-stream") //
+            .dmaapPortNumber(url.getPort()) //
+            .dmaapHostName(url.getHost()) //
+            .dmaapTopicName(urlPath) //
+            .dmaapProtocol(url.getProtocol()) //
+            .dmaapUserName(this.userName()) //
+            .dmaapUserPassword(this.passWord()) //
+            .trustStorePath(this.trustStorePath()) //
+            .trustStorePasswordPath(this.trustStorePasswordPath()) //
+            .keyStorePath(this.keyStorePath()) //
+            .keyStorePasswordPath(this.keyStorePasswordPath()) //
+            .enableDmaapCertAuth(this.enableDmaapCertAuth()) //
+            .build();
     }
 
 }

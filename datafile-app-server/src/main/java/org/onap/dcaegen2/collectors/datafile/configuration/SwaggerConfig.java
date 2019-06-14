@@ -19,11 +19,13 @@
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import com.google.common.base.Predicates;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -31,7 +33,6 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 
 @EnableSwagger2
 @Configuration
@@ -53,29 +54,29 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2) //
-                .apiInfo(apiInfo()) //
-                .select() //
-                .apis(RequestHandlerSelectors.any()) //
-                .paths(PathSelectors.any()) //
-                .paths(Predicates.not(PathSelectors.regex("/error"))) //
-                // this endpoint is not implemented, but was visible for Swagger
-                .build();
+            .apiInfo(apiInfo()) //
+            .select() //
+            .apis(RequestHandlerSelectors.any()) //
+            .paths(PathSelectors.any()) //
+            .paths(Predicates.not(PathSelectors.regex("/error"))) //
+            // this endpoint is not implemented, but was visible for Swagger
+            .build();
     }
 
     private static ApiInfo apiInfo() {
         return new ApiInfoBuilder() //
-                .title(API_TITLE) //
-                .description(DESCRIPTION) //
-                .version(VERSION) //
-                .build();
+            .title(API_TITLE) //
+            .description(DESCRIPTION) //
+            .version(VERSION) //
+            .build();
     }
 
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(SWAGGER_UI) //
-                .addResourceLocations(RESOURCES_PATH);
+            .addResourceLocations(RESOURCES_PATH);
 
         registry.addResourceHandler(WEBJARS) //
-                .addResourceLocations(WEBJARS_PATH);
+            .addResourceLocations(WEBJARS_PATH);
     }
 }

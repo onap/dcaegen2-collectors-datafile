@@ -23,7 +23,6 @@ package org.onap.dcaegen2.collectors.datafile.model;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 /**
  *
  * Various counters that can be shown via a REST API.

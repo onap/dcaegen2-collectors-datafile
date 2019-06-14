@@ -83,7 +83,7 @@ public class DmaapProducerHttpClient {
      * @throws DatafileTaskException if anything goes wrong.
      */
     public HttpResponse getDmaapProducerResponseWithRedirect(HttpUriRequest request, Map<String, String> contextMap)
-            throws DatafileTaskException {
+        throws DatafileTaskException {
         MDC.setContextMap(contextMap);
         try (CloseableHttpAsyncClient webClient = createWebClient(true, DEFAULT_REQUEST_TIMEOUT, contextMap)) {
             webClient.start();
@@ -110,7 +110,7 @@ public class DmaapProducerHttpClient {
      * @throws DatafileTaskException if anything goes wrong.
      */
     public HttpResponse getDmaapProducerResponseWithCustomTimeout(HttpUriRequest request, Duration requestTimeout,
-            Map<String, String> contextMap) throws DatafileTaskException {
+        Map<String, String> contextMap) throws DatafileTaskException {
         MDC.setContextMap(contextMap);
         try (CloseableHttpAsyncClient webClient = createWebClient(false, requestTimeout, contextMap)) {
             webClient.start();
@@ -140,13 +140,13 @@ public class DmaapProducerHttpClient {
     }
 
     private CloseableHttpAsyncClient createWebClient(boolean expectRedirect, Duration requestTimeout,
-            Map<String, String> contextMap) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+        Map<String, String> contextMap) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
         SSLContext sslContext =
-                new SSLContextBuilder().loadTrustMaterial(null, (certificate, authType) -> true).build();
+            new SSLContextBuilder().loadTrustMaterial(null, (certificate, authType) -> true).build();
 
         HttpAsyncClientBuilderWrapper clientBuilder = getHttpClientBuilder();
         clientBuilder.setSslContext(sslContext) //
-                .setSslHostnameVerifier(new NoopHostnameVerifier());
+            .setSslHostnameVerifier(new NoopHostnameVerifier());
 
         if (expectRedirect) {
             clientBuilder.setRedirectStrategy(new PublishRedirectStrategy(contextMap));
@@ -155,10 +155,10 @@ public class DmaapProducerHttpClient {
         if (requestTimeout.toMillis() > 0) {
             int millis = (int) requestTimeout.toMillis();
             RequestConfig requestConfig = RequestConfig.custom() //
-                    .setSocketTimeout(millis) //
-                    .setConnectTimeout(millis) //
-                    .setConnectionRequestTimeout(millis) //
-                    .build();
+                .setSocketTimeout(millis) //
+                .setConnectTimeout(millis) //
+                .setConnectionRequestTimeout(millis) //
+                .build();
 
             clientBuilder.setDefaultRequestConfig(requestConfig);
         } else {

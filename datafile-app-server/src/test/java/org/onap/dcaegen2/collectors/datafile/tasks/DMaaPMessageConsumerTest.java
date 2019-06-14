@@ -96,94 +96,94 @@ public class DMaaPMessageConsumerTest {
     @BeforeAll
     public static void setUp() {
         AdditionalField ftpesAdditionalField = new JsonMessage.AdditionalFieldBuilder() //
-                .location(FTPES_LOCATION) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .build();
+            .location(FTPES_LOCATION) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .build();
 
         JsonMessage ftpesJsonMessage = new JsonMessage.JsonMessageBuilder() //
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
-                .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER) //
-                .changeType(FILE_READY_CHANGE_TYPE) //
-                .notificationFieldsVersion("1.0") //
-                .addAdditionalField(ftpesAdditionalField) //
-                .build();
+            .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+            .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER) //
+            .changeType(FILE_READY_CHANGE_TYPE) //
+            .notificationFieldsVersion("1.0") //
+            .addAdditionalField(ftpesAdditionalField) //
+            .build();
 
         ftpesMessageString = ftpesJsonMessage.toString();
         MessageMetaData messageMetaData = ImmutableMessageMetaData.builder() //
-                .productName(PRODUCT_NAME) //
-                .vendorName(VENDOR_NAME) //
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
-                .sourceName(SOURCE_NAME) //
-                .startEpochMicrosec(START_EPOCH_MICROSEC) //
-                .timeZoneOffset(TIME_ZONE_OFFSET) //
-                .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER) //
-                .changeType(FILE_READY_CHANGE_TYPE) //
-                .build();
+            .productName(PRODUCT_NAME) //
+            .vendorName(VENDOR_NAME) //
+            .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+            .sourceName(SOURCE_NAME) //
+            .startEpochMicrosec(START_EPOCH_MICROSEC) //
+            .timeZoneOffset(TIME_ZONE_OFFSET) //
+            .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER) //
+            .changeType(FILE_READY_CHANGE_TYPE) //
+            .build();
         ftpesFileData = ImmutableFileData.builder() //
-                .name(PM_FILE_NAME) //
-                .location(FTPES_LOCATION) //
-                .scheme(Scheme.FTPS) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .messageMetaData(messageMetaData) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .location(FTPES_LOCATION) //
+            .scheme(Scheme.FTPS) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .messageMetaData(messageMetaData) //
+            .build();
 
         List<FileData> files = new ArrayList<>();
         files.add(ftpesFileData);
         expectedFtpesMessage = ImmutableFileReadyMessage.builder() //
-                .files(files) //
-                .build();
+            .files(files) //
+            .build();
 
         AdditionalField sftpAdditionalField = new JsonMessage.AdditionalFieldBuilder() //
-                .location(SFTP_LOCATION) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .build();
+            .location(SFTP_LOCATION) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .build();
         JsonMessage sftpJsonMessage = new JsonMessage.JsonMessageBuilder() //
-                .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
-                .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER) //
-                .changeType(FILE_READY_CHANGE_TYPE) //
-                .notificationFieldsVersion("1.0") //
-                .addAdditionalField(sftpAdditionalField) //
-                .build();
+            .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+            .changeIdentifier(PM_MEAS_CHANGE_IDENTIFIER) //
+            .changeType(FILE_READY_CHANGE_TYPE) //
+            .notificationFieldsVersion("1.0") //
+            .addAdditionalField(sftpAdditionalField) //
+            .build();
         sftpMessageString = sftpJsonMessage.toString();
         sftpFileData = ImmutableFileData.builder() //
-                .name(PM_FILE_NAME) //
-                .location(SFTP_LOCATION) //
-                .scheme(Scheme.FTPS) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .messageMetaData(messageMetaData) //
-                .build();
+            .name(PM_FILE_NAME) //
+            .location(SFTP_LOCATION) //
+            .scheme(Scheme.FTPS) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .messageMetaData(messageMetaData) //
+            .build();
 
         ImmutableFilePublishInformation filePublishInformation = ImmutableFilePublishInformation.builder() //
-                .productName(PRODUCT_NAME) //
-                .vendorName(VENDOR_NAME) //
-                .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
-                .sourceName(SOURCE_NAME) //
-                .startEpochMicrosec(START_EPOCH_MICROSEC) //
-                .timeZoneOffset(TIME_ZONE_OFFSET) //
-                .name(PM_FILE_NAME) //
-                .location(FTPES_LOCATION) //
-                .internalLocation(LOCAL_FILE_LOCATION) //
-                .compression(GZIP_COMPRESSION) //
-                .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
-                .fileFormatVersion(FILE_FORMAT_VERSION) //
-                .changeIdentifier(CHANGE_IDENTIFIER) //
-                .context(new HashMap<String,String>()) //
-                .build();
+            .productName(PRODUCT_NAME) //
+            .vendorName(VENDOR_NAME) //
+            .lastEpochMicrosec(LAST_EPOCH_MICROSEC) //
+            .sourceName(SOURCE_NAME) //
+            .startEpochMicrosec(START_EPOCH_MICROSEC) //
+            .timeZoneOffset(TIME_ZONE_OFFSET) //
+            .name(PM_FILE_NAME) //
+            .location(FTPES_LOCATION) //
+            .internalLocation(LOCAL_FILE_LOCATION) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatType(MEAS_COLLECT_FILE_FORMAT_TYPE) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .changeIdentifier(CHANGE_IDENTIFIER) //
+            .context(new HashMap<String, String>()) //
+            .build();
         listOfFilePublishInformation.add(filePublishInformation);
 
         files = new ArrayList<>();
         files.add(sftpFileData);
         expectedSftpMessage = ImmutableFileReadyMessage.builder() //
-                .files(files) //
-                .build();
+            .files(files) //
+            .build();
     }
 
     @Test
@@ -191,9 +191,9 @@ public class DMaaPMessageConsumerTest {
         prepareMocksForDmaapConsumer("", null);
 
         StepVerifier.create(messageConsumer.getMessageRouterResponse()) //
-                .expectSubscription() //
-                .expectError(DatafileTaskException.class) //
-                .verify();
+            .expectSubscription() //
+            .expectError(DatafileTaskException.class) //
+            .verify();
 
         verify(httpClientMock, times(1)).getDMaaPConsumerResponse();
     }
@@ -203,8 +203,8 @@ public class DMaaPMessageConsumerTest {
         prepareMocksForDmaapConsumer(ftpesMessageString, expectedFtpesMessage);
 
         StepVerifier.create(messageConsumer.getMessageRouterResponse()) //
-                .expectNext(expectedFtpesMessage) //
-                .verifyComplete();
+            .expectNext(expectedFtpesMessage) //
+            .verifyComplete();
 
         verify(httpClientMock, times(1)).getDMaaPConsumerResponse();
         verifyNoMoreInteractions(httpClientMock);
@@ -215,8 +215,8 @@ public class DMaaPMessageConsumerTest {
         prepareMocksForDmaapConsumer(sftpMessageString, expectedSftpMessage);
 
         StepVerifier.create(messageConsumer.getMessageRouterResponse()) //
-                .expectNext(expectedSftpMessage) //
-                .verifyComplete();
+            .expectNext(expectedSftpMessage) //
+            .verifyComplete();
 
         verify(httpClientMock, times(1)).getDMaaPConsumerResponse();
         verifyNoMoreInteractions(httpClientMock);
@@ -230,10 +230,10 @@ public class DMaaPMessageConsumerTest {
 
         if (!message.isEmpty()) {
             when(jsonMessageParserMock.getMessagesFromJson(messageAsMono))
-                    .thenReturn(Flux.just(fileReadyMessageAfterConsume));
+                .thenReturn(Flux.just(fileReadyMessageAfterConsume));
         } else {
             when(jsonMessageParserMock.getMessagesFromJson(messageAsMono))
-                    .thenReturn(Flux.error(new DatafileTaskException("problemas")));
+                .thenReturn(Flux.error(new DatafileTaskException("problemas")));
         }
 
         messageConsumer = spy(new DMaaPMessageConsumer(httpClientMock, jsonMessageParserMock));

@@ -28,7 +28,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
-
 import reactor.core.publisher.Mono;
 
 /**
@@ -86,7 +85,7 @@ public class DmaapWebClient {
             MDC.put(SERVICE_NAME, String.valueOf(clientRequest.url()));
             logger.trace("Request: {} {}", clientRequest.method(), clientRequest.url());
             clientRequest.headers()
-                    .forEach((name, values) -> values.forEach(value -> logger.trace("{}={}", name, value)));
+                .forEach((name, values) -> values.forEach(value -> logger.trace("{}={}", name, value)));
             logger.trace("HTTP request headers: {}", clientRequest.headers());
             MDC.remove(SERVICE_NAME);
             return Mono.just(clientRequest);

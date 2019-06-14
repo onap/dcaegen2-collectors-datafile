@@ -71,7 +71,6 @@ class DmaapProducerHttpClientTest {
 
     private static final Map<String, String> CONTEXT_MAP = new HashMap<>();
 
-
     private DmaapProducerHttpClient producerClientUnderTestSpy;
 
     private DmaapPublisherConfiguration dmaapPublisherConfigurationMock = mock(DmaapPublisherConfiguration.class);
@@ -167,7 +166,7 @@ class DmaapProducerHttpClientTest {
             when(futureMock.get()).thenThrow(new InterruptedException("Interrupted"));
 
             producerClientUnderTestSpy.getDmaapProducerResponseWithCustomTimeout(request, TWO_SECOND_TIMEOUT,
-                    CONTEXT_MAP);
+                CONTEXT_MAP);
 
             fail("Should have got an exception.");
         } catch (DatafileTaskException e) {

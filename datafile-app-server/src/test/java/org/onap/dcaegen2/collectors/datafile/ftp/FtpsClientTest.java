@@ -32,8 +32,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
+
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPSClient;
 import org.junit.jupiter.api.BeforeEach;
@@ -205,8 +207,7 @@ public class FtpsClientTest {
         doReturn(false).when(ftpsClientMock).retrieveFile(REMOTE_FILE_PATH, outputStreamMock);
 
         assertThatThrownBy(() -> clientUnderTestSpy.collectFile(REMOTE_FILE_PATH, LOCAL_FILE_PATH))
-            .hasMessageContaining(REMOTE_FILE_PATH)
-            .hasMessageContaining("No retry");
+            .hasMessageContaining(REMOTE_FILE_PATH).hasMessageContaining("No retry");
 
         verifyFtpsClientMock_openOk();
         verify(ftpsClientMock, times(1)).retrieveFile(ArgumentMatchers.eq(REMOTE_FILE_PATH), any());
