@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -31,7 +32,8 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
-import org.onap.dcaegen2.collectors.datafile.controllers.HeartbeatController;
+import org.onap.dcaegen2.collectors.datafile.controllers.StatusController;
+import org.onap.dcaegen2.collectors.datafile.model.Counters;
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
 import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
 import org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables;
@@ -40,30 +42,47 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Mono;
 
-public class HeartbeatControllerTest {
+public class StatusControllerTest {
     @Test
     public void heartbeat_success() {
         ScheduledTasks scheduledTasksMock = mock(ScheduledTasks.class);
-        when(scheduledTasksMock.getCurrentNumberOfTasks()).thenReturn(10);
-        when(scheduledTasksMock.publishedFilesCacheSize()).thenReturn(20);
 
         HttpHeaders httpHeaders = new HttpHeaders();
 
-        HeartbeatController controllerUnderTest = new HeartbeatController(scheduledTasksMock);
+        StatusController controllerUnderTest = new StatusController(scheduledTasksMock);
 
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(HeartbeatController.class);
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(StatusController.class);
         Mono<ResponseEntity<String>> result = controllerUnderTest.heartbeat(httpHeaders);
 
         validateLogging(logAppender);
 
         String body = result.block().getBody();
-        assertTrue(body.startsWith("I'm living! Status: "));
-        assertTrue(body.contains("numberOfFileCollectionTasks=10"));
-        assertTrue(body.contains("fileCacheSize=20"));
+        assertTrue(body.startsWith("I'm living!"));
 
         assertFalse(StringUtils.isBlank(MDC.get(MdcVariables.REQUEST_ID)));
         assertFalse(StringUtils.isBlank(MDC.get(MdcVariables.INVOCATION_ID)));
     }
+
+
+    @Test
+    public void status() {
+        ScheduledTasks scheduledTasksMock = mock(ScheduledTasks.class);
+        Counters counters = new Counters();
+        doReturn(counters).when(scheduledTasksMock).getCounters();
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+
+        StatusController controllerUnderTest = new StatusController(scheduledTasksMock);
+
+        Mono<ResponseEntity<String>> result = controllerUnderTest.status(httpHeaders);
+
+        String body = result.block().getBody();
+        System.out.println(body);
+
+        assertFalse(StringUtils.isBlank(MDC.get(MdcVariables.REQUEST_ID)));
+        assertFalse(StringUtils.isBlank(MDC.get(MdcVariables.INVOCATION_ID)));
+    }
+
 
     private void validateLogging(ListAppender<ILoggingEvent> logAppender) {
         assertEquals(logAppender.list.get(0).getMarker().getName(), "ENTRY");

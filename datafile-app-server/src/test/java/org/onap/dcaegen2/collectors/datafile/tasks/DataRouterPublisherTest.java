@@ -27,10 +27,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
+
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -50,6 +50,7 @@ import org.mockito.ArgumentCaptor;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.PublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.onap.dcaegen2.collectors.datafile.model.Counters;
 import org.onap.dcaegen2.collectors.datafile.model.FilePublishInformation;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFilePublishInformation;
 import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerHttpClient;
@@ -86,7 +87,6 @@ class DataRouterPublisherTest {
     private static final String APPLICATION_OCTET_STREAM_CONTENT_TYPE = "application/octet-stream";
     private static final String PUBLISH_TOPIC = "publish";
     private static final String FEED_ID = "1";
-    private static final String FILE_CONTENT = "Just a string.";
 
     private static FilePublishInformation filePublishInformation;
     private static DmaapProducerHttpClient httpClientMock;
@@ -120,7 +120,7 @@ class DataRouterPublisherTest {
                 .changeIdentifier(CHANGE_IDENTIFIER) //
                 .build(); //
         appConfig = mock(AppConfig.class);
-        publisherTaskUnderTestSpy = spy(new DataRouterPublisher(appConfig));
+        publisherTaskUnderTestSpy = spy(new DataRouterPublisher(appConfig, new Counters()));
     }
 
     @Test
@@ -236,8 +236,8 @@ class DataRouterPublisherTest {
         when(httpResponseMock.getStatusLine()).thenReturn(statusLineMock);
         when(statusLineMock.getStatusCode()).thenReturn(firstResponse, nextHttpResponses);
 
-        InputStream fileStream = new ByteArrayInputStream(FILE_CONTENT.getBytes());
-        doReturn(fileStream).when(publisherTaskUnderTestSpy).createInputStream(Paths.get("target", PM_FILE_NAME));
+        File file = File.createTempFile("DFC", "tmp");
+        doReturn(file).when(publisherTaskUnderTestSpy).createInputFile(Paths.get("target", PM_FILE_NAME));
     }
 
     private Map<String, String> getMetaDataAsMap(Header[] metaHeaders) {

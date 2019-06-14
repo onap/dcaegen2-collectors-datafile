@@ -24,9 +24,11 @@ import java.util.Optional;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.ftp.FileCollectClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.FtpsClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.SftpClient;
+import org.onap.dcaegen2.collectors.datafile.model.Counters;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FilePublishInformation;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFilePublishInformation;
@@ -45,14 +47,16 @@ public class FileCollector {
 
     private static final Logger logger = LoggerFactory.getLogger(FileCollector.class);
     private final AppConfig datafileAppConfig;
+    private final Counters counters;
 
     /**
      * Constructor.
      *
      * @param datafileAppConfig application configuration
      */
-    public FileCollector(AppConfig datafileAppConfig) {
+    public FileCollector(AppConfig datafileAppConfig, Counters counters) {
         this.datafileAppConfig = datafileAppConfig;
+        this.counters = counters;
     }
 
     /**
@@ -97,14 +101,16 @@ public class FileCollector {
             currentClient.open();
             localFile.getParent().toFile().mkdir(); // Create parent directories
             currentClient.collectFile(remoteFile, localFile);
+            counters.incNoOfCollectedFiles();
             return Mono.just(Optional.of(getFilePublishInformation(fileData, localFile, context)));
         } catch (DatafileTaskException e) {
             logger.warn("Failed to download file: {} {}, reason: {}", fileData.sourceName(), fileData.name(),
                     e.toString());
-            if (e.isRetryable()) {
-                return Mono.error(e);
-            } else {
+            counters.incNoOfFailedFtpAttempts();
+            if (e instanceof NonRetryableDatafileTaskException) {
                 return Mono.just(Optional.empty()); // Give up
+            } else {
+                return Mono.error(e);
             }
         } catch (Exception throwable) {
             logger.warn("Failed to close ftp client: {} {}, reason: {}", fileData.sourceName(), fileData.name(),

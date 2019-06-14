@@ -121,8 +121,7 @@ public class SftpClientTest {
         doReturn(jschMock).when(sftpClientSpy).createJsch();
         when(jschMock.getSession(anyString(), anyString(), anyInt())).thenThrow(new JSchException("Failed"));
 
-        assertThatThrownBy(() -> sftpClientSpy.open())
-                .hasMessageStartingWith("Could not open Sftp client. com.jcraft.jsch.JSchException: Failed");
+        assertThatThrownBy(() -> sftpClientSpy.open()).hasMessageStartingWith("Could not open Sftp client.");
     }
 
     @SuppressWarnings("resource")
@@ -161,8 +160,9 @@ public class SftpClientTest {
 
             assertThatThrownBy(() -> sftpClient.collectFile("remoteFile", Paths.get("localFile")))
                     .isInstanceOf(DatafileTaskException.class)
-                    .hasMessageStartingWith("Unable to get file from xNF. Data: FileServerData{serverAddress=" + HOST
-                            + ", " + "userId=" + USERNAME + ", password=####, port=" + SFTP_PORT);
+                    .hasMessageStartingWith("Unable to get file from xNF. No retry attempts will be done")
+                    .hasMessageContaining("Data: FileServerData{serverAddress=" + HOST + ", " + "userId=" + USERNAME
+                            + ", password=####, port=" + SFTP_PORT);
         }
     }
 

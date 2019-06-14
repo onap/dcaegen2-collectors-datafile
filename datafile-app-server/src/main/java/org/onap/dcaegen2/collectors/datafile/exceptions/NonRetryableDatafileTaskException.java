@@ -1,6 +1,6 @@
 /*-
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,15 +18,16 @@
 
 package org.onap.dcaegen2.collectors.datafile.exceptions;
 
-public class DatafileTaskException extends Exception {
+
+public class NonRetryableDatafileTaskException extends DatafileTaskException {
 
     private static final long serialVersionUID = 1L;
 
-    public DatafileTaskException(String message) {
+    public NonRetryableDatafileTaskException(String message) {
         super(message);
     }
 
-    public DatafileTaskException(String message, Exception originalException) {
+    public NonRetryableDatafileTaskException(String message, Exception originalException) {
         super(message, originalException);
     }
 
