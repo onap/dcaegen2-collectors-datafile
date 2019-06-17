@@ -55,7 +55,7 @@ public interface PublisherConfiguration {
         String urlPath = url.getPath();
 
         return new ImmutableDmaapPublisherConfiguration.Builder() //
-            .dmaapContentType("application/octet-stream") //
+            .endpointUrl(publishUrl()).dmaapContentType("application/octet-stream") //
             .dmaapPortNumber(url.getPort()) //
             .dmaapHostName(url.getHost()) //
             .dmaapTopicName(urlPath) //
