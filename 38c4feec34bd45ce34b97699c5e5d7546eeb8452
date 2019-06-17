@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bcd1cb0d_5e94c38e",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/PublisherConfiguration.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-06-17T10:57:47Z",
+      "side": 1,
+      "message": "please insert a comment to makeit on a separate line \n\n.endpointUrl(publishUrl())  //\n.dmaapContentType(\"application/octet-stream\") //",
+      "range": {
+        "startLine": 58,
+        "startChar": 38,
+        "endLine": 58,
+        "endChar": 83
+      },
+      "revId": "38c4feec34bd45ce34b97699c5e5d7546eeb8452",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "151f1c95_2ca6edb5",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfigTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-06-17T10:57:47Z",
+      "side": 1,
+      "message": "Formatting: \n\n.endpointUrl(\"https://message-router.onap.svc.cluster.local:3907/publish/1\") //\n.dmaapTopicName(\"/publish/1\") //",
+      "revId": "38c4feec34bd45ce34b97699c5e5d7546eeb8452",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
