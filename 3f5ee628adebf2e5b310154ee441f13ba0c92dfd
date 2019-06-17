@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9bc55e43_9721a309",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-06-17T11:15:15Z",
+      "side": 1,
+      "message": "Please declare a proprty for the version",
+      "range": {
+        "startLine": 244,
+        "startChar": 1,
+        "endLine": 244,
+        "endChar": 38
+      },
+      "revId": "3f5ee628adebf2e5b310154ee441f13ba0c92dfd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea43ae51_4906a052",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-06-17T11:15:15Z",
+      "side": 1,
+      "message": "Please declare a proprty for the version",
+      "range": {
+        "startLine": 264,
+        "startChar": 17,
+        "endLine": 264,
+        "endChar": 22
+      },
+      "revId": "3f5ee628adebf2e5b310154ee441f13ba0c92dfd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3851c9f_b40c69dd",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-06-17T11:15:15Z",
+      "side": 1,
+      "message": "Please declare a proprty for the version",
+      "range": {
+        "startLine": 269,
+        "startChar": 1,
+        "endLine": 269,
+        "endChar": 33
+      },
+      "revId": "3f5ee628adebf2e5b310154ee441f13ba0c92dfd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
