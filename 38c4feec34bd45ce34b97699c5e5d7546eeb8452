@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "75672e83_46fc8bd2",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-06-17T12:04:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e38a64a2_7d5091f4",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 39
+      },
+      "revId": "38c4feec34bd45ce34b97699c5e5d7546eeb8452",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bcd1cb0d_5e94c38e",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/PublisherConfiguration.java",
         "patchSetId": 3
@@ -36,6 +60,30 @@
       "writtenOn": "2019-06-17T10:57:47Z",
       "side": 1,
       "message": "please insert a comment to makeit on a separate line \n\n.endpointUrl(publishUrl())  //\n.dmaapContentType(\"application/octet-stream\") //",
+      "range": {
+        "startLine": 58,
+        "startChar": 38,
+        "endLine": 58,
+        "endChar": 83
+      },
+      "revId": "38c4feec34bd45ce34b97699c5e5d7546eeb8452",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2bd91646_4aa309c8",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/PublisherConfiguration.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-06-17T12:04:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bcd1cb0d_5e94c38e",
       "range": {
         "startLine": 58,
         "startChar": 38,
@@ -65,6 +113,24 @@
     },
     {
       "key": {
+        "uuid": "c6cecec2_7e7e93ea",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfigTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-06-17T12:04:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "151f1c95_2ca6edb5",
+      "revId": "38c4feec34bd45ce34b97699c5e5d7546eeb8452",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6598f4ea_17ea1d11",
         "filename": "pom.xml",
         "patchSetId": 3
@@ -76,6 +142,30 @@
       "writtenOn": "2019-06-17T11:15:15Z",
       "side": 1,
       "message": "Should not be SNAPSHOT",
+      "range": {
+        "startLine": 48,
+        "startChar": 22,
+        "endLine": 48,
+        "endChar": 31
+      },
+      "revId": "38c4feec34bd45ce34b97699c5e5d7546eeb8452",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0227c1ba_cac18b06",
+        "filename": "pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-06-17T12:04:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6598f4ea_17ea1d11",
       "range": {
         "startLine": 48,
         "startChar": 22,
