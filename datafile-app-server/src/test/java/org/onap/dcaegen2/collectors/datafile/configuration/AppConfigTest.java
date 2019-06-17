@@ -53,9 +53,9 @@ import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.ImmutableEnvProperties;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.providers.CloudConfigurationProvider;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClient;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.model.EnvProperties;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.model.ImmutableEnvProperties;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapConsumerConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
 
@@ -69,12 +69,14 @@ import reactor.test.StepVerifier;
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/9/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
-class AppConfigTest {
+public class AppConfigTest {
 
-    private static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
+    public static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
-    private static final ImmutableDmaapConsumerConfiguration CORRECT_DMAAP_CONSUMER_CONFIG = //
+    public static final ImmutableDmaapConsumerConfiguration CORRECT_DMAAP_CONSUMER_CONFIG = //
         new ImmutableDmaapConsumerConfiguration.Builder() //
+            .endpointUrl(
+                "http://admin:admin@message-router.onap.svc.cluster.local:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12")
             .timeoutMs(-1) //
             .dmaapHostName("message-router.onap.svc.cluster.local") //
             .dmaapUserName("admin") //
@@ -93,7 +95,7 @@ class AppConfigTest {
             .enableDmaapCertAuth(true) //
             .build();
 
-    private static final ConsumerConfiguration CORRECT_CONSUMER_CONFIG = ImmutableConsumerConfiguration.builder() //
+    public static final ConsumerConfiguration CORRECT_CONSUMER_CONFIG = ImmutableConsumerConfiguration.builder() //
         .topicUrl(
             "http://admin:admin@message-router.onap.svc.cluster.local:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12")
         .trustStorePath("trustStorePath") //
@@ -126,6 +128,7 @@ class AppConfigTest {
 
     private static final ImmutableDmaapPublisherConfiguration CORRECT_DMAAP_PUBLISHER_CONFIG = //
         new ImmutableDmaapPublisherConfiguration.Builder() //
+            .endpointUrl("https://message-router.onap.svc.cluster.local:3907/publish/1") //
             .dmaapTopicName("/publish/1") //
             .dmaapUserPassword("password") //
             .dmaapPortNumber(3907) //
@@ -150,14 +153,14 @@ class AppConfigTest {
     }
 
     private AppConfig appConfigUnderTest;
-    private CloudConfigurationProvider cloudConfigurationProvider = mock(CloudConfigurationProvider.class);
     private final Map<String, String> context = MappedDiagnosticContext.initializeTraceContext();
+    CbsClient cbsClient = mock(CbsClient.class);
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         appConfigUnderTest = spy(AppConfig.class);
-        appConfigUnderTest.setCloudConfigurationProvider(cloudConfigurationProvider);
         appConfigUnderTest.systemEnvironment = new Properties();
+
     }
 
     @Test
@@ -208,19 +211,14 @@ class AppConfigTest {
         // Given
         appConfigUnderTest.setFilepath("/temp.json");
 
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
-
         // When
         appConfigUnderTest.loadConfigurationFromFile();
 
         // Then
-        assertTrue("Error message missing in log.",
-            logAppender.list.toString().contains("[WARN] Local configuration file not loaded: /temp.json"));
-        logAppender.stop();
-
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         assertThatThrownBy(() -> appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER))
             .hasMessageContaining("No PublishingConfiguration loaded, changeIdentifier: PM_MEAS_FILES");
+
         Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
     }
 
@@ -274,13 +272,16 @@ class AppConfigTest {
 
     @Test
     public void whenPeriodicConfigRefreshNoConsul() {
+        EnvProperties props = properties();
+        doReturn(Mono.just(props)).when(appConfigUnderTest).readEnvironmentVariables(any(), any());
 
-        doReturn(Mono.just(properties())).when(appConfigUnderTest).readEnvironmentVariables(any(), any());
+        doReturn(Mono.just(cbsClient)).when(appConfigUnderTest).createCbsClient(props);
         Mono<JsonObject> err = Mono.error(new IOException());
-        doReturn(err).when(cloudConfigurationProvider).callForServiceConfigurationReactive(any());
+        doReturn(err).when(cbsClient).get(any());
+
+        Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
-        Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
 
         StepVerifier //
             .create(task) //
@@ -294,11 +295,15 @@ class AppConfigTest {
 
     @Test
     public void whenPeriodicConfigRefreshSuccess() throws JsonIOException, JsonSyntaxException, IOException {
-        doReturn(Mono.just(properties())).when(appConfigUnderTest).readEnvironmentVariables(any(), any());
+        EnvProperties props = properties();
+        doReturn(Mono.just(props)).when(appConfigUnderTest).readEnvironmentVariables(any(), any());
+
+        doReturn(Mono.just(cbsClient)).when(appConfigUnderTest).createCbsClient(props);
 
         Mono<JsonObject> json = Mono.just(getJsonRootObject());
 
-        doReturn(json, json).when(cloudConfigurationProvider).callForServiceConfigurationReactive(any());
+        doReturn(json).when(cbsClient).get(any());
+        doReturn(json).when(cbsClient).get(any());
 
         Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
 
@@ -309,16 +314,21 @@ class AppConfigTest {
             .verifyComplete();
 
         Assertions.assertNotNull(appConfigUnderTest.getDmaapConsumerConfiguration());
+
     }
 
     @Test
     public void whenPeriodicConfigRefreshSuccess2() throws JsonIOException, JsonSyntaxException, IOException {
-        doReturn(Mono.just(properties())).when(appConfigUnderTest).readEnvironmentVariables(any(), any());
+        EnvProperties props = properties();
+        doReturn(Mono.just(props)).when(appConfigUnderTest).readEnvironmentVariables(any(), any());
+
+        doReturn(Mono.just(cbsClient)).when(appConfigUnderTest).createCbsClient(props);
 
         Mono<JsonObject> json = Mono.just(getJsonRootObject());
-        Mono<JsonObject> err = Mono.error(new IOException()); // no config entry created by the dmaap plugin
+        Mono<JsonObject> err = Mono.error(new IOException()); // no config entry created by the
+        // dmaap plugin
 
-        doReturn(json, err).when(cloudConfigurationProvider).callForServiceConfigurationReactive(any());
+        doReturn(json, err).when(cbsClient).get(any());
 
         Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
 
