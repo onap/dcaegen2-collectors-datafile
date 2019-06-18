@@ -33,6 +33,52 @@
       "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5b6f34b2_56fab1ce",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 2683
+      },
+      "writtenOn": "2019-06-18T07:15:10Z",
+      "side": 1,
+      "message": "If you are going to subscribe to the updates you can use the CbsClient api directly. The example is on the wiki page.\n\nIn current solution you are reading environment and performing CBS service lookup every 5 minutes. I believe it should be done the other way around: lookup cbs and then subscribe for updates.",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 77
+      },
+      "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6a5cdcc2_600c61cf",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 2683
+      },
+      "writtenOn": "2019-06-18T07:15:10Z",
+      "side": 1,
+      "message": "Do you have an example of what are you keeping in CBS? Which actual datafilecolector-related keys are kept in Consul? I\u0027m asking because I don\u0027t understand why do you need separate CBS call for this \"dmaap\" key.\n\nDuring Dublin release there was a Jira issue for aligning every (?) service configuration to the DCAE requirements. That includes making DMAAP streams config use standard structure (see https://onap.readthedocs.io/en/latest/submodules/dcaegen2.git/docs/sections/components/component-specification/dmaap-connection-objects.html).\n\nThere is an example of a service config made available on CBS by the DCAE platform on https://wiki.onap.org/display/DW/MicroServices+Onboarding+in+ONAP#MicroServicesOnboardinginONAP-DMAAPbinding\n\nWhen using this standard structure, DCAE SDK cbs-client usage should be easy. We\u0027ve made it so it should help using DCAE standards (and make it hard/impossible to use non-standard approaches).",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 114
+      },
+      "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
