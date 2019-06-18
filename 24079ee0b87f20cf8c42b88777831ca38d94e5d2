@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "536fdad9_aa9d3e06",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 2683
+      },
+      "writtenOn": "2019-06-18T07:59:57Z",
+      "side": 1,
+      "message": "Then we still need this interval to be rewritten in more straightforward way. We should start with CbsLookup and then use the cbsClient. Something like:\n\n```\ncreateCbsClient(env).flatMapMany(cbsClient -\u003e\n  Flux.interval(...)\n    .flatMap(iteration -\u003e {\n      var appConfig \u003d cbsClient.get(...);\n      var dmaapConfig \u003d cbsClient.get(...);\n      return Flux.zip(this::parseCloudConfig, appConfig, dmaapConfig);\n    })\n\n)\n```",
+      "revId": "24079ee0b87f20cf8c42b88777831ca38d94e5d2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
