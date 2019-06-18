@@ -235,6 +235,30 @@
       "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2c9be951_41364eac",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-06-18T15:14:21Z",
+      "side": 1,
+      "message": "CBS query already support dmaap key via GET /service_component/{service_component_name} call. Moving to dmaap plugin will ensure this key is populated in consul. With static topic configuration in blueprint, they get stored under application config directly.",
+      "parentUuid": "e8b802da_9592973d",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 114
+      },
+      "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
