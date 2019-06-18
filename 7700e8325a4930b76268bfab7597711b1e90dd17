@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ea2c95f5_37bffbe2",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-06-18T08:15:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a61cac24_ca1e5e45",
+      "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dfc1a38b_6d3a5d7f",
         "filename": "datafile-app-server/pom.xml",
         "patchSetId": 6
@@ -30,6 +48,24 @@
       "writtenOn": "2019-06-17T14:32:07Z",
       "side": 1,
       "message": "extract as variable",
+      "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b4f28125_fb0460c6",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-06-18T08:15:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dfc1a38b_6d3a5d7f",
       "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
