@@ -259,6 +259,30 @@
       "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "99a3ae93_03e6d473",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 515
+      },
+      "writtenOn": "2019-06-18T15:45:48Z",
+      "side": 1,
+      "message": "Are you trying to fetch the dmaap key specifically, or are you trying to just get your merged config including dmaap info?\n\nIf you just want the merged config, the call to /service_component does this. It looks for \u003c\u003cdmaap keys\u003e\u003e and then uses the data set by the dmaap plugin to do the bind. Assuming service_component_name:dmaap is set appropriately in Consul, the call to /service_component will produce a bound config with dmaap info. \n\nIf for some reason you are trying to access the raw dmaap key, which is probably not advisable, you can either use /service_component_all, or /dmaap/.",
+      "parentUuid": "2c9be951_41364eac",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 114
+      },
+      "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
