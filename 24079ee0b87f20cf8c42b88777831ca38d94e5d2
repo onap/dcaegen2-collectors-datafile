@@ -177,6 +177,24 @@
       "revId": "24079ee0b87f20cf8c42b88777831ca38d94e5d2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6580317f_6d0eb9ef",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-06-18T11:22:32Z",
+      "side": 1,
+      "message": "The refreshconfig actually is doing the refreshment of environment(CONSUL, etc) first and then use that env to create cbsclient to fetch configurations. \n\nMy idea is to keep the logic of refresh environment very 5 minutes, and within very 1 minite, cbsclient.updates is used to keep fetching and updating the configuration from the consul.\n\nIt is just my idea, we can discuss about this more",
+      "parentUuid": "536fdad9_aa9d3e06",
+      "revId": "24079ee0b87f20cf8c42b88777831ca38d94e5d2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
