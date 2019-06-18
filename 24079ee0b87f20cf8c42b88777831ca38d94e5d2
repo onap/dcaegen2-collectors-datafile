@@ -2,6 +2,167 @@
   "comments": [
     {
       "key": {
+        "uuid": "2bef4e8e_3d848d88",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-06-18T08:58:17Z",
+      "side": 1,
+      "message": "Remove version tag, already defined in top pom.",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 36
+      },
+      "revId": "24079ee0b87f20cf8c42b88777831ca38d94e5d2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4970e22e_acd1986e",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-06-18T08:58:17Z",
+      "side": 1,
+      "message": "Remove, not needed in this pom.",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 0
+      },
+      "revId": "24079ee0b87f20cf8c42b88777831ca38d94e5d2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "85e7e86e_9cc5757e",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-06-18T08:58:17Z",
+      "side": 1,
+      "message": "Remove version tag, already defined in top pom.",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 42
+      },
+      "revId": "24079ee0b87f20cf8c42b88777831ca38d94e5d2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5ddd397_f2649626",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-06-18T08:58:17Z",
+      "side": 1,
+      "message": "Remove, not needed in this pom.",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 0
+      },
+      "revId": "24079ee0b87f20cf8c42b88777831ca38d94e5d2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78642df9_02b030fa",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-06-18T08:58:17Z",
+      "side": 1,
+      "message": "Remove version tag, already defined in top pom.",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 31
+      },
+      "revId": "24079ee0b87f20cf8c42b88777831ca38d94e5d2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e87453a3_0b986145",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-06-18T08:58:17Z",
+      "side": 1,
+      "message": "Remove version tag, already defined in top pom.",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 42
+      },
+      "revId": "24079ee0b87f20cf8c42b88777831ca38d94e5d2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da86ce4f_562eaade",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-06-18T08:58:17Z",
+      "side": 1,
+      "message": "Remove, not needed in this pom.",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 0
+      },
+      "revId": "24079ee0b87f20cf8c42b88777831ca38d94e5d2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "536fdad9_aa9d3e06",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
         "patchSetId": 7
