@@ -38,12 +38,13 @@ import javax.validation.constraints.NotNull;
 
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.ImmutableEnvProperties;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.providers.CloudConfigurationProvider;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClient;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClientFactory;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsRequests;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.model.EnvProperties;
+import org.onap.dcaegen2.services.sdk.rest.services.model.logging.RequestDiagnosticContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -71,19 +72,12 @@ public class AppConfig {
     private ConsumerConfiguration dmaapConsumerConfiguration;
     private Map<String, PublisherConfiguration> publishingConfiguration;
     private FtpesConfig ftpesConfiguration;
-    private CloudConfigurationProvider cloudConfigurationProvider;
     @Value("#{systemEnvironment}")
     Properties systemEnvironment;
     private Disposable refreshConfigTask = null;
 
     @NotEmpty
     private String filepath;
-
-    @Autowired
-    public synchronized void setCloudConfigurationProvider(
-        CloudConfigurationProvider reactiveCloudConfigurationProvider) {
-        this.cloudConfigurationProvider = reactiveCloudConfigurationProvider;
-    }
 
     public synchronized void setFilepath(String filepath) {
         this.filepath = filepath;
@@ -154,23 +148,24 @@ public class AppConfig {
         return Mono.empty();
     }
 
-    private Mono<AppConfig> fetchConfiguration(EnvProperties env) {
-        Mono<JsonObject> serviceCfg = cloudConfigurationProvider.callForServiceConfigurationReactive(env) //
+    private Flux<AppConfig> fetchConfiguration(EnvProperties env) {
+        Flux<JsonObject> serviceCfg = createCbsClient(env)
+            .flatMapMany(cbsClient -> cbsClient.updates(CbsRequests.getConfiguration(RequestDiagnosticContext.create()),
+                Duration.ofSeconds(5), Duration.ofMinutes(1)))
             .onErrorResume(AppConfig::onErrorResume);
 
-        // Note, have to use this callForServiceConfigurationReactive with EnvProperties, since the
-        // other ones does not work
-        EnvProperties dmaapEnv = ImmutableEnvProperties.builder() //
-            .consulHost(env.consulHost()) //
-            .consulPort(env.consulPort()) //
-            .cbsName(env.cbsName()) //
-            .appName(env.appName() + ":dmaap") //
-            .build(); //
-        Mono<JsonObject> dmaapCfg = cloudConfigurationProvider.callForServiceConfigurationReactive(dmaapEnv)
+        Flux<JsonObject> dmaapCfg = createCbsClient(env).flatMapMany(
+            cbsClient -> cbsClient.updates(CbsRequests.getByKey(RequestDiagnosticContext.create(), "dmaap"),
+                Duration.ofSeconds(5), Duration.ofMinutes(1)))
             .onErrorResume(t -> Mono.just(new JsonObject()));
 
         return serviceCfg.zipWith(dmaapCfg, this::parseCloudConfig) //
             .onErrorResume(AppConfig::onErrorResume);
+
+    }
+
+    Mono<CbsClient> createCbsClient(EnvProperties env) {
+        return CbsClientFactory.createCbsClient(env);
     }
 
     /**
