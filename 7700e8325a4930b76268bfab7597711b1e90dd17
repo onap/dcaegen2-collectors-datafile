@@ -79,6 +79,30 @@
       "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "74836ada_7b7a3b65",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-06-18T07:23:44Z",
+      "side": 1,
+      "message": "When DFC is started with the blueprint we use the DCAE DMaaP plugin to create the topics in DataRouter that we send the files to. The plugin puts the info about these feeds in Consul using the service name as the key, see https://wiki.onap.org/display/DW/Dmaap+Plugin+Integration. This is the reason we need to make a separate call with \"dmaap\" as key.",
+      "parentUuid": "6a5cdcc2_600c61cf",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 114
+      },
+      "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
