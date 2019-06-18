@@ -158,7 +158,7 @@ public class ScheduledTasks {
         return this.counters;
     }
 
-    protected DMaaPMessageConsumer createConsumerTask() throws DatafileTaskException {
+    protected DMaaPMessageConsumer createConsumerTask() {
         return new DMaaPMessageConsumer(this.applicationConfiguration);
     }
 
