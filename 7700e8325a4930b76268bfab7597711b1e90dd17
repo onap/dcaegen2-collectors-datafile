@@ -151,6 +151,30 @@
       "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "195912fa_7e3ff46e",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-06-18T07:32:38Z",
+      "side": 1,
+      "message": "In El Alto we change the DFC to be able to handle any type of files, where each type is sent to its own topic. So the operator is able to configure the topics, we no longer have just one static topic. This is the reason we start using the DMaaP plugin.",
+      "parentUuid": "34811fa4_c0868363",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 114
+      },
+      "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
