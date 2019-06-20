@@ -307,6 +307,30 @@
       "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9f5117c1_dfd607ee",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-06-20T09:45:45Z",
+      "side": 1,
+      "message": "the fetch config using CbsRequests.getAll looks like below:\n\norg.onap.dcaegen2.collectors.datafile.configuration.AppConfig     |2019-06-20T09:22:24.075Z     |ERROR     |data parsing{  \n   \"config\":{  \n      \"dmaap.ftpesConfig.keyCert\":\"config/dfc.jks\",\n      \"dmaap.ftpesConfig.keyPassword\":\"secret\",\n      \"dmaap.ftpesConfig.trustedCa\":\"config/ftp.jks\",\n      \"dmaap.ftpesConfig.trustedCaPassword\":\"secret\",\n      \"dmaap.security.trustStorePath\":\"change it\",\n      \"dmaap.security.trustStorePasswordPath\":\"trustStorePasswordPath\",\n      \"dmaap.security.keyStorePath\":\"keyStorePath\",\n      \"dmaap.security.keyStorePasswordPath\":\"change it\",\n      \"dmaap.security.enableDmaapCertAuth\":\"false\",\n      \"dmaap.dmaapProducerConfiguration\":[  \n         {  \n            \"changeIdentifier\":\"CTR_MEAS_FILES\",\n            \"feedName\":\"feed02\"\n         },\n         {  \n            \"changeIdentifier\":\"LOG_FILES\",\n            \"feedName\":\"feed03\"\n         },\n         {  \n            \"changeIdentifier\":\"TEMP_FILES\",\n            \"feedName\":\"feed03\"\n         }\n      ],\n      \"streams_subscribes\":{  \n         \"dmaap_subscriber\":{  \n            \"dmmap_info\":{  \n               \"topic_url\":\"http://dradmin:dradmin@mrsim:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12\"\n            },\n            \"type\":\"message_router\"\n         }\n      }\n   }\n}|     |     |     |reactor-http-epoll-2     |",
+      "parentUuid": "9768173c_c3e04577",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 114
+      },
+      "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
