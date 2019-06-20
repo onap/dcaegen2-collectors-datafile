@@ -283,6 +283,30 @@
       "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9768173c_c3e04577",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-06-20T09:42:03Z",
+      "side": 1,
+      "message": "we just tried to test the CbsRequests.getAll trying to fetch the merged config(both service configuration and configuration under dmaap key), it failed. in the configruations, we can not find the configration from the dmmap plugin. So we have to use the CbsRequests.getConfiguration and CbsRequests.getByKey to fetch the complete configurations.",
+      "parentUuid": "99a3ae93_03e6d473",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 114
+      },
+      "revId": "7700e8325a4930b76268bfab7597711b1e90dd17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
