@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4608bde8_4416c3fd",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-06-20T11:49:09Z",
+      "side": 1,
+      "message": "Since it is important that the times are equalin both updates, they should be constants. \nAlso,there is no reason to delay the first one with 5 seconds. \nI think the second updates should also have onErrorResume, but I am not sure if it matters.\n\n  private Flux\u003cAppConfig\u003e periodicRefreshConfiguration(EnvProperties environment) {\n        final Duration initialDelay \u003d Duration.ZERO;\n        final Duration refreshPeriod \u003d Duration.ofMinutes(1);\n\n        final CbsRequest getConfigRequest \u003d CbsRequests.getConfiguration(RequestDiagnosticContext.create());\n        Flux\u003cJsonObject\u003e serviceCfg \u003d createCbsClient(environment)\n                .flatMapMany(cbsClient -\u003e cbsClient.updates(getConfigRequest, initialDelay, refreshPeriod))\n                .onErrorResume(throwable -\u003e onErrorResume(throwable, Mono.just(new JsonObject())));\n\n        final CbsRequest getDmaapConfigRequest \u003d CbsRequests.getByKey(RequestDiagnosticContext.create(), \"dmaap\");\n        Flux\u003cJsonObject\u003e dmaapCfg \u003d createCbsClient(environment)\n                .flatMapMany(cbsClient -\u003e cbsClient.updates(getDmaapConfigRequest, initialDelay, refreshPeriod))\n                .onErrorResume(throwable -\u003e onErrorResume(throwable, Mono.just(new JsonObject())));\n        \n        return serviceCfg.zipWith(dmaapCfg, this::parseCloudConfig) //\n                .onErrorResume(AppConfig::onErrorResume);\n    }",
+      "range": {
+        "startLine": 157,
+        "startChar": 26,
+        "endLine": 157,
+        "endChar": 42
+      },
+      "revId": "75b300cb3b1b317036494a58ff622f5260714f85",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
