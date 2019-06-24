@@ -195,6 +195,24 @@
       "revId": "24079ee0b87f20cf8c42b88777831ca38d94e5d2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "88d3c0cc_f290414a",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 2683
+      },
+      "writtenOn": "2019-06-24T06:34:15Z",
+      "side": 1,
+      "message": "Your idea would be OK if we had same dynamic environment changes. But I believe environment won\u0027t change without restarting a k8s pod. So from an application perspective it doesn\u0027t make sense to recreate the CBS client periodically. It should be created once and reused. Or am I missing something?\n\nPlease also note that in ElAlto there won\u0027t be any Consul call to fetch the CBS address, so the lookup would be simply a DNS lookup.",
+      "parentUuid": "6580317f_6d0eb9ef",
+      "revId": "24079ee0b87f20cf8c42b88777831ca38d94e5d2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
