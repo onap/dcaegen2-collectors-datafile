@@ -38,12 +38,13 @@ import javax.validation.constraints.NotNull;
 
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.ImmutableEnvProperties;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.providers.CloudConfigurationProvider;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClient;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClientFactory;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsRequests;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.model.EnvProperties;
+import org.onap.dcaegen2.services.sdk.rest.services.model.logging.RequestDiagnosticContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -71,19 +72,12 @@ public class AppConfig {
     private ConsumerConfiguration dmaapConsumerConfiguration;
     private Map<String, PublisherConfiguration> publishingConfiguration;
     private FtpesConfig ftpesConfiguration;
-    private CloudConfigurationProvider cloudConfigurationProvider;
     @Value("#{systemEnvironment}")
     Properties systemEnvironment;
     private Disposable refreshConfigTask = null;
 
     @NotEmpty
     private String filepath;
-
-    @Autowired
-    public synchronized void setCloudConfigurationProvider(
-        CloudConfigurationProvider reactiveCloudConfigurationProvider) {
-        this.cloudConfigurationProvider = reactiveCloudConfigurationProvider;
-    }
 
     public synchronized void setFilepath(String filepath) {
         this.filepath = filepath;
@@ -97,9 +91,8 @@ public class AppConfig {
         Map<String, String> context = MappedDiagnosticContext.initializeTraceContext();
         loadConfigurationFromFile();
 
-        refreshConfigTask = Flux.interval(Duration.ZERO, Duration.ofMinutes(5))
-            .flatMap(count -> createRefreshConfigurationTask(count, context))
-            .subscribe(e -> logger.info("Refreshed configuration data"),
+        refreshConfigTask =
+            createRefreshConfigurationTask(context).subscribe(e -> logger.info("Refreshed configuration data"),
                 throwable -> logger.error("Configuration refresh terminated due to exception", throwable),
                 () -> logger.error("Configuration refresh terminated"));
     }
@@ -137,11 +130,10 @@ public class AppConfig {
         return ftpesConfiguration;
     }
 
-    Flux<AppConfig> createRefreshConfigurationTask(Long counter, Map<String, String> context) {
-        return Flux.just(counter) //
-            .doOnNext(cnt -> logger.debug("Refresh config {}", cnt)) //
-            .flatMap(cnt -> readEnvironmentVariables(systemEnvironment, context)) //
-            .flatMap(this::fetchConfiguration);
+    Flux<AppConfig> createRefreshConfigurationTask(Map<String, String> context) {
+        return readEnvironmentVariables(systemEnvironment, context).flatMap(this::createCbsClient)
+            .flatMapMany(this::periodicRefreshConfiguration);
+
     }
 
     Mono<EnvProperties> readEnvironmentVariables(Properties systemEnvironment, Map<String, String> context) {
@@ -154,23 +146,25 @@ public class AppConfig {
         return Mono.empty();
     }
 
-    private Mono<AppConfig> fetchConfiguration(EnvProperties env) {
-        Mono<JsonObject> serviceCfg = cloudConfigurationProvider.callForServiceConfigurationReactive(env) //
+    private Flux<AppConfig> periodicRefreshConfiguration(CbsClient cbsClient) {
+        final Duration initialDelay = Duration.ZERO;
+        final Duration refreshPeriod = Duration.ofMinutes(1);
+
+        Flux<JsonObject> serviceCfg = cbsClient
+            .updates(CbsRequests.getConfiguration(RequestDiagnosticContext.create()), initialDelay, refreshPeriod)
             .onErrorResume(AppConfig::onErrorResume);
 
-        // Note, have to use this callForServiceConfigurationReactive with EnvProperties, since the
-        // other ones does not work
-        EnvProperties dmaapEnv = ImmutableEnvProperties.builder() //
-            .consulHost(env.consulHost()) //
-            .consulPort(env.consulPort()) //
-            .cbsName(env.cbsName()) //
-            .appName(env.appName() + ":dmaap") //
-            .build(); //
-        Mono<JsonObject> dmaapCfg = cloudConfigurationProvider.callForServiceConfigurationReactive(dmaapEnv)
+        Flux<JsonObject> dmaapCfg = cbsClient
+            .updates(CbsRequests.getByKey(RequestDiagnosticContext.create(), "dmaap"), initialDelay, refreshPeriod)
             .onErrorResume(t -> Mono.just(new JsonObject()));
 
         return serviceCfg.zipWith(dmaapCfg, this::parseCloudConfig) //
             .onErrorResume(AppConfig::onErrorResume);
+
+    }
+
+    Mono<CbsClient> createCbsClient(EnvProperties env) {
+        return CbsClientFactory.createCbsClient(env);
     }
 
     /**
