@@ -213,6 +213,24 @@
       "revId": "24079ee0b87f20cf8c42b88777831ca38d94e5d2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3d2a7b9_8e6277cd",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-06-24T09:10:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88d3c0cc_f290414a",
+      "revId": "24079ee0b87f20cf8c42b88777831ca38d94e5d2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
