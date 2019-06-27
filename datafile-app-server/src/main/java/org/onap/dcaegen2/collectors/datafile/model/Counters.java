@@ -24,7 +24,6 @@ import java.time.Instant;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- *
  * Various counters that can be shown via a REST API.
  *
  */
@@ -80,6 +79,7 @@ public class Counters {
         noOfFailedPublish++;
     }
 
+    @Override
     public synchronized String toString() {
         StringBuilder str = new StringBuilder();
         str.append(format("totalReceivedEvents", totalReceivedEvents));
@@ -103,5 +103,50 @@ public class Counters {
     private String format(String name, Object value) {
         String header = name + ":";
         return String.format("%-24s%-22s\n", header, value);
+    }
+
+    public int getNoOfCollectedFiles() {
+        return noOfCollectedFiles;
+    }
+
+    public int getNoOfFailedFtpAttempts() {
+        return noOfFailedFtpAttempts;
+    }
+
+    public int getNoOfFailedFtp() {
+        return noOfFailedFtp;
+    }
+
+    public int getNoOfFailedPublishAttempts() {
+        return noOfFailedPublishAttempts;
+    }
+
+    public int getTotalPublishedFiles() {
+        return totalPublishedFiles;
+    }
+
+    public int getNoOfFailedPublish() {
+        return noOfFailedPublish;
+    }
+
+    public int getTotalReceivedEvents() {
+        return totalReceivedEvents;
+    }
+
+    /**
+     * Resets all data.
+     */
+    public void clear() {
+        numberOfTasks.set(0);
+        numberOfSubscriptions.set(0);
+        noOfCollectedFiles = 0;
+        noOfFailedFtpAttempts = 0;
+        noOfFailedFtp = 0;
+        noOfFailedPublishAttempts = 0;
+        totalPublishedFiles = 0;
+        noOfFailedPublish = 0;
+        lastPublishedTime = Instant.MIN;
+        totalReceivedEvents = 0;
+        lastEventTime = Instant.MIN;
     }
 }

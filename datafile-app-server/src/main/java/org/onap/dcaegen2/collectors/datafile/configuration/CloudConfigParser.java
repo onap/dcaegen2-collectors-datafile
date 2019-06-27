@@ -21,13 +21,11 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 
 /**
@@ -51,7 +49,14 @@ public class CloudConfigParser {
         this.dmaapConfigurationRoot = dmaapConfigurationRoot;
     }
 
-    public Map<String, PublisherConfiguration> getDmaapPublisherConfig() throws DatafileTaskException {
+    /**
+     * Get the publisher configurations.
+     *
+     * @return a map with change identifier as key and the connected publisher configuration as value.
+     *
+     * @throws DatafileTaskException if a member of the configuration is missing.
+     */
+    public Map<String, PublisherConfiguration> getDmaapPublisherConfigurations() throws DatafileTaskException {
         Iterator<JsonElement> producerCfgs =
             toArray(serviceConfigurationRoot.get("dmaap.dmaapProducerConfiguration")).iterator();
 
@@ -81,6 +86,12 @@ public class CloudConfigParser {
         return result;
     }
 
+    /**
+     * Get the consumer configuration.
+     *
+     * @return the consumer configuration.
+     * @throws DatafileTaskException if a member of the configuration is missing.
+     */
     public ConsumerConfiguration getDmaapConsumerConfig() throws DatafileTaskException {
         JsonObject consumerCfg = serviceConfigurationRoot.get("streams_subscribes").getAsJsonObject();
         Set<Entry<String, JsonElement>> topics = consumerCfg.entrySet();
@@ -100,6 +111,12 @@ public class CloudConfigParser {
             .build();
     }
 
+    /**
+     * Get the security configuration for communication with the xNF.
+     *
+     * @return the xNF communication security configuration.
+     * @throws DatafileTaskException if a member of the configuration is missing.
+     */
     public FtpesConfig getFtpesConfig() throws DatafileTaskException {
         return new ImmutableFtpesConfig.Builder() //
             .keyCert(getAsString(serviceConfigurationRoot, "dmaap.ftpesConfig.keyCert"))

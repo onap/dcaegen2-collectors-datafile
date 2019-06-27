@@ -16,6 +16,7 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -31,8 +32,8 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
@@ -140,16 +141,18 @@ public class FileCollectorTest {
             .build();
     }
 
-    /**
-     * Sets up the configuration.
-     */
     @BeforeAll
-    public static void setUpConfiguration() {
+    static void setUpConfiguration() {
         when(appConfigMock.getFtpesConfiguration()).thenReturn(ftpesConfigMock);
         when(ftpesConfigMock.keyCert()).thenReturn(FTP_KEY_PATH);
         when(ftpesConfigMock.keyPassword()).thenReturn(FTP_KEY_PASSWORD);
         when(ftpesConfigMock.trustedCa()).thenReturn(TRUSTED_CA_PATH);
         when(ftpesConfigMock.trustedCaPassword()).thenReturn(TRUSTED_CA_PASSWORD);
+    }
+
+    @BeforeEach
+    void setUpTest() {
+        counters.clear();
     }
 
     @Test
@@ -169,8 +172,10 @@ public class FileCollectorTest {
         verify(ftpsClientMock, times(1)).open();
         verify(ftpsClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
         verify(ftpsClientMock, times(1)).close();
-
         verifyNoMoreInteractions(ftpsClientMock);
+
+        assertEquals("collectedFiles should have been 1", counters.getNoOfCollectedFiles(), 1);
+        assertEquals("failedFtpAttempts should have been 0", counters.getNoOfFailedFtpAttempts(), 0);
     }
 
     @Test
@@ -198,6 +203,8 @@ public class FileCollectorTest {
         verify(sftpClientMock, times(2)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
         verify(sftpClientMock, times(2)).close();
         verifyNoMoreInteractions(sftpClientMock);
+
+        assertEquals("collectedFiles should have been 2", counters.getNoOfCollectedFiles(), 2);
     }
 
     @Test
@@ -214,11 +221,14 @@ public class FileCollectorTest {
             .verify();
 
         verify(ftpsClientMock, times(4)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+
+        assertEquals("collectedFiles should have been 0", counters.getNoOfCollectedFiles(), 0);
+        assertEquals("failedFtpAttempts should have been 4", counters.getNoOfFailedFtpAttempts(), 4);
     }
 
     @Test
     public void whenFtpesFileAlwaysFail_failWithoutRetry() throws Exception {
-        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, new Counters()));
+        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
         doReturn(ftpsClientMock).when(collectorUndetTest).createFtpsClient(any());
 
         FileData fileData = createFileData(FTPES_LOCATION, Scheme.FTPS);
@@ -230,6 +240,9 @@ public class FileCollectorTest {
             .verify();
 
         verify(ftpsClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+
+        assertEquals("collectedFiles should have been 0", counters.getNoOfCollectedFiles(), 0);
+        assertEquals("failedFtpAttempts should have been 1", counters.getNoOfFailedFtpAttempts(), 1);
     }
 
     @Test
@@ -249,5 +262,8 @@ public class FileCollectorTest {
             .verifyComplete();
 
         verify(ftpsClientMock, times(2)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+
+        assertEquals("collectedFiles should have been 1", counters.getNoOfCollectedFiles(), 1);
+        assertEquals("failedFtpAttempts should have been 1", counters.getNoOfFailedFtpAttempts(), 1);
     }
 }

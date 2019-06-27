@@ -37,7 +37,6 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
-
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
@@ -45,7 +44,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,7 +65,6 @@ import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
 import org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables;
 import org.slf4j.MDC;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -247,13 +244,16 @@ public class ScheduledTasksTest {
 
         testedObject.executeDatafileMainTask();
 
-        await().untilAsserted(() -> assertEquals(0, testedObject.getCurrentNumberOfSubscriptions()));
+        await().untilAsserted(() -> assertEquals("currentNumberOfSubscriptions should have been 0", 0,
+            testedObject.getCurrentNumberOfSubscriptions()));
 
         assertFalse(StringUtils.isBlank(MDC.get(MdcVariables.REQUEST_ID)));
 
         verify(appConfig).getDmaapConsumerConfiguration();
         verify(appConfig).isFeedConfigured(CHANGE_IDENTIFIER);
         verifyNoMoreInteractions(appConfig);
+
+        assertEquals("totalReceivedEvents should have been 1", 1, testedObject.getCounters().getTotalReceivedEvents());
     }
 
     @Test
@@ -290,7 +290,8 @@ public class ScheduledTasksTest {
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduledTasks.class);
         testedObject.executeDatafileMainTask();
 
-        await().untilAsserted(() -> assertEquals(0, testedObject.getCurrentNumberOfSubscriptions()));
+        await().untilAsserted(() -> assertEquals("currentNumberOfSubscriptions should have been 0", 0,
+            testedObject.getCurrentNumberOfSubscriptions()));
 
         assertTrue("Error missing in log", logAppender.list.toString().contains(
             "[INFO] No feed is configured for: " + CHANGE_IDENTIFIER + ", file ignored: " + PM_FILE_NAME + "1"));
@@ -339,12 +340,18 @@ public class ScheduledTasksTest {
 
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
         assertEquals(0, testedObject.getThreadPoolQueueSize());
+
         verify(consumerMock, times(1)).getMessageRouterResponse();
+        verifyNoMoreInteractions(consumerMock);
+
         verify(fileCollectorMock, times(noOfFiles)).collectFile(notNull(), anyLong(), notNull(), notNull());
+        verifyNoMoreInteractions(fileCollectorMock);
+
         verify(dataRouterMock, times(noOfFiles)).publishFile(notNull(), anyLong(), notNull());
         verifyNoMoreInteractions(dataRouterMock);
-        verifyNoMoreInteractions(fileCollectorMock);
-        verifyNoMoreInteractions(consumerMock);
+
+        assertEquals("totalReceivedEvents should have been 200", 200,
+            testedObject.getCounters().getTotalReceivedEvents());
     }
 
     @Test
@@ -375,12 +382,18 @@ public class ScheduledTasksTest {
             .verify(); //
 
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
+
         verify(consumerMock, times(1)).getMessageRouterResponse();
+        verifyNoMoreInteractions(consumerMock);
+
         verify(fileCollectorMock, times(4)).collectFile(notNull(), anyLong(), notNull(), notNull());
+        verifyNoMoreInteractions(fileCollectorMock);
+
         verify(dataRouterMock, times(3)).publishFile(notNull(), anyLong(), notNull());
         verifyNoMoreInteractions(dataRouterMock);
-        verifyNoMoreInteractions(fileCollectorMock);
-        verifyNoMoreInteractions(consumerMock);
+
+        assertEquals("totalReceivedEvents should have been 2", 2, testedObject.getCounters().getTotalReceivedEvents());
+        assertEquals("failedFtp should have been 1", 1, testedObject.getCounters().getNoOfFailedFtp());
     }
 
     @Test
@@ -412,12 +425,18 @@ public class ScheduledTasksTest {
         assertTrue("Error missing in log", logAppender.list.toString().contains("[ERROR] File publishing failed: "));
 
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
+
         verify(consumerMock, times(1)).getMessageRouterResponse();
+        verifyNoMoreInteractions(consumerMock);
+
         verify(fileCollectorMock, times(4)).collectFile(notNull(), anyLong(), notNull(), notNull());
+        verifyNoMoreInteractions(fileCollectorMock);
+
         verify(dataRouterMock, times(4)).publishFile(notNull(), anyLong(), notNull());
         verifyNoMoreInteractions(dataRouterMock);
-        verifyNoMoreInteractions(fileCollectorMock);
-        verifyNoMoreInteractions(consumerMock);
+
+        assertEquals("totalReceivedEvents should have been 2", 2, testedObject.getCounters().getTotalReceivedEvents());
+        assertEquals("noOfFailedPublish should have been 1", 1, testedObject.getCounters().getNoOfFailedPublish());
     }
 
     @Test
@@ -444,13 +463,19 @@ public class ScheduledTasksTest {
             .verify(); //
 
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
+
         verify(consumerMock, times(1)).getMessageRouterResponse();
-        verify(fileCollectorMock, times(1)).collectFile(notNull(), anyLong(), notNull(), notNull());
-        verify(dataRouterMock, times(1)).publishFile(notNull(), anyLong(), notNull());
-        verify(publishedCheckerMock, times(1)).isFilePublished(notNull(), anyString(), notNull());
-        verifyNoMoreInteractions(dataRouterMock);
-        verifyNoMoreInteractions(fileCollectorMock);
         verifyNoMoreInteractions(consumerMock);
+
+        verify(fileCollectorMock, times(1)).collectFile(notNull(), anyLong(), notNull(), notNull());
+        verifyNoMoreInteractions(fileCollectorMock);
+
+        verify(dataRouterMock, times(1)).publishFile(notNull(), anyLong(), notNull());
         verifyNoMoreInteractions(dataRouterMock);
+
+        verify(publishedCheckerMock, times(1)).isFilePublished(notNull(), anyString(), notNull());
+        verifyNoMoreInteractions(publishedCheckerMock);
+
+        assertEquals("totalReceivedEvents should have been 1", 1, testedObject.getCounters().getTotalReceivedEvents());
     }
 }

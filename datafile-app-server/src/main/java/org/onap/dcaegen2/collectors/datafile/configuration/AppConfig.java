@@ -22,7 +22,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapterFactory;
-
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -32,10 +31,8 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ServiceLoader;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
@@ -49,7 +46,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
-
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -69,12 +65,12 @@ public class AppConfig {
     private static final Logger logger = LoggerFactory.getLogger(AppConfig.class);
 
     private ConsumerConfiguration dmaapConsumerConfiguration;
-    private Map<String, PublisherConfiguration> publishingConfiguration;
+    Map<String, PublisherConfiguration> publishingConfigurations;
     private FtpesConfig ftpesConfiguration;
     private CloudConfigurationProvider cloudConfigurationProvider;
     @Value("#{systemEnvironment}")
     Properties systemEnvironment;
-    private Disposable refreshConfigTask = null;
+    Disposable refreshConfigTask = null;
 
     @NotEmpty
     private String filepath;
@@ -104,6 +100,9 @@ public class AppConfig {
                 () -> logger.error("Configuration refresh terminated"));
     }
 
+    /**
+     * Stops the refreshing of the configuration.
+     */
     public void stop() {
         if (refreshConfigTask != null) {
             refreshConfigTask.dispose();
@@ -115,17 +114,33 @@ public class AppConfig {
         return dmaapConsumerConfiguration;
     }
 
+    /**
+     * Checks if there is a configuration for the given feed.
+     *
+     * @param changeIdentifier the change identifier the feed is configured to belong to.
+     *
+     * @return true if a feed is configured for the given change identifier, false if not.
+     */
     public synchronized boolean isFeedConfigured(String changeIdentifier) {
-        return publishingConfiguration.containsKey(changeIdentifier);
+        return publishingConfigurations.containsKey(changeIdentifier);
     }
 
+    /**
+     * Gets the feed configuration for the given change identifier.
+     *
+     * @param changeIdentifier the change identifier the feed is configured to belong to.
+     * @return the <code>PublisherConfiguration</code> for the feed belonging to the given change identifier.
+     *
+     * @throws DatafileTaskException if no configuration has been loaded or the configuration is missing for the given
+     *         change identifier.
+     */
     public synchronized PublisherConfiguration getPublisherConfiguration(String changeIdentifier)
         throws DatafileTaskException {
 
-        if (publishingConfiguration == null) {
+        if (publishingConfigurations == null) {
             throw new DatafileTaskException("No PublishingConfiguration loaded, changeIdentifier: " + changeIdentifier);
         }
-        PublisherConfiguration cfg = publishingConfiguration.get(changeIdentifier);
+        PublisherConfiguration cfg = publishingConfigurations.get(changeIdentifier);
         if (cfg == null) {
             throw new DatafileTaskException(
                 "Cannot find getPublishingConfiguration for changeIdentifier: " + changeIdentifier);
@@ -184,7 +199,7 @@ public class AppConfig {
     private AppConfig parseCloudConfig(JsonObject serviceConfigRootObject, JsonObject dmaapConfigRootObject) {
         try {
             CloudConfigParser parser = new CloudConfigParser(serviceConfigRootObject, dmaapConfigRootObject);
-            setConfiguration(parser.getDmaapConsumerConfig(), parser.getDmaapPublisherConfig(),
+            setConfiguration(parser.getDmaapConsumerConfig(), parser.getDmaapPublisherConfigurations(),
                 parser.getFtpesConfig());
         } catch (DatafileTaskException e) {
             logger.error("Could not parse configuration {}", e.toString(), e);
@@ -212,14 +227,13 @@ public class AppConfig {
     }
 
     private synchronized void setConfiguration(ConsumerConfiguration consumerConfiguration,
-        Map<String, PublisherConfiguration> publisherConfiguration, FtpesConfig ftpesConfig) {
-        if (consumerConfiguration == null || publisherConfiguration == null || ftpesConfig == null) {
-            logger.error(
-                "Problem with configuration consumerConfiguration: {}, publisherConfiguration: {}, ftpesConfig: {}",
-                consumerConfiguration, publisherConfiguration, ftpesConfig);
+        Map<String, PublisherConfiguration> publisherConfigurations, FtpesConfig ftpesConfig) {
+        if (consumerConfiguration == null || publisherConfigurations == null || ftpesConfig == null) {
+            logger.error("Problem with consumerConfiguration: {}, publisherConfigurations: {}, ftpesConfig: {}",
+                consumerConfiguration, publisherConfigurations, ftpesConfig);
         } else {
             this.dmaapConsumerConfiguration = consumerConfiguration;
-            this.publishingConfiguration = publisherConfiguration;
+            this.publishingConfigurations = publisherConfigurations;
             this.ftpesConfiguration = ftpesConfig;
         }
     }

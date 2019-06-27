@@ -18,7 +18,6 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
@@ -50,6 +49,12 @@ public interface PublisherConfiguration {
 
     String changeIdentifier();
 
+    /**
+     * Get the publisher configuration in SDK format.
+     *
+     * @return a <code>DmaapPublisherConfiguration</code> contining the publisher configuration.
+     * @throws MalformedURLException if the publish URL is malformed.
+     */
     default DmaapPublisherConfiguration toDmaap() throws MalformedURLException {
         URL url = new URL(publishUrl());
         String urlPath = url.getPath();
@@ -69,5 +74,4 @@ public interface PublisherConfiguration {
             .enableDmaapCertAuth(this.enableDmaapCertAuth()) //
             .build();
     }
-
 }

@@ -16,8 +16,8 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -29,7 +29,6 @@ import static org.mockito.Mockito.when;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
-
 import java.io.File;
 import java.net.URI;
 import java.nio.file.Path;
@@ -39,13 +38,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
@@ -89,16 +88,17 @@ class DataRouterPublisherTest {
     private static final String PUBLISH_TOPIC = "publish";
     private static final String FEED_ID = "1";
 
+    // "https://54.45.333.2:1234/publish/1";
+    private static final String PUBLISH_URL =
+        HTTPS_SCHEME + "://" + HOST + ":" + PORT + "/" + PUBLISH_TOPIC + "/" + FEED_ID;
+
     private static FilePublishInformation filePublishInformation;
     private static DmaapProducerHttpClient httpClientMock;
     private static AppConfig appConfig;
     private static PublisherConfiguration publisherConfigurationMock = mock(PublisherConfiguration.class);
     private static Map<String, String> context = new HashMap<>();
     private static DataRouterPublisher publisherTaskUnderTestSpy;
-
-    // "https://54.45.333.2:1234/publish/1";
-    private static final String PUBLISH_URL =
-        HTTPS_SCHEME + "://" + HOST + ":" + PORT + "/" + PUBLISH_TOPIC + "/" + FEED_ID;
+    private static final Counters counters = new Counters();
 
     @BeforeAll
     public static void setUp() {
@@ -121,7 +121,12 @@ class DataRouterPublisherTest {
             .changeIdentifier(CHANGE_IDENTIFIER) //
             .build(); //
         appConfig = mock(AppConfig.class);
-        publisherTaskUnderTestSpy = spy(new DataRouterPublisher(appConfig, new Counters()));
+        publisherTaskUnderTestSpy = spy(new DataRouterPublisher(appConfig, counters));
+    }
+
+    @BeforeEach
+    void setUpTest() {
+        counters.clear();
     }
 
     @Test
@@ -169,6 +174,9 @@ class DataRouterPublisherTest {
         // router.
         // This should be 10 unless the API is updated (which is the fields checked above)
         assertEquals(10, metaHash.size());
+
+        assertEquals("totalPublishedFiles should have been 1", 1, counters.getTotalPublishedFiles());
+        assertEquals("noOfFailedPublishAttempts should have been 0", 0, counters.getNoOfFailedPublishAttempts());
     }
 
     @Test
@@ -182,6 +190,9 @@ class DataRouterPublisherTest {
 
         assertTrue("Warning missing in log",
             logAppender.list.toString().contains("[WARN] Publishing file " + PM_FILE_NAME + " to DR unsuccessful."));
+
+        assertEquals("totalPublishedFiles should have been 1", 1, counters.getTotalPublishedFiles());
+        assertEquals("noOfFailedPublishAttempts should have been 1", 1, counters.getNoOfFailedPublishAttempts());
     }
 
     @Test
@@ -197,6 +208,9 @@ class DataRouterPublisherTest {
         verify(httpClientMock, times(2)).addUserCredentialsToHead(any(HttpUriRequest.class));
         verify(httpClientMock, times(2)).getDmaapProducerResponseWithRedirect(any(HttpUriRequest.class), any());
         verifyNoMoreInteractions(httpClientMock);
+
+        assertEquals("totalPublishedFiles should have been 1", 1, counters.getTotalPublishedFiles());
+        assertEquals("noOfFailedPublishAttempts should have been 1", 1, counters.getNoOfFailedPublishAttempts());
     }
 
     @Test
@@ -215,6 +229,9 @@ class DataRouterPublisherTest {
         verify(httpClientMock, times(2)).addUserCredentialsToHead(any(HttpUriRequest.class));
         verify(httpClientMock, times(2)).getDmaapProducerResponseWithRedirect(any(HttpUriRequest.class), any());
         verifyNoMoreInteractions(httpClientMock);
+
+        assertEquals("totalPublishedFiles should have been 0", 0, counters.getTotalPublishedFiles());
+        assertEquals("noOfFailedPublishAttempts should have been 2", 2, counters.getNoOfFailedPublishAttempts());
     }
 
     @SafeVarargs

@@ -16,36 +16,91 @@
 
 package org.onap.dcaegen2.collectors.datafile.service;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.BeforeEach;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
+import java.net.URI;
+import java.net.URISyntaxException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.reactive.function.client.ClientRequest;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
+@ExtendWith(MockitoExtension.class)
 class DmaapWebClientTest {
 
     @Mock
-    private DmaapConsumerConfiguration dmaapConsumerConfiguration;
+    private DmaapConsumerConfiguration dmaapConsumerConfigurationMock;
 
-    @BeforeEach
-    void setUp() {
-        dmaapConsumerConfiguration = mock(DmaapConsumerConfiguration.class);
-    }
+    @Mock
+    private ClientResponse clientResponseMock;
+
+    @Mock
+    private ClientRequest clientRequesteMock;
 
     @Test
     void buildsDMaaPReactiveWebClientProperly() {
-        when(dmaapConsumerConfiguration.dmaapContentType()).thenReturn("*/*");
-        WebClient dmaapWebClient = new DmaapWebClient() //
-            .fromConfiguration(dmaapConsumerConfiguration) //
+        when(dmaapConsumerConfigurationMock.dmaapContentType()).thenReturn("*/*");
+        WebClient dmaapWebClientUndetTest = new DmaapWebClient() //
+            .fromConfiguration(dmaapConsumerConfigurationMock) //
             .build();
 
-        verify(dmaapConsumerConfiguration, times(1)).dmaapContentType();
-        assertNotNull(dmaapWebClient);
+        verify(dmaapConsumerConfigurationMock, times(1)).dmaapContentType();
+        assertNotNull(dmaapWebClientUndetTest);
+    }
+
+    @Test
+    public void logResponseSuccess() {
+        DmaapWebClient dmaapWebClientUndetTest = new DmaapWebClient();
+
+        when(clientResponseMock.statusCode()).thenReturn(HttpStatus.OK);
+
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(DmaapWebClient.class, true);
+        Mono<ClientResponse> logResponse = dmaapWebClientUndetTest.logResponse(clientResponseMock);
+
+        assertEquals(clientResponseMock, logResponse.block());
+
+        assertEquals(logAppender.list.get(0).getLevel(), Level.TRACE);
+        assertEquals(logAppender.list.get(0).getFormattedMessage(), "Response Status 200 OK");
+
+        logAppender.stop();
+    }
+
+    @Test
+    public void logRequestSuccess() throws URISyntaxException {
+        when(clientRequesteMock.url()).thenReturn(new URI("http://test"));
+        when(clientRequesteMock.method()).thenReturn(HttpMethod.GET);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("header", "value");
+        when(clientRequesteMock.headers()).thenReturn(httpHeaders);
+
+        DmaapWebClient dmaapWebClientUndetTest = new DmaapWebClient();
+
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(DmaapWebClient.class, true);
+        Mono<ClientRequest> logRequest = dmaapWebClientUndetTest.logRequest(clientRequesteMock);
+
+        assertEquals(clientRequesteMock, logRequest.block());
+
+        assertEquals(logAppender.list.get(0).getLevel(), Level.TRACE);
+        assertEquals("Request: GET http://test", logAppender.list.get(0).getFormattedMessage());
+        assertEquals(logAppender.list.get(1).getLevel(), Level.TRACE);
+        assertEquals("HTTP request headers: [header:\"value\"]", logAppender.list.get(1).getFormattedMessage());
+
+        logAppender.stop();
     }
 }

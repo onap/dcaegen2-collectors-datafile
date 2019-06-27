@@ -22,14 +22,11 @@ package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.time.Duration;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
@@ -103,7 +100,6 @@ public class DataRouterPublisher {
             HttpResponse response =
                 dmaapProducerHttpClient.getDmaapProducerResponseWithRedirect(put, publishInfo.getContext());
             logger.trace("{}", response);
-            counters.incTotalPublishedFiles();
             return Mono.just(HttpStatus.valueOf(response.getStatusLine().getStatusCode()));
         } catch (Exception e) {
             counters.incNoOfFailedPublishAttempts();
@@ -127,26 +123,27 @@ public class DataRouterPublisher {
         MappedDiagnosticContext.appendTraceInfo(put);
     }
 
-    private void prepareBody(FilePublishInformation publishInfo, HttpPut put) throws IOException {
+    private void prepareBody(FilePublishInformation publishInfo, HttpPut put) {
         File file = createInputFile(publishInfo.getInternalLocation());
         FileEntity entity = new FileEntity(file, ContentType.DEFAULT_BINARY);
         put.setEntity(entity);
     }
 
-    private static Mono<FilePublishInformation> handleHttpResponse(HttpStatus response,
-        FilePublishInformation publishInfo) {
+    private Mono<FilePublishInformation> handleHttpResponse(HttpStatus response, FilePublishInformation publishInfo) {
         MDC.setContextMap(publishInfo.getContext());
         if (HttpUtils.isSuccessfulResponseCode(response.value())) {
+            counters.incTotalPublishedFiles();
             logger.trace("Publishing file {} to DR successful!", publishInfo.getName());
             return Mono.just(publishInfo);
         } else {
+            counters.incNoOfFailedPublishAttempts();
             logger.warn("Publishing file {} to DR unsuccessful. Response code: {}", publishInfo.getName(), response);
             return Mono.error(new Exception(
                 "Publishing file " + publishInfo.getName() + " to DR unsuccessful. Response code: " + response));
         }
     }
 
-    File createInputFile(Path filePath) throws IOException {
+    File createInputFile(Path filePath) {
         FileSystemResource realResource = new FileSystemResource(filePath);
         return realResource.getFile();
     }

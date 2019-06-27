@@ -21,7 +21,6 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
-
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
@@ -104,15 +103,15 @@ public class FileCollector {
             currentClient.collectFile(remoteFile, localFile);
             counters.incNoOfCollectedFiles();
             return Mono.just(Optional.of(getFilePublishInformation(fileData, localFile, context)));
+        } catch (NonRetryableDatafileTaskException nre) {
+            logger.warn("Failed to download file: {} {}, reason: {}", fileData.sourceName(), fileData.name(), nre);
+            counters.incNoOfFailedFtpAttempts();
+            return Mono.just(Optional.empty()); // Give up
         } catch (DatafileTaskException e) {
             logger.warn("Failed to download file: {} {}, reason: {}", fileData.sourceName(), fileData.name(),
                 e.toString());
             counters.incNoOfFailedFtpAttempts();
-            if (e instanceof NonRetryableDatafileTaskException) {
-                return Mono.just(Optional.empty()); // Give up
-            } else {
-                return Mono.error(e);
-            }
+            return Mono.error(e);
         } catch (Exception throwable) {
             logger.warn("Failed to close ftp client: {} {}, reason: {}", fileData.sourceName(), fileData.name(),
                 throwable.toString(), throwable);

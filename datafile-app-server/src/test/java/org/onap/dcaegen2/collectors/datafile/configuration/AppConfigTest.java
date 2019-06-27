@@ -19,17 +19,20 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.google.gson.JsonElement;
@@ -37,16 +40,15 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,9 +58,11 @@ import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.ImmutableEnvProperties;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.providers.CloudConfigurationProvider;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapConsumerConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
-
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -73,7 +77,7 @@ class AppConfigTest {
 
     private static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
-    private static final ImmutableDmaapConsumerConfiguration CORRECT_DMAAP_CONSUMER_CONFIG = //
+    private static final DmaapConsumerConfiguration CORRECT_DMAAP_CONSUMER_CONFIG = //
         new ImmutableDmaapConsumerConfiguration.Builder() //
             .timeoutMs(-1) //
             .dmaapHostName("message-router.onap.svc.cluster.local") //
@@ -116,7 +120,7 @@ class AppConfigTest {
             .passWord("password") //
             .build();
 
-    private static final ImmutableFtpesConfig CORRECT_FTPES_CONFIGURATION = //
+    private static final FtpesConfig CORRECT_FTPES_CONFIGURATION = //
         new ImmutableFtpesConfig.Builder() //
             .keyCert("/config/dfc.jks") //
             .keyPassword("secret") //
@@ -124,7 +128,7 @@ class AppConfigTest {
             .trustedCaPassword("secret") //
             .build();
 
-    private static final ImmutableDmaapPublisherConfiguration CORRECT_DMAAP_PUBLISHER_CONFIG = //
+    private static final DmaapPublisherConfiguration CORRECT_DMAAP_PUBLISHER_CONFIG = //
         new ImmutableDmaapPublisherConfiguration.Builder() //
             .dmaapTopicName("/publish/1") //
             .dmaapUserPassword("password") //
@@ -329,6 +333,37 @@ class AppConfigTest {
             .verifyComplete();
 
         Assertions.assertNotNull(appConfigUnderTest.getDmaapConsumerConfiguration());
+    }
+
+    @Test
+    public void whenStopSuccess() {
+        Disposable disposableMock = mock(Disposable.class);
+        appConfigUnderTest.refreshConfigTask = disposableMock;
+
+        appConfigUnderTest.stop();
+
+        verify(disposableMock).dispose();
+        verifyNoMoreInteractions(disposableMock);
+        assertNull(appConfigUnderTest.refreshConfigTask);
+    }
+
+    @Test
+    public void whenNoPublisherConfigurationThrowException() throws DatafileTaskException {
+        appConfigUnderTest.publishingConfigurations = new HashMap<>();
+
+        DatafileTaskException exception = assertThrows(DatafileTaskException.class,
+            () -> appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER));
+        assertEquals("Cannot find getPublishingConfiguration for changeIdentifier: " + CHANGE_IDENTIFIER,
+            exception.getMessage());
+    }
+
+    @Test
+    public void whenFeedIsConfiguredReturnTrue() {
+        HashMap<String, PublisherConfiguration> publishingConfigs = new HashMap<>();
+        publishingConfigs.put(CHANGE_IDENTIFIER, null);
+        appConfigUnderTest.publishingConfigurations = publishingConfigs;
+
+        assertTrue(appConfigUnderTest.isFeedConfigured(CHANGE_IDENTIFIER));
     }
 
     private JsonObject getJsonRootObject() throws JsonIOException, JsonSyntaxException, IOException {

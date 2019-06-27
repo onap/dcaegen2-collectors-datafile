@@ -17,6 +17,8 @@
 package org.onap.dcaegen2.collectors.datafile.ftp;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
@@ -31,16 +33,15 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
-
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
 
 @ExtendWith(MockitoExtension.class)
 public class SftpClientTest {
@@ -109,7 +110,7 @@ public class SftpClientTest {
     }
 
     @Test
-    public void open_throwsException()
+    public void open_throwsExceptionWithRetry()
         throws DatafileTaskException, IOException, JSchException, SftpException, Exception {
         FileServerData expectedFileServerData = ImmutableFileServerData.builder() //
             .serverAddress(HOST) //
@@ -123,7 +124,30 @@ public class SftpClientTest {
         doReturn(jschMock).when(sftpClientSpy).createJsch();
         when(jschMock.getSession(anyString(), anyString(), anyInt())).thenThrow(new JSchException("Failed"));
 
-        assertThatThrownBy(() -> sftpClientSpy.open()).hasMessageStartingWith("Could not open Sftp client.");
+        DatafileTaskException exception = assertThrows(DatafileTaskException.class, () -> sftpClientSpy.open());
+        assertEquals("Could not open Sftp client. com.jcraft.jsch.JSchException: Failed", exception.getMessage());
+    }
+
+    @Test
+    public void openAuthFail_throwsExceptionWithoutRetry()
+        throws DatafileTaskException, IOException, JSchException, SftpException, Exception {
+        FileServerData expectedFileServerData = ImmutableFileServerData.builder() //
+            .serverAddress(HOST) //
+            .userId(USERNAME) //
+            .password(PASSWORD) //
+            .port(SFTP_PORT) //
+            .build();
+
+        SftpClient sftpClientSpy = spy(new SftpClient(expectedFileServerData));
+
+        doReturn(jschMock).when(sftpClientSpy).createJsch();
+        when(jschMock.getSession(anyString(), anyString(), anyInt())).thenThrow(new JSchException("Auth fail"));
+
+        NonRetryableDatafileTaskException exception =
+            assertThrows(NonRetryableDatafileTaskException.class, () -> sftpClientSpy.open());
+        assertEquals(
+            "Could not open Sftp client, no retry attempts will be done. com.jcraft.jsch.JSchException: Auth fail",
+            exception.getMessage());
     }
 
     @SuppressWarnings("resource")
@@ -146,7 +170,29 @@ public class SftpClientTest {
     }
 
     @Test
-    public void collectFile_throwsExceptionWithoutRetry()
+    public void collectFile_throwsExceptionWithRetry()
+        throws IOException, JSchException, SftpException, DatafileTaskException {
+        FileServerData expectedFileServerData = ImmutableFileServerData.builder() //
+            .serverAddress(HOST) //
+            .userId(USERNAME) //
+            .password(PASSWORD) //
+            .port(SFTP_PORT) //
+            .build();
+
+        try (SftpClient sftpClient = new SftpClient(expectedFileServerData)) {
+            sftpClient.sftpChannel = channelMock;
+            doThrow(new SftpException(ChannelSftp.SSH_FX_BAD_MESSAGE, "Failed")).when(channelMock).get(anyString(),
+                anyString());
+
+            assertThatThrownBy(() -> sftpClient.collectFile("remoteFile", Paths.get("localFile")))
+                .isInstanceOf(DatafileTaskException.class).hasMessageStartingWith("Unable to get file from xNF. ")
+                .hasMessageContaining("Data: FileServerData{serverAddress=" + HOST + ", " + "userId=" + USERNAME
+                    + ", password=####, port=" + SFTP_PORT);
+        }
+    }
+
+    @Test
+    public void collectFileFileMissing_throwsExceptionWithoutRetry()
         throws IOException, JSchException, SftpException, DatafileTaskException {
         FileServerData expectedFileServerData = ImmutableFileServerData.builder() //
             .serverAddress(HOST) //
@@ -161,7 +207,7 @@ public class SftpClientTest {
                 anyString());
 
             assertThatThrownBy(() -> sftpClient.collectFile("remoteFile", Paths.get("localFile")))
-                .isInstanceOf(DatafileTaskException.class)
+                .isInstanceOf(NonRetryableDatafileTaskException.class)
                 .hasMessageStartingWith("Unable to get file from xNF. No retry attempts will be done")
                 .hasMessageContaining("Data: FileServerData{serverAddress=" + HOST + ", " + "userId=" + USERNAME
                     + ", password=####, port=" + SFTP_PORT);

@@ -18,21 +18,22 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.controller;
+package org.onap.dcaegen2.collectors.datafile.controllers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
-
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.onap.dcaegen2.collectors.datafile.controllers.StatusController;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.onap.dcaegen2.collectors.datafile.model.Counters;
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
 import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
@@ -42,14 +43,21 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Mono;
 
+@ExtendWith(MockitoExtension.class)
 public class StatusControllerTest {
+    @Mock
+    ScheduledTasks scheduledTasksMock;
+
+    StatusController controllerUnderTest;
+
+    @BeforeEach
+    public void setup() {
+        controllerUnderTest = new StatusController(scheduledTasksMock);
+    }
+
     @Test
     public void heartbeat_success() {
-        ScheduledTasks scheduledTasksMock = mock(ScheduledTasks.class);
-
         HttpHeaders httpHeaders = new HttpHeaders();
-
-        StatusController controllerUnderTest = new StatusController(scheduledTasksMock);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(StatusController.class);
         Mono<ResponseEntity<String>> result = controllerUnderTest.heartbeat(httpHeaders);
@@ -65,13 +73,10 @@ public class StatusControllerTest {
 
     @Test
     public void status() {
-        ScheduledTasks scheduledTasksMock = mock(ScheduledTasks.class);
         Counters counters = new Counters();
         doReturn(counters).when(scheduledTasksMock).getCounters();
 
         HttpHeaders httpHeaders = new HttpHeaders();
-
-        StatusController controllerUnderTest = new StatusController(scheduledTasksMock);
 
         Mono<ResponseEntity<String>> result = controllerUnderTest.status(httpHeaders);
 
