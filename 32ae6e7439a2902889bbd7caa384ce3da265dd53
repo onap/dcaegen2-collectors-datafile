@@ -16,6 +16,24 @@
       "revId": "32ae6e7439a2902889bbd7caa384ce3da265dd53",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "002f6a09_55a69dcb",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-07-02T13:56:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f1d3c3f_25874987",
+      "revId": "32ae6e7439a2902889bbd7caa384ce3da265dd53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
