@@ -27,7 +27,7 @@ import java.util.Map;
  * the key was last used.
  */
 public class PublishedFileCache {
-    private final Map<Path, Instant> publishedFiles = new HashMap<Path, Instant>();
+    private final Map<Path, Instant> publishedFiles = new HashMap<>();
 
     /**
      * Adds a file to the cache.
