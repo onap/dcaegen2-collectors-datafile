@@ -18,13 +18,14 @@ package org.onap.dcaegen2.collectors.datafile.service;
 
 import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.RESPONSE_CODE;
 import static org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables.SERVICE_NAME;
-import static org.springframework.web.reactive.function.client.ExchangeFilterFunctions.basicAuthentication;
 
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapCustomConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.reactive.function.client.ClientRequest;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
@@ -37,11 +38,9 @@ import reactor.core.publisher.Mono;
  */
 public class DmaapWebClient {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(DmaapWebClient.class);
 
     private String contentType;
-    private String dmaapUserName;
-    private String dmaapUserPassword;
 
     /**
      * Creating DmaapReactiveWebClient passing to them basic DmaapConfig.
@@ -62,33 +61,31 @@ public class DmaapWebClient {
     public WebClient build() {
         Builder webClientBuilder = WebClient.builder() //
             .defaultHeader(HttpHeaders.CONTENT_TYPE, contentType) //
-            .filter(logRequest()) //
-            .filter(logResponse());
-        if (dmaapUserName != null && !dmaapUserName.isEmpty() && dmaapUserPassword != null
-            && !dmaapUserPassword.isEmpty()) {
-            webClientBuilder.filter(basicAuthentication(dmaapUserName, dmaapUserPassword));
-        }
+            .filter(getRequestFilter()) //
+            .filter(getResponseFilter());
         return webClientBuilder.build();
     }
 
-    private ExchangeFilterFunction logResponse() {
-        return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
-            MDC.put(RESPONSE_CODE, String.valueOf(clientResponse.statusCode()));
-            logger.trace("Response Status {}", clientResponse.statusCode());
-            MDC.remove(RESPONSE_CODE);
-            return Mono.just(clientResponse);
-        });
+    private ExchangeFilterFunction getResponseFilter() {
+        return ExchangeFilterFunction.ofResponseProcessor(this::logResponse);
     }
 
-    private ExchangeFilterFunction logRequest() {
-        return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
-            MDC.put(SERVICE_NAME, String.valueOf(clientRequest.url()));
-            logger.trace("Request: {} {}", clientRequest.method(), clientRequest.url());
-            clientRequest.headers()
-                .forEach((name, values) -> values.forEach(value -> logger.trace("{}={}", name, value)));
-            logger.trace("HTTP request headers: {}", clientRequest.headers());
-            MDC.remove(SERVICE_NAME);
-            return Mono.just(clientRequest);
-        });
+    Mono<ClientResponse> logResponse(ClientResponse clientResponse) {
+        MDC.put(RESPONSE_CODE, String.valueOf(clientResponse.statusCode()));
+        logger.trace("Response Status {}", clientResponse.statusCode());
+        MDC.remove(RESPONSE_CODE);
+        return Mono.just(clientResponse);
+    }
+
+    private ExchangeFilterFunction getRequestFilter() {
+        return ExchangeFilterFunction.ofRequestProcessor(this::logRequest);
+    }
+
+    Mono<ClientRequest> logRequest(ClientRequest clientRequest) {
+        MDC.put(SERVICE_NAME, String.valueOf(clientRequest.url()));
+        logger.trace("Request: {} {}", clientRequest.method(), clientRequest.url());
+        logger.trace("HTTP request headers: {}", clientRequest.headers());
+        MDC.remove(SERVICE_NAME);
+        return Mono.just(clientRequest);
     }
 }

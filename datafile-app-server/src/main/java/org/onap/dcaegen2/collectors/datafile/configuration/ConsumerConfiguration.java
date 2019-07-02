@@ -18,7 +18,6 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
@@ -42,6 +41,13 @@ public abstract class ConsumerConfiguration {
 
     public abstract Boolean enableDmaapCertAuth();
 
+    /**
+     * Gets the configuration in the SDK version.
+     *
+     * @return a <code>DmaapConsumerConfiguration</code> representing the configuration.
+     *
+     * @throws DatafileTaskException if something is wrong with the topic URL.
+     */
     public DmaapConsumerConfiguration toDmaap() throws DatafileTaskException {
         try {
             URL url = new URL(topicUrl());
@@ -91,16 +97,14 @@ public abstract class ConsumerConfiguration {
     }
 
     private DmaapConsumerUrlPath parseDmaapUrlPath(String urlPath) throws DatafileTaskException {
-        String[] tokens = urlPath.split("/"); // UrlPath:
-                                              // /events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12
+        String[] tokens = urlPath.split("/"); // /events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12
         if (tokens.length != 5) {
             throw new DatafileTaskException("The path has incorrect syntax: " + urlPath);
         }
 
-        final String dmaapTopicName = tokens[1] + "/" + tokens[2]; // e.g.
-                                                                   // /events/unauthenticated.VES_NOTIFICATION_OUTPUT
-        final String consumerGroup = tokens[3]; // ex. OpenDcae-c12
-        final String consumerId = tokens[4]; // ex. C12
+        final String dmaapTopicName = tokens[1] + "/" + tokens[2]; // /events/unauthenticated.VES_NOTIFICATION_OUTPUT
+        final String consumerGroup = tokens[3]; // OpenDcae-c12
+        final String consumerId = tokens[4]; // C12
         return new DmaapConsumerUrlPath(dmaapTopicName, consumerGroup, consumerId);
     }
 

@@ -22,7 +22,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.model.Counters;
@@ -36,7 +35,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -222,9 +220,8 @@ public class ScheduledTasks {
         Path localFilePath = fileData.fileData.getLocalFilePath();
         if (publishedFilesCache.put(localFilePath) == null) {
             try {
-                boolean result = !createPublishedChecker().isFilePublished(fileData.fileData.name(),
+                return !createPublishedChecker().isFilePublished(fileData.fileData.name(),
                     fileData.fileData.messageMetaData().changeIdentifier(), fileData.context);
-                return result;
             } catch (DatafileTaskException e) {
                 logger.error("Cannot check if a file {} is published", fileData.fileData.name(), e);
                 return true; // Publish it then
