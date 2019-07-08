@@ -19,20 +19,17 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.google.gson.JsonElement;
@@ -40,29 +37,28 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.EnvProperties;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.http.configuration.ImmutableEnvProperties;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.providers.CloudConfigurationProvider;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapConsumerConfiguration;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClient;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.model.EnvProperties;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.model.ImmutableEnvProperties;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapConsumerConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
-import reactor.core.Disposable;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -73,12 +69,14 @@ import reactor.test.StepVerifier;
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/9/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
-class AppConfigTest {
+public class AppConfigTest {
 
-    private static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
+    public static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
-    private static final DmaapConsumerConfiguration CORRECT_DMAAP_CONSUMER_CONFIG = //
+    public static final ImmutableDmaapConsumerConfiguration CORRECT_DMAAP_CONSUMER_CONFIG = //
         new ImmutableDmaapConsumerConfiguration.Builder() //
+            .endpointUrl(
+                "http://admin:admin@message-router.onap.svc.cluster.local:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12")
             .timeoutMs(-1) //
             .dmaapHostName("message-router.onap.svc.cluster.local") //
             .dmaapUserName("admin") //
@@ -97,7 +95,7 @@ class AppConfigTest {
             .enableDmaapCertAuth(true) //
             .build();
 
-    private static final ConsumerConfiguration CORRECT_CONSUMER_CONFIG = ImmutableConsumerConfiguration.builder() //
+    public static final ConsumerConfiguration CORRECT_CONSUMER_CONFIG = ImmutableConsumerConfiguration.builder() //
         .topicUrl(
             "http://admin:admin@message-router.onap.svc.cluster.local:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12")
         .trustStorePath("trustStorePath") //
@@ -120,7 +118,7 @@ class AppConfigTest {
             .passWord("password") //
             .build();
 
-    private static final FtpesConfig CORRECT_FTPES_CONFIGURATION = //
+    private static final ImmutableFtpesConfig CORRECT_FTPES_CONFIGURATION = //
         new ImmutableFtpesConfig.Builder() //
             .keyCert("/config/dfc.jks") //
             .keyPassword("secret") //
@@ -128,9 +126,9 @@ class AppConfigTest {
             .trustedCaPassword("secret") //
             .build();
 
-    private static final DmaapPublisherConfiguration CORRECT_DMAAP_PUBLISHER_CONFIG = //
+    private static final ImmutableDmaapPublisherConfiguration CORRECT_DMAAP_PUBLISHER_CONFIG = //
         new ImmutableDmaapPublisherConfiguration.Builder() //
-            .dmaapTopicName("/publish/1") //
+            .endpointUrl("https://message-router.onap.svc.cluster.local:3907/publish/1").dmaapTopicName("/publish/1") //
             .dmaapUserPassword("password") //
             .dmaapPortNumber(3907) //
             .dmaapProtocol("https") //
@@ -154,14 +152,14 @@ class AppConfigTest {
     }
 
     private AppConfig appConfigUnderTest;
-    private CloudConfigurationProvider cloudConfigurationProvider = mock(CloudConfigurationProvider.class);
     private final Map<String, String> context = MappedDiagnosticContext.initializeTraceContext();
+    CbsClient cbsClient = mock(CbsClient.class);
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         appConfigUnderTest = spy(AppConfig.class);
-        appConfigUnderTest.setCloudConfigurationProvider(cloudConfigurationProvider);
         appConfigUnderTest.systemEnvironment = new Properties();
+
     }
 
     @Test
@@ -212,19 +210,14 @@ class AppConfigTest {
         // Given
         appConfigUnderTest.setFilepath("/temp.json");
 
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
-
         // When
         appConfigUnderTest.loadConfigurationFromFile();
 
         // Then
-        assertTrue("Error message missing in log.",
-            logAppender.list.toString().contains("[WARN] Local configuration file not loaded: /temp.json"));
-        logAppender.stop();
-
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         assertThatThrownBy(() -> appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER))
             .hasMessageContaining("No PublishingConfiguration loaded, changeIdentifier: PM_MEAS_FILES");
+
         Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
     }
 
@@ -264,32 +257,31 @@ class AppConfigTest {
     @Test
     public void whenPeriodicConfigRefreshNoEnvironmentVariables() {
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
-
-        Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
+        Flux<AppConfig> task = appConfigUnderTest.createRefreshTask(context);
 
         StepVerifier //
             .create(task) //
             .expectSubscription() //
-            .expectNextCount(0) //
-            .verifyComplete();
+            .verifyComplete(); //
 
         assertTrue(logAppender.list.toString().contains("$CONSUL_HOST environment has not been defined"));
     }
 
     @Test
     public void whenPeriodicConfigRefreshNoConsul() {
-
-        doReturn(Mono.just(properties())).when(appConfigUnderTest).readEnvironmentVariables(any(), any());
-        Mono<JsonObject> err = Mono.error(new IOException());
-        doReturn(err).when(cloudConfigurationProvider).callForServiceConfigurationReactive(any());
-
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
-        Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
+        EnvProperties props = properties();
+        doReturn(Mono.just(props)).when(appConfigUnderTest).getEnvironment(any(), any());
+
+        doReturn(Mono.just(cbsClient)).when(appConfigUnderTest).createCbsClient(props);
+        Flux<JsonObject> err = Flux.error(new IOException());
+        doReturn(err).when(cbsClient).updates(any(), any(), any());
+
+        Flux<AppConfig> task = appConfigUnderTest.createRefreshTask(context);
 
         StepVerifier //
             .create(task) //
             .expectSubscription() //
-            .expectNextCount(0) //
             .verifyComplete();
 
         assertTrue(
@@ -298,13 +290,14 @@ class AppConfigTest {
 
     @Test
     public void whenPeriodicConfigRefreshSuccess() throws JsonIOException, JsonSyntaxException, IOException {
-        doReturn(Mono.just(properties())).when(appConfigUnderTest).readEnvironmentVariables(any(), any());
+        EnvProperties props = properties();
+        doReturn(Mono.just(props)).when(appConfigUnderTest).getEnvironment(any(), any());
+        doReturn(Mono.just(cbsClient)).when(appConfigUnderTest).createCbsClient(props);
 
-        Mono<JsonObject> json = Mono.just(getJsonRootObject());
+        Flux<JsonObject> json = Flux.just(getJsonRootObject());
+        doReturn(json).when(cbsClient).updates(any(), any(), any());
 
-        doReturn(json, json).when(cloudConfigurationProvider).callForServiceConfigurationReactive(any());
-
-        Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
+        Flux<AppConfig> task = appConfigUnderTest.createRefreshTask(context);
 
         StepVerifier //
             .create(task) //
@@ -317,14 +310,18 @@ class AppConfigTest {
 
     @Test
     public void whenPeriodicConfigRefreshSuccess2() throws JsonIOException, JsonSyntaxException, IOException {
-        doReturn(Mono.just(properties())).when(appConfigUnderTest).readEnvironmentVariables(any(), any());
+        EnvProperties props = properties();
+        doReturn(Mono.just(props)).when(appConfigUnderTest).getEnvironment(any(), any());
 
-        Mono<JsonObject> json = Mono.just(getJsonRootObject());
-        Mono<JsonObject> err = Mono.error(new IOException()); // no config entry created by the dmaap plugin
+        doReturn(Mono.just(cbsClient)).when(appConfigUnderTest).createCbsClient(props);
 
-        doReturn(json, err).when(cloudConfigurationProvider).callForServiceConfigurationReactive(any());
+        Flux<JsonObject> json = Flux.just(getJsonRootObject());
+        Flux<JsonObject> err = Flux.error(new IOException()); // no config entry created by the
+        // dmaap plugin
 
-        Flux<AppConfig> task = appConfigUnderTest.createRefreshConfigurationTask(1L, context);
+        doReturn(json, err).when(cbsClient).updates(any(), any(), any());
+
+        Flux<AppConfig> task = appConfigUnderTest.createRefreshTask(context);
 
         StepVerifier //
             .create(task) //
@@ -333,37 +330,6 @@ class AppConfigTest {
             .verifyComplete();
 
         Assertions.assertNotNull(appConfigUnderTest.getDmaapConsumerConfiguration());
-    }
-
-    @Test
-    public void whenStopSuccess() {
-        Disposable disposableMock = mock(Disposable.class);
-        appConfigUnderTest.refreshConfigTask = disposableMock;
-
-        appConfigUnderTest.stop();
-
-        verify(disposableMock).dispose();
-        verifyNoMoreInteractions(disposableMock);
-        assertNull(appConfigUnderTest.refreshConfigTask);
-    }
-
-    @Test
-    public void whenNoPublisherConfigurationThrowException() throws DatafileTaskException {
-        appConfigUnderTest.publishingConfigurations = new HashMap<>();
-
-        DatafileTaskException exception = assertThrows(DatafileTaskException.class,
-            () -> appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER));
-        assertEquals("Cannot find getPublishingConfiguration for changeIdentifier: " + CHANGE_IDENTIFIER,
-            exception.getMessage());
-    }
-
-    @Test
-    public void whenFeedIsConfiguredReturnTrue() {
-        HashMap<String, PublisherConfiguration> publishingConfigs = new HashMap<>();
-        publishingConfigs.put(CHANGE_IDENTIFIER, null);
-        appConfigUnderTest.publishingConfigurations = publishingConfigs;
-
-        assertTrue(appConfigUnderTest.isFeedConfigured(CHANGE_IDENTIFIER));
     }
 
     private JsonObject getJsonRootObject() throws JsonIOException, JsonSyntaxException, IOException {

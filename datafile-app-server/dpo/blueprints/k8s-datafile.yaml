@@ -97,12 +97,12 @@ node_templates:
         dmaap.security.enableDmaapCertAuth: { get_input: secureEnableCert }
         dmaap.dmaapProducerConfiguration:
           changeIdentifier: {get_input: changeIdentifier}
-          feedName: {get_input: feedName}
+          feedInfo: <<bulk_pm_feed>>
         streams_subscribes:
           dmaap_subscriber:
             type:
               "message_router"
-            dmmap_info:
+            dmaap_info:
               topic_url:
                 { concat: [{ get_input: dmaap_mr_protocol },"://",{ get_input: dmaap_mr_host },
                            ":",{ get_input: dmaap_mr_port },"/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12"]}

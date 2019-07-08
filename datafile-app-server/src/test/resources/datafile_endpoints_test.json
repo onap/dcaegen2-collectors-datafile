@@ -10,7 +10,14 @@
    "dmaap.security.enableDmaapCertAuth":"true",
    "dmaap.dmaapProducerConfiguration": {
          "changeIdentifier":"PM_MEAS_FILES",
-         "feedName":"feed00"
+         "feedInfo":{
+            "username":"user",
+            "log_url":"https://dmaap.example.com/feedlog/972",
+            "publish_url":"https://message-router.onap.svc.cluster.local:3907/publish/1",
+            "location":"loc00",
+            "password":"password",
+            "publisher_id":"972.360gm"
+         }
    },
    "streams_subscribes":{
       "dmaap_subscriber":{
@@ -19,13 +26,5 @@
          },
          "type":"message_router"
       }
-   },
-   "feed00":{
-      "username":"user",
-      "log_url":"https://dmaap.example.com/feedlog/972",
-      "publish_url":"https://message-router.onap.svc.cluster.local:3907/publish/1",
-      "location":"loc00",
-      "password":"password",
-      "publisher_id":"972.360gm"
    }
 }

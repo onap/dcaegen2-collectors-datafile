@@ -21,11 +21,13 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 
 /**
@@ -42,11 +44,10 @@ public class CloudConfigParser {
     private static final String DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH = "dmaap.security.enableDmaapCertAuth";
 
     private final JsonObject serviceConfigurationRoot;
-    private final JsonObject dmaapConfigurationRoot;
 
-    public CloudConfigParser(JsonObject serviceConfigurationRoot, JsonObject dmaapConfigurationRoot) {
+    public CloudConfigParser(JsonObject serviceConfigurationRoot) {
         this.serviceConfigurationRoot = serviceConfigurationRoot;
-        this.dmaapConfigurationRoot = dmaapConfigurationRoot;
+
     }
 
     /**
@@ -64,8 +65,7 @@ public class CloudConfigParser {
 
         while (producerCfgs.hasNext()) {
             JsonObject producerCfg = producerCfgs.next().getAsJsonObject();
-            String feedName = getAsString(producerCfg, "feedName");
-            JsonObject feedConfig = getFeedConfig(feedName);
+            JsonObject feedConfig = getAsJson(producerCfg, "feedInfo");
 
             PublisherConfiguration cfg = ImmutablePublisherConfiguration.builder() //
                 .publishUrl(getAsString(feedConfig, "publish_url")) //
@@ -138,12 +138,8 @@ public class CloudConfigParser {
         return get(obj, memberName).getAsString();
     }
 
-    private JsonObject getFeedConfig(String feedName) throws DatafileTaskException {
-        JsonElement elem = dmaapConfigurationRoot.get(feedName);
-        if (elem == null) {
-            elem = get(serviceConfigurationRoot, feedName); // Fallback, try to find it under serviceConfigurationRoot
-        }
-        return elem.getAsJsonObject();
+    private static JsonObject getAsJson(JsonObject obj, String memberName) throws DatafileTaskException {
+        return get(obj, memberName).getAsJsonObject();
     }
 
     private static JsonArray toArray(JsonElement obj) {

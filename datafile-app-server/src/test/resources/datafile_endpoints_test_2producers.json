@@ -11,15 +11,36 @@
    "dmaap.dmaapProducerConfiguration":[
       {
          "changeIdentifier":"PM_MEAS_FILES",
-         "feedName":"feed00"
+         "feedInfo":{
+            "username":"user",
+            "log_url":"https://dmaap.example.com/feedlog/972",
+            "publish_url":"https://message-router.onap.svc.cluster.local:3907/publish/1",
+            "location":"loc00",
+            "password":"password",
+            "publisher_id":"972.360gm"
+         }
       },
       {
          "changeIdentifier":"XX_FILES",
-         "feedName":"feed01"
+         "feedInfo":{
+            "username":"user",
+            "log_url":"feed01::log_url",
+            "publish_url":"feed01::publish_url",
+            "location":"loc00",
+            "password":"",
+            "publisher_id":""
+         }
       },
       {
          "changeIdentifier":"YY_FILES",
-         "feedName":"feed01"
+         "feedInfo":{
+            "username":"user",
+            "log_url":"feed01::log_url",
+            "publish_url":"feed01::publish_url",
+            "location":"loc00",
+            "password":"",
+            "publisher_id":""
+         }
       }
    ],
    "streams_subscribes":{
@@ -29,21 +50,5 @@
          },
          "type":"message_router"
       }
-   },
-   "feed00":{
-      "username":"user",
-      "log_url":"https://dmaap.example.com/feedlog/972",
-      "publish_url":"https://message-router.onap.svc.cluster.local:3907/publish/1",
-      "location":"loc00",
-      "password":"password",
-      "publisher_id":"972.360gm"
-   },
-   "feed01":{
-      "username":"user",
-      "log_url":"feed01::log_url",
-      "publish_url":"feed01::publish_url",
-      "location":"loc00",
-      "password":"",
-      "publisher_id":""
    }
 }
