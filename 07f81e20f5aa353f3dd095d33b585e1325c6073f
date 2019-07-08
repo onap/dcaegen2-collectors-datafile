@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b536fe7b_74d5ab9f",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2019-07-08T14:27:19Z",
+      "side": 1,
+      "message": "is it correct? usage of \u003c\u003c \u003e\u003e",
+      "revId": "07f81e20f5aa353f3dd095d33b585e1325c6073f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b559abb1_f1906ef7",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/DMaaPMessageConsumer.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3395
+      },
+      "writtenOn": "2019-07-08T14:27:19Z",
+      "side": 1,
+      "message": "can it be package private?",
+      "revId": "07f81e20f5aa353f3dd095d33b585e1325c6073f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
