@@ -18,6 +18,7 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
@@ -62,6 +63,7 @@ public abstract class ConsumerConfiguration {
             DmaapConsumerUrlPath path = parseDmaapUrlPath(urlPath);
 
             return new ImmutableDmaapConsumerConfiguration.Builder() //
+                .endpointUrl(topicUrl()) //
                 .dmaapContentType("application/json") //
                 .dmaapPortNumber(url.getPort()) //
                 .dmaapHostName(url.getHost()) //

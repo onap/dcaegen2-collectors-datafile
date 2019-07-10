@@ -18,14 +18,15 @@
 
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 
 /**
@@ -40,13 +41,13 @@ public class CloudConfigParser {
     private static final String DMAAP_SECURITY_KEY_STORE_PATH = "dmaap.security.keyStorePath";
     private static final String DMAAP_SECURITY_KEY_STORE_PASS_PATH = "dmaap.security.keyStorePasswordPath";
     private static final String DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH = "dmaap.security.enableDmaapCertAuth";
+    private static final String CONFIG = "config";
 
-    private final JsonObject serviceConfigurationRoot;
-    private final JsonObject dmaapConfigurationRoot;
+    private final JsonObject jsonObject;
 
-    public CloudConfigParser(JsonObject serviceConfigurationRoot, JsonObject dmaapConfigurationRoot) {
-        this.serviceConfigurationRoot = serviceConfigurationRoot;
-        this.dmaapConfigurationRoot = dmaapConfigurationRoot;
+    public CloudConfigParser(JsonObject jsonObject) {
+        this.jsonObject = jsonObject.getAsJsonObject(CONFIG);
+
     }
 
     /**
@@ -57,33 +58,34 @@ public class CloudConfigParser {
      * @throws DatafileTaskException if a member of the configuration is missing.
      */
     public Map<String, PublisherConfiguration> getDmaapPublisherConfigurations() throws DatafileTaskException {
-        Iterator<JsonElement> producerCfgs =
-            toArray(serviceConfigurationRoot.get("dmaap.dmaapProducerConfiguration")).iterator();
+        JsonObject producerCfgs = jsonObject.get("streams_publishes").getAsJsonObject();
+        Iterator<String> changeIdentifierList = producerCfgs.keySet().iterator();
 
         Map<String, PublisherConfiguration> result = new HashMap<>();
 
-        while (producerCfgs.hasNext()) {
-            JsonObject producerCfg = producerCfgs.next().getAsJsonObject();
-            String feedName = getAsString(producerCfg, "feedName");
-            JsonObject feedConfig = getFeedConfig(feedName);
+        while (changeIdentifierList.hasNext()) {
+
+            String changeIdentifier = changeIdentifierList.next();
+            JsonObject producerCfg = getAsJson(producerCfgs, changeIdentifier);
+            JsonObject feedConfig = get(producerCfg, "dmaap_info").getAsJsonObject();
 
             PublisherConfiguration cfg = ImmutablePublisherConfiguration.builder() //
                 .publishUrl(getAsString(feedConfig, "publish_url")) //
                 .passWord(getAsString(feedConfig, "password")) //
                 .userName(getAsString(feedConfig, "username")) //
-                .trustStorePath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_TRUST_STORE_PATH)) //
-                .trustStorePasswordPath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_TRUST_STORE_PASS_PATH)) //
-                .keyStorePath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_KEY_STORE_PATH)) //
-                .keyStorePasswordPath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_KEY_STORE_PASS_PATH)) //
-                .enableDmaapCertAuth(
-                    get(serviceConfigurationRoot, DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH).getAsBoolean()) //
-                .changeIdentifier(getAsString(producerCfg, "changeIdentifier")) //
+                .trustStorePath(getAsString(jsonObject, DMAAP_SECURITY_TRUST_STORE_PATH)) //
+                .trustStorePasswordPath(getAsString(jsonObject, DMAAP_SECURITY_TRUST_STORE_PASS_PATH)) //
+                .keyStorePath(getAsString(jsonObject, DMAAP_SECURITY_KEY_STORE_PATH)) //
+                .keyStorePasswordPath(getAsString(jsonObject, DMAAP_SECURITY_KEY_STORE_PASS_PATH)) //
+                .enableDmaapCertAuth(get(jsonObject, DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH).getAsBoolean()) //
+                .changeIdentifier(changeIdentifier) //
                 .logUrl(getAsString(feedConfig, "log_url")) //
                 .build();
 
             result.put(cfg.changeIdentifier(), cfg);
         }
         return result;
+
     }
 
     /**
@@ -93,21 +95,21 @@ public class CloudConfigParser {
      * @throws DatafileTaskException if a member of the configuration is missing.
      */
     public ConsumerConfiguration getDmaapConsumerConfig() throws DatafileTaskException {
-        JsonObject consumerCfg = serviceConfigurationRoot.get("streams_subscribes").getAsJsonObject();
+        JsonObject consumerCfg = jsonObject.get("streams_subscribes").getAsJsonObject();
         Set<Entry<String, JsonElement>> topics = consumerCfg.entrySet();
         if (topics.size() != 1) {
-            throw new DatafileTaskException("Invalid configuration, number oftopic must be one, config: " + topics);
+            throw new DatafileTaskException("Invalid configuration, number of topic must be one, config: " + topics);
         }
         JsonObject topic = topics.iterator().next().getValue().getAsJsonObject();
-        JsonObject dmaapInfo = get(topic, "dmmap_info").getAsJsonObject();
+        JsonObject dmaapInfo = get(topic, "dmaap_info").getAsJsonObject();
         String topicUrl = getAsString(dmaapInfo, "topic_url");
 
         return ImmutableConsumerConfiguration.builder().topicUrl(topicUrl)
-            .trustStorePath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_TRUST_STORE_PATH))
-            .trustStorePasswordPath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_TRUST_STORE_PASS_PATH))
-            .keyStorePath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_KEY_STORE_PATH))
-            .keyStorePasswordPath(getAsString(serviceConfigurationRoot, DMAAP_SECURITY_KEY_STORE_PASS_PATH))
-            .enableDmaapCertAuth(get(serviceConfigurationRoot, DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH).getAsBoolean()) //
+            .trustStorePath(getAsString(jsonObject, DMAAP_SECURITY_TRUST_STORE_PATH))
+            .trustStorePasswordPath(getAsString(jsonObject, DMAAP_SECURITY_TRUST_STORE_PASS_PATH))
+            .keyStorePath(getAsString(jsonObject, DMAAP_SECURITY_KEY_STORE_PATH))
+            .keyStorePasswordPath(getAsString(jsonObject, DMAAP_SECURITY_KEY_STORE_PASS_PATH))
+            .enableDmaapCertAuth(get(jsonObject, DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH).getAsBoolean()) //
             .build();
     }
 
@@ -119,10 +121,10 @@ public class CloudConfigParser {
      */
     public FtpesConfig getFtpesConfig() throws DatafileTaskException {
         return new ImmutableFtpesConfig.Builder() //
-            .keyCert(getAsString(serviceConfigurationRoot, "dmaap.ftpesConfig.keyCert"))
-            .keyPassword(getAsString(serviceConfigurationRoot, "dmaap.ftpesConfig.keyPassword"))
-            .trustedCa(getAsString(serviceConfigurationRoot, "dmaap.ftpesConfig.trustedCa"))
-            .trustedCaPassword(getAsString(serviceConfigurationRoot, "dmaap.ftpesConfig.trustedCaPassword")) //
+            .keyCert(getAsString(jsonObject, "dmaap.ftpesConfig.keyCert"))
+            .keyPassword(getAsString(jsonObject, "dmaap.ftpesConfig.keyPassword"))
+            .trustedCa(getAsString(jsonObject, "dmaap.ftpesConfig.trustedCa"))
+            .trustedCaPassword(getAsString(jsonObject, "dmaap.ftpesConfig.trustedCaPassword")) //
             .build();
     }
 
@@ -138,20 +140,8 @@ public class CloudConfigParser {
         return get(obj, memberName).getAsString();
     }
 
-    private JsonObject getFeedConfig(String feedName) throws DatafileTaskException {
-        JsonElement elem = dmaapConfigurationRoot.get(feedName);
-        if (elem == null) {
-            elem = get(serviceConfigurationRoot, feedName); // Fallback, try to find it under serviceConfigurationRoot
-        }
-        return elem.getAsJsonObject();
+    private static JsonObject getAsJson(JsonObject obj, String memberName) throws DatafileTaskException {
+        return get(obj, memberName).getAsJsonObject();
     }
 
-    private static JsonArray toArray(JsonElement obj) {
-        if (obj.isJsonArray()) {
-            return obj.getAsJsonArray();
-        }
-        JsonArray arr = new JsonArray();
-        arr.add(obj);
-        return arr;
-    }
 }

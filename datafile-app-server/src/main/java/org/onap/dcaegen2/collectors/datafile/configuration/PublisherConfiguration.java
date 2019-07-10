@@ -18,6 +18,7 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
@@ -60,6 +61,7 @@ public interface PublisherConfiguration {
         String urlPath = url.getPath();
 
         return new ImmutableDmaapPublisherConfiguration.Builder() //
+            .endpointUrl(publishUrl()) //
             .dmaapContentType("application/octet-stream") //
             .dmaapPortNumber(url.getPort()) //
             .dmaapHostName(url.getHost()) //

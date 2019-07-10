@@ -70,6 +70,7 @@ class JsonMessageParserTest {
     private static final String FILE_FORMAT_TYPE = "org.3GPP.32.435#measCollec";
     private static final String FILE_FORMAT_VERSION = "V10";
     private static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
+    private static final String INCORRECT_CHANGE_IDENTIFIER = "INCORRECT_PM_MEAS_FILES";
     private static final String CHANGE_TYPE = "FileReady";
     private static final String INCORRECT_CHANGE_TYPE = "IncorrectFileReady";
     private static final String NOTIFICATION_FIELDS_VERSION = "1.0";
@@ -116,15 +117,14 @@ class JsonMessageParserTest {
             .files(files) //
             .build();
 
-        String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
             .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-            .expectSubscription().expectNext(expectedMessage).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+            .expectNext(expectedMessage).verifyComplete();
     }
 
     @Test
@@ -173,10 +173,11 @@ class JsonMessageParserTest {
         String messageString = "[" + parsedString + "," + parsedString + "]";
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
+        JsonElement jsonElement1 = new JsonParser().parse(messageString);
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
             .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement1)))
             .expectSubscription().expectNext(expectedMessage).expectNext(expectedMessage).verifyComplete();
     }
 
@@ -196,7 +197,6 @@ class JsonMessageParserTest {
             .addAdditionalField(additionalField) //
             .build();
 
-        String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
@@ -204,8 +204,8 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-            .expectSubscription().expectNextCount(0).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+            .expectNextCount(0).verifyComplete();
 
         assertTrue(logAppender.list.toString()
             .contains("[ERROR] VES event parsing. File information wrong. " + "Missing location."));
@@ -229,7 +229,6 @@ class JsonMessageParserTest {
             .addAdditionalField(additionalField) //
             .build();
 
-        String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
@@ -237,8 +236,8 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-            .expectSubscription().expectNextCount(0).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+            .expectNextCount(0).verifyComplete();
 
         assertTrue("Error missing in log",
             logAppender.list.toString()
@@ -293,9 +292,10 @@ class JsonMessageParserTest {
         String parsedString = message.getParsed();
         String messageString = "[{\"event\":{}}," + parsedString + "]";
         JsonMessageParser jsonMessageParserUnderTest = new JsonMessageParser();
+        JsonElement jsonElement = new JsonParser().parse(messageString);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-            .expectSubscription().expectNext(expectedMessage).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+            .expectNext(expectedMessage).verifyComplete();
     }
 
     @Test
@@ -314,7 +314,6 @@ class JsonMessageParserTest {
             .addAdditionalField(additionalField) //
             .build();
 
-        String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
@@ -322,8 +321,8 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-            .expectSubscription().expectComplete().verify();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+            .expectComplete().verify();
 
         assertTrue("Error missing in log",
             logAppender.list.toString().contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
@@ -346,7 +345,6 @@ class JsonMessageParserTest {
             .addAdditionalField(additionalField) //
             .build();
 
-        String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
@@ -354,8 +352,8 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-            .expectSubscription().expectNextCount(0).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+            .expectNextCount(0).verifyComplete();
 
         assertTrue("Error missing in log",
             logAppender.list.toString()
@@ -373,7 +371,6 @@ class JsonMessageParserTest {
             .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
             .build();
 
-        String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
@@ -381,8 +378,8 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-            .expectSubscription().expectNextCount(0).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+            .expectNextCount(0).verifyComplete();
 
         assertTrue("Error missing in log",
             logAppender.list.toString().contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
@@ -405,7 +402,6 @@ class JsonMessageParserTest {
             .addAdditionalField(additionalField) //
             .build();
 
-        String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
@@ -413,8 +409,8 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-            .expectSubscription().expectNextCount(0).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+            .expectNextCount(0).verifyComplete();
 
         assertTrue("Error missing in log",
             logAppender.list.toString()
@@ -439,7 +435,6 @@ class JsonMessageParserTest {
             .addAdditionalField(additionalField) //
             .build();
 
-        String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
@@ -447,8 +442,8 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-            .expectSubscription().expectNextCount(0).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+            .expectNextCount(0).verifyComplete();
 
         assertTrue("Error missing in log",
             logAppender.list.toString()
@@ -506,15 +501,14 @@ class JsonMessageParserTest {
             .files(files) //
             .build();
 
-        String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
             .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-            .expectSubscription().expectNext(expectedMessage).verifyComplete();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+            .expectNext(expectedMessage).verifyComplete();
     }
 
     @Test
@@ -523,7 +517,6 @@ class JsonMessageParserTest {
             .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
             .build();
 
-        String incorrectMessageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
@@ -531,8 +524,8 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(incorrectMessageString)))
-            .expectSubscription().expectComplete().verify();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+            .expectComplete().verify();
 
         assertTrue("Error missing in log",
             logAppender.list.toString()
@@ -550,7 +543,7 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just("[{}]"))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
             .expectComplete().verify();
 
         assertTrue("Error missing in log",
@@ -573,7 +566,6 @@ class JsonMessageParserTest {
             .addAdditionalField(additionalField) //
             .build();
 
-        String messageString = message.toString();
         String parsedString = message.getParsed();
         JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
         JsonElement jsonElement = new JsonParser().parse(parsedString);
@@ -581,12 +573,38 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(messageString)))
-            .expectSubscription().expectNextCount(0).expectComplete().verify();
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+            .expectNextCount(0).expectComplete().verify();
 
         assertTrue("Error missing in log",
             logAppender.list.toString()
                 .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING + " Change type is wrong: "
                     + INCORRECT_CHANGE_TYPE + " Expected: FileReady Message: " + message.getParsed()));
+    }
+
+    @Test
+    void whenPassingCorrectJsonWithIncorrectChangeIdentifier_noFileData() {
+        AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
+            .name(PM_FILE_NAME) //
+            .location(LOCATION) //
+            .compression(GZIP_COMPRESSION) //
+            .fileFormatVersion(FILE_FORMAT_VERSION) //
+            .build();
+        JsonMessage message = new JsonMessage.JsonMessageBuilder() //
+            .eventName(NR_RADIO_ERICSSON_EVENT_NAME) //
+            .changeIdentifier(INCORRECT_CHANGE_IDENTIFIER) //
+            .changeType(CHANGE_TYPE) //
+            .notificationFieldsVersion(NOTIFICATION_FIELDS_VERSION) //
+            .addAdditionalField(additionalField) //
+            .build();
+
+        String parsedString = message.getParsed();
+        JsonMessageParser jsonMessageParserUnderTest = spy(new JsonMessageParser());
+        JsonElement jsonElement = new JsonParser().parse(parsedString);
+        Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
+            .getJsonObjectFromAnArray(jsonElement);
+
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+            .expectComplete().verify();
     }
 }
