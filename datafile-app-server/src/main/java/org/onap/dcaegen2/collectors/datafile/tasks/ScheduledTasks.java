@@ -22,6 +22,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.model.Counters;
@@ -35,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -156,7 +158,7 @@ public class ScheduledTasks {
         return this.counters;
     }
 
-    protected DMaaPMessageConsumer createConsumerTask() throws DatafileTaskException {
+    protected DMaaPMessageConsumer createConsumerTask() {
         return new DMaaPMessageConsumer(this.applicationConfiguration);
     }
 
