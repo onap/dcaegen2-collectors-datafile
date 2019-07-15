@@ -1,0 +1,10 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Sonia Sangari <sonia.sangari@est.tech>
+Code-Review+1: Tamas Bakai <tamas.bakai@est.tech>
+Code-Review+1: Muhammad Rehan Raza <muhammad.rehan.raza@est.tech>
+Code-Review+2: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-by: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-at: Mon, 15 Jul 2019 22:00:45 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/dcaegen2/collectors/datafile/+/89223
+Project: dcaegen2/collectors/datafile
+Branch: refs/heads/master
