@@ -55,18 +55,24 @@
     {
       "name": "dmaap.dmaapProducerConfiguration",
       "value": [{"changeIdentifier": "PM_MEAS_FILES", "feedName": "bulk_pm_feed"}],
-      "description": "datafile collector consume VES event to message router topic ",
+      "description": "datafile collector publishes data to data router feed ",
       "designer_editable": true,
       "sourced_at_deployment": false,
-      "policy_editable": false,
+      "required": true,
       "type": "string",
-      "required": true
+      "policy_editable": true,
+      "policy_schema": [{
+        "name": "dmaap producer configuration",
+        "description": "configuration for changeIdentifier and feedName",
+        "type": "string",
+        "value": ""
+      }]
     },
     {
       "name": "streams_subscribes",
       "value": {"dmaap_subscriber": {"dmmap_info": {"topic_url":
       "http://message-router.onap.svc.cluster.local:3904/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12"}}},
-      "description": "datafile collector consume VES event to message router topic ",
+      "description": "datafile collector consumes VES events from message router topic ",
       "designer_editable": true,
       "sourced_at_deployment": false,
       "policy_editable": false,
@@ -160,16 +166,6 @@
       "designer_editable": true,
       "sourced_at_deployment": false,
       "policy_editable": false,
-      "type": "string",
-      "required": true
-    },
-    {
-      "name": "datafile.policy",
-      "value": "",
-      "description": "datafile Policy JSON as string",
-      "designer_editable": false,
-      "sourced_at_deployment": false,
-      "policy_editable": true,
       "type": "string",
       "required": true
     }
