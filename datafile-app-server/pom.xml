@@ -2,6 +2,7 @@
 <!--
   ~ ============LICENSE_START=======================================================
   ~ Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
+  ~ Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
   ~ ================================================================================ 
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -194,9 +195,11 @@
         <artifactId>docker-maven-plugin</artifactId>
         <configuration>
           <serverId>${onap.nexus.dockerregistry.daily}</serverId>
-          <imageName>${docker.image.name}</imageName>
+          <imageName>${onap.nexus.dockerregistry.daily}/${docker.image.name}</imageName>
           <imageTags>
-            <tag>latest</tag>
+            <imageTag>${project.version}-${maven.build.timestamp}Z</imageTag>
+            <imageTag>${project.version}</imageTag>
+            <imageTag>latest</imageTag>
           </imageTags>
           <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
           <resources>
@@ -212,6 +215,7 @@
             </resource>
           </resources>
         </configuration>
+<!--
         <executions>
           <execution>
             <id>build-image</id>
@@ -257,6 +261,7 @@
             </configuration>
           </execution>
         </executions>
+-->
       </plugin>
 
       <plugin>
