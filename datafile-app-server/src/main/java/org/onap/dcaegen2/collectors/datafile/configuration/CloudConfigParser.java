@@ -60,11 +60,9 @@ public class CloudConfigParser {
     public Map<String, PublisherConfiguration> getDmaapPublisherConfigurations() throws DatafileTaskException {
         JsonObject producerCfgs = jsonObject.get("streams_publishes").getAsJsonObject();
         Iterator<String> changeIdentifierList = producerCfgs.keySet().iterator();
-
         Map<String, PublisherConfiguration> result = new HashMap<>();
 
         while (changeIdentifierList.hasNext()) {
-
             String changeIdentifier = changeIdentifierList.next();
             JsonObject producerCfg = getAsJson(producerCfgs, changeIdentifier);
             JsonObject feedConfig = get(producerCfg, "dmaap_info").getAsJsonObject();
@@ -85,7 +83,6 @@ public class CloudConfigParser {
             result.put(cfg.changeIdentifier(), cfg);
         }
         return result;
-
     }
 
     /**

@@ -62,7 +62,7 @@ public class ScheduleControllerTest {
 
         HttpHeaders httpHeaders = new HttpHeaders();
 
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduleController.class);
+        final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduleController.class);
         Mono<ResponseEntity<String>> response = scheduleControllerUnderTest.startTasks(httpHeaders);
 
         validateLogging(logAppender, "Start request");
@@ -80,10 +80,10 @@ public class ScheduleControllerTest {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         // The following headers are set to create branch coverage in MappedDiagnosticContext:initializeTraceContext().
-        httpHeaders.set(MdcVariables.X_ONAP_REQUEST_ID, "Onap request ID");
-        httpHeaders.set(MdcVariables.X_INVOCATION_ID, "Invocation ID");
+        httpHeaders.set(MdcVariables.httpHeader(MdcVariables.REQUEST_ID), "Onap request ID");
+        httpHeaders.set(MdcVariables.httpHeader(MdcVariables.INVOCATION_ID), "Invocation ID");
 
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduleController.class);
+        final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduleController.class);
         Mono<ResponseEntity<String>> response = scheduleControllerUnderTest.startTasks(httpHeaders);
 
         validateLogging(logAppender, "Start request");
@@ -102,7 +102,7 @@ public class ScheduleControllerTest {
 
         HttpHeaders httpHeaders = new HttpHeaders();
 
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduleController.class);
+        final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduleController.class);
         Mono<ResponseEntity<String>> actualResponse = scheduleControllerUnderTest.stopTask(httpHeaders);
 
         validateLogging(logAppender, "Stop request");
@@ -115,11 +115,11 @@ public class ScheduleControllerTest {
     }
 
     private void validateLogging(ListAppender<ILoggingEvent> logAppender, String infoMessage) {
-        assertEquals(logAppender.list.get(0).getMarker().getName(), "ENTRY");
+        assertEquals("ENTRY", logAppender.list.get(0).getMarker().getName());
         assertNotNull(logAppender.list.get(0).getMDCPropertyMap().get("InvocationID"));
         assertNotNull(logAppender.list.get(0).getMDCPropertyMap().get("RequestID"));
         assertTrue("Info missing in log", logAppender.list.toString().contains("[INFO] " + infoMessage));
-        assertEquals(logAppender.list.get(1).getMarker().getName(), "EXIT");
+        assertEquals("EXIT", logAppender.list.get(1).getMarker().getName());
         logAppender.stop();
     }
 }

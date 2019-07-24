@@ -256,7 +256,7 @@ public class AppConfigTest {
 
     @Test
     public void whenPeriodicConfigRefreshNoEnvironmentVariables() {
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
+        final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
         Flux<AppConfig> task = appConfigUnderTest.createRefreshTask(context);
 
         StepVerifier //
@@ -269,7 +269,7 @@ public class AppConfigTest {
 
     @Test
     public void whenPeriodicConfigRefreshNoConsul() {
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
+        final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
         EnvProperties props = properties();
         doReturn(Mono.just(props)).when(appConfigUnderTest).getEnvironment(any(), any());
 

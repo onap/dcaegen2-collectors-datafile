@@ -100,9 +100,9 @@ public class Counters {
         return str.toString();
     }
 
-    private String format(String name, Object value) {
+    private static String format(String name, Object value) {
         String header = name + ":";
-        return String.format("%-24s%-22s\n", header, value);
+        return String.format("%-24s%-22s%n", header, value);
     }
 
     public int getNoOfCollectedFiles() {
@@ -131,22 +131,5 @@ public class Counters {
 
     public int getTotalReceivedEvents() {
         return totalReceivedEvents;
-    }
-
-    /**
-     * Resets all data.
-     */
-    public void clear() {
-        numberOfTasks.set(0);
-        numberOfSubscriptions.set(0);
-        noOfCollectedFiles = 0;
-        noOfFailedFtpAttempts = 0;
-        noOfFailedFtp = 0;
-        noOfFailedPublishAttempts = 0;
-        totalPublishedFiles = 0;
-        noOfFailedPublish = 0;
-        lastPublishedTime = Instant.MIN;
-        totalReceivedEvents = 0;
-        lastEventTime = Instant.MIN;
     }
 }

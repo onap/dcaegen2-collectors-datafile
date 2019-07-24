@@ -99,8 +99,10 @@ public class AppConfig {
     }
 
     Flux<AppConfig> createRefreshTask(Map<String, String> context) {
-        return getEnvironment(systemEnvironment, context).flatMap(this::createCbsClient)
-            .flatMapMany(this::periodicConfigurationUpdates).map(this::parseCloudConfig)
+        return getEnvironment(systemEnvironment, context) //
+            .flatMap(this::createCbsClient) //
+            .flatMapMany(this::periodicConfigurationUpdates) //
+            .map(this::parseCloudConfig) //
             .onErrorResume(this::onErrorResume);
     }
 
