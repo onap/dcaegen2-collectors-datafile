@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "731327cb_5984931d",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5107
+      },
+      "writtenOn": "2019-07-31T10:51:47Z",
+      "side": 1,
+      "message": "relationships:\n    - type: ccsdk.relationships.publish_files\n      target: feed0\n  feed0:\n    type: ccsdk.nodes.Feed\n    properties:\n      feed_name:\n        get_input: feed0_name\n      useExisting: true\n\nwhere is this part?",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 14
+      },
+      "revId": "198122efb3f3924dfbdb32097939809ecc1362c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
