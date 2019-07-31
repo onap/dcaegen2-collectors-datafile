@@ -22,6 +22,30 @@
       "revId": "198122efb3f3924dfbdb32097939809ecc1362c0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "14e8b310_9302553c",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-07-31T12:17:41Z",
+      "side": 1,
+      "message": "I was trying to fetch imports in the blueprint and that required to remove -d flag (for dmaap plugin). Anyways, the problem is fixed now, but facing a problem to push new patchset for now.",
+      "parentUuid": "731327cb_5984931d",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 14
+      },
+      "revId": "198122efb3f3924dfbdb32097939809ecc1362c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
