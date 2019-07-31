@@ -32,11 +32,11 @@ inputs:
   dmaap_mr_port:
     type: integer
     description: dmaap messagerouter port
-    default: 3904
+    default: 3905
   dmaap_mr_protocol:
     type: string
     description: dmaap messagerouter protocol
-    default: "http"
+    default: "https"
   tag_version:
     type: string
     description: DFC image tag/version
