@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ea547a6a_79957bb8",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-08-01T14:35:16Z",
+      "side": 1,
+      "message": "cannot this have a working default value?",
+      "range": {
+        "startLine": 16,
+        "startChar": 8,
+        "endLine": 16,
+        "endChar": 14
+      },
+      "revId": "6a9f1d3d5021df08330326cfb429bc9c4244d96b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99c2a8e1_a0916d04",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-08-01T14:35:16Z",
+      "side": 1,
+      "message": "What does this mean? A port cannot have the value 0, is that some kind of magic value?",
+      "range": {
+        "startLine": 33,
+        "startChar": 2,
+        "endLine": 33,
+        "endChar": 17
+      },
+      "revId": "6a9f1d3d5021df08330326cfb429bc9c4244d96b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e23c89da_d7fe63f9",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-08-01T14:35:16Z",
+      "side": 1,
+      "message": "Previously it was true, now it is by default false? Should it not be default true? \nIs there any case when the DFC does not use TLS towards the DR?",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 18
+      },
+      "revId": "6a9f1d3d5021df08330326cfb429bc9c4244d96b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "177dda6d_70ed7364",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-08-01T14:35:16Z",
+      "side": 1,
+      "message": "why is this an input? How is one supposed to know which envs to insert here? \nThe only envs used by the DFC I know of are CONSUL_HOST and CONSUL_PORT, should not these be here?",
+      "revId": "6a9f1d3d5021df08330326cfb429bc9c4244d96b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3b49d56_deb69c10",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-08-01T14:35:16Z",
+      "side": 1,
+      "message": "Is this input really needed? Previously it was /var/log/ONAP, does that ever need to change? \nIf so, can the default value at least be /var/log/ONAP ?",
+      "range": {
+        "startLine": 93,
+        "startChar": 9,
+        "endLine": 93,
+        "endChar": 34
+      },
+      "revId": "6a9f1d3d5021df08330326cfb429bc9c4244d96b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af9f701c_7d6b5ca6",
+        "filename": "datafile-app-server/dpo/spec/datafile-component-spec.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-08-01T14:35:16Z",
+      "side": 1,
+      "message": "I do not know how this works, but I think the http port should not be open (and in that case this cannot work) (?)",
+      "range": {
+        "startLine": 26,
+        "startChar": 3,
+        "endLine": 26,
+        "endChar": 21
+      },
+      "revId": "6a9f1d3d5021df08330326cfb429bc9c4244d96b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
