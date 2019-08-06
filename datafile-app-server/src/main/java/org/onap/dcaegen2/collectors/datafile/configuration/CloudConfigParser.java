@@ -20,13 +20,11 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 
 /**
@@ -104,7 +102,8 @@ public class CloudConfigParser {
         JsonObject dmaapInfo = get(topic, "dmaap_info").getAsJsonObject();
         String topicUrl = getAsString(dmaapInfo, "topic_url");
 
-        return ImmutableConsumerConfiguration.builder().topicUrl(topicUrl)
+        return ImmutableConsumerConfiguration.builder() //
+            .topicUrl(topicUrl) //
             .trustStorePath(getAsString(jsonObject, DMAAP_SECURITY_TRUST_STORE_PATH))
             .trustStorePasswordPath(getAsString(jsonObject, DMAAP_SECURITY_TRUST_STORE_PASS_PATH))
             .keyStorePath(getAsString(jsonObject, DMAAP_SECURITY_KEY_STORE_PATH))

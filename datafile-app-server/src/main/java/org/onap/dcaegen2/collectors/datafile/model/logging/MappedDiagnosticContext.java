@@ -18,7 +18,6 @@ package org.onap.dcaegen2.collectors.datafile.model.logging;
 
 import java.util.Map;
 import java.util.UUID;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables;
@@ -50,12 +49,11 @@ public final class MappedDiagnosticContext {
      */
     public static void appendTraceInfo(HttpRequestBase httpRequest) {
         String requestId = MDC.get(MdcVariables.REQUEST_ID);
-        httpRequest.addHeader(MdcVariables.X_ONAP_REQUEST_ID, requestId);
-        httpRequest.addHeader("X-RequestID", requestId); // deprecated
+        httpRequest.addHeader(MdcVariables.httpHeader(MdcVariables.REQUEST_ID), requestId);
         httpRequest.addHeader("X-TransactionID", requestId); // deprecated
 
         String invocationId = UUID.randomUUID().toString();
-        httpRequest.addHeader(MdcVariables.X_INVOCATION_ID, invocationId);
+        httpRequest.addHeader(MdcVariables.httpHeader(MdcVariables.INVOCATION_ID), invocationId);
         logger.info(INVOKE, "Invoking request with invocation ID {}", invocationId);
     }
 
@@ -65,11 +63,11 @@ public final class MappedDiagnosticContext {
      * @param headers a received HTPP header
      */
     public static void initializeTraceContext(HttpHeaders headers) {
-        String requestId = headers.getFirst(MdcVariables.X_ONAP_REQUEST_ID);
+        String requestId = headers.getFirst(MdcVariables.httpHeader(MdcVariables.REQUEST_ID));
         if (StringUtils.isBlank(requestId)) {
             requestId = UUID.randomUUID().toString();
         }
-        String invocationId = headers.getFirst(MdcVariables.X_INVOCATION_ID);
+        String invocationId = headers.getFirst(MdcVariables.httpHeader(MdcVariables.INVOCATION_ID));
         if (StringUtils.isBlank(invocationId)) {
             invocationId = UUID.randomUUID().toString();
         }
@@ -79,7 +77,7 @@ public final class MappedDiagnosticContext {
 
     /**
      * Initialize the MDC when a new context is started.
-     * 
+     *
      * @return a copy of the new trace context
      */
     public static Map<String, String> initializeTraceContext() {
@@ -90,7 +88,7 @@ public final class MappedDiagnosticContext {
 
     /**
      * Updates the request ID in the current context.
-     * 
+     *
      * @param newRequestId the new value of the request ID
      * @return a copy the updated context
      */

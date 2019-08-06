@@ -28,7 +28,6 @@ import static org.mockito.Mockito.when;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
-
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -80,8 +79,8 @@ public class ScheduleControllerTest {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         // The following headers are set to create branch coverage in MappedDiagnosticContext:initializeTraceContext().
-        httpHeaders.set(MdcVariables.X_ONAP_REQUEST_ID, "Onap request ID");
-        httpHeaders.set(MdcVariables.X_INVOCATION_ID, "Invocation ID");
+        httpHeaders.set(MdcVariables.httpHeader(MdcVariables.REQUEST_ID), "Onap request ID");
+        httpHeaders.set(MdcVariables.httpHeader(MdcVariables.INVOCATION_ID), "Invocation ID");
 
         ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduleController.class);
         Mono<ResponseEntity<String>> response = scheduleControllerUnderTest.startTasks(httpHeaders);
