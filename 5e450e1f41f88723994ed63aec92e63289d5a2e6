@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "290b40ae_a1dda1e3",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-08-06T14:07:43Z",
+      "side": 1,
+      "message": "If I understand the CloudConfigParser::getDmaapConsumerConfig, CloudConfigParser::getDmaapPublisherConfigurations, and CloudConfigParser::getFtpesConfig methods correctly, they cannot return null. If something is incorrect in the configuration they will trow an exception. If this is not correct, then this if cluase should be here, but we need to create a test case with incorrect configurations to test this error handling.",
+      "parentUuid": "0224f825_9d34f532",
+      "range": {
+        "startLine": 213,
+        "startChar": 7,
+        "endLine": 216,
+        "endChar": 46
+      },
+      "revId": "5e450e1f41f88723994ed63aec92e63289d5a2e6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "736f9676_c64f2293",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/logging/MappedDiagnosticContext.java",
         "patchSetId": 1
