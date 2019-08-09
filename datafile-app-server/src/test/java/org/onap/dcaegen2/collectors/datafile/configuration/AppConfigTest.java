@@ -29,7 +29,6 @@ import static org.mockito.Mockito.when;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.google.gson.JsonElement;
@@ -37,7 +36,6 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,7 +44,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Properties;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,7 +55,6 @@ import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.model.EnvProperti
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.model.ImmutableEnvProperties;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapConsumerConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -128,7 +124,8 @@ public class AppConfigTest {
 
     private static final ImmutableDmaapPublisherConfiguration CORRECT_DMAAP_PUBLISHER_CONFIG = //
         new ImmutableDmaapPublisherConfiguration.Builder() //
-            .endpointUrl("https://message-router.onap.svc.cluster.local:3907/publish/1").dmaapTopicName("/publish/1") //
+            .endpointUrl("https://message-router.onap.svc.cluster.local:3907/publish/1") //
+            .dmaapTopicName("/publish/1") //
             .dmaapUserPassword("password") //
             .dmaapPortNumber(3907) //
             .dmaapProtocol("https") //
@@ -269,7 +266,6 @@ public class AppConfigTest {
 
     @Test
     public void whenPeriodicConfigRefreshNoConsul() {
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
         EnvProperties props = properties();
         doReturn(Mono.just(props)).when(appConfigUnderTest).getEnvironment(any(), any());
 
@@ -277,6 +273,7 @@ public class AppConfigTest {
         Flux<JsonObject> err = Flux.error(new IOException());
         doReturn(err).when(cbsClient).updates(any(), any(), any());
 
+        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
         Flux<AppConfig> task = appConfigUnderTest.createRefreshTask(context);
 
         StepVerifier //

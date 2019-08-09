@@ -68,8 +68,8 @@ public class DMaaPMessageConsumer {
     public Flux<FileReadyMessage> getMessageRouterResponse() {
         logger.trace("getMessageRouterResponse called");
         try {
-            DMaaPConsumerReactiveHttpClient dMaaPConsumerReactiveHttpClient = createHttpClient();
-            return consume((dMaaPConsumerReactiveHttpClient.getDMaaPConsumerResponse(Optional.empty())));
+            DMaaPConsumerReactiveHttpClient consumerReactiveHttpClient = createHttpClient();
+            return consume((consumerReactiveHttpClient.getDMaaPConsumerResponse(Optional.empty())));
         } catch (DatafileTaskException e) {
             logger.warn("Unable to get response from message router", e);
             return Flux.empty();

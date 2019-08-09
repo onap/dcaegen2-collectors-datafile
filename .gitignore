@@ -49,3 +49,5 @@ buildNumber.properties
 .checkstyle
 
 opt/
+
+.factorypath

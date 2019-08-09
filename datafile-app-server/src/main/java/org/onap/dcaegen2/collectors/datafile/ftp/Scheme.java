@@ -37,7 +37,7 @@ public enum Scheme {
      *
      * @param schemeString the string to convert to <code>Scheme</code>.
      * @return The corresponding <code>Scheme</code>
-     * @throws Exception if the value of the string doesn't match any defined scheme.
+     * @throws DatafileTaskException if the value of the string doesn't match any defined scheme.
      */
     public static Scheme getSchemeFromString(String schemeString) throws DatafileTaskException {
         Scheme result;

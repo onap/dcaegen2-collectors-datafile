@@ -22,7 +22,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapterFactory;
-
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -32,10 +31,8 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ServiceLoader;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClient;
@@ -51,7 +48,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
-
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -213,17 +209,11 @@ public class AppConfig {
         }
     }
 
-    private synchronized void setConfiguration(ConsumerConfiguration consumerConfiguration,
-        Map<String, PublisherConfiguration> publisherConfiguration, FtpesConfig ftpesConfig) {
-        if (consumerConfiguration == null || publisherConfiguration == null || ftpesConfig == null) {
-            logger.error(
-                "Problem with configuration consumerConfiguration: {}, publisherConfiguration: {}, ftpesConfig: {}",
-                consumerConfiguration, publisherConfiguration, ftpesConfig);
-        } else {
-            this.dmaapConsumerConfiguration = consumerConfiguration;
-            this.publishingConfigurations = publisherConfiguration;
-            this.ftpesConfiguration = ftpesConfig;
-        }
+    private synchronized void setConfiguration(@NotNull ConsumerConfiguration consumerConfiguration,
+        @NotNull Map<String, PublisherConfiguration> publisherConfigurations, @NotNull FtpesConfig ftpesConfig) {
+        this.dmaapConsumerConfiguration = consumerConfiguration;
+        this.publishingConfigurations = publisherConfigurations;
+        this.ftpesConfiguration = ftpesConfig;
     }
 
     JsonElement getJsonElement(JsonParser parser, InputStream inputStream) {

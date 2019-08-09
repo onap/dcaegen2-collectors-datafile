@@ -20,13 +20,12 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
+import javax.validation.constraints.NotNull;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 
 /**
@@ -57,6 +56,7 @@ public class CloudConfigParser {
      *
      * @throws DatafileTaskException if a member of the configuration is missing.
      */
+    @NotNull
     public Map<String, PublisherConfiguration> getDmaapPublisherConfigurations() throws DatafileTaskException {
         JsonObject producerCfgs = jsonObject.get("streams_publishes").getAsJsonObject();
         Iterator<String> changeIdentifierList = producerCfgs.keySet().iterator();
@@ -94,6 +94,7 @@ public class CloudConfigParser {
      * @return the consumer configuration.
      * @throws DatafileTaskException if a member of the configuration is missing.
      */
+    @NotNull
     public ConsumerConfiguration getDmaapConsumerConfig() throws DatafileTaskException {
         JsonObject consumerCfg = jsonObject.get("streams_subscribes").getAsJsonObject();
         Set<Entry<String, JsonElement>> topics = consumerCfg.entrySet();
@@ -104,7 +105,8 @@ public class CloudConfigParser {
         JsonObject dmaapInfo = get(topic, "dmaap_info").getAsJsonObject();
         String topicUrl = getAsString(dmaapInfo, "topic_url");
 
-        return ImmutableConsumerConfiguration.builder().topicUrl(topicUrl)
+        return ImmutableConsumerConfiguration.builder() //
+            .topicUrl(topicUrl) //
             .trustStorePath(getAsString(jsonObject, DMAAP_SECURITY_TRUST_STORE_PATH))
             .trustStorePasswordPath(getAsString(jsonObject, DMAAP_SECURITY_TRUST_STORE_PASS_PATH))
             .keyStorePath(getAsString(jsonObject, DMAAP_SECURITY_KEY_STORE_PATH))
@@ -119,6 +121,7 @@ public class CloudConfigParser {
      * @return the xNF communication security configuration.
      * @throws DatafileTaskException if a member of the configuration is missing.
      */
+    @NotNull
     public FtpesConfig getFtpesConfig() throws DatafileTaskException {
         return new ImmutableFtpesConfig.Builder() //
             .keyCert(getAsString(jsonObject, "dmaap.ftpesConfig.keyCert"))
