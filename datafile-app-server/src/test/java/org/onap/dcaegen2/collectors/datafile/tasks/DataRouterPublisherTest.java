@@ -100,7 +100,7 @@ class DataRouterPublisherTest {
     private static PublisherConfiguration publisherConfigurationMock = mock(PublisherConfiguration.class);
     private static Map<String, String> context = new HashMap<>();
     private static DataRouterPublisher publisherTaskUnderTestSpy;
-    private static final Counters counters = new Counters();
+    private Counters counters;
 
     @BeforeAll
     public static void setUp() {
@@ -123,12 +123,12 @@ class DataRouterPublisherTest {
             .changeIdentifier(CHANGE_IDENTIFIER) //
             .build(); //
         appConfig = mock(AppConfig.class);
-        publisherTaskUnderTestSpy = spy(new DataRouterPublisher(appConfig, counters));
     }
 
     @BeforeEach
     void setUpTest() {
-        counters.clear();
+        counters = new Counters();
+        publisherTaskUnderTestSpy = spy(new DataRouterPublisher(appConfig, counters));
     }
 
     @Test
@@ -185,7 +185,7 @@ class DataRouterPublisherTest {
     void whenPassedObjectFits_firstFailsWithExceptionThenSucceeds() throws Exception {
         prepareMocksForTests(new DatafileTaskException("Error"), HttpStatus.OK.value());
 
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(DataRouterPublisher.class);
+        final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(DataRouterPublisher.class);
         StepVerifier.create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 2, Duration.ofSeconds(0)))
             .expectNext(filePublishInformation) //
             .verifyComplete();
@@ -220,7 +220,7 @@ class DataRouterPublisherTest {
         prepareMocksForTests(null, Integer.valueOf(HttpStatus.BAD_GATEWAY.value()),
             Integer.valueOf((HttpStatus.BAD_GATEWAY.value())));
 
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(DataRouterPublisher.class);
+        final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(DataRouterPublisher.class);
         StepVerifier.create(publisherTaskUnderTestSpy.publishFile(filePublishInformation, 1, Duration.ofSeconds(0)))
             .expectErrorMessage("Retries exhausted: 1/1") //
             .verify();

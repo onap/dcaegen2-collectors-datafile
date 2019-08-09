@@ -25,6 +25,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.validation.constraints.NotNull;
+
 import java.util.Set;
 
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
@@ -57,14 +60,12 @@ public class CloudConfigParser {
      *
      * @throws DatafileTaskException if a member of the configuration is missing.
      */
-    public Map<String, PublisherConfiguration> getDmaapPublisherConfigurations() throws DatafileTaskException {
+    public @NotNull Map<String, PublisherConfiguration> getDmaapPublisherConfigurations() throws DatafileTaskException {
         JsonObject producerCfgs = jsonObject.get("streams_publishes").getAsJsonObject();
         Iterator<String> changeIdentifierList = producerCfgs.keySet().iterator();
-
         Map<String, PublisherConfiguration> result = new HashMap<>();
 
         while (changeIdentifierList.hasNext()) {
-
             String changeIdentifier = changeIdentifierList.next();
             JsonObject producerCfg = getAsJson(producerCfgs, changeIdentifier);
             JsonObject feedConfig = get(producerCfg, "dmaap_info").getAsJsonObject();
@@ -85,7 +86,6 @@ public class CloudConfigParser {
             result.put(cfg.changeIdentifier(), cfg);
         }
         return result;
-
     }
 
     /**
@@ -94,7 +94,7 @@ public class CloudConfigParser {
      * @return the consumer configuration.
      * @throws DatafileTaskException if a member of the configuration is missing.
      */
-    public ConsumerConfiguration getDmaapConsumerConfig() throws DatafileTaskException {
+    public @NotNull ConsumerConfiguration getDmaapConsumerConfig() throws DatafileTaskException {
         JsonObject consumerCfg = jsonObject.get("streams_subscribes").getAsJsonObject();
         Set<Entry<String, JsonElement>> topics = consumerCfg.entrySet();
         if (topics.size() != 1) {
@@ -119,7 +119,7 @@ public class CloudConfigParser {
      * @return the xNF communication security configuration.
      * @throws DatafileTaskException if a member of the configuration is missing.
      */
-    public FtpesConfig getFtpesConfig() throws DatafileTaskException {
+    public @NotNull FtpesConfig getFtpesConfig() throws DatafileTaskException {
         return new ImmutableFtpesConfig.Builder() //
             .keyCert(getAsString(jsonObject, "dmaap.ftpesConfig.keyCert"))
             .keyPassword(getAsString(jsonObject, "dmaap.ftpesConfig.keyPassword"))
@@ -128,7 +128,7 @@ public class CloudConfigParser {
             .build();
     }
 
-    private static JsonElement get(JsonObject obj, String memberName) throws DatafileTaskException {
+    private static @NotNull JsonElement get(JsonObject obj, String memberName) throws DatafileTaskException {
         JsonElement elem = obj.get(memberName);
         if (elem == null) {
             throw new DatafileTaskException("Could not find member: " + memberName + " in: " + obj);
@@ -136,11 +136,11 @@ public class CloudConfigParser {
         return elem;
     }
 
-    private static String getAsString(JsonObject obj, String memberName) throws DatafileTaskException {
+    private static @NotNull String getAsString(JsonObject obj, String memberName) throws DatafileTaskException {
         return get(obj, memberName).getAsString();
     }
 
-    private static JsonObject getAsJson(JsonObject obj, String memberName) throws DatafileTaskException {
+    private static @NotNull JsonObject getAsJson(JsonObject obj, String memberName) throws DatafileTaskException {
         return get(obj, memberName).getAsJsonObject();
     }
 

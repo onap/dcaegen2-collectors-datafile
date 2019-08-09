@@ -76,11 +76,11 @@ public class AppConfigTest {
     public static final ImmutableDmaapConsumerConfiguration CORRECT_DMAAP_CONSUMER_CONFIG = //
         new ImmutableDmaapConsumerConfiguration.Builder() //
             .endpointUrl(
-                "http://admin:admin@message-router.onap.svc.cluster.local:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12")
+                "http://dradmin:dradmin@localhost:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12")
             .timeoutMs(-1) //
-            .dmaapHostName("message-router.onap.svc.cluster.local") //
-            .dmaapUserName("admin") //
-            .dmaapUserPassword("admin") //
+            .dmaapHostName("localhost") //
+            .dmaapUserName("dradmin") //
+            .dmaapUserPassword("dradmin") //
             .dmaapTopicName("events/unauthenticated.VES_NOTIFICATION_OUTPUT") //
             .dmaapPortNumber(2222) //
             .dmaapContentType("application/json") //
@@ -97,7 +97,7 @@ public class AppConfigTest {
 
     public static final ConsumerConfiguration CORRECT_CONSUMER_CONFIG = ImmutableConsumerConfiguration.builder() //
         .topicUrl(
-            "http://admin:admin@message-router.onap.svc.cluster.local:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12")
+            "http://dradmin:dradmin@localhost:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12")
         .trustStorePath("trustStorePath") //
         .trustStorePasswordPath("trustStorePasswordPath") //
         .keyStorePath("keyStorePath") //
@@ -107,15 +107,16 @@ public class AppConfigTest {
 
     private static final PublisherConfiguration CORRECT_PUBLISHER_CONFIG = //
         ImmutablePublisherConfiguration.builder() //
-            .publishUrl("https://message-router.onap.svc.cluster.local:3907/publish/1") //
-            .logUrl("https://dmaap.example.com/feedlog/972").trustStorePath("trustStorePath") //
+            .publishUrl("https://localhost:3907/publish/1") //
+            .logUrl("https://localhost:3907/feedlog/1") //
+            .trustStorePath("trustStorePath") //
             .trustStorePasswordPath("trustStorePasswordPath") //
             .keyStorePath("keyStorePath") //
             .keyStorePasswordPath("keyStorePasswordPath") //
             .enableDmaapCertAuth(true) //
             .changeIdentifier("PM_MEAS_FILES") //
-            .userName("user") //
-            .passWord("password") //
+            .userName("CYE9fl40") //
+            .passWord("izBJD8nLjawq0HMG") //
             .build();
 
     private static final ImmutableFtpesConfig CORRECT_FTPES_CONFIGURATION = //
@@ -128,13 +129,14 @@ public class AppConfigTest {
 
     private static final ImmutableDmaapPublisherConfiguration CORRECT_DMAAP_PUBLISHER_CONFIG = //
         new ImmutableDmaapPublisherConfiguration.Builder() //
-            .endpointUrl("https://message-router.onap.svc.cluster.local:3907/publish/1").dmaapTopicName("/publish/1") //
-            .dmaapUserPassword("password") //
+            .endpointUrl("https://localhost:3907/publish/1") //
+            .dmaapTopicName("/publish/1") //
+            .dmaapUserPassword("izBJD8nLjawq0HMG") //
             .dmaapPortNumber(3907) //
             .dmaapProtocol("https") //
             .dmaapContentType("application/octet-stream") //
-            .dmaapHostName("message-router.onap.svc.cluster.local") //
-            .dmaapUserName("user") //
+            .dmaapHostName("localhost") //
+            .dmaapUserName("CYE9fl40") //
             .trustStorePath("trustStorePath") //
             .trustStorePasswordPath("trustStorePasswordPath") //
             .keyStorePath("keyStorePath") //
@@ -256,7 +258,7 @@ public class AppConfigTest {
 
     @Test
     public void whenPeriodicConfigRefreshNoEnvironmentVariables() {
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
+        final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
         Flux<AppConfig> task = appConfigUnderTest.createRefreshTask(context);
 
         StepVerifier //
@@ -269,7 +271,7 @@ public class AppConfigTest {
 
     @Test
     public void whenPeriodicConfigRefreshNoConsul() {
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
+        final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
         EnvProperties props = properties();
         doReturn(Mono.just(props)).when(appConfigUnderTest).getEnvironment(any(), any());
 

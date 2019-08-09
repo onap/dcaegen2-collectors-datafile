@@ -23,10 +23,8 @@ WORKDIR /opt/app/datafile
 RUN mkdir -p /var/log/ONAP
 
 ADD /target/datafile-app-server.jar /opt/app/datafile/
-
 ADD /config/application.yaml /opt/app/datafile/config/
 ADD /config/dfc.jks.b64 /opt/app/datafile/config/
-ADD /config/datafile_endpoints.json /opt/app/datafile/config/
 ADD /config/ftp.jks.b64 /opt/app/datafile/config/
 
 EXPOSE 8100 8433

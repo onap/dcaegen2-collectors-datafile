@@ -72,13 +72,13 @@ class DmaapWebClientTest {
 
         when(clientResponseMock.statusCode()).thenReturn(HttpStatus.OK);
 
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(DmaapWebClient.class, true);
+        final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(DmaapWebClient.class, true);
         Mono<ClientResponse> logResponse = dmaapWebClientUndetTest.logResponse(clientResponseMock);
 
         assertEquals(clientResponseMock, logResponse.block());
 
-        assertEquals(logAppender.list.get(0).getLevel(), Level.TRACE);
-        assertEquals(logAppender.list.get(0).getFormattedMessage(), "Response Status 200 OK");
+        assertEquals(Level.TRACE, logAppender.list.get(0).getLevel());
+        assertEquals("Response Status 200 OK", logAppender.list.get(0).getFormattedMessage());
 
         logAppender.stop();
     }
@@ -93,14 +93,14 @@ class DmaapWebClientTest {
 
         DmaapWebClient dmaapWebClientUndetTest = new DmaapWebClient();
 
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(DmaapWebClient.class, true);
+        final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(DmaapWebClient.class, true);
         Mono<ClientRequest> logRequest = dmaapWebClientUndetTest.logRequest(clientRequesteMock);
 
         assertEquals(clientRequesteMock, logRequest.block());
 
-        assertEquals(logAppender.list.get(0).getLevel(), Level.TRACE);
+        assertEquals(Level.TRACE, logAppender.list.get(0).getLevel());
         assertEquals("Request: GET http://test", logAppender.list.get(0).getFormattedMessage());
-        assertEquals(logAppender.list.get(1).getLevel(), Level.TRACE);
+        assertEquals(Level.TRACE, logAppender.list.get(1).getLevel());
         assertEquals("HTTP request headers: [header:\"value\"]", logAppender.list.get(1).getFormattedMessage());
 
         logAppender.stop();

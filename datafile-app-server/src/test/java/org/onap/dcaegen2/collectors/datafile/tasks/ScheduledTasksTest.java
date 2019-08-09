@@ -290,7 +290,7 @@ public class ScheduledTasksTest {
         Flux<FileReadyMessage> fileReadyMessages = fileReadyMessageFlux(noOfEvents, noOfFilesPerEvent, true);
         doReturn(fileReadyMessages).when(consumerMock).getMessageRouterResponse();
 
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduledTasks.class);
+        final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduledTasks.class);
         testedObject.executeDatafileMainTask();
 
         await().untilAsserted(() -> assertEquals("currentNumberOfSubscriptions should have been 0", 0,
@@ -305,7 +305,7 @@ public class ScheduledTasksTest {
         MDC.setContextMap(contextMap);
         doReturn(Flux.error(new Exception("Failed"))).when(consumerMock).getMessageRouterResponse();
 
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduledTasks.class);
+        final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduledTasks.class);
         StepVerifier //
             .create(testedObject.createMainTask(contextMap)) //
             .expectSubscription() //
@@ -417,7 +417,7 @@ public class ScheduledTasksTest {
             .when(dataRouterMock) //
             .publishFile(notNull(), anyLong(), notNull());
 
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduledTasks.class);
+        final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduledTasks.class);
         StepVerifier //
             .create(testedObject.createMainTask(contextMap)) //
             .expectSubscription() //

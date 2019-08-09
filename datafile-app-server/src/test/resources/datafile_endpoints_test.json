@@ -14,22 +14,23 @@
       "PM_MEAS_FILES": {
         "type": "data_router",
         "dmaap_info": {
-          "username": "user",
-          "log_url": "https://dmaap.example.com/feedlog/972",
-          "publish_url": "https://message-router.onap.svc.cluster.local:3907/publish/1",
+          "username": "CYE9fl40",
           "location": "loc00",
-          "password": "password",
-          "publisher_id": "972.360gm"
+          "log_url": "https://localhost:3907/feedlog/1",
+          "publisher_id": "4.307dw",
+          "password": "izBJD8nLjawq0HMG",
+          "publish_url": "https://localhost:3907/publish/1"
         }
       }
     },
     "streams_subscribes": {
       "dmaap_subscriber": {
         "dmaap_info": {
-          "topic_url": "http://admin:admin@message-router.onap.svc.cluster.local:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12"
+          "topic_url": "http://dradmin:dradmin@localhost:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12"
         },
         "type": "message_router"
       }
     }
   }
 }
+
