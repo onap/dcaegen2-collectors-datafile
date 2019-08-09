@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "ec027a30_3a69aff5",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-08-09T14:11:00Z",
+      "side": 1,
+      "message": "Added annotations for NotNull.",
+      "parentUuid": "5c39a758_1964cda1",
+      "range": {
+        "startLine": 213,
+        "startChar": 7,
+        "endLine": 216,
+        "endChar": 46
+      },
+      "revId": "5e450e1f41f88723994ed63aec92e63289d5a2e6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "736f9676_c64f2293",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/logging/MappedDiagnosticContext.java",
         "patchSetId": 1
@@ -93,6 +117,30 @@
       "revId": "5e450e1f41f88723994ed63aec92e63289d5a2e6",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74530895_605b459f",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/logging/MappedDiagnosticContext.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-08-09T14:11:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "736f9676_c64f2293",
+      "range": {
+        "startLine": 53,
+        "startChar": 7,
+        "endLine": 53,
+        "endChar": 74
+      },
+      "revId": "5e450e1f41f88723994ed63aec92e63289d5a2e6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
