@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "eeb9b61b_61cf1444",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-08-12T12:27:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae4b444c_ff63dd6a",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 0
+      },
+      "revId": "1e56bcaf2aeea989ec1911efb4aa34c2a55da26e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d367dc3e_aa998df7",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfigTest.java",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "1e56bcaf2aeea989ec1911efb4aa34c2a55da26e",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e9d637a0_fa8b3c60",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfigTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 5072
+      },
+      "writtenOn": "2019-08-12T12:27:08Z",
+      "side": 1,
+      "message": "Done (but I think that inserting \"final\" already resolved the warning).",
+      "parentUuid": "d367dc3e_aa998df7",
+      "range": {
+        "startLine": 274,
+        "startChar": 0,
+        "endLine": 274,
+        "endChar": 105
+      },
+      "revId": "1e56bcaf2aeea989ec1911efb4aa34c2a55da26e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
