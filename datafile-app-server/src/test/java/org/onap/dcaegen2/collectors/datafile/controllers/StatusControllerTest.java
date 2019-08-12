@@ -60,7 +60,7 @@ public class StatusControllerTest {
     public void heartbeat_success() {
         HttpHeaders httpHeaders = new HttpHeaders();
 
-        ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(StatusController.class);
+        final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(StatusController.class);
         Mono<ResponseEntity<String>> result = controllerUnderTest.heartbeat(httpHeaders);
 
         validateLogging(logAppender);
@@ -89,11 +89,11 @@ public class StatusControllerTest {
     }
 
     private void validateLogging(ListAppender<ILoggingEvent> logAppender) {
-        assertEquals(logAppender.list.get(0).getMarker().getName(), "ENTRY");
+        assertEquals("ENTRY", logAppender.list.get(0).getMarker().getName());
         assertNotNull(logAppender.list.get(0).getMDCPropertyMap().get("InvocationID"));
         assertNotNull(logAppender.list.get(0).getMDCPropertyMap().get("RequestID"));
         assertTrue("Info missing in log", logAppender.list.toString().contains("[INFO] Heartbeat request"));
-        assertEquals(logAppender.list.get(1).getMarker().getName(), "EXIT");
+        assertEquals("EXIT", logAppender.list.get(1).getMarker().getName());
         logAppender.stop();
     }
 }

@@ -99,8 +99,10 @@ public class AppConfig {
     }
 
     Flux<AppConfig> createRefreshTask(Map<String, String> context) {
-        return getEnvironment(systemEnvironment, context).flatMap(this::createCbsClient)
-            .flatMapMany(this::periodicConfigurationUpdates).map(this::parseCloudConfig)
+        return getEnvironment(systemEnvironment, context) //
+            .flatMap(this::createCbsClient) //
+            .flatMapMany(this::periodicConfigurationUpdates) //
+            .map(this::parseCloudConfig) //
             .onErrorResume(this::onErrorResume);
     }
 
@@ -208,22 +210,17 @@ public class AppConfig {
                 throw new JsonSyntaxException("Root is not a json object");
             }
             parseCloudConfig(rootObject);
+            logger.info("Local configuration file loaded: {}", filepath);
         } catch (JsonSyntaxException | IOException e) {
-            logger.warn("Local configuration file not loaded: {}", filepath, e);
+            logger.trace("Local configuration file not loaded: {}", filepath, e);
         }
     }
 
-    private synchronized void setConfiguration(ConsumerConfiguration consumerConfiguration,
-        Map<String, PublisherConfiguration> publisherConfiguration, FtpesConfig ftpesConfig) {
-        if (consumerConfiguration == null || publisherConfiguration == null || ftpesConfig == null) {
-            logger.error(
-                "Problem with configuration consumerConfiguration: {}, publisherConfiguration: {}, ftpesConfig: {}",
-                consumerConfiguration, publisherConfiguration, ftpesConfig);
-        } else {
-            this.dmaapConsumerConfiguration = consumerConfiguration;
-            this.publishingConfigurations = publisherConfiguration;
-            this.ftpesConfiguration = ftpesConfig;
-        }
+    private synchronized void setConfiguration(@NotNull ConsumerConfiguration consumerConfiguration,
+            @NotNull Map<String, PublisherConfiguration> publisherConfiguration, @NotNull FtpesConfig ftpesConfig) {
+        this.dmaapConsumerConfiguration = consumerConfiguration;
+        this.publishingConfigurations = publisherConfiguration;
+        this.ftpesConfiguration = ftpesConfig;
     }
 
     JsonElement getJsonElement(JsonParser parser, InputStream inputStream) {
