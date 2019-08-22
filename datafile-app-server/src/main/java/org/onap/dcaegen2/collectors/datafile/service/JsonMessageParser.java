@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
+import javax.validation.constraints.NotNull;
+
 import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
@@ -113,7 +115,7 @@ public class JsonMessageParser {
 
     private Flux<FileReadyMessage> getMessagesFromJsonArray(JsonElement jsonElement) {
         return createMessages(Flux.fromStream(StreamSupport.stream(jsonElement.getAsJsonArray().spliterator(), false)
-            .map(jsonElementFromArray -> getJsonObjectFromAnArray(jsonElementFromArray).orElseGet(JsonObject::new))));
+            .map((@NotNull var jsonElementFromArray) -> getJsonObjectFromAnArray(jsonElementFromArray).orElseGet(JsonObject::new))));
     }
 
     /**

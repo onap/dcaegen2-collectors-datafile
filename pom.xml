@@ -44,7 +44,7 @@
   </licenses>
 
   <properties>
-    <java.version>8</java.version>
+    <java.version>12</java.version>
     <sdk.version>1.1.6</sdk.version>
     <apache.httpcomponents.version>4.1.4</apache.httpcomponents.version>
     <apache.commons.version>3.6</apache.commons.version>
@@ -245,13 +245,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.7.0</version>
+          <version>3.8.1</version>
           <configuration>
-            <source>${java.version}</source>
-            <target>${java.version}</target>
             <encoding>${project.build.sourceEncoding}</encoding>
             <showWarnings>true</showWarnings>
             <showDeprecation>true</showDeprecation>
+            <release>${java.version}</release>
           </configuration>
         </plugin>
         <plugin>

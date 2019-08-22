@@ -17,7 +17,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # ============LICENSE_END=========================================================
 #
-FROM openjdk:8-jre-alpine
+FROM adoptopenjdk/openjdk12:latest
 
 WORKDIR /opt/app/datafile
 RUN mkdir -p /var/log/ONAP
