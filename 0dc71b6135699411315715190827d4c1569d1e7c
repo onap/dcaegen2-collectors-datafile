@@ -16,6 +16,24 @@
       "revId": "0dc71b6135699411315715190827d4c1569d1e7c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9aeb19a0_8f840d21",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-08-23T18:12:31Z",
+      "side": 1,
+      "message": "I guess this update should be made in the blueprint generator tool, as the imports are coming directly from the tool itself.",
+      "parentUuid": "8064adb5_2b7deb5c",
+      "revId": "0dc71b6135699411315715190827d4c1569d1e7c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
