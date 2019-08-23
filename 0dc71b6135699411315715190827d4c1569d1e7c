@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8064adb5_2b7deb5c",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2019-08-23T18:02:40Z",
+      "side": 1,
+      "message": "For full compatibility with k8splugin 1.6.0, the types file here should be 4.5.5 rather than 3.4.  This blueprint deploys correctly with 3.4 types file, but undeploying it will fail unless the 4.5.5. types file is used.",
+      "revId": "0dc71b6135699411315715190827d4c1569d1e7c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
