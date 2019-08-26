@@ -1,124 +1,126 @@
-# -*- indent-tabs-mode: nil -*- # vi: set expandtab:
-#
-# ============LICENSE_START====================================================
-# =============================================================================
-# Copyright (c) 2018-2019 AT&T Intellectual Property, 2019 Nordix Foundation. All rights reserved.
-# =============================================================================
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ============LICENSE_END======================================================
 
+#description: Docker application to collect log file from PNF
+#blueprint_version: 1.0.0
+---
 tosca_definitions_version: cloudify_dsl_1_3
-
+description: Docker application to collect log file from PNF
 imports:
-  - "http://www.getcloudify.org/spec/cloudify/3.4/types.yaml"
-  - "https://nexus.onap.org/service/local/repositories/raw/content/org.onap.dcaegen2.platform.plugins/R4/k8splugin/1.4.13/k8splugin_types.yaml"
-  - "https://nexus.onap.org/service/local/repositories/raw/content/org.onap.ccsdk.platform.plugins/type_files/dmaap/dmaap.yaml"
-
+- http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
+- https://nexus.onap.org/service/local/repositories/raw/content/org.onap.dcaegen2.platform.plugins/R5/k8splugin/1.6.0/k8splugin_types.yaml
+- https://nexus.onap.org/service/local/repositories/raw/content/org.onap.ccsdk.platform.plugins/type_files/dmaap/dmaap.yaml
 inputs:
-  dmaap_mr_host:
+  PM_MEAS_FILES_feed0_location:
     type: string
-    description: dmaap messagerouter host
-    default: message-router.onap.svc.cluster.local
-  dmaap_mr_port:
-    type: integer
-    description: dmaap messagerouter port
-    default: 3905
-  dmaap_mr_protocol:
+    default: "loc00"
+  cert_directory:
     type: string
-    description: dmaap messagerouter protocol
-    default: "https"
-  tag_version:
+    default: "/opt/app/datafile/etc/cert/"
+  datafile-collector_cpu_limit:
     type: string
-    description: DFC image tag/version
-    default: "nexus3.onap.org:10001/onap/org.onap.dcaegen2.collectors.datafile.datafile-app-server:1.2.0"
+    default: "250m"
+  datafile-collector_cpu_request:
+    type: string
+    default: "250m"
+  datafile-collector_memory_limit:
+    type: string
+    default: "256Mi"
+  datafile-collector_memory_request:
+    type: string
+    default: "256Mi"
+  envs:
+    default: {}
+  external_port:
+    type: string
+    default: ":0"
+  feed0_name:
+    type: string
+    default: "bulk_pm_feed"
+  log_directory:
+    type: string
+    default: "/var/log/ONAP"
   replicas:
     type: integer
     description: number of instances
     default: 1
-  secureEnableCert:
+  tag_version:
+    type: string
+    default: "nexus3.onap.org:10001/onap/org.onap.dcaegen2.collectors.datafile.datafile-app-server:latest"
+  use_tls:
     type: boolean
-    description: enable certificate base connection with PNF and DMaap
     default: false
-  feedName:
-    type: string
-    description: feed name for dmaap producerconfiguration
-    default: "bulk_pm_feed"
-  feedDescription:
-    type: string
-    default: "Feed for Bulk PM files"
-
 node_templates:
-  bulk_pm_feed:
-    type: ccsdk.nodes.Feed
-    properties:
-      feed_name: { get_input: feedName }
-      feed_description: { get_input: feedDescription }
-
   datafile-collector:
     type: dcae.nodes.ContainerizedServiceComponentUsingDmaap
-
-    relationships:
-      - type: ccsdk.relationships.publish_files
-        target: bulk_pm_feed
-
     interfaces:
       cloudify.interfaces.lifecycle:
         start:
           inputs:
-            ports:
-              - concat: ["8100:0"]
-              - concat: ["8433:0"]
-
+            envs:
+              get_input: envs
     properties:
-      service_component_type: 'dcae-datafile'
       application_config:
-        dmaap.ftpesConfig.keyCert: "/opt/app/datafile/config/dfc.jks"
-        dmaap.ftpesConfig.keyPassword: "secret"
-        dmaap.ftpesConfig.trustedCa: "/opt/app/datafile/config/ftp.jks"
-        dmaap.ftpesConfig.trustedCaPassword: "secret"
-        dmaap.security.trustStorePath: "/opt/app/datafile/etc/cert/trust.jks"
-        dmaap.security.trustStorePasswordPath: "/opt/app/datafile/etc/cert/trust.pass"
-        dmaap.security.keyStorePath: "/opt/app/datafile/etc/cert/key.p12"
-        dmaap.security.keyStorePasswordPath: "/opt/app/datafile/etc/cert/key.pass"
-        dmaap.security.enableDmaapCertAuth: { get_input: secureEnableCert }
+        service_calls: []
         streams_publishes:
           PM_MEAS_FILES:
-            dmaap_info: <<bulk_pm_feed>>
+            dmaap_info: <<feed0>>
             type: data_router
+        streams_subscribes: {}
+        dmaap.ftpesConfig.keyCert: /opt/app/datafile/config/dfc.jks
+        dmaap.ftpesConfig.keyPassword: secret
+        dmaap.ftpesConfig.trustedCa: /opt/app/datafile/config/ftp.jks
+        dmaap.ftpesConfig.trustedCaPassword: secret
+        dmaap.security.enableDmaapCertAuth: false
+        dmaap.security.keyStorePasswordPath: /opt/app/datafile/etc/cert/key.pass
+        dmaap.security.keyStorePath: /opt/app/datafile/etc/cert/key.p12
+        dmaap.security.trustStorePasswordPath: /opt/app/datafile/etc/cert/trust.pass
+        dmaap.security.trustStorePath: /opt/app/datafile/etc/cert/trust.jks
         streams_subscribes:
           dmaap_subscriber:
-            type:
-              "message_router"
             dmaap_info:
-              topic_url:
-                { concat: [{ get_input: dmaap_mr_protocol },"://",{ get_input: dmaap_mr_host },
-                           ":",{ get_input: dmaap_mr_port },"/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12"]}
-      streams_publishes:
-        - name: bulk_pm_feed
-          type: data_router
-          location: "loc00"
+              topic_url: https://message-router.onap.svc.cluster.local:3905/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12
       docker_config:
         healthcheck:
-          endpoint: /heartbeat
           interval: 15s
           timeout: 1s
           type: http
+          endpoint: /heartbeat
+        ports:
+        - concat: ["8100", {get_input: external_port}]
+        - concat: ["8433", {get_input: external_port}]
       image:
         get_input: tag_version
-      replicas: {get_input: replicas}
+      service_component_type: datafile-collector
       log_info:
-        log_directory: "/var/log/ONAP"
+        log_directory:
+          get_input: log_directory
+      replicas:
+        get_input: replicas
+      streams_publishes:
+      - name: feed0
+        location:
+          get_input: PM_MEAS_FILES_feed0_location
+        type: data_router
       tls_info:
-        cert_directory: '/opt/app/datafile/etc/cert/'
-        use_tls: true
-
+        cert_directory:
+          get_input: cert_directory
+        use_tls:
+          get_input: use_tls
+      resource_config:
+        limits:
+          cpu:
+            get_input: datafile-collector_cpu_limit
+          memory:
+            get_input: datafile-collector_memory_limit
+        requests:
+          cpu:
+            get_input: datafile-collector_cpu_request
+          memory:
+            get_input: datafile-collector_memory_request
+    relationships:
+    - type: ccsdk.relationships.publish_files
+      target: feed0
+  feed0:
+    type: ccsdk.nodes.Feed
+    properties:
+      feed_name:
+        get_input: feed0_name

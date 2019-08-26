@@ -1,23 +1,17 @@
 {
   "self": {
-    "name": "dcaegen2.collectors.datafile.datafile-app-server",
+    "name": "datafile-collector",
     "version": "1.0.0",
     "description": "Docker application to collect log file from PNF",
     "component_type": "docker"
   },
   "streams": {
     "subscribes": [
-      {
-        "type": "message_router",
-        "config_key": "datafile_subscribe_mr",
-        "format": "VES_specification",
-        "version": "7.30.1"
-      }
     ],
     "publishes": [
       {
         "type": "data_router",
-        "config_key": "datafile_publish_dr",
+        "config_key": "PM_MEAS_FILES",
         "format": "3GPP_XML",
         "version": "1.0.0"
       }
@@ -33,7 +27,11 @@
       "interval": "15s",
       "timeout": "1s",
       "endpoint": "/heartbeat"
-    }
+    },
+    "ports": [
+      "8100:0",
+      "8433:0"
+    ]
   },
   "artifacts": [
     {
@@ -43,29 +41,9 @@
   ],
   "parameters": [
     {
-      "name": "service_name",
-      "value": "datafile",
-      "description": "Name of the service",
-      "designer_editable": true,
-      "sourced_at_deployment": false,
-      "policy_editable": false,
-      "type": "string",
-      "required": true
-    },
-    {
-      "name": "dmaap.dmaapProducerConfiguration",
-      "value": [{"changeIdentifier": "PM_MEAS_FILES", "feedName": "bulk_pm_feed"}],
-      "description": "datafile collector consume VES event to message router topic ",
-      "designer_editable": true,
-      "sourced_at_deployment": false,
-      "policy_editable": false,
-      "type": "string",
-      "required": true
-    },
-    {
       "name": "streams_subscribes",
-      "value": {"dmaap_subscriber": {"dmmap_info": {"topic_url":
-      "http://message-router.onap.svc.cluster.local:3904/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12"}}},
+      "value": {"dmaap_subscriber": {"dmaap_info": {"topic_url":
+      "https://message-router.onap.svc.cluster.local:3905/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12"}}},
       "description": "datafile collector consume VES event to message router topic ",
       "designer_editable": true,
       "sourced_at_deployment": false,
@@ -74,8 +52,8 @@
       "required": true
     },
     {
-      "name": "ftp.ftpesConfiguration.keyCert",
-      "value": "config/dfc.jks",
+      "name": "dmaap.ftpesConfig.keyCert",
+      "value": "/opt/app/datafile/config/dfc.jks",
       "description": "",
       "designer_editable": true,
       "sourced_at_deployment": false,
@@ -84,7 +62,7 @@
       "required": true
     },
     {
-      "name": "ftp.ftpesConfiguration.keyPassword",
+      "name": "dmaap.ftpesConfig.keyPassword",
       "value": "secret",
       "description": "",
       "designer_editable": true,
@@ -94,8 +72,8 @@
       "required": true
     },
     {
-      "name": "ftp.ftpesConfiguration.trustedCa",
-      "value": "config/ftp.jks",
+      "name": "dmaap.ftpesConfig.trustedCa",
+      "value": "/opt/app/datafile/config/ftp.jks",
       "description": "",
       "designer_editable": true,
       "sourced_at_deployment": false,
@@ -104,7 +82,7 @@
       "required": true
     },
     {
-      "name": "ftp.ftpesConfiguration.trustedCaPassword",
+      "name": "dmaap.ftpesConfig.trustedCaPassword",
       "value": "secret",
       "description": "",
       "designer_editable": true,
@@ -114,7 +92,7 @@
       "required": true
     },
     {
-      "name": "security.trustStorePath",
+      "name": "dmaap.security.trustStorePath",
       "value": "/opt/app/datafile/etc/cert/trust.jks",
       "description": "",
       "designer_editable": true,
@@ -124,7 +102,7 @@
       "required": true
     },
     {
-      "name": "security.trustStorePasswordPath",
+      "name": "dmaap.security.trustStorePasswordPath",
       "value": "/opt/app/datafile/etc/cert/trust.pass",
       "description": "",
       "designer_editable": true,
@@ -134,7 +112,7 @@
       "required": true
     },
     {
-      "name": "security.keyStorePath",
+      "name": "dmaap.security.keyStorePath",
       "value": "/opt/app/datafile/etc/cert/key.p12",
       "description": "",
       "designer_editable": true,
@@ -144,7 +122,7 @@
       "required": true
     },
     {
-      "name": "security.keyStorePasswordPath",
+      "name": "dmaap.security.keyStorePasswordPath",
       "value": "/opt/app/datafile/etc/cert/key.pass",
       "description": "",
       "designer_editable": true,
@@ -154,22 +132,12 @@
       "required": true
     },
     {
-      "name": "security.enableDmaapCertAuth",
+      "name": "dmaap.security.enableDmaapCertAuth",
       "value": false,
       "description": "",
       "designer_editable": true,
       "sourced_at_deployment": false,
       "policy_editable": false,
-      "type": "string",
-      "required": true
-    },
-    {
-      "name": "datafile.policy",
-      "value": "",
-      "description": "datafile Policy JSON as string",
-      "designer_editable": false,
-      "sourced_at_deployment": false,
-      "policy_editable": true,
       "type": "string",
       "required": true
     }
