@@ -34,6 +34,24 @@
       "revId": "0dc71b6135699411315715190827d4c1569d1e7c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e2894bd_ee4b66a3",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-08-26T08:10:37Z",
+      "side": 1,
+      "message": "Btw, in my environment, undeploying does not fail with 3.4. So, I am wondering what exactly is failing in your environment? See the logs below:\n\nsh-4.2# cfy uninstall depl-datafile\n\nExecuting workflow uninstall on deployment depl-datafile [timeout\u003d900 seconds]\n2019-08-26 08:02:36.342  CFY \u003cdepl-datafile\u003e Starting \u0027uninstall\u0027 workflow execution\n2019-08-26 08:02:36.976  CFY \u003cdepl-datafile\u003e [datafile-collector_6duivy] Stopping node instance\n2019-08-26 08:02:37.646  CFY \u003cdepl-datafile\u003e [datafile-collector_6duivy.stop] Sending task \u0027k8splugin.stop_and_remove_container\u0027\n2019-08-26 08:02:40.157  CFY \u003cdepl-datafile\u003e [datafile-collector_6duivy.stop] Task succeeded \u0027k8splugin.stop_and_remove_container\u0027\n2019-08-26 08:02:40.807  CFY \u003cdepl-datafile\u003e [datafile-collector_6duivy] Stopped node instance\n2019-08-26 08:02:40.807  CFY \u003cdepl-datafile\u003e [datafile-collector_6duivy] Unlinking relationships\n2019-08-26 08:02:40.807  CFY \u003cdepl-datafile\u003e [unlink] Sending task \u0027dmaapplugin.dr_relationships.delete_dr_publisher\u0027\n2019-08-26 08:02:41.882  LOG \u003cdepl-datafile\u003e [unlink] INFO: Attempting to delete publisher 2.ookgl\n2019-08-26 08:02:41.882  LOG \u003cdepl-datafile\u003e [unlink] INFO: Attempting to delete publisher 2.ookgl\n2019-08-26 08:02:42.577  LOG \u003cdepl-datafile\u003e [unlink] INFO: Deleted publisher 2.ookgl\n2019-08-26 08:02:42.577  CFY \u003cdepl-datafile\u003e [unlink] Task succeeded \u0027dmaapplugin.dr_relationships.delete_dr_publisher\u0027\n2019-08-26 08:02:43.181  CFY \u003cdepl-datafile\u003e [datafile-collector_6duivy] Relationships unlinked\n2019-08-26 08:02:43.181  CFY \u003cdepl-datafile\u003e [datafile-collector_6duivy] Deleting node instance\n2019-08-26 08:02:43.181  CFY \u003cdepl-datafile\u003e [datafile-collector_6duivy.delete] Sending task \u0027k8splugin.cleanup_discovery\u0027\n2019-08-26 08:02:44.780  CFY \u003cdepl-datafile\u003e [datafile-collector_6duivy.delete] Task succeeded \u0027k8splugin.cleanup_discovery\u0027\n2019-08-26 08:02:45.414  CFY \u003cdepl-datafile\u003e [datafile-collector_6duivy] Deleted node instance\n2019-08-26 08:02:45.414  CFY \u003cdepl-datafile\u003e [feed0_mlfv5b] Stopping node instance\n2019-08-26 08:02:46.005  CFY \u003cdepl-datafile\u003e [feed0_mlfv5b] Stopped node instance: nothing to do\n2019-08-26 08:02:46.005  CFY \u003cdepl-datafile\u003e [feed0_mlfv5b] Unlinking relationships\n2019-08-26 08:02:46.619  CFY \u003cdepl-datafile\u003e [feed0_mlfv5b] Relationships unlinked\n2019-08-26 08:02:46.619  CFY \u003cdepl-datafile\u003e [feed0_mlfv5b] Deleting node instance\n2019-08-26 08:02:47.296  CFY \u003cdepl-datafile\u003e [feed0_mlfv5b.delete] Sending task \u0027dmaapplugin.dr_lifecycle.delete_feed\u0027\n2019-08-26 08:02:48.052  LOG \u003cdepl-datafile\u003e [feed0_mlfv5b.delete] INFO: Deleting URL: http://dmaap-bc:8080/webapi/feeds/2\n2019-08-26 08:02:48.727  LOG \u003cdepl-datafile\u003e [feed0_mlfv5b.delete] INFO: Deleting feed id 2\n2019-08-26 08:02:48.727  CFY \u003cdepl-datafile\u003e [feed0_mlfv5b.delete] Task succeeded \u0027dmaapplugin.dr_lifecycle.delete_feed\u0027\n2019-08-26 08:02:48.727  CFY \u003cdepl-datafile\u003e [feed0_mlfv5b] Deleted node instance\n2019-08-26 08:02:49.297  CFY \u003cdepl-datafile\u003e \u0027uninstall\u0027 workflow execution succeeded\nFinished executing workflow uninstall on deployment depl-datafile\n* Run \u0027cfy events list -e 78bc0ee6-4f9a-4900-baa7-d44a69687419\u0027 to retrieve the execution\u0027s events/logs\nDeleting deployment depl-datafile...\nDeployment deleted",
+      "parentUuid": "9aeb19a0_8f840d21",
+      "revId": "0dc71b6135699411315715190827d4c1569d1e7c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
