@@ -78,6 +78,30 @@
     },
     {
       "key": {
+        "uuid": "57bdacea_baae3399",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-08-26T09:15:07Z",
+      "side": 1,
+      "message": "Input variables names are created by the bp-gen tool. What the tool does is that it combines the \"config_key\" specified under \"publishes\" in component-specs (i.e., PM_MEAS_FILES in line 14) with the feed number to create the variable name for location.\nWe cannot have an empty string for config_key as it is also being read by the code, i.e., under application config. Perhaps we could agree on a more generic name than PM_MEAS_FILES, but that would require updates in the code as well.",
+      "parentUuid": "32650fda_1d78f6c3",
+      "range": {
+        "startLine": 12,
+        "startChar": 2,
+        "endLine": 12,
+        "endChar": 16
+      },
+      "revId": "0dc71b6135699411315715190827d4c1569d1e7c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "963d429b_87187dbb",
         "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
         "patchSetId": 2
@@ -89,6 +113,30 @@
       "writtenOn": "2019-08-26T08:37:17Z",
       "side": 1,
       "message": "If the PM file handling should be default, shouldn\u0027t the default name be \"bulk_pm_feed\"?",
+      "range": {
+        "startLine": 37,
+        "startChar": 14,
+        "endLine": 37,
+        "endChar": 20
+      },
+      "revId": "0dc71b6135699411315715190827d4c1569d1e7c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a6aa97b4_e9bf1f18",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5051
+      },
+      "writtenOn": "2019-08-26T09:15:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "963d429b_87187dbb",
       "range": {
         "startLine": 37,
         "startChar": 14,
