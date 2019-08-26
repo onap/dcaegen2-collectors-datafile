@@ -102,6 +102,30 @@
     },
     {
       "key": {
+        "uuid": "141054d3_07727f92",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-08-26T11:21:29Z",
+      "side": 1,
+      "message": "Ok, that explains it. I didn\u0027t see the connection with the changeIdentifier. So then it has to be the way it is.",
+      "parentUuid": "57bdacea_baae3399",
+      "range": {
+        "startLine": 12,
+        "startChar": 2,
+        "endLine": 12,
+        "endChar": 16
+      },
+      "revId": "0dc71b6135699411315715190827d4c1569d1e7c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "963d429b_87187dbb",
         "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
         "patchSetId": 2
