@@ -39,12 +39,12 @@ public abstract class FtpesConfig implements Serializable {
 
     @Value.Parameter
     @Value.Redacted
-    public abstract String keyPassword();
+    public abstract String keyPasswordPath();
 
     @Value.Parameter
     public abstract String trustedCa();
 
     @Value.Parameter
     @Value.Redacted
-    public abstract String trustedCaPassword();
+    public abstract String trustedCaPasswordPath();
 }

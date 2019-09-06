@@ -121,10 +121,10 @@ public class AppConfigTest {
 
     private static final ImmutableFtpesConfig CORRECT_FTPES_CONFIGURATION = //
         new ImmutableFtpesConfig.Builder() //
-            .keyCert("/config/dfc.jks") //
-            .keyPassword("secret") //
-            .trustedCa("config/ftp.jks") //
-            .trustedCaPassword("secret") //
+            .keyCert("/src/test/resources/dfc.jks") //
+            .keyPasswordPath("/src/test/resources/dfc.jks.pass") //
+            .trustedCa("/src/test/resources/ftp.jks") //
+            .trustedCaPasswordPath("/src/test/resources/ftp.jks.pass") //
             .build();
 
     private static final ImmutableDmaapPublisherConfiguration CORRECT_DMAAP_PUBLISHER_CONFIG = //
@@ -270,7 +270,7 @@ public class AppConfigTest {
     }
 
     @Test
-    public void whenPeriodicConfigRefreshNoConsul() {    
+    public void whenPeriodicConfigRefreshNoConsul() {
         EnvProperties props = properties();
         doReturn(Mono.just(props)).when(appConfigUnderTest).getEnvironment(any(), any());
 

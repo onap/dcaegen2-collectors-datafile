@@ -49,3 +49,6 @@ buildNumber.properties
 .checkstyle
 
 opt/
+
+# Visual Studio Code
+.factorypath

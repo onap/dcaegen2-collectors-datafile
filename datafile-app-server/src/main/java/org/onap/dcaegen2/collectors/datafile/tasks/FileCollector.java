@@ -159,7 +159,7 @@ public class FileCollector {
 
     protected FtpsClient createFtpsClient(FileData fileData) {
         FtpesConfig config = datafileAppConfig.getFtpesConfiguration();
-        return new FtpsClient(fileData.fileServerData(), config.keyCert(), config.keyPassword(),
-            Paths.get(config.trustedCa()), config.trustedCaPassword());
+        return new FtpsClient(fileData.fileServerData(), config.keyCert(), config.keyPasswordPath(),
+            Paths.get(config.trustedCa()), config.trustedCaPasswordPath());
     }
 }

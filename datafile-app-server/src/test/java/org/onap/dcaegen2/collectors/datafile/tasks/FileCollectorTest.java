@@ -83,9 +83,9 @@ public class FileCollectorTest {
     private static final String FILE_FORMAT_VERSION = "V10";
 
     private static final String FTP_KEY_PATH = "ftpKeyPath";
-    private static final String FTP_KEY_PASSWORD = "ftpKeyPassword";
+    private static final String FTP_KEY_PASSWORD_PATH = "ftpKeyPassword";
     private static final String TRUSTED_CA_PATH = "trustedCAPath";
-    private static final String TRUSTED_CA_PASSWORD = "trustedCAPassword";
+    private static final String TRUSTED_CA_PASSWORD_PATH = "trustedCAPassword";
     private static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
     private static AppConfig appConfigMock = mock(AppConfig.class);
@@ -146,9 +146,9 @@ public class FileCollectorTest {
     static void setUpConfiguration() {
         when(appConfigMock.getFtpesConfiguration()).thenReturn(ftpesConfigMock);
         when(ftpesConfigMock.keyCert()).thenReturn(FTP_KEY_PATH);
-        when(ftpesConfigMock.keyPassword()).thenReturn(FTP_KEY_PASSWORD);
+        when(ftpesConfigMock.keyPasswordPath()).thenReturn(FTP_KEY_PASSWORD_PATH);
         when(ftpesConfigMock.trustedCa()).thenReturn(TRUSTED_CA_PATH);
-        when(ftpesConfigMock.trustedCaPassword()).thenReturn(TRUSTED_CA_PASSWORD);
+        when(ftpesConfigMock.trustedCaPasswordPath()).thenReturn(TRUSTED_CA_PASSWORD_PATH);
     }
 
     @BeforeEach

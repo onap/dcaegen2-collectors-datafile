@@ -62,8 +62,8 @@
       "required": true
     },
     {
-      "name": "dmaap.ftpesConfig.keyPassword",
-      "value": "secret",
+      "name": "dmaap.ftpesConfig.keyPasswordPath",
+      "value": "/opt/app/datafile/etc/cert/jks.pass",
       "description": "",
       "designer_editable": true,
       "sourced_at_deployment": false,
@@ -73,7 +73,7 @@
     },
     {
       "name": "dmaap.ftpesConfig.trustedCa",
-      "value": "/opt/app/datafile/config/ftp.jks",
+      "value": "/opt/app/datafile/config/cert.jks",
       "description": "",
       "designer_editable": true,
       "sourced_at_deployment": false,
@@ -82,8 +82,8 @@
       "required": true
     },
     {
-      "name": "dmaap.ftpesConfig.trustedCaPassword",
-      "value": "secret",
+      "name": "dmaap.ftpesConfig.trustedCaPasswordPath",
+      "value": "/opt/app/datafile/etc/cert/trust.pass",
       "description": "",
       "designer_editable": true,
       "sourced_at_deployment": false,
@@ -113,7 +113,7 @@
     },
     {
       "name": "dmaap.security.keyStorePath",
-      "value": "/opt/app/datafile/etc/cert/key.p12",
+      "value": "/opt/app/datafile/etc/cert/cert.jks",
       "description": "",
       "designer_editable": true,
       "sourced_at_deployment": false,
@@ -123,7 +123,7 @@
     },
     {
       "name": "dmaap.security.keyStorePasswordPath",
-      "value": "/opt/app/datafile/etc/cert/key.pass",
+      "value": "/opt/app/datafile/etc/cert/jks.pass",
       "description": "",
       "designer_editable": true,
       "sourced_at_deployment": false,

@@ -21,7 +21,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -58,34 +60,34 @@ public class FtpsClient implements FileCollectClient {
     private static TrustManager theTrustManager = null;
 
     private final String keyCertPath;
-    private final String keyCertPassword;
+    private final String keyCertPasswordPath;
     private final Path trustedCaPath;
-    private final String trustedCaPassword;
+    private final String trustedCaPasswordPath;
 
     /**
      * Constructor.
      *
      * @param fileServerData info needed to connect to the PNF.
      * @param keyCertPath path to DFC's key cert.
-     * @param keyCertPassword password for DFC's key cert.
+     * @param keyCertPasswordPath path of file containing password for DFC's key cert.
      * @param trustedCaPath path to the PNF's trusted keystore.
-     * @param trustedCaPassword password for the PNF's trusted keystore.
+     * @param trustedCaPasswordPath path of file containing password for the PNF's trusted keystore.
      */
-    public FtpsClient(FileServerData fileServerData, String keyCertPath, String keyCertPassword, Path trustedCaPath,
-        String trustedCaPassword) {
+    public FtpsClient(FileServerData fileServerData, String keyCertPath, String keyCertPasswordPath, Path trustedCaPath,
+        String trustedCaPasswordPath) {
         this.fileServerData = fileServerData;
         this.keyCertPath = keyCertPath;
-        this.keyCertPassword = keyCertPassword;
+        this.keyCertPasswordPath = keyCertPasswordPath;
         this.trustedCaPath = trustedCaPath;
-        this.trustedCaPassword = trustedCaPassword;
+        this.trustedCaPasswordPath = trustedCaPasswordPath;
     }
 
     @Override
     public void open() throws DatafileTaskException {
         try {
             realFtpsClient.setNeedClientAuth(true);
-            realFtpsClient.setKeyManager(createKeyManager(keyCertPath, keyCertPassword));
-            realFtpsClient.setTrustManager(getTrustManager(trustedCaPath, trustedCaPassword));
+            realFtpsClient.setKeyManager(createKeyManager(keyCertPath, keyCertPasswordPath));
+            realFtpsClient.setTrustManager(getTrustManager(trustedCaPath, trustedCaPasswordPath));
             setUpConnection();
         } catch (DatafileTaskException e) {
             throw e;
@@ -185,8 +187,15 @@ public class FtpsClient implements FileCollectClient {
         return output;
     }
 
-    protected TrustManager getTrustManager(Path trustedCaPath, String trustedCaPassword)
+    protected TrustManager getTrustManager(Path trustedCaPath, String trustedCaPasswordPath)
         throws KeyStoreException, NoSuchAlgorithmException, IOException, CertificateException {
+        String trustedCaPassword = "";
+        try {
+            trustedCaPassword = new String(Files.readAllBytes(Paths.get(trustedCaPasswordPath)));
+        } catch (IOException e) {
+            logger.error("Truststore password file at path: {} cannot be opened ", trustedCaPasswordPath);
+            e.printStackTrace();
+        }
         synchronized (FtpsClient.class) {
             if (theTrustManager == null) {
                 theTrustManager = createTrustManager(trustedCaPath, trustedCaPassword);
@@ -195,8 +204,16 @@ public class FtpsClient implements FileCollectClient {
         }
     }
 
-    protected KeyManager createKeyManager(String keyCertPath, String keyCertPassword)
+    protected KeyManager createKeyManager(String keyCertPath, String keyCertPasswordPath)
         throws IOException, GeneralSecurityException {
+        String keyCertPassword = "";
+        try {
+            keyCertPassword = new String(Files.readAllBytes(Paths.get(keyCertPasswordPath)));
+        } catch (IOException e) {
+            logger.error("Keystore password file at path: {} cannot be opened ", keyCertPasswordPath);
+            e.printStackTrace();
+        }
+
         return KeyManagerUtils.createClientKeyManager(new File(keyCertPath), keyCertPassword);
     }
 }
