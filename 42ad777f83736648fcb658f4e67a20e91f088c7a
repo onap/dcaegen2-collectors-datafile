@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "387e5065_8423fb0d",
+        "filename": "datafile-app-server/dpo/tosca_models/template.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 4011
+      },
+      "writtenOn": "2019-09-06T13:50:26Z",
+      "side": 1,
+      "message": "It seems to have been renamed in keyPasswordPath in the other files, is it a different one here?",
+      "range": {
+        "startLine": 21,
+        "startChar": 31,
+        "endLine": 21,
+        "endChar": 42
+      },
+      "revId": "42ad777f83736648fcb658f4e67a20e91f088c7a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "788897e0_79436f41",
+        "filename": "datafile-app-server/dpo/tosca_models/template.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 4011
+      },
+      "writtenOn": "2019-09-06T13:50:26Z",
+      "side": 1,
+      "message": "Same here, Path as a suffix in other files.",
+      "range": {
+        "startLine": 23,
+        "startChar": 31,
+        "endLine": 23,
+        "endChar": 49
+      },
+      "revId": "42ad777f83736648fcb658f4e67a20e91f088c7a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
