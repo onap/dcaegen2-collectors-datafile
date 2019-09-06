@@ -217,7 +217,7 @@ public class AppConfig {
     }
 
     private synchronized void setConfiguration(@NotNull ConsumerConfiguration consumerConfiguration,
-            @NotNull Map<String, PublisherConfiguration> publisherConfiguration, @NotNull FtpesConfig ftpesConfig) {
+        @NotNull Map<String, PublisherConfiguration> publisherConfiguration, @NotNull FtpesConfig ftpesConfig) {
         this.dmaapConsumerConfiguration = consumerConfiguration;
         this.publishingConfigurations = publisherConfiguration;
         this.ftpesConfiguration = ftpesConfig;

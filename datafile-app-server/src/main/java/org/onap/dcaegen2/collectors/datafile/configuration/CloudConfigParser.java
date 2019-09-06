@@ -25,10 +25,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
-
-import java.util.Set;
 
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 
@@ -56,7 +55,8 @@ public class CloudConfigParser {
     /**
      * Get the publisher configurations.
      *
-     * @return a map with change identifier as key and the connected publisher configuration as value.
+     * @return a map with change identifier as key and the connected publisher configuration as
+     *         value.
      *
      * @throws DatafileTaskException if a member of the configuration is missing.
      */
@@ -122,9 +122,9 @@ public class CloudConfigParser {
     public @NotNull FtpesConfig getFtpesConfig() throws DatafileTaskException {
         return new ImmutableFtpesConfig.Builder() //
             .keyCert(getAsString(jsonObject, "dmaap.ftpesConfig.keyCert"))
-            .keyPassword(getAsString(jsonObject, "dmaap.ftpesConfig.keyPassword"))
+            .keyPasswordPath(getAsString(jsonObject, "dmaap.ftpesConfig.keyPasswordPath"))
             .trustedCa(getAsString(jsonObject, "dmaap.ftpesConfig.trustedCa"))
-            .trustedCaPassword(getAsString(jsonObject, "dmaap.ftpesConfig.trustedCaPassword")) //
+            .trustedCaPasswordPath(getAsString(jsonObject, "dmaap.ftpesConfig.trustedCaPasswordPath")) //
             .build();
     }
 

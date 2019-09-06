@@ -20,11 +20,11 @@ topology_template:
       type: string
     ftp.ftpesConfiguration.keyCert:
       type: string
-    ftp.ftpesConfiguration.keyPassword:
+    ftp.ftpesConfiguration.keyPasswordPath:
       type: string
     ftp.ftpesConfiguration.trustedCa:
       type: string
-    ftp.ftpesConfiguration.trustedCaPassword:
+    ftp.ftpesConfiguration.trustedCaPasswordPath:
       type: string
     image:
       type: string
