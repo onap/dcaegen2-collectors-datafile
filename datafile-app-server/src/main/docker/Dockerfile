@@ -21,6 +21,7 @@ FROM openjdk:8-jre-alpine
 
 WORKDIR /opt/app/datafile
 RUN mkdir -p /var/log/ONAP
+RUN mkdir -p /opt/app/datafile/etc/cert/
 
 ADD /target/datafile-app-server.jar /opt/app/datafile/
 ADD /config/application.yaml /opt/app/datafile/config/
