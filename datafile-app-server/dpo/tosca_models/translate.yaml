@@ -79,12 +79,12 @@ topology_template:
             get_input: dmaap.dmaapProducerConfiguration
           ftp.ftpesConfiguration.keyCert:
             get_input: ftp.ftpesConfiguration.keyCert
-          ftp.ftpesConfiguration.keyPassword:
-            get_input: ftp.ftpesConfiguration.keyPassword
+          ftp.ftpesConfiguration.keyPasswordPath:
+            get_input: ftp.ftpesConfiguration.keyPasswordPath
           ftp.ftpesConfiguration.trustedCa:
             get_input: ftp.ftpesConfiguration.trustedCa
-          ftp.ftpesConfiguration.trustedCaPassword:
-            get_input: ftp.ftpesConfiguration.trustedCaPassword
+          ftp.ftpesConfiguration.trustedCaPasswordPath:
+            get_input: ftp.ftpesConfiguration.trustedCaPasswordPath
           security.enableDmaapCertAuth:
             get_input: security.enableDmaapCertAuth
           security.keyStorePasswordPath:
