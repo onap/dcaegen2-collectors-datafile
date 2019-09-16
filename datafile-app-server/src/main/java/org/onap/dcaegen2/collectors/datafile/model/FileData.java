@@ -130,6 +130,12 @@ public abstract class FileData {
             String[] userAndPassword = userInfoString.split(":");
             if (userAndPassword.length == 2) {
                 return Optional.of(userAndPassword);
+            }else if(userAndPassword.length == 1)//if just user
+            {
+              String[] tab = new String[2];
+              tab[0] = userAndPassword[0];
+              tab[1] = "";//add empty password
+              return Optional.of(tab);
             }
         }
         return Optional.empty();
