@@ -37,6 +37,8 @@ public class FileDataTest {
     private static final int PORT_22 = 22;
     private static final String LOCATION_WITH_USER =
         FTPES_SCHEME + USER + ":" + PWD + "@" + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
+    private static final String LOCATION_WITH_USER_NO_PASSWORD =
+      FTPES_SCHEME + USER + "@" + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
     private static final String LOCATION_WITHOUT_USER =
         FTPES_SCHEME + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
 
@@ -65,6 +67,18 @@ public class FileDataTest {
             .build();
     }
 
+  private FileData properFileDataWithUserNoPassword() {
+    return ImmutableFileData.builder() //
+        .name("name") //
+        .location(LOCATION_WITH_USER_NO_PASSWORD) //
+        .compression("comp") //
+        .fileFormatType("type") //
+        .fileFormatVersion("version") //
+        .scheme(Scheme.FTPS) //
+        .messageMetaData(messageMetaData()) //
+        .build();
+  }
+
     private FileData properFileDataWithoutUser() {
         return ImmutableFileData.builder() //
             .name("name") //
@@ -87,6 +101,19 @@ public class FileDataTest {
             .build();
 
         FileServerData actualFileServerData = properFileDataWithUser().fileServerData();
+        assertEquals(expectedFileServerData, actualFileServerData);
+    }
+
+    @Test
+    public void fileServerData_properLocationWithUserNoPassword() {
+        ImmutableFileServerData expectedFileServerData = ImmutableFileServerData.builder() //
+            .serverAddress(SERVER_ADDRESS) //
+            .port(PORT_22) //
+            .userId(USER) //
+            .password("") //
+            .build();
+
+        FileServerData actualFileServerData = properFileDataWithUserNoPassword().fileServerData();
         assertEquals(expectedFileServerData, actualFileServerData);
     }
 
