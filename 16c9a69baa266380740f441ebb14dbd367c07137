@@ -34,6 +34,24 @@
       "revId": "16c9a69baa266380740f441ebb14dbd367c07137",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "00a6beb4_cee090d9",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileData.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2019-09-16T13:33:55Z",
+      "side": 1,
+      "message": "Previously Optional was ok. After change IMHO it is better to return direct object (String[] or any collection) with empty strings if user and/or password are not present in userInfoString or userInfoString is null.",
+      "parentUuid": "602b1f74_4ea2b2e5",
+      "revId": "16c9a69baa266380740f441ebb14dbd367c07137",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
