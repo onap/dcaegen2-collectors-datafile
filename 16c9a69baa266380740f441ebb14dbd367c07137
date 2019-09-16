@@ -16,6 +16,24 @@
       "revId": "16c9a69baa266380740f441ebb14dbd367c07137",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "602b1f74_4ea2b2e5",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/FileData.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-09-16T13:28:57Z",
+      "side": 1,
+      "message": "Can you please elaborate. What is wrong with indicating with an Optional that this function might not return a value? If null is returned, there might be a null pointer exception if the user of the method forgets to check for null. Even though this is a private method, there is no harm in being clear about what is returned.",
+      "parentUuid": "50c5bbd4_fe12d253",
+      "revId": "16c9a69baa266380740f441ebb14dbd367c07137",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
