@@ -3,7 +3,7 @@
   ~ ============LICENSE_START=======================================================
   ~ Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
   ~ Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
-  ~ ================================================================================ 
+  ~ ================================================================================
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -199,7 +199,7 @@
           <imageTags>
             <imageTag>${project.version}-${maven.build.timestamp}Z</imageTag>
             <imageTag>${project.version}</imageTag>
-            <imageTag>latest</imageTag>
+            <imageTag>1.2.2</imageTag>
           </imageTags>
           <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
           <resources>
