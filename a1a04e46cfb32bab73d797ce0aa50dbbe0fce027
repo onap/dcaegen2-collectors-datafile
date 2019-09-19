@@ -1,0 +1,7 @@
+Code-Review+2: Henrik Andersson <henrik.b.andersson@est.tech>
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Submitted-by: Henrik Andersson <henrik.b.andersson@est.tech>
+Submitted-at: Thu, 19 Sep 2019 13:29:31 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/dcaegen2/collectors/datafile/+/95982
+Project: dcaegen2/collectors/datafile
+Branch: refs/heads/elalto
