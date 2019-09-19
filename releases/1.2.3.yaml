@@ -1,0 +1,4 @@
+distribution_type: 'maven'
+version: '1.2.3'
+project: 'dcaegen2-collectors-datafile'
+log_dir: 'dcaegen2-collectors-datafile-maven-stage-elalto/3/'
