@@ -22,6 +22,30 @@
       "revId": "820aa3973153fafea8eaaa9ef0fd23fc83babf00",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b1d0afce_ed55fc35",
+        "filename": "releases/1.2.3-docker.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-09-19T22:30:19Z",
+      "side": 1,
+      "message": "oops,sorry. yes that was typo..  Kindly update the tag on release to 1.2.3.\n\natleast the docker push was verified and successful!",
+      "parentUuid": "a31a5910_03a5a965",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 30
+      },
+      "revId": "820aa3973153fafea8eaaa9ef0fd23fc83babf00",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
