@@ -25,7 +25,7 @@
   <parent>
     <groupId>org.onap.dcaegen2.collectors</groupId>
     <artifactId>datafile</artifactId>
-    <version>1.2.2-SNAPSHOT</version>
+    <version>1.2.3-SNAPSHOT</version>
   </parent>
 
   <groupId>org.onap.dcaegen2.collectors.datafile</groupId>
@@ -199,7 +199,6 @@
           <imageTags>
             <imageTag>${project.version}-${maven.build.timestamp}Z</imageTag>
             <imageTag>${project.version}</imageTag>
-            <imageTag>1.2.2</imageTag>
           </imageTags>
           <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
           <resources>
