@@ -1,0 +1,8 @@
+distribution_type: 'container'
+container_release_tag: '1.3.2'
+project: 'dcaegen2'
+log_dir: 'dcaegen2-collectors-datafile-maven-docker-stage-elalto/2'
+ref: a1a04e46cfb32bab73d797ce0aa50dbbe0fce027 
+containers:
+    - name: 'org.onap.dcaegen2.collectors.datafile.datafile-app-server'
+      version: '1.2.3-20190919T150537Z'
