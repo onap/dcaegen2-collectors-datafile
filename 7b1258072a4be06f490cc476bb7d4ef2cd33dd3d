@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c754feb1_6eb7ecf8",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2019-09-19T12:37:52Z",
+      "side": 1,
+      "message": "Can you please help us and remove this tag in this commit? It was accidentally added when we where trying to fix a CSIT problem earlier.",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 202,
+        "endChar": 38
+      },
+      "revId": "7b1258072a4be06f490cc476bb7d4ef2cd33dd3d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
