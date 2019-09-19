@@ -1,0 +1,8 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Jessica Wagantall <jwagantall@linuxfoundation.org>
+Code-Review+2: Jack Lucas <jflucas@research.att.com>
+Submitted-by: Jack Lucas <jflucas@research.att.com>
+Submitted-at: Thu, 19 Sep 2019 21:36:50 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/dcaegen2/collectors/datafile/+/96038
+Project: dcaegen2/collectors/datafile
+Branch: refs/heads/elalto
