@@ -35,6 +35,15 @@ inputs:
   feed0_name:
     type: string
     default: "bulk_pm_feed"
+  topic_name:
+    type: string
+    default: "unauthenticated.VES_NOTIFICATION_OUTPUT"
+  consumer_group:
+    type: string
+    default: "OpenDcae-c12"
+  consumer_id:
+    type: string
+    default: "C12"
   log_directory:
     type: string
     default: "/var/log/ONAP"
@@ -77,7 +86,7 @@ node_templates:
         streams_subscribes:
           dmaap_subscriber:
             dmaap_info:
-              topic_url: https://message-router.onap.svc.cluster.local:3905/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12
+              topic_url: { concat: ['https://message-router:3905/events/',{ get_input: topic_name }, '/', { get_input: consumer_group }, "/", { get_input: consumer_id }] }
       docker_config:
         healthcheck:
           interval: 15s
@@ -124,3 +133,4 @@ node_templates:
     properties:
       feed_name:
         get_input: feed0_name
+      useExisting: true
