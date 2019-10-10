@@ -1,0 +1,7 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-by: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-at: Thu, 10 Oct 2019 21:23:05 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/dcaegen2/collectors/datafile/+/96895
+Project: dcaegen2/collectors/datafile
+Branch: refs/heads/elalto
