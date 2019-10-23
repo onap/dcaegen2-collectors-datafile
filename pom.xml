@@ -49,7 +49,7 @@
     <apache.httpcomponents.version>4.1.4</apache.httpcomponents.version>
     <apache.commons.version>3.6</apache.commons.version>
     <immutable.version>2.7.1</immutable.version>
-    <spring.version>5.2.0.RELEASE</spring.version>
+    <spring.version>5.1.4.RELEASE</spring.version>
     <spring-boot.version>2.1.2.RELEASE</spring-boot.version>
     <commons-io.version>1.3.2</commons-io.version>
     <commons-net.version>3.3</commons-net.version>
