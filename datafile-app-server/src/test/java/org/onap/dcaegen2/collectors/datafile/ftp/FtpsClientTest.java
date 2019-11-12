@@ -75,7 +75,7 @@ public class FtpsClientTest {
 
     @BeforeEach
     protected void setUp() throws Exception {
-        clientUnderTestSpy = spy(new FtpsClient(createFileServerData(), FTP_KEY_PATH, FTP_KEY_PASSWORD, TRUSTED_CA_PATH,
+        clientUnderTestSpy = spy(new FtpsClient(createFileServerData(), Paths.get(FTP_KEY_PATH), FTP_KEY_PASSWORD, TRUSTED_CA_PATH,
             TRUSTED_CA_PASSWORD));
         clientUnderTestSpy.realFtpsClient = ftpsClientMock;
     }
@@ -101,7 +101,7 @@ public class FtpsClientTest {
     @Test
     public void collectFile_allOk() throws Exception {
 
-        doReturn(keyManagerMock).when(clientUnderTestSpy).createKeyManager(FTP_KEY_PATH, FTP_KEY_PASSWORD);
+        doReturn(keyManagerMock).when(clientUnderTestSpy).getKeyManager(Paths.get(FTP_KEY_PATH), FTP_KEY_PASSWORD);
         doReturn(trustManagerMock).when(clientUnderTestSpy).getTrustManager(TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD);
         doReturn(outputStreamMock).when(clientUnderTestSpy).createOutputStream(LOCAL_FILE_PATH);
         doReturn(true).when(ftpsClientMock).login(USERNAME, PASSWORD);
@@ -141,7 +141,7 @@ public class FtpsClientTest {
     @Test
     public void collectFileFaultTrustedCA_shouldFail_no_trustedCA_file() throws Exception {
 
-        doReturn(keyManagerMock).when(clientUnderTestSpy).createKeyManager(FTP_KEY_PATH, FTP_KEY_PASSWORD);
+        doReturn(keyManagerMock).when(clientUnderTestSpy).getKeyManager(Paths.get(FTP_KEY_PATH), FTP_KEY_PASSWORD);
         doThrow(new IOException("problem")).when(clientUnderTestSpy).createInputStream(TRUSTED_CA_PATH);
 
         assertThatThrownBy(() -> clientUnderTestSpy.open())
@@ -151,7 +151,7 @@ public class FtpsClientTest {
     @Test
     public void collectFileFaultTrustedCA_shouldFail_empty_trustedCA_file() throws Exception {
 
-        doReturn(keyManagerMock).when(clientUnderTestSpy).createKeyManager(FTP_KEY_PATH, FTP_KEY_PASSWORD);
+        doReturn(keyManagerMock).when(clientUnderTestSpy).getKeyManager(Paths.get(FTP_KEY_PATH), FTP_KEY_PASSWORD);
         doReturn(inputStreamMock).when(clientUnderTestSpy).createInputStream(TRUSTED_CA_PATH);
 
         assertThatThrownBy(() -> clientUnderTestSpy.open())
@@ -161,7 +161,7 @@ public class FtpsClientTest {
     @Test
     public void collectFileFaultyLogin_shouldFail() throws Exception {
 
-        doReturn(keyManagerMock).when(clientUnderTestSpy).createKeyManager(FTP_KEY_PATH, FTP_KEY_PASSWORD);
+        doReturn(keyManagerMock).when(clientUnderTestSpy).getKeyManager(Paths.get(FTP_KEY_PATH), FTP_KEY_PASSWORD);
         doReturn(trustManagerMock).when(clientUnderTestSpy).getTrustManager(TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD);
         doReturn(outputStreamMock).when(clientUnderTestSpy).createOutputStream(LOCAL_FILE_PATH);
         doReturn(false).when(ftpsClientMock).login(USERNAME, PASSWORD);
@@ -177,7 +177,7 @@ public class FtpsClientTest {
 
     @Test
     public void collectFileBadRequestResponse_shouldFail() throws Exception {
-        doReturn(keyManagerMock).when(clientUnderTestSpy).createKeyManager(FTP_KEY_PATH, FTP_KEY_PASSWORD);
+        doReturn(keyManagerMock).when(clientUnderTestSpy).getKeyManager(Paths.get(FTP_KEY_PATH), FTP_KEY_PASSWORD);
         doReturn(trustManagerMock).when(clientUnderTestSpy).getTrustManager(TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD);
         doReturn(outputStreamMock).when(clientUnderTestSpy).createOutputStream(LOCAL_FILE_PATH);
         doReturn(true).when(ftpsClientMock).login(USERNAME, PASSWORD);
@@ -197,7 +197,7 @@ public class FtpsClientTest {
 
     @Test
     public void collectFile_shouldFail() throws Exception {
-        doReturn(keyManagerMock).when(clientUnderTestSpy).createKeyManager(FTP_KEY_PATH, FTP_KEY_PASSWORD);
+        doReturn(keyManagerMock).when(clientUnderTestSpy).getKeyManager(Paths.get(FTP_KEY_PATH), FTP_KEY_PASSWORD);
         doReturn(trustManagerMock).when(clientUnderTestSpy).getTrustManager(TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD);
         doReturn(outputStreamMock).when(clientUnderTestSpy).createOutputStream(LOCAL_FILE_PATH);
         doReturn(true).when(ftpsClientMock).login(USERNAME, PASSWORD);
@@ -216,7 +216,7 @@ public class FtpsClientTest {
 
     @Test
     public void collectFile_shouldFail_ioexception() throws Exception {
-        doReturn(keyManagerMock).when(clientUnderTestSpy).createKeyManager(FTP_KEY_PATH, FTP_KEY_PASSWORD);
+        doReturn(keyManagerMock).when(clientUnderTestSpy).getKeyManager(Paths.get(FTP_KEY_PATH), FTP_KEY_PASSWORD);
         doReturn(trustManagerMock).when(clientUnderTestSpy).getTrustManager(TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD);
         doReturn(outputStreamMock).when(clientUnderTestSpy).createOutputStream(LOCAL_FILE_PATH);
         doReturn(true).when(ftpsClientMock).login(USERNAME, PASSWORD);

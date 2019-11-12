@@ -28,17 +28,16 @@ import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.Optional;
-
 import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
-
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPSClient;
-import org.apache.commons.net.util.KeyManagerUtils;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
 import org.slf4j.Logger;
@@ -58,8 +57,9 @@ public class FtpsClient implements FileCollectClient {
     FTPSClient realFtpsClient = new FTPSClient();
     private final FileServerData fileServerData;
     private static TrustManager theTrustManager = null;
+    private static KeyManager theKeyManager = null;
 
-    private final String keyCertPath;
+    private final Path keyCertPath;
     private final String keyCertPasswordPath;
     private final Path trustedCaPath;
     private final String trustedCaPasswordPath;
@@ -73,7 +73,7 @@ public class FtpsClient implements FileCollectClient {
      * @param trustedCaPath path to the PNF's trusted keystore.
      * @param trustedCaPasswordPath path of file containing password for the PNF's trusted keystore.
      */
-    public FtpsClient(FileServerData fileServerData, String keyCertPath, String keyCertPasswordPath, Path trustedCaPath,
+    public FtpsClient(FileServerData fileServerData, Path keyCertPath, String keyCertPasswordPath, Path trustedCaPath,
         String trustedCaPasswordPath) {
         this.fileServerData = fileServerData;
         this.keyCertPath = keyCertPath;
@@ -86,7 +86,7 @@ public class FtpsClient implements FileCollectClient {
     public void open() throws DatafileTaskException {
         try {
             realFtpsClient.setNeedClientAuth(true);
-            realFtpsClient.setKeyManager(createKeyManager(keyCertPath, keyCertPasswordPath));
+            realFtpsClient.setKeyManager(getKeyManager(keyCertPath, keyCertPasswordPath));
             realFtpsClient.setTrustManager(getTrustManager(trustedCaPath, trustedCaPasswordPath));
             setUpConnection();
         } catch (DatafileTaskException e) {
@@ -204,7 +204,7 @@ public class FtpsClient implements FileCollectClient {
         }
     }
 
-    protected KeyManager createKeyManager(String keyCertPath, String keyCertPasswordPath)
+    protected KeyManager getKeyManager(Path keyCertPath, String keyCertPasswordPath)
         throws IOException, GeneralSecurityException {
         String keyCertPassword = "";
         try {
@@ -214,6 +214,23 @@ public class FtpsClient implements FileCollectClient {
             e.printStackTrace();
         }
 
-        return KeyManagerUtils.createClientKeyManager(new File(keyCertPath), keyCertPassword);
+        synchronized (FtpsClient.class) {
+            if (theKeyManager == null) {
+                theKeyManager = createKeyManager(keyCertPath, keyCertPassword);
+            }
+            return theKeyManager;
+        }
+    }
+
+    private KeyManager createKeyManager(Path keyCertPath, String keyCertPassword)
+        throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException, UnrecoverableKeyException {
+        logger.trace("Creating key manager from file: {}", keyCertPath);
+        try (InputStream fis = createInputStream(keyCertPath)) {
+            KeyStore keyStore = KeyStore.getInstance("JKS");
+            keyStore.load(fis, keyCertPassword.toCharArray());
+            KeyManagerFactory factory = KeyManagerFactory.getInstance("SunX509");
+            factory.init(keyStore, keyCertPassword.toCharArray());
+            return factory.getKeyManagers()[0];
+        }
     }
 }
