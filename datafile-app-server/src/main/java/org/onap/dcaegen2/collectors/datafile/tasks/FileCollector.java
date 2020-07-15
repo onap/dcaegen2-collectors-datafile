@@ -21,7 +21,6 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
-
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
@@ -63,11 +62,10 @@ public class FileCollector {
     /**
      * Collects a file from the PNF and stores it in the local file system.
      *
-     * @param fileData data about the file to collect.
-     * @param numRetries the number of retries if the publishing fails
+     * @param fileData     data about the file to collect.
+     * @param numRetries   the number of retries if the publishing fails
      * @param firstBackoff the time to delay the first retry
-     * @param contextMap context for logging.
-     *
+     * @param contextMap   context for logging.
      * @return the data needed to publish the file.
      */
     public Mono<FilePublishInformation> collectFile(FileData fileData, long numRetries, Duration firstBackoff,
@@ -154,7 +152,7 @@ public class FileCollector {
     }
 
     protected SftpClient createSftpClient(FileData fileData) {
-        return new SftpClient(fileData.fileServerData());
+        return new SftpClient(fileData.fileServerData(), datafileAppConfig.getSfptConfiguration());
     }
 
     protected FtpsClient createFtpsClient(FileData fileData) {
