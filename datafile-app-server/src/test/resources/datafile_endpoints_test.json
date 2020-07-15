@@ -10,6 +10,7 @@
     "dmaap.security.keyStorePath": "keyStorePath",
     "dmaap.security.keyStorePasswordPath": "keyStorePasswordPath",
     "dmaap.security.enableDmaapCertAuth": "true",
+    "sftp.security.strictHostKeyChecking": "false",
     "streams_publishes": {
       "PM_MEAS_FILES": {
         "type": "data_router",

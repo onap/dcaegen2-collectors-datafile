@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
@@ -38,6 +39,7 @@ import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 public class CloudConfigParser {
+
     private static final String DMAAP_SECURITY_TRUST_STORE_PATH = "dmaap.security.trustStorePath";
     private static final String DMAAP_SECURITY_TRUST_STORE_PASS_PATH = "dmaap.security.trustStorePasswordPath";
     private static final String DMAAP_SECURITY_KEY_STORE_PATH = "dmaap.security.keyStorePath";
@@ -45,19 +47,23 @@ public class CloudConfigParser {
     private static final String DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH = "dmaap.security.enableDmaapCertAuth";
     private static final String CONFIG = "config";
 
+    private static final String KNOWN_HOSTS_FILE_PATH_ENV_PROPERTY = "KNOWN_HOSTS_FILE_PATH";
+    private static final String CBS_PROPERTY_SFTP_SECURITY_STRICT_HOST_KEY_CHECKING =
+        "sftp.security.strictHostKeyChecking";
+
+    private final Properties systemEnvironment;
+
     private final JsonObject jsonObject;
 
-    public CloudConfigParser(JsonObject jsonObject) {
+    public CloudConfigParser(JsonObject jsonObject, Properties systemEnvironment) {
         this.jsonObject = jsonObject.getAsJsonObject(CONFIG);
-
+        this.systemEnvironment = systemEnvironment;
     }
 
     /**
      * Get the publisher configurations.
      *
-     * @return a map with change identifier as key and the connected publisher configuration as
-     *         value.
-     *
+     * @return a map with change identifier as key and the connected publisher configuration as value.
      * @throws DatafileTaskException if a member of the configuration is missing.
      */
     public @NotNull Map<String, PublisherConfiguration> getDmaapPublisherConfigurations() throws DatafileTaskException {
@@ -114,6 +120,19 @@ public class CloudConfigParser {
     }
 
     /**
+     * Get the sFTP configuration.
+     *
+     * @return the sFTP configuration.
+     * @throws DatafileTaskException if a member of the configuration is missing.
+     */
+    public @NotNull SftpConfig getSftpConfig() throws DatafileTaskException {
+        String filePath = determineKnownHostsFilePath();
+        return new ImmutableSftpConfig.Builder() //
+            .strictHostKeyChecking(getAsBoolean(jsonObject, CBS_PROPERTY_SFTP_SECURITY_STRICT_HOST_KEY_CHECKING))
+            .knownHostsFilePath(filePath).build();
+    }
+
+    /**
      * Get the security configuration for communication with the xNF.
      *
      * @return the xNF communication security configuration.
@@ -128,6 +147,15 @@ public class CloudConfigParser {
             .build();
     }
 
+    private String determineKnownHostsFilePath() {
+        String filePath = "";
+        if (systemEnvironment != null) {
+            filePath =
+                systemEnvironment.getProperty(KNOWN_HOSTS_FILE_PATH_ENV_PROPERTY, "/home/datafile/.ssh/known_hosts");
+        }
+        return filePath;
+    }
+
     private static @NotNull JsonElement get(JsonObject obj, String memberName) throws DatafileTaskException {
         JsonElement elem = obj.get(memberName);
         if (elem == null) {
@@ -138,6 +166,10 @@ public class CloudConfigParser {
 
     private static @NotNull String getAsString(JsonObject obj, String memberName) throws DatafileTaskException {
         return get(obj, memberName).getAsString();
+    }
+
+    private static @NotNull Boolean getAsBoolean(JsonObject obj, String memberName) throws DatafileTaskException {
+        return get(obj, memberName).getAsBoolean();
     }
 
     private static @NotNull JsonObject getAsJson(JsonObject obj, String memberName) throws DatafileTaskException {
