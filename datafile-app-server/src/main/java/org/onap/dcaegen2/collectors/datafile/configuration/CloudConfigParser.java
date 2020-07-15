@@ -20,15 +20,13 @@ package org.onap.dcaegen2.collectors.datafile.configuration;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.Set;
-
 import javax.validation.constraints.NotNull;
-
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 
 /**
@@ -38,6 +36,7 @@ import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
 public class CloudConfigParser {
+
     private static final String DMAAP_SECURITY_TRUST_STORE_PATH = "dmaap.security.trustStorePath";
     private static final String DMAAP_SECURITY_TRUST_STORE_PASS_PATH = "dmaap.security.trustStorePasswordPath";
     private static final String DMAAP_SECURITY_KEY_STORE_PATH = "dmaap.security.keyStorePath";
@@ -45,22 +44,25 @@ public class CloudConfigParser {
     private static final String DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH = "dmaap.security.enableDmaapCertAuth";
     private static final String CONFIG = "config";
 
+    public static final String KNOWN_HOSTS_FILE_PATH = "KNOWN_HOSTS_FILE_PATH";
+
+    private final Properties systemEnvironment;
+
     private final JsonObject jsonObject;
 
-    public CloudConfigParser(JsonObject jsonObject) {
+    public CloudConfigParser(JsonObject jsonObject, Properties properties) {
         this.jsonObject = jsonObject.getAsJsonObject(CONFIG);
-
+        this.systemEnvironment = properties;
     }
 
     /**
      * Get the publisher configurations.
      *
-     * @return a map with change identifier as key and the connected publisher configuration as
-     *         value.
-     *
+     * @return a map with change identifier as key and the connected publisher configuration as value.
      * @throws DatafileTaskException if a member of the configuration is missing.
      */
-    public @NotNull Map<String, PublisherConfiguration> getDmaapPublisherConfigurations() throws DatafileTaskException {
+    public @NotNull Map<String, PublisherConfiguration> getDmaapPublisherConfigurations()
+        throws DatafileTaskException {
         JsonObject producerCfgs = jsonObject.get("streams_publishes").getAsJsonObject();
         Iterator<String> changeIdentifierList = producerCfgs.keySet().iterator();
         Map<String, PublisherConfiguration> result = new HashMap<>();
@@ -98,7 +100,8 @@ public class CloudConfigParser {
         JsonObject consumerCfg = jsonObject.get("streams_subscribes").getAsJsonObject();
         Set<Entry<String, JsonElement>> topics = consumerCfg.entrySet();
         if (topics.size() != 1) {
-            throw new DatafileTaskException("Invalid configuration, number of topic must be one, config: " + topics);
+            throw new DatafileTaskException(
+                "Invalid configuration, number of topic must be one, config: " + topics);
         }
         JsonObject topic = topics.iterator().next().getValue().getAsJsonObject();
         JsonObject dmaapInfo = get(topic, "dmaap_info").getAsJsonObject();
@@ -114,6 +117,28 @@ public class CloudConfigParser {
     }
 
     /**
+     * Get the sFTP configuration.
+     *
+     * @return the sFTP configuration.
+     * @throws DatafileTaskException if a member of the configuration is missing.
+     */
+    public @NotNull SfptConfig getSftpConfig() throws DatafileTaskException {
+        String filePath = determineKnownHostsFilePath();
+        return new ImmutableSfptConfig.Builder() //
+            .strictHostKeyChecking(getAsBoolean(jsonObject, "sftp.security.strictHostKeyChecking"))
+            .knownHostsFilePath(filePath)
+            .build();
+    }
+
+    private String determineKnownHostsFilePath() {
+        String filePath = "";
+        if (systemEnvironment != null && systemEnvironment.getProperty(KNOWN_HOSTS_FILE_PATH) != null) {
+            filePath = systemEnvironment.getProperty(KNOWN_HOSTS_FILE_PATH);
+        }
+        return filePath;
+    }
+
+    /**
      * Get the security configuration for communication with the xNF.
      *
      * @return the xNF communication security configuration.
@@ -124,11 +149,13 @@ public class CloudConfigParser {
             .keyCert(getAsString(jsonObject, "dmaap.ftpesConfig.keyCert"))
             .keyPasswordPath(getAsString(jsonObject, "dmaap.ftpesConfig.keyPasswordPath"))
             .trustedCa(getAsString(jsonObject, "dmaap.ftpesConfig.trustedCa"))
-            .trustedCaPasswordPath(getAsString(jsonObject, "dmaap.ftpesConfig.trustedCaPasswordPath")) //
+            .trustedCaPasswordPath(
+                getAsString(jsonObject, "dmaap.ftpesConfig.trustedCaPasswordPath")) //
             .build();
     }
 
-    private static @NotNull JsonElement get(JsonObject obj, String memberName) throws DatafileTaskException {
+    private static @NotNull JsonElement get(JsonObject obj, String memberName)
+        throws DatafileTaskException {
         JsonElement elem = obj.get(memberName);
         if (elem == null) {
             throw new DatafileTaskException("Could not find member: " + memberName + " in: " + obj);
@@ -136,11 +163,18 @@ public class CloudConfigParser {
         return elem;
     }
 
-    private static @NotNull String getAsString(JsonObject obj, String memberName) throws DatafileTaskException {
+    private static @NotNull String getAsString(JsonObject obj, String memberName)
+        throws DatafileTaskException {
         return get(obj, memberName).getAsString();
     }
 
-    private static @NotNull JsonObject getAsJson(JsonObject obj, String memberName) throws DatafileTaskException {
+    private static @NotNull Boolean getAsBoolean(JsonObject obj, String memberName)
+        throws DatafileTaskException {
+        return get(obj, memberName).getAsBoolean();
+    }
+
+    private static @NotNull JsonObject getAsJson(JsonObject obj, String memberName)
+        throws DatafileTaskException {
         return get(obj, memberName).getAsJsonObject();
     }
 
