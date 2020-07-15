@@ -204,6 +204,12 @@
               <directory>${project.basedir}/config</directory>
               <include>*</include>
             </resource>
+<!-- for local development -->
+<!--            <resource>-->
+<!--              <targetPath>/src/test/resources</targetPath>-->
+<!--              <directory>${project.basedir}/src/test/resources</directory>-->
+<!--              <include>*</include>-->
+<!--            </resource>-->
           </resources>
         </configuration>
 <!--
