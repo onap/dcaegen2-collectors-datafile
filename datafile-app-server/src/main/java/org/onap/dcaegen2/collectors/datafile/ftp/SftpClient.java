@@ -1,6 +1,6 @@
 /*-
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018-2019 Nordix Foundation, 2020 Nokia. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -22,10 +22,11 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
-
+import java.io.File;
 import java.nio.file.Path;
 import java.util.Optional;
-
+import org.jetbrains.annotations.NotNull;
+import org.onap.dcaegen2.collectors.datafile.configuration.SftpConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
 import org.slf4j.Logger;
@@ -35,19 +36,22 @@ import org.slf4j.LoggerFactory;
  * Gets file from xNF with SFTP protocol.
  *
  * @author <a href="mailto:martin.c.yan@est.tech">Martin Yan</a>
- *
  */
 public class SftpClient implements FileCollectClient {
+
     private static final Logger logger = LoggerFactory.getLogger(SftpClient.class);
 
     private static final int SFTP_DEFAULT_PORT = 22;
+    private static final String STRICT_HOST_KEY_CHECKING = "StrictHostKeyChecking";
 
     private final FileServerData fileServerData;
     protected Session session = null;
     protected ChannelSftp sftpChannel = null;
+    private final SftpConfig sftpConfig;
 
-    public SftpClient(FileServerData fileServerData) {
+    public SftpClient(FileServerData fileServerData, SftpConfig sftpConfig) {
         this.fileServerData = fileServerData;
+        this.sftpConfig = sftpConfig;
     }
 
     @Override
@@ -56,7 +60,7 @@ public class SftpClient implements FileCollectClient {
 
         try {
             sftpChannel.get(remoteFile, localFile.toString());
-            logger.trace("File {} Download Successfull from xNF", localFile.getFileName());
+            logger.trace("File {} Download successful from xNF", localFile.getFileName());
         } catch (SftpException e) {
             boolean retry = e.id != ChannelSftp.SSH_FX_NO_SUCH_FILE && e.id != ChannelSftp.SSH_FX_PERMISSION_DENIED
                 && e.id != ChannelSftp.SSH_FX_OP_UNSUPPORTED;
@@ -107,14 +111,58 @@ public class SftpClient implements FileCollectClient {
     }
 
     private Session setUpSession(FileServerData fileServerData) throws JSchException {
-        JSch jsch = createJsch();
+        boolean useStrictHostChecking = shouldUseStrictHostChecking();
+        JSch jsch = createJschClient(useStrictHostChecking);
+        return createJshSession(jsch, fileServerData, useStrictHostChecking);
+    }
 
+    private JSch createJschClient(boolean useStrictHostChecking) throws JSchException {
+        JSch jsch = createJsch();
+        if (useStrictHostChecking) {
+            jsch.setKnownHosts(getKnownHostsFilePath());
+        }
+        return jsch;
+    }
+
+    JSch createJsch() {
+        return new JSch();
+    }
+
+    boolean shouldUseStrictHostChecking() {
+        boolean strictHostKeyChecking = false;
+        if (isStrictHostKeyCheckingEnabled()) {
+            File file = new File(getKnownHostsFilePath());
+            strictHostKeyChecking = file.isFile();
+            logUsageOfStrictHostCheckingFlag(strictHostKeyChecking, file.getAbsolutePath());
+        } else {
+            logger.info("StrictHostKeyChecking will be disabled.");
+        }
+        return strictHostKeyChecking;
+    }
+
+    private void logUsageOfStrictHostCheckingFlag(boolean strictHostKeyChecking, String filePath) {
+        if (strictHostKeyChecking) {
+            logger.info("StrictHostKeyChecking will be enabled with KNOW_HOSTS_FILE_PATH [{}].", filePath);
+        } else {
+            logger.warn(
+                "StrictHostKeyChecking is enabled but environment variable KNOW_HOSTS_FILE_PATH is not set or points to not existing file [{}]  -->  falling back to StrictHostKeyChecking='no'.",
+                filePath);
+        }
+    }
+
+    private Session createJshSession(JSch jsch, FileServerData fileServerData, boolean useStrictHostKeyChecking)
+        throws JSchException {
         Session newSession =
             jsch.getSession(fileServerData.userId(), fileServerData.serverAddress(), getPort(fileServerData.port()));
-        newSession.setConfig("StrictHostKeyChecking", "no");
+        newSession.setConfig(STRICT_HOST_KEY_CHECKING, toYesNo(useStrictHostKeyChecking));
         newSession.setPassword(fileServerData.password());
         newSession.connect();
         return newSession;
+    }
+
+    @NotNull
+    private String toYesNo(boolean useStrictHostKeyChecking) {
+        return useStrictHostKeyChecking ? "yes" : "no";
     }
 
     private ChannelSftp getChannel(Session session) throws JSchException {
@@ -123,7 +171,12 @@ public class SftpClient implements FileCollectClient {
         return (ChannelSftp) channel;
     }
 
-    protected JSch createJsch() {
-        return new JSch();
+    private boolean isStrictHostKeyCheckingEnabled() {
+        return Boolean.TRUE.equals(this.sftpConfig.strictHostKeyChecking());
     }
+
+    private String getKnownHostsFilePath() {
+        return this.sftpConfig.knownHostsFilePath();
+    }
+
 }
