@@ -19,12 +19,17 @@
 #
 FROM openjdk:8-jre-alpine
 
+RUN apk --no-cache add curl
+
 WORKDIR /opt/app/datafile
 RUN mkdir -p /var/log/ONAP
 RUN mkdir -p /opt/app/datafile/etc/cert/
 
+
 ADD /target/datafile-app-server.jar /opt/app/datafile/
 ADD /config/application.yaml /opt/app/datafile/config/
+# for local development
+#ADD /src/test/resources/datafile_endpoints_test.json /opt/app/datafile/config/
 
 EXPOSE 8100 8433
 
@@ -33,5 +38,8 @@ RUN chown -R datafile:onap /var/log/ONAP
 RUN chmod -R 777 /opt/app/datafile/config/
 
 USER datafile
+
+RUN mkdir -p /home/datafile/.ssh
+ENV KNOWN_HOSTS_FILE_PATH "/home/datafile/.ssh/known_hosts"
 
 ENTRYPOINT ["/usr/bin/java", "-jar", "/opt/app/datafile/datafile-app-server.jar"]
