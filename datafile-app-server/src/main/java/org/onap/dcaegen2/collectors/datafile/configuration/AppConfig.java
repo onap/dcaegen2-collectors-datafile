@@ -68,11 +68,13 @@ import reactor.core.publisher.Mono;
 @EnableConfigurationProperties
 @ConfigurationProperties("app")
 public class AppConfig {
+
     private static final Logger logger = LoggerFactory.getLogger(AppConfig.class);
 
     private ConsumerConfiguration dmaapConsumerConfiguration;
     private Map<String, PublisherConfiguration> publishingConfigurations;
     private FtpesConfig ftpesConfiguration;
+    private SftpConfig sftpConfiguration;
     @Value("#{systemEnvironment}")
     Properties systemEnvironment;
     private Disposable refreshConfigTask = null;
@@ -90,6 +92,7 @@ public class AppConfig {
     public void initialize() {
         stop();
         Map<String, String> context = MappedDiagnosticContext.initializeTraceContext();
+
         loadConfigurationFromFile();
 
         refreshConfigTask = createRefreshTask(context) //
@@ -131,7 +134,6 @@ public class AppConfig {
      * Checks if there is a configuration for the given feed.
      *
      * @param changeIdentifier the change identifier the feed is configured to belong to.
-     *
      * @return true if a feed is configured for the given change identifier, false if not.
      */
     public synchronized boolean isFeedConfigured(String changeIdentifier) {
@@ -143,7 +145,6 @@ public class AppConfig {
      *
      * @param changeIdentifier the change identifier the feed is configured to belong to.
      * @return the <code>PublisherConfiguration</code> for the feed belonging to the given change identifier.
-     *
      * @throws DatafileTaskException if no configuration has been loaded or the configuration is missing for the given
      *         change identifier.
      */
@@ -165,6 +166,10 @@ public class AppConfig {
         return ftpesConfiguration;
     }
 
+    public synchronized SftpConfig getSftpConfiguration() {
+        return sftpConfiguration;
+    }
+
     private <R> Mono<R> onErrorResume(Throwable trowable) {
         logger.error("Could not refresh application configuration {}", trowable.toString());
         return Mono.empty();
@@ -178,27 +183,25 @@ public class AppConfig {
         return CbsClientFactory.createCbsClient(env);
     }
 
-    /**
-     * Parse configuration.
-     *
-     * @param jsonObject the DFC service's configuration
-     * @return this which is updated if successful
-     */
-    private AppConfig parseCloudConfig(JsonObject jsonObject) {
+    private AppConfig parseCloudConfig(JsonObject configurationObject) {
         try {
-            CloudConfigParser parser = new CloudConfigParser(jsonObject);
+            CloudConfigParser parser = new CloudConfigParser(configurationObject, systemEnvironment);
             setConfiguration(parser.getDmaapConsumerConfig(), parser.getDmaapPublisherConfigurations(),
-                parser.getFtpesConfig());
-
+                parser.getFtpesConfig(), parser.getSftpConfig());
+            logConfig();
         } catch (DatafileTaskException e) {
             logger.error("Could not parse configuration {}", e.toString(), e);
         }
         return this;
     }
 
-    /**
-     * Reads the configuration from file.
-     */
+    private void logConfig() {
+        logger.debug("Read and parsed sFTP configuration:      [{}]", sftpConfiguration);
+        logger.debug("Read and parsed FTPes configuration:     [{}]", ftpesConfiguration);
+        logger.debug("Read and parsed DMaaP configuration:     [{}]", dmaapConsumerConfiguration);
+        logger.debug("Read and parsed Publish configuration:   [{}]", publishingConfigurations);
+    }
+
     void loadConfigurationFromFile() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         ServiceLoader.load(TypeAdapterFactory.class).forEach(gsonBuilder::registerTypeAdapterFactory);
@@ -217,10 +220,12 @@ public class AppConfig {
     }
 
     private synchronized void setConfiguration(@NotNull ConsumerConfiguration consumerConfiguration,
-        @NotNull Map<String, PublisherConfiguration> publisherConfiguration, @NotNull FtpesConfig ftpesConfig) {
+        @NotNull Map<String, PublisherConfiguration> publisherConfiguration, @NotNull FtpesConfig ftpesConfig,
+        @NotNull SftpConfig sftpConfig) {
         this.dmaapConsumerConfiguration = consumerConfiguration;
         this.publishingConfigurations = publisherConfiguration;
         this.ftpesConfiguration = ftpesConfig;
+        this.sftpConfiguration = sftpConfig;
     }
 
     JsonElement getJsonElement(JsonParser parser, InputStream inputStream) {

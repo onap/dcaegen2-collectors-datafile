@@ -1,6 +1,6 @@
 /*-
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018-2019 Nordix Foundation, 2020 Nokia. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -26,6 +26,7 @@ import com.jcraft.jsch.SftpException;
 import java.nio.file.Path;
 import java.util.Optional;
 
+import org.jetbrains.annotations.NotNull;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
 import org.slf4j.Logger;
@@ -35,19 +36,22 @@ import org.slf4j.LoggerFactory;
  * Gets file from xNF with SFTP protocol.
  *
  * @author <a href="mailto:martin.c.yan@est.tech">Martin Yan</a>
- *
  */
 public class SftpClient implements FileCollectClient {
+
     private static final Logger logger = LoggerFactory.getLogger(SftpClient.class);
 
     private static final int SFTP_DEFAULT_PORT = 22;
+    private static final String STRICT_HOST_KEY_CHECKING = "StrictHostKeyChecking";
 
     private final FileServerData fileServerData;
     protected Session session = null;
     protected ChannelSftp sftpChannel = null;
+    private final SftpClientSettings settings;
 
-    public SftpClient(FileServerData fileServerData) {
+    public SftpClient(FileServerData fileServerData, SftpClientSettings sftpConfig) {
         this.fileServerData = fileServerData;
+        this.settings = sftpConfig;
     }
 
     @Override
@@ -56,7 +60,7 @@ public class SftpClient implements FileCollectClient {
 
         try {
             sftpChannel.get(remoteFile, localFile.toString());
-            logger.trace("File {} Download Successfull from xNF", localFile.getFileName());
+            logger.trace("File {} Download successful from xNF", localFile.getFileName());
         } catch (SftpException e) {
             boolean retry = e.id != ChannelSftp.SSH_FX_NO_SUCH_FILE && e.id != ChannelSftp.SSH_FX_PERMISSION_DENIED
                 && e.id != ChannelSftp.SSH_FX_OP_UNSUPPORTED;
@@ -101,20 +105,41 @@ public class SftpClient implements FileCollectClient {
             }
         }
     }
+    JSch createJsch() {
+        return new JSch();
+    }
 
     private int getPort(Optional<Integer> port) {
         return port.isPresent() ? port.get() : SFTP_DEFAULT_PORT;
     }
 
     private Session setUpSession(FileServerData fileServerData) throws JSchException {
-        JSch jsch = createJsch();
+        boolean useStrictHostChecking = this.settings.shouldUseStrictHostChecking();
+        JSch jsch = createJschClient(useStrictHostChecking);
+        return createJshSession(jsch, fileServerData, useStrictHostChecking);
+    }
 
+    private JSch createJschClient(boolean useStrictHostChecking) throws JSchException {
+        JSch jsch = createJsch();
+        if (useStrictHostChecking) {
+            jsch.setKnownHosts(this.settings.getKnownHostsFilePath());
+        }
+        return jsch;
+    }
+
+    private Session createJshSession(JSch jsch, FileServerData fileServerData, boolean useStrictHostKeyChecking)
+        throws JSchException {
         Session newSession =
             jsch.getSession(fileServerData.userId(), fileServerData.serverAddress(), getPort(fileServerData.port()));
-        newSession.setConfig("StrictHostKeyChecking", "no");
+        newSession.setConfig(STRICT_HOST_KEY_CHECKING, toYesNo(useStrictHostKeyChecking));
         newSession.setPassword(fileServerData.password());
         newSession.connect();
         return newSession;
+    }
+
+    @NotNull
+    private String toYesNo(boolean useStrictHostKeyChecking) {
+        return useStrictHostKeyChecking ? "yes" : "no";
     }
 
     private ChannelSftp getChannel(Session session) throws JSchException {
@@ -123,7 +148,4 @@ public class SftpClient implements FileCollectClient {
         return (ChannelSftp) channel;
     }
 
-    protected JSch createJsch() {
-        return new JSch();
-    }
 }

@@ -75,8 +75,8 @@ public class FtpsClientTest {
 
     @BeforeEach
     protected void setUp() throws Exception {
-        clientUnderTestSpy = spy(new FtpsClient(createFileServerData(), Paths.get(FTP_KEY_PATH), FTP_KEY_PASSWORD, TRUSTED_CA_PATH,
-            TRUSTED_CA_PASSWORD));
+        clientUnderTestSpy = spy(new FtpsClient(createFileServerData(), Paths.get(FTP_KEY_PATH), FTP_KEY_PASSWORD,
+            TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD));
         clientUnderTestSpy.realFtpsClient = ftpsClientMock;
     }
 
