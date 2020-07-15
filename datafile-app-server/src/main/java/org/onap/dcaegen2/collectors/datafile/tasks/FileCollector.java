@@ -29,6 +29,7 @@ import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTask
 import org.onap.dcaegen2.collectors.datafile.ftp.FileCollectClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.FtpsClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.SftpClient;
+import org.onap.dcaegen2.collectors.datafile.ftp.SftpClientSettings;
 import org.onap.dcaegen2.collectors.datafile.model.Counters;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FilePublishInformation;
@@ -67,7 +68,6 @@ public class FileCollector {
      * @param numRetries the number of retries if the publishing fails
      * @param firstBackoff the time to delay the first retry
      * @param contextMap context for logging.
-     *
      * @return the data needed to publish the file.
      */
     public Mono<FilePublishInformation> collectFile(FileData fileData, long numRetries, Duration firstBackoff,
@@ -154,7 +154,8 @@ public class FileCollector {
     }
 
     protected SftpClient createSftpClient(FileData fileData) {
-        return new SftpClient(fileData.fileServerData());
+        return new SftpClient(fileData.fileServerData(),
+            new SftpClientSettings(datafileAppConfig.getSftpConfiguration()));
     }
 
     protected FtpsClient createFtpsClient(FileData fileData) {
