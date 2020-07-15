@@ -73,7 +73,6 @@ node_templates:
           PM_MEAS_FILES:
             dmaap_info: <<feed0>>
             type: data_router
-        streams_subscribes: {}
         dmaap.ftpesConfig.keyCert: /opt/app/datafile/config/cert.jks
         dmaap.ftpesConfig.keyPasswordPath: /opt/app/datafile/config/jks.pass
         dmaap.ftpesConfig.trustedCa: /opt/app/datafile/config/trust.jks
@@ -83,6 +82,7 @@ node_templates:
         dmaap.security.keyStorePath: /opt/app/datafile/etc/cert/key.p12
         dmaap.security.trustStorePasswordPath: /opt/app/datafile/etc/cert/trust.pass
         dmaap.security.trustStorePath: /opt/app/datafile/etc/cert/trust.jks
+        sftp.security.strictHostKeyChecking: true
         streams_subscribes:
           dmaap_subscriber:
             dmaap_info:
