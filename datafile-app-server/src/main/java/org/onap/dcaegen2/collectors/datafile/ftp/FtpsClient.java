@@ -31,10 +31,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.Optional;
+
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPSClient;
@@ -222,8 +224,8 @@ public class FtpsClient implements FileCollectClient {
         }
     }
 
-    private KeyManager createKeyManager(Path keyCertPath, String keyCertPassword)
-        throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException, UnrecoverableKeyException {
+    private KeyManager createKeyManager(Path keyCertPath, String keyCertPassword) throws IOException, KeyStoreException,
+        NoSuchAlgorithmException, CertificateException, UnrecoverableKeyException {
         logger.trace("Creating key manager from file: {}", keyCertPath);
         try (InputStream fis = createInputStream(keyCertPath)) {
             KeyStore keyStore = KeyStore.getInstance("JKS");
