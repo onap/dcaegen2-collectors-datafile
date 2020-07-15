@@ -23,4 +23,4 @@ logging:
     org.onap.dcaegen2.collectors.datafile: WARN
   file: /var/log/ONAP/application.log
 app:
-  filepath: src/test/resources/datafile_endpoints_test.json
+  filepath: config/datafile_endpoints_test.json

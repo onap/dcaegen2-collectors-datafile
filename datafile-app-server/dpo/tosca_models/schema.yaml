@@ -528,6 +528,8 @@ node_types:
         type: string
       streams_subscribes:
         type: string
+      sftp.security.strictHostKeyChecking:
+        type: boolean
     requirements:
     - stream_subscribe_0:
         capability: dcae.capabilities.dmmap.topic
