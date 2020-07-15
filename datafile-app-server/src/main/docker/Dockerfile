@@ -1,6 +1,7 @@
 #
 # ============LICENSE_START=======================================================
 #  Copyright (C) 2019 Nordix Foundation.
+#  Copyright (C) 2020 Nokia.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,15 +24,18 @@ WORKDIR /opt/app/datafile
 RUN mkdir -p /var/log/ONAP
 RUN mkdir -p /opt/app/datafile/etc/cert/
 
-ADD /target/datafile-app-server.jar /opt/app/datafile/
-ADD /config/application.yaml /opt/app/datafile/config/
-
-EXPOSE 8100 8433
-
 RUN groupadd -r onap && useradd -ms /bin/bash datafile -g onap
 RUN chown -R datafile:onap /var/log/ONAP
+
+ADD /config/application.yaml /opt/app/datafile/config/
 RUN chmod -R 777 /opt/app/datafile/config/
 
 USER datafile
 
+RUN mkdir -p /home/datafile/.ssh
+ENV KNOWN_HOSTS_FILE_PATH "/home/datafile/.ssh/known_hosts"
+
+ADD /target/datafile-app-server.jar /opt/app/datafile/
+
+EXPOSE 8100 8433
 ENTRYPOINT ["/usr/local/openjdk-11/bin/java", "-jar", "/opt/app/datafile/datafile-app-server.jar"]
