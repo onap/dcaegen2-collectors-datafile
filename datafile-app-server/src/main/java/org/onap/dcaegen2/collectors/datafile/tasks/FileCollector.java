@@ -67,7 +67,6 @@ public class FileCollector {
      * @param numRetries the number of retries if the publishing fails
      * @param firstBackoff the time to delay the first retry
      * @param contextMap context for logging.
-     *
      * @return the data needed to publish the file.
      */
     public Mono<FilePublishInformation> collectFile(FileData fileData, long numRetries, Duration firstBackoff,
@@ -154,7 +153,7 @@ public class FileCollector {
     }
 
     protected SftpClient createSftpClient(FileData fileData) {
-        return new SftpClient(fileData.fileServerData());
+        return new SftpClient(fileData.fileServerData(), datafileAppConfig.getSftpConfiguration());
     }
 
     protected FtpsClient createFtpsClient(FileData fileData) {
