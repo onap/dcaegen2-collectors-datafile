@@ -140,6 +140,17 @@
       "policy_editable": false,
       "type": "string",
       "required": true
+    },
+    {
+      "name": "sftp.security.strictHostKeyChecking",
+      "value": true,
+      "description": "",
+      "designer_editable": true,
+      "sourced_at_deployment": false,
+      "policy_editable": false,
+      "type": "string",
+      "required": true
     }
+
   ]
 }

@@ -1,6 +1,7 @@
 #
 # ============LICENSE_START=======================================================
 #  Copyright (C) 2019 Nordix Foundation.
+#  Copyright (C) 2020 Nokia.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,5 +34,8 @@ RUN chown -R datafile:onap /var/log/ONAP
 RUN chmod -R 777 /opt/app/datafile/config/
 
 USER datafile
+
+RUN mkdir -p /home/datafile/.ssh
+ENV KNOWN_HOSTS_FILE_PATH "/home/datafile/.ssh/known_hosts"
 
 ENTRYPOINT ["/usr/local/openjdk-11/bin/java", "-jar", "/opt/app/datafile/datafile-app-server.jar"]
