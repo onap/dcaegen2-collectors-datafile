@@ -1,6 +1,6 @@
 /*-
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018-2019 Nordix Foundation, 2020 Nokia. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -25,6 +25,7 @@ import com.jcraft.jsch.SftpException;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 import org.onap.dcaegen2.collectors.datafile.configuration.SfptConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
@@ -41,6 +42,7 @@ public class SftpClient implements FileCollectClient {
     private static final Logger logger = LoggerFactory.getLogger(SftpClient.class);
 
     private static final int SFTP_DEFAULT_PORT = 22;
+    public static final String STRICT_HOST_KEY_CHECKING = "StrictHostKeyChecking";
 
     private final FileServerData fileServerData;
     protected Session session = null;
@@ -122,7 +124,7 @@ public class SftpClient implements FileCollectClient {
         return jsch;
     }
 
-    JSch createJsch() throws JSchException {
+    JSch createJsch() {
         return new JSch();
     }
 
@@ -149,10 +151,15 @@ public class SftpClient implements FileCollectClient {
         throws JSchException {
         Session newSession =
             jsch.getSession(fileServerData.userId(), fileServerData.serverAddress(), getPort(fileServerData.port()));
-        newSession.setConfig("StrictHostKeyChecking", useStrictHostKeyChecking ? "yes" : "no");
+        newSession.setConfig(STRICT_HOST_KEY_CHECKING, toYesNo(useStrictHostKeyChecking));
         newSession.setPassword(fileServerData.password());
         newSession.connect();
         return newSession;
+    }
+
+    @NotNull
+    private String toYesNo(boolean useStrictHostKeyChecking) {
+        return useStrictHostKeyChecking ? "yes" : "no";
     }
 
     private ChannelSftp getChannel(Session session) throws JSchException {

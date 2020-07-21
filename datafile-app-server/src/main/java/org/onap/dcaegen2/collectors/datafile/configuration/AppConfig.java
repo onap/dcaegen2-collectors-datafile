@@ -179,23 +179,23 @@ public class AppConfig {
         return CbsClientFactory.createCbsClient(env);
     }
 
-    /**
-     * Parse configuration.
-     *
-     * @param jsonObject the DFC service's configuration
-     * @return this which is updated if successful
-     */
-    private AppConfig parseCloudConfig(JsonObject jsonObject) {
+    private AppConfig parseCloudConfig(JsonObject configurationObject) {
         try {
-            CloudConfigParser parser = new CloudConfigParser(jsonObject, systemEnvironment);
+            CloudConfigParser parser = new CloudConfigParser(configurationObject, systemEnvironment);
             setConfiguration(parser.getDmaapConsumerConfig(), parser.getDmaapPublisherConfigurations(),
                 parser.getFtpesConfig(), parser.getSftpConfig());
-            logger.info("Read flag StrictHostChecking from config (consul): [{}]",
-                sfptConfiguration.strictHostKeyChecking());
+            logConfig();
         } catch (DatafileTaskException e) {
             logger.error("Could not parse configuration {}", e.toString(), e);
         }
         return this;
+    }
+
+    private void logConfig() {
+        logger.debug("Read and parsed sFTP configuration:      [{}]",  sfptConfiguration);
+        logger.debug("Read and parsed FTPes configuration:     [{}]",  ftpesConfiguration);
+        logger.debug("Read and parsed DMaaP configuration:     [{}]",  dmaapConsumerConfiguration);
+        logger.debug("Read and parsed Publish configuration:   [{}]",  publishingConfigurations);
     }
 
     /**

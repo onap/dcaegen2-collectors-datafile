@@ -44,7 +44,9 @@ public class CloudConfigParser {
     private static final String DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH = "dmaap.security.enableDmaapCertAuth";
     private static final String CONFIG = "config";
 
-    Properties systemEnvironment;
+    public static final String KNOWN_HOSTS_FILE_PATH = "KNOWN_HOSTS_FILE_PATH";
+
+    private final Properties systemEnvironment;
 
     private final JsonObject jsonObject;
 
@@ -115,21 +117,25 @@ public class CloudConfigParser {
     }
 
     /**
-     * Get the consumer configuration.
+     * Get the sFTP configuration.
      *
-     * @return the consumer configuration.
+     * @return the sFTP configuration.
      * @throws DatafileTaskException if a member of the configuration is missing.
      */
     public @NotNull SfptConfig getSftpConfig() throws DatafileTaskException {
-        String filePath = "";
-        if (systemEnvironment != null
-            && systemEnvironment.getProperty("KNOWN_HOSTS_FILE_PATH") != null) {
-            filePath = systemEnvironment.getProperty("KNOWN_HOSTS_FILE_PATH");
-        }
+        String filePath = determineKnownHostsFilePath();
         return new ImmutableSfptConfig.Builder() //
             .strictHostKeyChecking(getAsBoolean(jsonObject, "sftp.security.strictHostKeyChecking"))
             .knownHostsFilePath(filePath)
             .build();
+    }
+
+    private String determineKnownHostsFilePath() {
+        String filePath = "";
+        if (systemEnvironment != null && systemEnvironment.getProperty(KNOWN_HOSTS_FILE_PATH) != null) {
+            filePath = systemEnvironment.getProperty(KNOWN_HOSTS_FILE_PATH);
+        }
+        return filePath;
     }
 
     /**
