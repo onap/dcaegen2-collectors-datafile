@@ -128,7 +128,7 @@ public class SftpClient implements FileCollectClient {
         return new JSch();
     }
 
-    private boolean shouldUseStrictHostChecking()  {
+    private boolean shouldUseStrictHostChecking() {
         boolean strictHostKeyChecking = false;
         if (isStrictHostKeyCheckingEnabled()) {
             String filePath = getKnownHostsFilePath();
@@ -175,6 +175,5 @@ public class SftpClient implements FileCollectClient {
     private String getKnownHostsFilePath() {
         return this.sfptConfig.knownHostsFilePath();
     }
-
 
 }
