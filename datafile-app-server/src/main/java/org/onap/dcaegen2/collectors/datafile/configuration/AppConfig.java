@@ -198,9 +198,6 @@ public class AppConfig {
         logger.debug("Read and parsed Publish configuration:   [{}]",  publishingConfigurations);
     }
 
-    /**
-     * Reads the configuration from file.
-     */
     void loadConfigurationFromFile() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         ServiceLoader.load(TypeAdapterFactory.class).forEach(gsonBuilder::registerTypeAdapterFactory);
