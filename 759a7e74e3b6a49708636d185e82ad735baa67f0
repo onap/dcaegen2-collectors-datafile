@@ -88,6 +88,98 @@
     },
     {
       "key": {
+        "uuid": "b2e591a8_2b85991d",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2020-07-21T13:04:53Z",
+      "side": 1,
+      "message": "1. Consider extract to method called \"getKnownHostsFilePath\" or \"getKnownHostsFilePathFromSysEnv\"\n2. String \"KNOWN_HOSTS_FILE_PATH\" should be const",
+      "range": {
+        "startLine": 124,
+        "startChar": 8,
+        "endLine": 128,
+        "endChar": 9
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62f72963_7674a92c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SfptConfig.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2020-07-21T13:04:53Z",
+      "side": 1,
+      "message": "Please, correct license note",
+      "range": {
+        "startLine": 3,
+        "startChar": 3,
+        "endLine": 3,
+        "endChar": 95
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21c64462_d7eb9dca",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2020-07-21T13:04:53Z",
+      "side": 1,
+      "message": "Add modification info",
+      "range": {
+        "startLine": 3,
+        "startChar": 3,
+        "endLine": 3,
+        "endChar": 66
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e9ab9c0_85cb1c6c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2020-07-21T13:04:53Z",
+      "side": 1,
+      "message": "Consider to introduce strategy or factory pattern to return StrinctHost/NoStrictHost session",
+      "range": {
+        "startLine": 112,
+        "startChar": 8,
+        "endLine": 114,
+        "endChar": 77
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "30d0f1dd_650883ca",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
         "patchSetId": 3
@@ -105,6 +197,69 @@
         "endLine": 125,
         "endChar": 42
       },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab5e0229_7b012085",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2020-07-21T13:04:53Z",
+      "side": 1,
+      "message": "I think we shouldn\u0027t allow to open connection if KNOWN_HOSTS file will not be provided. Consider to throwing exception + logging message.",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 146,
+        "endChar": 5
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12d3a6a1_b06ff98d",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2020-07-21T13:04:53Z",
+      "side": 1,
+      "message": "Make it const",
+      "range": {
+        "startLine": 152,
+        "startChar": 30,
+        "endLine": 152,
+        "endChar": 51
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d91a56ec_18eda3ae",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2020-07-21T13:04:53Z",
+      "side": 1,
+      "message": "useStrictHostKeyChecking ? \"yes\" : \"no\"  I think it should be extracted to method.",
       "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
