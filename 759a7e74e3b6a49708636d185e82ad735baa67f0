@@ -85,6 +85,29 @@
       "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30d0f1dd_650883ca",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-07-21T09:32:55Z",
+      "side": 1,
+      "message": "Exception can\u0027t be thrown here.\n\nConsider inlining this method in createJschClient, unless this way is better for test purposes.",
+      "range": {
+        "startLine": 125,
+        "startChar": 21,
+        "endLine": 125,
+        "endChar": 42
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
