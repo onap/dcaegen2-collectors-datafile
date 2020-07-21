@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "67aa6a09_0ad79d0c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-21T18:50:34Z",
+      "side": 1,
+      "message": "DONE - change log level to debug and log whole config.",
+      "parentUuid": "5544c27b_5036187c",
+      "range": {
+        "startLine": 193,
+        "startChar": 0,
+        "endLine": 194,
+        "endChar": 59
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8cdb1730_b45067bc",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
         "patchSetId": 3
@@ -62,6 +86,24 @@
       "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9bf4bbc_8b43549c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-21T18:50:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8cdb1730_b45067bc",
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -88,6 +130,30 @@
     },
     {
       "key": {
+        "uuid": "c11f54e8_a1547b09",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-21T18:50:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf28db29_34f3e26a",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 7
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b2e591a8_2b85991d",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
         "patchSetId": 3
@@ -108,6 +174,30 @@
       "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cfebcf5b_cff16e53",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-21T18:50:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2e591a8_2b85991d",
+      "range": {
+        "startLine": 124,
+        "startChar": 8,
+        "endLine": 128,
+        "endChar": 9
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -134,6 +224,30 @@
     },
     {
       "key": {
+        "uuid": "75ecbe76_6f853f99",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SfptConfig.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-21T18:50:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62f72963_7674a92c",
+      "range": {
+        "startLine": 3,
+        "startChar": 3,
+        "endLine": 3,
+        "endChar": 95
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "21c64462_d7eb9dca",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
         "patchSetId": 3
@@ -154,6 +268,30 @@
       "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89a68afa_5bb6d1c0",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-21T18:50:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21c64462_d7eb9dca",
+      "range": {
+        "startLine": 3,
+        "startChar": 3,
+        "endLine": 3,
+        "endChar": 66
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -180,6 +318,30 @@
     },
     {
       "key": {
+        "uuid": "f8964c90_bcef7de6",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-21T18:50:34Z",
+      "side": 1,
+      "message": "I think a strategy would be an \"overkill\" in this simple case.",
+      "parentUuid": "1e9ab9c0_85cb1c6c",
+      "range": {
+        "startLine": 112,
+        "startChar": 8,
+        "endLine": 114,
+        "endChar": 77
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "30d0f1dd_650883ca",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
         "patchSetId": 3
@@ -203,6 +365,30 @@
     },
     {
       "key": {
+        "uuid": "73fa5c05_f42ae9a3",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-21T18:50:34Z",
+      "side": 1,
+      "message": "Exception removed from signature. Indeed its done for testing purpose.",
+      "parentUuid": "30d0f1dd_650883ca",
+      "range": {
+        "startLine": 125,
+        "startChar": 21,
+        "endLine": 125,
+        "endChar": 42
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ab5e0229_7b012085",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
         "patchSetId": 3
@@ -223,6 +409,30 @@
       "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b945273_fd15a0c5",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-21T18:50:34Z",
+      "side": 1,
+      "message": "As far as i remember as a result of the discussion with the architect we agreed on a fallback in case known hosts file is not mounted.",
+      "parentUuid": "ab5e0229_7b012085",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 146,
+        "endChar": 5
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -263,6 +473,48 @@
       "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "46981bf4_ca76d530",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-21T18:50:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12d3a6a1_b06ff98d",
+      "range": {
+        "startLine": 152,
+        "startChar": 30,
+        "endLine": 152,
+        "endChar": 51
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ec56859_ccd84967",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-21T18:50:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d91a56ec_18eda3ae",
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
