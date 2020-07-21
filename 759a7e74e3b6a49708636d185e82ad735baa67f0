@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "92f23858_1873eaf0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-07-21T09:21:36Z",
+      "side": 1,
+      "message": "I think this part of commit msg can be removed.",
+      "range": {
+        "startLine": 7,
+        "startChar": 40,
+        "endLine": 7,
+        "endChar": 53
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5544c27b_5036187c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-07-21T09:21:36Z",
+      "side": 1,
+      "message": "Seems a little out of place, maybe it would be better to log whole config here. Also parseCloudConfig is called for \u0027loadConfigurationFromFile\u0027 so it\u0027s not always consul config.",
+      "range": {
+        "startLine": 193,
+        "startChar": 0,
+        "endLine": 194,
+        "endChar": 59
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8cdb1730_b45067bc",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-07-21T09:21:36Z",
+      "side": 1,
+      "message": "Can be private I think.",
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf28db29_34f3e26a",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-07-21T09:21:36Z",
+      "side": 1,
+      "message": "Not matching comment",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 7
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
