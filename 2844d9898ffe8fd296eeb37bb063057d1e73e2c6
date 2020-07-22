@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d12483f2_183aeba6",
+        "filename": "datafile-app-server/config/application.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-22T12:13:16Z",
+      "side": 1,
+      "message": "This is a good question.\nI analyzed the code it works like this, that the app on startup loads the configuration from the file specified in application.yaml. Then it overrides it from the configuration take from CBS.\nIn fact what i did here is to adjust the path because for local development the config json was not found.\nHowever it\u0027s good observation - probably the intent was to be able to develop it locally without CBS.",
+      "parentUuid": "c0f7180c_4c5cea3d",
+      "revId": "2844d9898ffe8fd296eeb37bb063057d1e73e2c6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3d9c580f_d9dd12bc",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
         "patchSetId": 6
