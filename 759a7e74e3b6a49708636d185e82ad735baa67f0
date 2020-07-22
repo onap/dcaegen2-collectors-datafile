@@ -342,6 +342,30 @@
     },
     {
       "key": {
+        "uuid": "29671faf_44320dfc",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2020-07-22T06:37:00Z",
+      "side": 1,
+      "message": "I think method \"shouldStrictHostkeyChecking()\" contains nested if,else,if,else and it is good point to introduce some pattern or refactor current solution.",
+      "parentUuid": "f8964c90_bcef7de6",
+      "range": {
+        "startLine": 112,
+        "startChar": 8,
+        "endLine": 114,
+        "endChar": 77
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "30d0f1dd_650883ca",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
         "patchSetId": 3
@@ -424,6 +448,30 @@
       "side": 1,
       "message": "As far as i remember as a result of the discussion with the architect we agreed on a fallback in case known hosts file is not mounted.",
       "parentUuid": "ab5e0229_7b012085",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 146,
+        "endChar": 5
+      },
+      "revId": "759a7e74e3b6a49708636d185e82ad735baa67f0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f3ab7713_1e8ae035",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2020-07-22T06:37:00Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7b945273_fd15a0c5",
       "range": {
         "startLine": 129,
         "startChar": 0,
