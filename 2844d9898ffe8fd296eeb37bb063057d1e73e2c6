@@ -54,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "da644d0d_3437fa14",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-22T12:21:21Z",
+      "side": 1,
+      "message": "I know it\u0027s a bit confusing however getProperty() is correct here.\nSee also class EnvironmentProcessor.",
+      "parentUuid": "3d9c580f_d9dd12bc",
+      "revId": "2844d9898ffe8fd296eeb37bb063057d1e73e2c6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7f3a6171_eb0cc860",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
         "patchSetId": 6
@@ -77,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "3af337fe_8cb5a5a6",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-22T12:21:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f3a6171_eb0cc860",
+      "range": {
+        "startLine": 45,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 10
+      },
+      "revId": "2844d9898ffe8fd296eeb37bb063057d1e73e2c6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "36e3aa2b_6e4fbe54",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
         "patchSetId": 6
@@ -97,6 +139,30 @@
       "revId": "2844d9898ffe8fd296eeb37bb063057d1e73e2c6",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd861422_a99492cc",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-22T12:21:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36e3aa2b_6e4fbe54",
+      "range": {
+        "startLine": 135,
+        "startChar": 42,
+        "endLine": 135,
+        "endChar": 65
+      },
+      "revId": "2844d9898ffe8fd296eeb37bb063057d1e73e2c6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
