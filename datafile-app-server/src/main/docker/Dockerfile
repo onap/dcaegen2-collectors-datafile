@@ -17,7 +17,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # ============LICENSE_END=========================================================
 #
-FROM openjdk:8-jre-alpine
+FROM openjdk:11.0.7-jre-slim
 
 WORKDIR /opt/app/datafile
 RUN mkdir -p /var/log/ONAP
@@ -28,10 +28,10 @@ ADD /config/application.yaml /opt/app/datafile/config/
 
 EXPOSE 8100 8433
 
-RUN addgroup -S onap && adduser -S datafile -G onap
+RUN groupadd -r onap && useradd -ms /bin/bash datafile -g onap
 RUN chown -R datafile:onap /var/log/ONAP
 RUN chmod -R 777 /opt/app/datafile/config/
 
 USER datafile
 
-ENTRYPOINT ["/usr/bin/java", "-jar", "/opt/app/datafile/datafile-app-server.jar"]
+ENTRYPOINT ["/usr/local/openjdk-11/bin/java", "-jar", "/opt/app/datafile/datafile-app-server.jar"]
