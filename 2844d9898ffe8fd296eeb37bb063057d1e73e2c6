@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "3d9c580f_d9dd12bc",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2020-07-22T09:18:10Z",
+      "side": 1,
+      "message": "getProperty or getenv?",
+      "revId": "2844d9898ffe8fd296eeb37bb063057d1e73e2c6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7f3a6171_eb0cc860",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
         "patchSetId": 6
