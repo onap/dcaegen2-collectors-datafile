@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "c0f7180c_4c5cea3d",
+        "filename": "datafile-app-server/config/application.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2020-07-22T08:58:48Z",
+      "side": 1,
+      "message": "Would like to understand why default file name is called \"*_test\"?\nDoes it mean that such config is used only during testing phase and in production such file is not used and endpoints are taken from other location? Or this file brings default configuration which can be overwritten by configuration from other place (e.g. CBS)?",
+      "revId": "2844d9898ffe8fd296eeb37bb063057d1e73e2c6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7f3a6171_eb0cc860",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
         "patchSetId": 6
