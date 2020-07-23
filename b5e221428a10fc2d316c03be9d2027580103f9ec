@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b822aaa5_38f62949",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/Scheme.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2020-07-23T13:58:45Z",
+      "side": 1,
+      "message": "Colon before and :(",
+      "revId": "b5e221428a10fc2d316c03be9d2027580103f9ec",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
