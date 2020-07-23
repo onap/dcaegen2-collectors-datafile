@@ -16,6 +16,24 @@
       "revId": "b5e221428a10fc2d316c03be9d2027580103f9ec",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e3e8309_85ef8a27",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/Scheme.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-23T14:28:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b822aaa5_38f62949",
+      "revId": "b5e221428a10fc2d316c03be9d2027580103f9ec",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
