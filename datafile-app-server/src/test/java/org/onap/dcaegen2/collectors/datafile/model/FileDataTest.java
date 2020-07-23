@@ -62,7 +62,7 @@ public class FileDataTest {
             .compression("comp") //
             .fileFormatType("type") //
             .fileFormatVersion("version") //
-            .scheme(Scheme.FTPS) //
+            .scheme(Scheme.FTPES) //
             .messageMetaData(messageMetaData()) //
             .build();
     }
@@ -74,7 +74,7 @@ public class FileDataTest {
             .compression("comp") //
             .fileFormatType("type") //
             .fileFormatVersion("version") //
-            .scheme(Scheme.FTPS) //
+            .scheme(Scheme.FTPES) //
             .messageMetaData(messageMetaData()) //
             .build();
     }
@@ -86,7 +86,7 @@ public class FileDataTest {
             .compression("comp") //
             .fileFormatType("type") //
             .fileFormatVersion("version") //
-            .scheme(Scheme.FTPS) //
+            .scheme(Scheme.FTPES) //
             .messageMetaData(messageMetaData()) //
             .build();
     }
