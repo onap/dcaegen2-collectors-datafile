@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.springframework.http.HttpStatus;
 
-public class FtpsClientTest {
+public class FtpesClientTest {
 
     private static final String REMOTE_FILE_PATH = "/dir/sample.txt";
     private static final Path LOCAL_FILE_PATH = Paths.get("target/sample.txt");
@@ -63,7 +63,7 @@ public class FtpsClientTest {
     private InputStream inputStreamMock = mock(InputStream.class);
     private OutputStream outputStreamMock = mock(OutputStream.class);
 
-    FtpsClient clientUnderTestSpy;
+    FtpesClient clientUnderTestSpy;
 
     private ImmutableFileServerData createFileServerData() {
         return ImmutableFileServerData.builder() //
@@ -75,7 +75,7 @@ public class FtpsClientTest {
 
     @BeforeEach
     protected void setUp() throws Exception {
-        clientUnderTestSpy = spy(new FtpsClient(createFileServerData(), Paths.get(FTP_KEY_PATH), FTP_KEY_PASSWORD,
+        clientUnderTestSpy = spy(new FtpesClient(createFileServerData(), Paths.get(FTP_KEY_PATH), FTP_KEY_PASSWORD,
             TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD));
         clientUnderTestSpy.realFtpsClient = ftpsClientMock;
     }

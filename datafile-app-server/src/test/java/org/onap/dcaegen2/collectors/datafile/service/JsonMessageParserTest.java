@@ -105,7 +105,7 @@ class JsonMessageParserTest {
         FileData expectedFileData = ImmutableFileData.builder() //
             .name(PM_FILE_NAME) //
             .location(LOCATION) //
-            .scheme(Scheme.FTPS) //
+            .scheme(Scheme.FTPES) //
             .compression(GZIP_COMPRESSION) //
             .fileFormatType(FILE_FORMAT_TYPE) //
             .fileFormatVersion(FILE_FORMAT_VERSION) //
@@ -157,7 +157,7 @@ class JsonMessageParserTest {
         FileData expectedFileData = ImmutableFileData.builder() //
             .name(PM_FILE_NAME) //
             .location(LOCATION) //
-            .scheme(Scheme.FTPS) //
+            .scheme(Scheme.FTPES) //
             .compression(GZIP_COMPRESSION) //
             .fileFormatType(FILE_FORMAT_TYPE) //
             .fileFormatVersion(FILE_FORMAT_VERSION) //
@@ -277,7 +277,7 @@ class JsonMessageParserTest {
         FileData expectedFileData = ImmutableFileData.builder() //
             .name(PM_FILE_NAME) //
             .location(LOCATION) //
-            .scheme(Scheme.FTPS) //
+            .scheme(Scheme.FTPES) //
             .compression(GZIP_COMPRESSION) //
             .fileFormatType(FILE_FORMAT_TYPE) //
             .fileFormatVersion(FILE_FORMAT_VERSION) //
@@ -489,7 +489,7 @@ class JsonMessageParserTest {
         FileData expectedFileData = ImmutableFileData.builder() //
             .name(PM_FILE_NAME) //
             .location(LOCATION) //
-            .scheme(Scheme.FTPS) //
+            .scheme(Scheme.FTPES) //
             .compression(GZIP_COMPRESSION) //
             .fileFormatType(FILE_FORMAT_TYPE) //
             .fileFormatVersion(FILE_FORMAT_VERSION) //
