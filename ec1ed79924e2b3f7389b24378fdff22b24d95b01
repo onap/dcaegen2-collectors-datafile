@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3defd531_40dc3f1f",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-23T11:22:01Z",
+      "side": 1,
+      "message": "I would add mehthod \u0027contains\u0027 to publishedFileCache, and than rewrite this logic a bit, like in this (pseudo) code.\n\nconsider following logic:\n\n        Path localFilePath \u003d fileData.fileData.getLocalFilePath();\n        boolean shouldBePublished \u003d !cache.contains(localFilePath);\n        if (shouldBePublished) {\n            try {\n                shouldBePublished \u003d checkIfFileWasNotPublishedYet();\n            } catch (DatafileTaskException e) {\n                log();\n            }\n        } \n        if(!shouldBePublished) log();\n        return shouldBePublished;",
+      "revId": "ec1ed79924e2b3f7389b24378fdff22b24d95b01",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
