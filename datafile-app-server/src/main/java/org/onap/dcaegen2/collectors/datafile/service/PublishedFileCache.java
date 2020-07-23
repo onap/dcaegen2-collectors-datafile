@@ -49,6 +49,15 @@ public class PublishedFileCache {
     }
 
     /**
+     * Checks if a file is in the cache.
+     *
+     * @param path name of the file to check.
+     */
+    public synchronized boolean contains(Path path){
+        return publishedFiles.containsKey(path);
+    }
+
+    /**
      * Removes files 24 hours older than the given instant.
      *
      * @param now the instant will determine which files that will be purged.
