@@ -1,6 +1,7 @@
 /*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2020 Nokia. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -27,7 +28,7 @@ import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.ftp.FileCollectClient;
-import org.onap.dcaegen2.collectors.datafile.ftp.FtpsClient;
+import org.onap.dcaegen2.collectors.datafile.ftp.FtpesClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.SftpClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.SftpClientSettings;
 import org.onap.dcaegen2.collectors.datafile.model.Counters;
@@ -124,10 +125,10 @@ public class FileCollector {
         switch (fileData.scheme()) {
             case SFTP:
                 return createSftpClient(fileData);
-            case FTPS:
-                return createFtpsClient(fileData);
+            case FTPES:
+                return createFtpesClient(fileData);
             default:
-                throw new DatafileTaskException("Unhandeled protocol: " + fileData.scheme());
+                throw new DatafileTaskException("Unhandled protocol: " + fileData.scheme());
         }
     }
 
@@ -158,9 +159,9 @@ public class FileCollector {
             new SftpClientSettings(datafileAppConfig.getSftpConfiguration()));
     }
 
-    protected FtpsClient createFtpsClient(FileData fileData) {
+    protected FtpesClient createFtpesClient(FileData fileData) {
         FtpesConfig config = datafileAppConfig.getFtpesConfiguration();
-        return new FtpsClient(fileData.fileServerData(), Paths.get(config.keyCert()), config.keyPasswordPath(),
+        return new FtpesClient(fileData.fileServerData(), Paths.get(config.keyCert()), config.keyPasswordPath(),
             Paths.get(config.trustedCa()), config.trustedCaPasswordPath());
     }
 }

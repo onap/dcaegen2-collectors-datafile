@@ -1,6 +1,7 @@
 /*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2020 Nokia. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -40,7 +41,7 @@ import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
-import org.onap.dcaegen2.collectors.datafile.ftp.FtpsClient;
+import org.onap.dcaegen2.collectors.datafile.ftp.FtpesClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
 import org.onap.dcaegen2.collectors.datafile.ftp.SftpClient;
 import org.onap.dcaegen2.collectors.datafile.model.Counters;
@@ -91,7 +92,7 @@ public class FileCollectorTest {
     private static AppConfig appConfigMock = mock(AppConfig.class);
     private static FtpesConfig ftpesConfigMock = mock(FtpesConfig.class);
 
-    private FtpsClient ftpsClientMock = mock(FtpsClient.class);
+    private FtpesClient ftpesClientMock = mock(FtpesClient.class);
 
     private SftpClient sftpClientMock = mock(SftpClient.class);
     private final Map<String, String> contextMap = new HashMap<>();
@@ -159,9 +160,9 @@ public class FileCollectorTest {
     @Test
     public void whenFtpesFile_returnCorrectResponse() throws Exception {
         FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
-        doReturn(ftpsClientMock).when(collectorUndetTest).createFtpsClient(any());
+        doReturn(ftpesClientMock).when(collectorUndetTest).createFtpesClient(any());
 
-        FileData fileData = createFileData(FTPES_LOCATION_NO_PORT, Scheme.FTPS);
+        FileData fileData = createFileData(FTPES_LOCATION_NO_PORT, Scheme.FTPES);
 
         FilePublishInformation expectedfilePublishInformation =
             createExpectedFilePublishInformation(FTPES_LOCATION_NO_PORT);
@@ -170,10 +171,10 @@ public class FileCollectorTest {
             .expectNext(expectedfilePublishInformation) //
             .verifyComplete();
 
-        verify(ftpsClientMock, times(1)).open();
-        verify(ftpsClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
-        verify(ftpsClientMock, times(1)).close();
-        verifyNoMoreInteractions(ftpsClientMock);
+        verify(ftpesClientMock, times(1)).open();
+        verify(ftpesClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+        verify(ftpesClientMock, times(1)).close();
+        verifyNoMoreInteractions(ftpesClientMock);
 
         assertEquals("collectedFiles should have been 1", 1, counters.getNoOfCollectedFiles());
         assertEquals("failedFtpAttempts should have been 0", 0, counters.getNoOfFailedFtpAttempts());
@@ -211,17 +212,17 @@ public class FileCollectorTest {
     @Test
     public void whenFtpesFileAlwaysFail_retryAndFail() throws Exception {
         FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
-        doReturn(ftpsClientMock).when(collectorUndetTest).createFtpsClient(any());
+        doReturn(ftpesClientMock).when(collectorUndetTest).createFtpesClient(any());
 
-        FileData fileData = createFileData(FTPES_LOCATION, Scheme.FTPS);
-        doThrow(new DatafileTaskException("Unable to collect file.")).when(ftpsClientMock)
+        FileData fileData = createFileData(FTPES_LOCATION, Scheme.FTPES);
+        doThrow(new DatafileTaskException("Unable to collect file.")).when(ftpesClientMock)
             .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
         StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
             .expectErrorMessage("Retries exhausted: 3/3") //
             .verify();
 
-        verify(ftpsClientMock, times(4)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+        verify(ftpesClientMock, times(4)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
         assertEquals("collectedFiles should have been 0", 0, counters.getNoOfCollectedFiles());
         assertEquals("failedFtpAttempts should have been 4", 4, counters.getNoOfFailedFtpAttempts());
@@ -230,17 +231,17 @@ public class FileCollectorTest {
     @Test
     public void whenFtpesFileAlwaysFail_failWithoutRetry() throws Exception {
         FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
-        doReturn(ftpsClientMock).when(collectorUndetTest).createFtpsClient(any());
+        doReturn(ftpesClientMock).when(collectorUndetTest).createFtpesClient(any());
 
-        FileData fileData = createFileData(FTPES_LOCATION, Scheme.FTPS);
-        doThrow(new NonRetryableDatafileTaskException("Unable to collect file.")).when(ftpsClientMock)
+        FileData fileData = createFileData(FTPES_LOCATION, Scheme.FTPES);
+        doThrow(new NonRetryableDatafileTaskException("Unable to collect file.")).when(ftpesClientMock)
             .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
         StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
             .expectErrorMessage("Non retryable file transfer failure") //
             .verify();
 
-        verify(ftpsClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+        verify(ftpesClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
         assertEquals("collectedFiles should have been 0", 0, counters.getNoOfCollectedFiles());
         assertEquals("failedFtpAttempts should have been 1", 1, counters.getNoOfFailedFtpAttempts());
@@ -249,20 +250,20 @@ public class FileCollectorTest {
     @Test
     public void whenFtpesFileFailOnce_retryAndReturnCorrectResponse() throws Exception {
         FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
-        doReturn(ftpsClientMock).when(collectorUndetTest).createFtpsClient(any());
-        doThrow(new DatafileTaskException("Unable to collect file.")).doNothing().when(ftpsClientMock)
+        doReturn(ftpesClientMock).when(collectorUndetTest).createFtpesClient(any());
+        doThrow(new DatafileTaskException("Unable to collect file.")).doNothing().when(ftpesClientMock)
             .collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
         FilePublishInformation expectedfilePublishInformation =
             createExpectedFilePublishInformation(FTPES_LOCATION_NO_PORT);
 
-        FileData fileData = createFileData(FTPES_LOCATION_NO_PORT, Scheme.FTPS);
+        FileData fileData = createFileData(FTPES_LOCATION_NO_PORT, Scheme.FTPES);
 
         StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
             .expectNext(expectedfilePublishInformation) //
             .verifyComplete();
 
-        verify(ftpsClientMock, times(2)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+        verify(ftpesClientMock, times(2)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
         assertEquals("collectedFiles should have been 1", 1, counters.getNoOfCollectedFiles());
         assertEquals("failedFtpAttempts should have been 1", 1, counters.getNoOfFailedFtpAttempts());
