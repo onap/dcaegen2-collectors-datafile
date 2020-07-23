@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8a0a3989_4a76aae8",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-23T10:59:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58ece1fc_be5a2791",
+      "range": {
+        "startLine": 195,
+        "startChar": 71,
+        "endLine": 195,
+        "endChar": 75
+      },
+      "revId": "77b5c42437c995954603bf1833422889ed092ec2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "52d7f625_68539144",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
         "patchSetId": 7
@@ -45,6 +69,30 @@
       "revId": "77b5c42437c995954603bf1833422889ed092ec2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12c8ee22_55756950",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-23T10:59:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52d7f625_68539144",
+      "range": {
+        "startLine": 220,
+        "startChar": 17,
+        "endLine": 220,
+        "endChar": 38
+      },
+      "revId": "77b5c42437c995954603bf1833422889ed092ec2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "96883185_4df8251c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-23T10:59:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d580a15_d8d9feca",
+      "range": {
+        "startLine": 224,
+        "startChar": 13,
+        "endLine": 224,
+        "endChar": 43
+      },
+      "revId": "77b5c42437c995954603bf1833422889ed092ec2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "89b356ef_02f460fb",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
         "patchSetId": 7
@@ -91,6 +163,30 @@
       "revId": "77b5c42437c995954603bf1833422889ed092ec2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ad9535e_e9b88d9c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-23T10:59:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89b356ef_02f460fb",
+      "range": {
+        "startLine": 125,
+        "startChar": 20,
+        "endLine": 125,
+        "endChar": 45
+      },
+      "revId": "77b5c42437c995954603bf1833422889ed092ec2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "aab5eb0b_5e597200",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SfptConfig.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-23T10:59:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdc0462d_3669813d",
+      "range": {
+        "startLine": 32,
+        "startChar": 22,
+        "endLine": 32,
+        "endChar": 32
+      },
+      "revId": "77b5c42437c995954603bf1833422889ed092ec2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e021b757_b0409aae",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
         "patchSetId": 7
@@ -137,6 +257,30 @@
       "revId": "77b5c42437c995954603bf1833422889ed092ec2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec3d1154_a7272185",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-23T10:59:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e021b757_b0409aae",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 5
+      },
+      "revId": "77b5c42437c995954603bf1833422889ed092ec2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }

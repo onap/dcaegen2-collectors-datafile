@@ -60,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "662376b7_9a883831",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-23T10:59:14Z",
+      "side": 1,
+      "message": "I think we should consider creating docker compose file in separate story.",
+      "parentUuid": "b71369a5_528a0489",
+      "range": {
+        "startLine": 207,
+        "startChar": 1,
+        "endLine": 212,
+        "endChar": 29
+      },
+      "revId": "2844d9898ffe8fd296eeb37bb063057d1e73e2c6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f9c2e020_deac0b76",
         "filename": "datafile-app-server/src/main/docker/Dockerfile",
         "patchSetId": 6
@@ -74,6 +98,24 @@
       "revId": "2844d9898ffe8fd296eeb37bb063057d1e73e2c6",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2d2be7b_9a588577",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 6
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-23T10:59:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9c2e020_deac0b76",
+      "revId": "2844d9898ffe8fd296eeb37bb063057d1e73e2c6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -97,6 +139,30 @@
       "revId": "2844d9898ffe8fd296eeb37bb063057d1e73e2c6",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14315023_14faab3d",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-23T10:59:14Z",
+      "side": 1,
+      "message": "will be removed",
+      "parentUuid": "cfa8d70f_4c1445cd",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 27
+      },
+      "revId": "2844d9898ffe8fd296eeb37bb063057d1e73e2c6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -140,6 +206,30 @@
     },
     {
       "key": {
+        "uuid": "f00dbcc2_117f1873",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-23T10:59:14Z",
+      "side": 1,
+      "message": "I think we should consider creating docker compose file in separate story.",
+      "parentUuid": "09436367_92598086",
+      "range": {
+        "startLine": 31,
+        "startChar": 2,
+        "endLine": 32,
+        "endChar": 79
+      },
+      "revId": "2844d9898ffe8fd296eeb37bb063057d1e73e2c6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "de54c16f_ad7b77ad",
         "filename": "datafile-app-server/src/main/docker/Dockerfile",
         "patchSetId": 6
@@ -160,6 +250,30 @@
       "revId": "2844d9898ffe8fd296eeb37bb063057d1e73e2c6",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "218c9fcc_dc29b00f",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-23T10:59:14Z",
+      "side": 1,
+      "message": "It\u0027s done in purpose here, i.e. after creating \u0027datafile\u0027 user.",
+      "parentUuid": "de54c16f_ad7b77ad",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 32
+      },
+      "revId": "2844d9898ffe8fd296eeb37bb063057d1e73e2c6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
