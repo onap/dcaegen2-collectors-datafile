@@ -18,7 +18,6 @@
 
 package org.onap.dcaegen2.collectors.datafile.ftp;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -26,22 +25,20 @@ import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 
 public class SchemeTest {
+
     @Test
-    public void getSchemeFromString_properScheme() throws DatafileTaskException {
-
-        Scheme actualScheme = Scheme.getSchemeFromString("FTPES");
-        assertEquals(Scheme.FTPS, actualScheme);
-
-        actualScheme = Scheme.getSchemeFromString("FTPS");
-        assertEquals(Scheme.FTPS, actualScheme);
-
-        actualScheme = Scheme.getSchemeFromString("SFTP");
-        assertEquals(Scheme.SFTP, actualScheme);
+    public void shouldReturnSchemeForSupportedProtocol() throws DatafileTaskException {
+        assertEquals(Scheme.FTPES, Scheme.getSchemeFromString("FTPES"));
+        assertEquals(Scheme.SFTP, Scheme.getSchemeFromString("SFTP"));
     }
 
     @Test
-    public void getSchemeFromString_invalidScheme() {
-        assertTrue(assertThrows(DatafileTaskException.class, () -> Scheme.getSchemeFromString("invalid")).getMessage()
-            .startsWith("DFC does not support protocol invalid"));
+    public void shouldThrowExceptionForUnsupportedProtocol() {
+        assertThrows(DatafileTaskException.class, () -> Scheme.getSchemeFromString("FTPS"));
+    }
+
+    @Test
+    public void shouldThrowExceptionForInvalidProtocol() {
+        assertThrows(DatafileTaskException.class, () -> Scheme.getSchemeFromString("invalid"));
     }
 }
