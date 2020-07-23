@@ -220,17 +220,26 @@ public class ScheduledTasks {
 
     private boolean shouldBePublished(FileDataWithContext fileData) {
         Path localFilePath = fileData.fileData.getLocalFilePath();
-        if (publishedFilesCache.put(localFilePath) == null) {
-            try {
-                return !createPublishedChecker().isFilePublished(fileData.fileData.name(),
-                    fileData.fileData.messageMetaData().changeIdentifier(), fileData.context);
-            } catch (DatafileTaskException e) {
-                logger.error("Cannot check if a file {} is published", fileData.fileData.name(), e);
-                return true; // Publish it then
-            }
-        } else {
-            return false;
+        boolean shouldBePublished = (publishedFilesCache.put(localFilePath) == null);
+        if (shouldBePublished) {
+            shouldBePublished = checkIfFileIsNotPublished(fileData);
         }
+
+        if (!shouldBePublished) {
+            logger.debug("File: {} is being processed or was already published. Skipping.", fileData.fileData.name());
+        }
+        return shouldBePublished;
+    }
+
+    private boolean checkIfFileIsNotPublished(FileDataWithContext fileData) {
+        boolean isNotPublished = true;
+        try {
+            isNotPublished = !createPublishedChecker().isFilePublished(fileData.fileData.name(),
+                    fileData.fileData.messageMetaData().changeIdentifier(), fileData.context);
+        } catch (DatafileTaskException e) {
+            logger.error("Cannot check if a file {} is published", fileData.fileData.name(), e);
+        }
+        return isNotPublished;
     }
 
     private Mono<FilePublishInformation> fetchFile(FileDataWithContext fileData) {
