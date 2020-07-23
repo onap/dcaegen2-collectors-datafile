@@ -26,7 +26,7 @@ import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.ftp.FileCollectClient;
-import org.onap.dcaegen2.collectors.datafile.ftp.FtpsClient;
+import org.onap.dcaegen2.collectors.datafile.ftp.FtpesClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.SftpClient;
 import org.onap.dcaegen2.collectors.datafile.model.Counters;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
@@ -122,10 +122,10 @@ public class FileCollector {
         switch (fileData.scheme()) {
             case SFTP:
                 return createSftpClient(fileData);
-            case FTPS:
+            case FTPES:
                 return createFtpsClient(fileData);
             default:
-                throw new DatafileTaskException("Unhandeled protocol: " + fileData.scheme());
+                throw new DatafileTaskException("Unhandled protocol: " + fileData.scheme());
         }
     }
 
@@ -155,9 +155,9 @@ public class FileCollector {
         return new SftpClient(fileData.fileServerData(), datafileAppConfig.getSfptConfiguration());
     }
 
-    protected FtpsClient createFtpsClient(FileData fileData) {
+    protected FtpesClient createFtpsClient(FileData fileData) {
         FtpesConfig config = datafileAppConfig.getFtpesConfiguration();
-        return new FtpsClient(fileData.fileServerData(), Paths.get(config.keyCert()), config.keyPasswordPath(),
+        return new FtpesClient(fileData.fileServerData(), Paths.get(config.keyCert()), config.keyPasswordPath(),
             Paths.get(config.trustedCa()), config.trustedCaPasswordPath());
     }
 }
