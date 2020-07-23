@@ -49,10 +49,10 @@ import org.springframework.core.io.FileSystemResource;
  *
  * @author <a href="mailto:martin.c.yan@est.tech">Martin Yan</a>
  */
-public class FtpsClient implements FileCollectClient {
-    private static final Logger logger = LoggerFactory.getLogger(FtpsClient.class);
+public class FtpesClient implements FileCollectClient {
+    private static final Logger logger = LoggerFactory.getLogger(FtpesClient.class);
 
-    private static final int FTPS_DEFAULT_PORT = 21;
+    private static final int DEFAULT_PORT = 21;
 
     FTPSClient realFtpsClient = new FTPSClient();
     private final FileServerData fileServerData;
@@ -73,7 +73,7 @@ public class FtpsClient implements FileCollectClient {
      * @param trustedCaPath path to the PNF's trusted keystore.
      * @param trustedCaPasswordPath path of file containing password for the PNF's trusted keystore.
      */
-    public FtpsClient(FileServerData fileServerData, Path keyCertPath, String keyCertPasswordPath, Path trustedCaPath,
+    public FtpesClient(FileServerData fileServerData, Path keyCertPath, String keyCertPasswordPath, Path trustedCaPath,
         String trustedCaPasswordPath) {
         this.fileServerData = fileServerData;
         this.keyCertPath = keyCertPath;
@@ -132,7 +132,7 @@ public class FtpsClient implements FileCollectClient {
     }
 
     private static int getPort(Optional<Integer> port) {
-        return port.isPresent() ? port.get() : FTPS_DEFAULT_PORT;
+        return port.isPresent() ? port.get() : DEFAULT_PORT;
     }
 
     private void setUpConnection() throws DatafileTaskException, IOException {
@@ -196,7 +196,7 @@ public class FtpsClient implements FileCollectClient {
             logger.error("Truststore password file at path: {} cannot be opened ", trustedCaPasswordPath);
             e.printStackTrace();
         }
-        synchronized (FtpsClient.class) {
+        synchronized (FtpesClient.class) {
             if (theTrustManager == null) {
                 theTrustManager = createTrustManager(trustedCaPath, trustedCaPassword);
             }
@@ -214,7 +214,7 @@ public class FtpsClient implements FileCollectClient {
             e.printStackTrace();
         }
 
-        synchronized (FtpsClient.class) {
+        synchronized (FtpesClient.class) {
             if (theKeyManager == null) {
                 theKeyManager = createKeyManager(keyCertPath, keyCertPassword);
             }

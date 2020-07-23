@@ -149,7 +149,7 @@ public class ScheduledTasksTest {
             .fileFormatType("") //
             .fileFormatVersion("") //
             .location("ftpes://192.168.0.101/ftp/rop/" + PM_FILE_NAME + instanceNumber) //
-            .scheme(Scheme.FTPS) //
+            .scheme(Scheme.FTPES) //
             .compression("") //
             .messageMetaData(messageMetaData()) //
             .build();
