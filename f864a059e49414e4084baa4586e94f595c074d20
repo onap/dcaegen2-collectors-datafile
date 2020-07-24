@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "dd7c898e_b1fcff6f",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-07-24T07:49:22Z",
+      "side": 1,
+      "message": "Consider moving it to default in code instead of Dockerfile. Like:\n systemEnvironment.getProperty(\"KNOWN_HOSTS_FILE_PATH\", \"home/datafile/.ssh/known_hosts\")",
+      "parentUuid": "c2725828_6800cfa0",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 59
+      },
+      "revId": "f864a059e49414e4084baa4586e94f595c074d20",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "98197048_0ab79867",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
         "patchSetId": 9

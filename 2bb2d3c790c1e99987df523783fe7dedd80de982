@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e99739af_a447863c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-07-24T07:49:22Z",
+      "side": 1,
+      "message": "private",
+      "revId": "2bb2d3c790c1e99987df523783fe7dedd80de982",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d16f7ad3_2f18aa99",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-07-24T07:49:22Z",
+      "side": 1,
+      "message": "Private. Consider using naming convention from variables above - SFTP_SECURITY_STRICT_HOST_KEY_CHECKING",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 122
+      },
+      "revId": "2bb2d3c790c1e99987df523783fe7dedd80de982",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
