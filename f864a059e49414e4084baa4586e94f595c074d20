@@ -1,0 +1,176 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7f208107_82834f5d",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 9
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-24T06:34:36Z",
+      "side": 1,
+      "message": "move this before ENRTYPOINT since this part will be most frequently chenged in image building",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 54
+      },
+      "revId": "f864a059e49414e4084baa4586e94f595c074d20",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2725828_6800cfa0",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-24T06:34:36Z",
+      "side": 1,
+      "message": "Do we need to define it at Dockerfile level?",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 59
+      },
+      "revId": "f864a059e49414e4084baa4586e94f595c074d20",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98197048_0ab79867",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-24T06:34:36Z",
+      "side": 1,
+      "message": "make private\nI would rename to \"KNOWN_HOSTS_FILE_PATH_ENV_NAME\"",
+      "range": {
+        "startLine": 47,
+        "startChar": 4,
+        "endLine": 47,
+        "endChar": 10
+      },
+      "revId": "f864a059e49414e4084baa4586e94f595c074d20",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "26d90cd0_1d295aed",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-24T06:34:36Z",
+      "side": 1,
+      "message": "I think we could have here also systemEnvironment. What do you think?",
+      "range": {
+        "startLine": 53,
+        "startChar": 63,
+        "endLine": 53,
+        "endChar": 73
+      },
+      "revId": "f864a059e49414e4084baa4586e94f595c074d20",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c98ce37_3370fc65",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-24T06:34:36Z",
+      "side": 1,
+      "message": "Make constant from it. Name could be like: STRICT_HOST_CHECKING_FIELD_NAME",
+      "range": {
+        "startLine": 128,
+        "startChar": 60,
+        "endLine": 128,
+        "endChar": 97
+      },
+      "revId": "f864a059e49414e4084baa4586e94f595c074d20",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c166b29_d5137a28",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-24T06:34:36Z",
+      "side": 1,
+      "message": "Move private with privates func in order of usage",
+      "revId": "f864a059e49414e4084baa4586e94f595c074d20",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ff71b33_c7fd0d80",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-24T06:34:36Z",
+      "side": 1,
+      "message": "I think its woth to extract here logic for knownhostlist check. Could be something like that:\n```\n    private boolean shouldUseStrictHostChecking() {\n        boolean strictHostKeyChecking \u003d false;\n        if (isStrictHostKeyCheckingEnabled()) {\n            strictHostKeyChecking \u003d doesKnowHostFileExist();\n        } else {\n            logger.info(\"StrictHostKeyChecking will be disabled.\");\n        }\n        return strictHostKeyChecking;\n    }\n\n    private boolean doesKnowHostFileExist() {\n        String filePath \u003d getKnownHostsFilePath();\n        boolean fileExists \u003d new File(filePath).isFile();\n        if (fileExists) {\n            logger.info(\"StrictHostKeyChecking will be enabled with KNOW_HOSTS_FILE_PATH [{}].\", filePath);\n            return true;\n        }\n        logger.warn(\n                \"StrictHostKeyChecking is enabled but environment variable KNOW_HOSTS_FILE_PATH is not set or points to not existing file [{}]  --\u003e  falling back to StrictHostKeyChecking\u003d\u0027no\u0027.\",\n                filePath);\n        return false;\n    }\n```",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 5
+      },
+      "revId": "f864a059e49414e4084baa4586e94f595c074d20",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5e270c1_9e0bdf82",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClientTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-24T06:34:36Z",
+      "side": 1,
+      "message": "Please add here test case where stricthostchecking is enabled. We could check session configs to verify everything worked fine. Check if thats possible.\n```\nsftpClientSpy.session.getConfig(\"StrictHostKeyChecking\").equals(false);\n```",
+      "revId": "f864a059e49414e4084baa4586e94f595c074d20",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
