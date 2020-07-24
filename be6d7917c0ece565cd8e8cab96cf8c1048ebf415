@@ -22,6 +22,30 @@
       "revId": "be6d7917c0ece565cd8e8cab96cf8c1048ebf415",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93df8a7f_2cfb6693",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/Scheme.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-24T09:38:47Z",
+      "side": 1,
+      "message": "Yes, could be also done as you propose, but in this case it really does not matter.",
+      "parentUuid": "891ca819_be44a308",
+      "range": {
+        "startLine": 45,
+        "startChar": 12,
+        "endLine": 45,
+        "endChar": 34
+      },
+      "revId": "be6d7917c0ece565cd8e8cab96cf8c1048ebf415",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
