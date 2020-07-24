@@ -16,6 +16,24 @@
       "revId": "ec1ed79924e2b3f7389b24378fdff22b24d95b01",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60c18832_6badd88c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-07-24T05:53:23Z",
+      "side": 1,
+      "message": "I added method to check if file was not published.\nDidn\u0027t want to create method for:\n publishedFilesCache.put(localFilePath) \u003d\u003d null\nbecause I couldn\u0027t think of any non-confusing way/name, while this behaviour is \u0027java styled\u0027 and one can lookup publishedFilesCache in a single click. Also didn\u0027t want to split put and contains to avoid doubling map lookup.",
+      "parentUuid": "3defd531_40dc3f1f",
+      "revId": "ec1ed79924e2b3f7389b24378fdff22b24d95b01",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
