@@ -22,6 +22,30 @@
       "revId": "a4638a48f6b369c3913e464bd73a952427d74c4a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dc6bba98_2d90d38b",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-24T06:50:07Z",
+      "side": 0,
+      "message": "Because it was places 2 times, as you can see it\u0027s present below.",
+      "parentUuid": "d2ae0faa_cebc875e",
+      "range": {
+        "startLine": 76,
+        "startChar": 8,
+        "endLine": 76,
+        "endChar": 30
+      },
+      "revId": "a4638a48f6b369c3913e464bd73a952427d74c4a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }

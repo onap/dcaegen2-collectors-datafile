@@ -71,6 +71,30 @@
     },
     {
       "key": {
+        "uuid": "dc8afb4a_20b2d1b0",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-24T06:50:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98197048_0ab79867",
+      "range": {
+        "startLine": 47,
+        "startChar": 4,
+        "endLine": 47,
+        "endChar": 10
+      },
+      "revId": "f864a059e49414e4084baa4586e94f595c074d20",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "26d90cd0_1d295aed",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
         "patchSetId": 9
@@ -91,6 +115,30 @@
       "revId": "f864a059e49414e4084baa4586e94f595c074d20",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16bdb18d_b4a935eb",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-24T06:50:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26d90cd0_1d295aed",
+      "range": {
+        "startLine": 53,
+        "startChar": 63,
+        "endLine": 53,
+        "endChar": 73
+      },
+      "revId": "f864a059e49414e4084baa4586e94f595c074d20",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +165,30 @@
     },
     {
       "key": {
+        "uuid": "3000749b_3491352d",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-24T06:50:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c98ce37_3370fc65",
+      "range": {
+        "startLine": 128,
+        "startChar": 60,
+        "endLine": 128,
+        "endChar": 97
+      },
+      "revId": "f864a059e49414e4084baa4586e94f595c074d20",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4c166b29_d5137a28",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
         "patchSetId": 9
@@ -131,6 +203,24 @@
       "revId": "f864a059e49414e4084baa4586e94f595c074d20",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "695e5138_b078346d",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-24T06:50:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c166b29_d5137a28",
+      "revId": "f864a059e49414e4084baa4586e94f595c074d20",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -154,6 +244,30 @@
       "revId": "f864a059e49414e4084baa4586e94f595c074d20",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c162a932_dd778f11",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-24T06:50:07Z",
+      "side": 1,
+      "message": "I think the logic in present form is OK.",
+      "parentUuid": "3ff71b33_c7fd0d80",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 5
+      },
+      "revId": "f864a059e49414e4084baa4586e94f595c074d20",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
