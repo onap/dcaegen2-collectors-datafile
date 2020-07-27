@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "354cb686_63de00d1",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2020-07-27T08:37:55Z",
+      "side": 1,
+      "message": "Should this really be on info level? Since file ready messages often will contain a lot of files that are already published, there will be a lot of these entries in the log.",
+      "range": {
+        "startLine": 229,
+        "startChar": 19,
+        "endLine": 229,
+        "endChar": 23
+      },
+      "revId": "d523a1e6130b01d110b62a8a8c7b8a17e1a5678b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
