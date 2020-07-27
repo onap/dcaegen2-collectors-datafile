@@ -22,6 +22,30 @@
       "revId": "72b2999c66a3a38b9b942f0a9cf5bc81cceafd91",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c53190b_9b18d503",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-07-27T07:46:23Z",
+      "side": 1,
+      "message": "1. Done\n2. First if can change the value of shouldBePublished so the second can\u0027t be else case.\nThe logic here works like that:\n (publishedFilesCache.put(localFilePath) \u003d\u003d null) - checks if file was put into cache\n- if it is in cache, then dmaap check is skipped and file is not published\n- it it is not in cache, dmaap check determines if the file should be published",
+      "parentUuid": "eace2298_457e83e9",
+      "range": {
+        "startLine": 224,
+        "startChar": 8,
+        "endLine": 228,
+        "endChar": 117
+      },
+      "revId": "72b2999c66a3a38b9b942f0a9cf5bc81cceafd91",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
