@@ -46,6 +46,30 @@
       "revId": "be6d7917c0ece565cd8e8cab96cf8c1048ebf415",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c487282a_3e065468",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/Scheme.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2020-07-27T13:29:01Z",
+      "side": 1,
+      "message": "Is OK as it is. Method should have minimum number of exits - in this case 2 instead of 3",
+      "parentUuid": "93df8a7f_2cfb6693",
+      "range": {
+        "startLine": 45,
+        "startChar": 12,
+        "endLine": 45,
+        "endChar": 34
+      },
+      "revId": "be6d7917c0ece565cd8e8cab96cf8c1048ebf415",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
