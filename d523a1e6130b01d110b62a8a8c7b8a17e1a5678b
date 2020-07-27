@@ -46,6 +46,30 @@
       "revId": "d523a1e6130b01d110b62a8a8c7b8a17e1a5678b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40e4c902_b0e82b30",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2020-07-27T11:03:49Z",
+      "side": 1,
+      "message": "I cannot find it on the wiki now, but at least last year the recommendation was that all files available on the node should be sent in every message, see this quote:\n\"The FileReady notification will send information on files that are available on the node to collect every ROP, the files are ordered in descending chronological order (latest files a top of the message). Files on the node older than 24 hours are not sent in the FileReady notification.\"\nThis is because the node have no idea wether the DFC has been able to collect the files or not. This is also the whole reason why DFC queries the DataRouter to see if a file has already been published.",
+      "parentUuid": "1f896282_51e4ea1b",
+      "range": {
+        "startLine": 229,
+        "startChar": 19,
+        "endLine": 229,
+        "endChar": 23
+      },
+      "revId": "d523a1e6130b01d110b62a8a8c7b8a17e1a5678b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
