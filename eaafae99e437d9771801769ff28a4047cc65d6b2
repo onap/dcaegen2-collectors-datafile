@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cfafadbf_7c5c5634",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 21
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-27T14:06:36Z",
+      "side": 1,
+      "message": "Do we need it? I see that jupiter-engine already contains this.",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 17
+      },
+      "revId": "eaafae99e437d9771801769ff28a4047cc65d6b2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c2efa3f_bae955c2",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 21
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-27T14:06:36Z",
+      "side": 1,
+      "message": "private",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 10
+      },
+      "revId": "eaafae99e437d9771801769ff28a4047cc65d6b2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1d55ac3_71f5c630",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 21
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-27T14:06:36Z",
+      "side": 1,
+      "message": "reorder: public -\u003e ... -\u003e private",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 5
+      },
+      "revId": "eaafae99e437d9771801769ff28a4047cc65d6b2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa7bcd87_4f3b46a3",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 21
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-27T14:06:36Z",
+      "side": 1,
+      "message": "We are exposing method in order to test it. I think its worth to extract class including this and other needed methods. Could be named ```StrictHostCheckingValidator```. Than added tests will be done from its level.",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 5
+      },
+      "revId": "eaafae99e437d9771801769ff28a4047cc65d6b2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "80875753_fd320c9b",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClientTest.java",
+        "patchSetId": 21
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-27T14:06:36Z",
+      "side": 1,
+      "message": "Move to test file of \"validator\" class",
+      "range": {
+        "startLine": 243,
+        "startChar": 3,
+        "endLine": 268,
+        "endChar": 5
+      },
+      "revId": "eaafae99e437d9771801769ff28a4047cc65d6b2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
