@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "3f5347f6_b4a4da92",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 21
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-27T15:47:13Z",
+      "side": 1,
+      "message": "It works not without this dependency",
+      "parentUuid": "cfafadbf_7c5c5634",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 17
+      },
+      "revId": "eaafae99e437d9771801769ff28a4047cc65d6b2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9c2efa3f_bae955c2",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
         "patchSetId": 21
