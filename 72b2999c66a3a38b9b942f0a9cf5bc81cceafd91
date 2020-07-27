@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eace2298_457e83e9",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 3793
+      },
+      "writtenOn": "2020-07-27T07:09:27Z",
+      "side": 1,
+      "message": "Good job removing all returns.\n1. Community (I also) don\u0027t like one liners could you add brackets {}?\n2. Can this 2 if\u0027s be if else?",
+      "range": {
+        "startLine": 224,
+        "startChar": 8,
+        "endLine": 228,
+        "endChar": 117
+      },
+      "revId": "72b2999c66a3a38b9b942f0a9cf5bc81cceafd91",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
