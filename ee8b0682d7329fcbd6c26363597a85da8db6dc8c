@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d5684f2c_9d258346",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 17
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-27T09:33:54Z",
+      "side": 1,
+      "message": "As discussed vim and curl will stay.",
+      "parentUuid": "3514b0d5_f93d1768",
+      "revId": "ee8b0682d7329fcbd6c26363597a85da8db6dc8c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "501f1da8_e0bac12c",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClientTest.java",
         "patchSetId": 17
@@ -33,6 +51,24 @@
       "revId": "ee8b0682d7329fcbd6c26363597a85da8db6dc8c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "590248a9_c9ec7f14",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClientTest.java",
+        "patchSetId": 17
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-27T09:33:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "501f1da8_e0bac12c",
+      "revId": "ee8b0682d7329fcbd6c26363597a85da8db6dc8c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
