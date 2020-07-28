@@ -23,10 +23,10 @@ inputs:
     default: "250m"
   datafile-collector_memory_limit:
     type: string
-    default: "256Mi"
+    default: "512Mi"
   datafile-collector_memory_request:
     type: string
-    default: "256Mi"
+    default: "512Mi"
   envs:
     default: {}
   external_port:
