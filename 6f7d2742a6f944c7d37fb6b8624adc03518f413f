@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "961ee4fb_f2dfa34f",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 27
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-28T12:51:19Z",
+      "side": 1,
+      "message": "private",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 50,
+        "endChar": 10
+      },
+      "revId": "6f7d2742a6f944c7d37fb6b8624adc03518f413f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9703a535_b67125cf",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClientSettings.java",
+        "patchSetId": 27
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-28T12:51:19Z",
+      "side": 1,
+      "message": "just make private and reorder.",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 5
+      },
+      "revId": "6f7d2742a6f944c7d37fb6b8624adc03518f413f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
