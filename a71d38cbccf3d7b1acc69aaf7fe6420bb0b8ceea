@@ -22,6 +22,30 @@
       "revId": "a71d38cbccf3d7b1acc69aaf7fe6420bb0b8ceea",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95908e0c_add96a17",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-07-28T13:03:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c19d76a_5f30be2f",
+      "range": {
+        "startLine": 234,
+        "startChar": 20,
+        "endLine": 234,
+        "endChar": 45
+      },
+      "revId": "a71d38cbccf3d7b1acc69aaf7fe6420bb0b8ceea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
