@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "a51055ca_86ff6663",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 22
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2020-07-29T06:03:11Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "386cf23d_12789850",
+      "range": {
+        "startLine": 174,
+        "startChar": 20,
+        "endLine": 174,
+        "endChar": 50
+      },
+      "revId": "8b4afc15f42da754075e2d2f8482dc5c405becc2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7c42ff0b_3adb2dc6",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
         "patchSetId": 22
@@ -84,6 +108,30 @@
       "side": 1,
       "message": "For the sake of brevity.",
       "parentUuid": "7c42ff0b_3adb2dc6",
+      "range": {
+        "startLine": 178,
+        "startChar": 19,
+        "endLine": 178,
+        "endChar": 40
+      },
+      "revId": "8b4afc15f42da754075e2d2f8482dc5c405becc2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "49756f18_cdb5786c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/SftpClient.java",
+        "patchSetId": 22
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 3763
+      },
+      "writtenOn": "2020-07-29T06:03:11Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c36ce7ca_1ee812f6",
       "range": {
         "startLine": 178,
         "startChar": 19,
