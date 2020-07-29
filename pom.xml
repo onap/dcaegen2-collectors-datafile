@@ -44,7 +44,7 @@
   </licenses>
 
   <properties>
-    <java.version>8</java.version>
+    <java.version>11</java.version>
     <sdk.version>1.1.6</sdk.version>
     <apache.httpcomponents.version>4.1.4</apache.httpcomponents.version>
     <apache.commons.version>3.6</apache.commons.version>
