@@ -93,6 +93,30 @@
       "revId": "be6d7917c0ece565cd8e8cab96cf8c1048ebf415",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9a2c96e_6674da1a",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollector.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-07-29T06:18:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb50b9f6_ceaa1b39",
+      "range": {
+        "startLine": 160,
+        "startChar": 32,
+        "endLine": 160,
+        "endChar": 36
+      },
+      "revId": "be6d7917c0ece565cd8e8cab96cf8c1048ebf415",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
