@@ -22,6 +22,30 @@
       "revId": "5135fde49e1268873e688d14f541b8ff673bae22",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a3cf5640_e4c4aec4",
+        "filename": "pom.xml",
+        "patchSetId": 28
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-29T13:29:33Z",
+      "side": 1,
+      "message": "We will fix it in separate MR.",
+      "parentUuid": "b0a28fd1_bb5e648d",
+      "range": {
+        "startLine": 47,
+        "startChar": 18,
+        "endLine": 47,
+        "endChar": 19
+      },
+      "revId": "5135fde49e1268873e688d14f541b8ff673bae22",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
