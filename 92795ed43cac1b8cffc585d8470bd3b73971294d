@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7dddc067_c0c16d05",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpesClient.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-30T00:51:40Z",
+      "side": 1,
+      "message": "add copyright 2020 for Nokia",
+      "revId": "92795ed43cac1b8cffc585d8470bd3b73971294d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "062934a1_344813bc",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/ftp/Scheme.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-30T00:51:40Z",
+      "side": 1,
+      "message": "add copyright 2020 for Nokia",
+      "revId": "92795ed43cac1b8cffc585d8470bd3b73971294d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7bfb1b33_2177d877",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollector.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-30T00:51:40Z",
+      "side": 1,
+      "message": "add copyright 2020 for Nokia",
+      "revId": "92795ed43cac1b8cffc585d8470bd3b73971294d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e0f28f1_73469465",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/FtpesClientTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-30T00:51:40Z",
+      "side": 1,
+      "message": "add copyright 2020 for Nokia",
+      "revId": "92795ed43cac1b8cffc585d8470bd3b73971294d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e2c59af1_d03110d7",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/ftp/SchemeTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-30T00:51:40Z",
+      "side": 1,
+      "message": "add copyright 2020 for Nokia",
+      "revId": "92795ed43cac1b8cffc585d8470bd3b73971294d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4495463a_51cb2bf2",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/model/FileDataTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-30T00:51:40Z",
+      "side": 1,
+      "message": "add copyright 2020 for Nokia",
+      "revId": "92795ed43cac1b8cffc585d8470bd3b73971294d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b42d5c64_18bdab37",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/service/JsonMessageParserTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-30T00:51:40Z",
+      "side": 1,
+      "message": "add copyright 2020 for Nokia",
+      "revId": "92795ed43cac1b8cffc585d8470bd3b73971294d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27fa3a2a_5b696f13",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/DMaaPMessageConsumerTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-30T00:51:40Z",
+      "side": 1,
+      "message": "add copyright 2020 for Nokia",
+      "revId": "92795ed43cac1b8cffc585d8470bd3b73971294d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3b5ac56_378432ab",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollectorTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-30T00:51:40Z",
+      "side": 1,
+      "message": "add copyright 2020 for Nokia",
+      "revId": "92795ed43cac1b8cffc585d8470bd3b73971294d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "daf6138f_ef32e8b1",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasksTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-30T00:51:40Z",
+      "side": 1,
+      "message": "add copyright 2020 for Nokia",
+      "revId": "92795ed43cac1b8cffc585d8470bd3b73971294d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
