@@ -1,6 +1,7 @@
 /*-
  * ============LICENSE_START=======================================================
  * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2020 Nokia. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,7 +106,7 @@ class JsonMessageParserTest {
         FileData expectedFileData = ImmutableFileData.builder() //
             .name(PM_FILE_NAME) //
             .location(LOCATION) //
-            .scheme(Scheme.FTPS) //
+            .scheme(Scheme.FTPES) //
             .compression(GZIP_COMPRESSION) //
             .fileFormatType(FILE_FORMAT_TYPE) //
             .fileFormatVersion(FILE_FORMAT_VERSION) //
@@ -157,7 +158,7 @@ class JsonMessageParserTest {
         FileData expectedFileData = ImmutableFileData.builder() //
             .name(PM_FILE_NAME) //
             .location(LOCATION) //
-            .scheme(Scheme.FTPS) //
+            .scheme(Scheme.FTPES) //
             .compression(GZIP_COMPRESSION) //
             .fileFormatType(FILE_FORMAT_TYPE) //
             .fileFormatVersion(FILE_FORMAT_VERSION) //
@@ -277,7 +278,7 @@ class JsonMessageParserTest {
         FileData expectedFileData = ImmutableFileData.builder() //
             .name(PM_FILE_NAME) //
             .location(LOCATION) //
-            .scheme(Scheme.FTPS) //
+            .scheme(Scheme.FTPES) //
             .compression(GZIP_COMPRESSION) //
             .fileFormatType(FILE_FORMAT_TYPE) //
             .fileFormatVersion(FILE_FORMAT_VERSION) //
@@ -489,7 +490,7 @@ class JsonMessageParserTest {
         FileData expectedFileData = ImmutableFileData.builder() //
             .name(PM_FILE_NAME) //
             .location(LOCATION) //
-            .scheme(Scheme.FTPS) //
+            .scheme(Scheme.FTPES) //
             .compression(GZIP_COMPRESSION) //
             .fileFormatType(FILE_FORMAT_TYPE) //
             .fileFormatVersion(FILE_FORMAT_VERSION) //

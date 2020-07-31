@@ -1,6 +1,7 @@
 /*-
  * ============LICENSE_START=======================================================
  * Copyright (C) 2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2020 Nokia. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,10 +28,10 @@ import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
  *
  */
 public enum Scheme {
-    FTPS, SFTP;
+    FTPES, SFTP;
 
     public static final String DFC_DOES_NOT_SUPPORT_PROTOCOL_ERROR_MSG = "DFC does not support protocol ";
-    public static final String SUPPORTED_PROTOCOLS_ERROR_MESSAGE = ". Supported protocols are FTPES, FTPS, and SFTP";
+    public static final String SUPPORTED_PROTOCOLS_ERROR_MESSAGE = ". Supported protocols are FTPeS and sFTP";
 
     /**
      * Get a <code>Scheme</code> from a string.
@@ -41,8 +42,8 @@ public enum Scheme {
      */
     public static Scheme getSchemeFromString(String schemeString) throws DatafileTaskException {
         Scheme result;
-        if ("FTPS".equalsIgnoreCase(schemeString) || "FTPES".equalsIgnoreCase(schemeString)) {
-            result = Scheme.FTPS;
+        if ("FTPES".equalsIgnoreCase(schemeString)) {
+            result = Scheme.FTPES;
         } else if ("SFTP".equalsIgnoreCase(schemeString)) {
             result = Scheme.SFTP;
         } else {

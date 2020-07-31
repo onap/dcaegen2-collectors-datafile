@@ -53,10 +53,10 @@ public class SftpClientSettings {
 
     private void logUsageOfStrictHostCheckingFlag(boolean strictHostKeyChecking, String filePath) {
         if (strictHostKeyChecking) {
-            logger.info("StrictHostKeyChecking will be enabled with KNOW_HOSTS_FILE_PATH [{}].", filePath);
+            logger.info("StrictHostKeyChecking will be enabled with KNOWN_HOSTS_FILE_PATH [{}].", filePath);
         } else {
             logger.warn(
-                "StrictHostKeyChecking is enabled but environment variable KNOW_HOSTS_FILE_PATH is not set or points to not existing file [{}]  -->  falling back to StrictHostKeyChecking='no'.",
+                "StrictHostKeyChecking is enabled but environment variable KNOWN_HOSTS_FILE_PATH is not set or points to not existing file [{}]  -->  falling back to StrictHostKeyChecking='no'.",
                 filePath);
         }
     }
