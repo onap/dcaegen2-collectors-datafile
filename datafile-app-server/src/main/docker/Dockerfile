@@ -18,7 +18,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # ============LICENSE_END=========================================================
 #
-FROM openjdk:11.0.6-jre-slim
+FROM openjdk:11.0.8-jre-slim
 
 EXPOSE 8100 8433
 
