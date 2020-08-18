@@ -1,6 +1,6 @@
 /*-
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018, 2020 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -302,8 +302,7 @@ public class ScheduledTasks {
 
     private Flux<FileReadyMessage> handleConsumeMessageFailure(Throwable exception, Map<String, String> context) {
         MDC.setContextMap(context);
-        logger.error("Polling for file ready message failed, exception: {}, config: {}", exception.toString(),
-            this.applicationConfiguration.getDmaapConsumerConfiguration());
+        logger.error("Polling for file ready message failed, exception: {}", exception.toString());
         return Flux.empty();
     }
 
