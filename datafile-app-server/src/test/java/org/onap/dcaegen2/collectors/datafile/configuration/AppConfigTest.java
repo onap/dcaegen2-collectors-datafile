@@ -1,6 +1,6 @@
 /*-
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018, 2020 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -16,6 +16,38 @@
 
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
+import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClient;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.model.CbsClientConfiguration;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.model.MessageRouterSubscribeRequest;
+import org.onap.dcaegen2.services.sdk.security.ssl.SecurityKeys;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.Properties;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertTrue;
@@ -27,42 +59,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import java.util.Properties;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
-import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
-import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClient;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.model.EnvProperties;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.model.ImmutableEnvProperties;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapConsumerConfiguration;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
-
 /**
  * Tests the AppConfig.
  *
@@ -73,46 +69,14 @@ public class AppConfigTest {
 
     public static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
-    public static final ImmutableDmaapConsumerConfiguration CORRECT_DMAAP_CONSUMER_CONFIG = //
-        new ImmutableDmaapConsumerConfiguration.Builder() //
-            .endpointUrl(
-                "http://dradmin:dradmin@localhost:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12")
-            .timeoutMs(-1) //
-            .dmaapHostName("localhost") //
-            .dmaapUserName("dradmin") //
-            .dmaapUserPassword("dradmin") //
-            .dmaapTopicName("events/unauthenticated.VES_NOTIFICATION_OUTPUT") //
-            .dmaapPortNumber(2222) //
-            .dmaapContentType("application/json") //
-            .messageLimit(-1) //
-            .dmaapProtocol("http") //
-            .consumerId("C12") //
-            .consumerGroup("OpenDcae-c12") //
-            .trustStorePath("trustStorePath") //
-            .trustStorePasswordPath("trustStorePasswordPath") //
-            .keyStorePath("keyStorePath") //
-            .keyStorePasswordPath("keyStorePasswordPath") //
-            .enableDmaapCertAuth(true) //
-            .build();
-
-    public static final ConsumerConfiguration CORRECT_CONSUMER_CONFIG = ImmutableConsumerConfiguration.builder() //
-        .topicUrl(
-            "http://dradmin:dradmin@localhost:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12")
-        .trustStorePath("trustStorePath") //
-        .trustStorePasswordPath("trustStorePasswordPath") //
-        .keyStorePath("keyStorePath") //
-        .keyStorePasswordPath("keyStorePasswordPath") //
-        .enableDmaapCertAuth(true) //
-        .build();
-
     private static final PublisherConfiguration CORRECT_PUBLISHER_CONFIG = //
         ImmutablePublisherConfiguration.builder() //
             .publishUrl("https://localhost:3907/publish/1") //
             .logUrl("https://localhost:3907/feedlog/1") //
-            .trustStorePath("trustStorePath") //
-            .trustStorePasswordPath("trustStorePasswordPath") //
-            .keyStorePath("keyStorePath") //
-            .keyStorePasswordPath("keyStorePasswordPath") //
+            .trustStorePath("src/test/resources/trust.jks") //
+            .trustStorePasswordPath("src/test/resources/trust.pass") //
+            .keyStorePath("src/test/resources/cert.jks") //
+            .keyStorePasswordPath("src/test/resources/jks.pass") //
             .enableDmaapCertAuth(true) //
             .changeIdentifier("PM_MEAS_FILES") //
             .userName("CYE9fl40") //
@@ -127,35 +91,10 @@ public class AppConfigTest {
             .trustedCaPasswordPath("/src/test/resources/ftp.jks.pass") //
             .build();
 
-    private static final ImmutableDmaapPublisherConfiguration CORRECT_DMAAP_PUBLISHER_CONFIG = //
-        new ImmutableDmaapPublisherConfiguration.Builder() //
-            .endpointUrl("https://localhost:3907/publish/1") //
-            .dmaapTopicName("/publish/1") //
-            .dmaapUserPassword("izBJD8nLjawq0HMG") //
-            .dmaapPortNumber(3907) //
-            .dmaapProtocol("https") //
-            .dmaapContentType("application/octet-stream") //
-            .dmaapHostName("localhost") //
-            .dmaapUserName("CYE9fl40") //
-            .trustStorePath("trustStorePath") //
-            .trustStorePasswordPath("trustStorePasswordPath") //
-            .keyStorePath("keyStorePath") //
-            .keyStorePasswordPath("keyStorePasswordPath") //
-            .enableDmaapCertAuth(true) //
-            .build();
-
-    private static EnvProperties properties() {
-        return ImmutableEnvProperties.builder() //
-            .consulHost("host") //
-            .consulPort(123) //
-            .cbsName("cbsName") //
-            .appName("appName") //
-            .build();
-    }
-
     private AppConfig appConfigUnderTest;
     private final Map<String, String> context = MappedDiagnosticContext.initializeTraceContext();
     CbsClient cbsClient = mock(CbsClient.class);
+    CbsClientConfiguration cbsClientConfiguration = mock(CbsClientConfiguration.class);
 
     @BeforeEach
     void setUp() {
@@ -175,13 +114,11 @@ public class AppConfigTest {
 
         ConsumerConfiguration consumerCfg = appConfigUnderTest.getDmaapConsumerConfiguration();
         Assertions.assertNotNull(consumerCfg);
-        assertThat(consumerCfg.toDmaap()).isEqualToComparingFieldByField(CORRECT_DMAAP_CONSUMER_CONFIG);
-        assertThat(consumerCfg).isEqualToComparingFieldByField(CORRECT_CONSUMER_CONFIG);
+        assertThat(consumerCfg).satisfies(this::checkCorrectConsumerConfiguration);
 
         PublisherConfiguration publisherCfg = appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER);
         Assertions.assertNotNull(publisherCfg);
         assertThat(publisherCfg).isEqualToComparingFieldByField(CORRECT_PUBLISHER_CONFIG);
-        assertThat(publisherCfg.toDmaap()).isEqualToComparingFieldByField(CORRECT_DMAAP_PUBLISHER_CONFIG);
 
         FtpesConfig ftpesConfig = appConfigUnderTest.getFtpesConfiguration();
         assertThat(ftpesConfig).isNotNull();
@@ -245,7 +182,7 @@ public class AppConfigTest {
         doReturn(getCorrectJson()).when(appConfigUnderTest).createInputStream(any());
         JsonElement jsonElement = mock(JsonElement.class);
         when(jsonElement.isJsonObject()).thenReturn(false);
-        doReturn(jsonElement).when(appConfigUnderTest).getJsonElement(any(JsonParser.class), any(InputStream.class));
+        doReturn(jsonElement).when(appConfigUnderTest).getJsonElement(any(InputStream.class));
         appConfigUnderTest.loadConfigurationFromFile();
 
         // Then
@@ -266,15 +203,13 @@ public class AppConfigTest {
             .expectSubscription() //
             .verifyComplete(); //
 
-        assertTrue(logAppender.list.toString().contains("$CONSUL_HOST environment has not been defined"));
+        assertTrue(logAppender.list.toString().contains("CbsClientConfigurationException"));
     }
 
     @Test
     public void whenPeriodicConfigRefreshNoConsul() {
-        EnvProperties props = properties();
-        doReturn(Mono.just(props)).when(appConfigUnderTest).getEnvironment(any(), any());
-
-        doReturn(Mono.just(cbsClient)).when(appConfigUnderTest).createCbsClient(props);
+        doReturn(Mono.just(cbsClientConfiguration)).when(appConfigUnderTest).createCbsClientConfiguration();
+        doReturn(Mono.just(cbsClient)).when(appConfigUnderTest).createCbsClient(cbsClientConfiguration);
         Flux<JsonObject> err = Flux.error(new IOException());
         doReturn(err).when(cbsClient).updates(any(), any(), any());
 
@@ -292,9 +227,8 @@ public class AppConfigTest {
 
     @Test
     public void whenPeriodicConfigRefreshSuccess() throws JsonIOException, JsonSyntaxException, IOException {
-        EnvProperties props = properties();
-        doReturn(Mono.just(props)).when(appConfigUnderTest).getEnvironment(any(), any());
-        doReturn(Mono.just(cbsClient)).when(appConfigUnderTest).createCbsClient(props);
+        doReturn(Mono.just(cbsClientConfiguration)).when(appConfigUnderTest).createCbsClientConfiguration();
+        doReturn(Mono.just(cbsClient)).when(appConfigUnderTest).createCbsClient(cbsClientConfiguration);
 
         Flux<JsonObject> json = Flux.just(getJsonRootObject());
         doReturn(json).when(cbsClient).updates(any(), any(), any());
@@ -312,10 +246,8 @@ public class AppConfigTest {
 
     @Test
     public void whenPeriodicConfigRefreshSuccess2() throws JsonIOException, JsonSyntaxException, IOException {
-        EnvProperties props = properties();
-        doReturn(Mono.just(props)).when(appConfigUnderTest).getEnvironment(any(), any());
-
-        doReturn(Mono.just(cbsClient)).when(appConfigUnderTest).createCbsClient(props);
+        doReturn(Mono.just(cbsClientConfiguration)).when(appConfigUnderTest).createCbsClientConfiguration();
+        doReturn(Mono.just(cbsClient)).when(appConfigUnderTest).createCbsClient(cbsClientConfiguration);
 
         Flux<JsonObject> json = Flux.just(getJsonRootObject());
         Flux<JsonObject> err = Flux.error(new IOException()); // no config entry created by the
@@ -334,8 +266,21 @@ public class AppConfigTest {
         Assertions.assertNotNull(appConfigUnderTest.getDmaapConsumerConfiguration());
     }
 
+    private void checkCorrectConsumerConfiguration(ConsumerConfiguration consumerConfiguration) {
+        MessageRouterSubscribeRequest messageRouterSubscribeRequest =
+                consumerConfiguration.getMessageRouterSubscribeRequest();
+        assertThat(messageRouterSubscribeRequest.consumerGroup()).isEqualTo("OpenDcae-c12");
+        assertThat(messageRouterSubscribeRequest.consumerId()).isEqualTo("C12");
+        assertThat(messageRouterSubscribeRequest.sourceDefinition().topicUrl())
+                .isEqualTo("http://localhost:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT");
+        SecurityKeys securityKeys = consumerConfiguration.getMessageRouterSubscriberConfig().securityKeys();
+        assertThat(securityKeys.keyStore().path().toString()).isEqualTo("src/test/resources/cert.jks");
+        assertThat(securityKeys.trustStore().path().toString()).isEqualTo("src/test/resources/trust.jks");
+        assertThat(consumerConfiguration.getMessageRouterSubscriber()).isNotNull();
+    }
+
     private JsonObject getJsonRootObject() throws JsonIOException, JsonSyntaxException, IOException {
-        JsonObject rootObject = (new JsonParser()).parse(new InputStreamReader(getCorrectJson())).getAsJsonObject();
+        JsonObject rootObject = JsonParser.parseReader(new InputStreamReader(getCorrectJson())).getAsJsonObject();
         return rootObject;
     }
 

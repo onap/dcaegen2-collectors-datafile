@@ -1,6 +1,6 @@
 /*
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018, 2020 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -50,10 +50,10 @@ import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.onap.dcaegen2.collectors.datafile.configuration.PublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.http.HttpAsyncClientBuilderWrapper;
 import org.onap.dcaegen2.collectors.datafile.web.PublishRedirectStrategy;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 
 /**
  * Test for DmaapProducerHttpClient.
@@ -73,7 +73,7 @@ class DmaapProducerHttpClientTest {
 
     private DmaapProducerHttpClient producerClientUnderTestSpy;
 
-    private DmaapPublisherConfiguration dmaapPublisherConfigurationMock = mock(DmaapPublisherConfiguration.class);
+    private PublisherConfiguration dmaapPublisherConfigurationMock = mock(PublisherConfiguration.class);
 
     private HttpAsyncClientBuilderWrapper clientBuilderMock;
 
@@ -83,11 +83,8 @@ class DmaapProducerHttpClientTest {
 
     @BeforeEach
     void setUp() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
-        when(dmaapPublisherConfigurationMock.dmaapHostName()).thenReturn(HOST);
-        when(dmaapPublisherConfigurationMock.dmaapProtocol()).thenReturn(HTTPS_SCHEME);
-        when(dmaapPublisherConfigurationMock.dmaapPortNumber()).thenReturn(PORT);
-        when(dmaapPublisherConfigurationMock.dmaapUserName()).thenReturn("dradmin");
-        when(dmaapPublisherConfigurationMock.dmaapUserPassword()).thenReturn("dradmin");
+        when(dmaapPublisherConfigurationMock.userName()).thenReturn("dradmin");
+        when(dmaapPublisherConfigurationMock.password()).thenReturn("dradmin");
 
         producerClientUnderTestSpy = spy(new DmaapProducerHttpClient(dmaapPublisherConfigurationMock));
 

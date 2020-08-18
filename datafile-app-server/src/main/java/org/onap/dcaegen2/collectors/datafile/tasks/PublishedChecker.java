@@ -1,6 +1,7 @@
 /*-
 * ============LICENSE_START=======================================================
 *  Copyright (C) 2019 Nordix Foundation.
+*  Copyright (C) 2020 Nokia. All rights reserved.
 * ================================================================================
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,7 +22,6 @@
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
@@ -113,12 +113,7 @@ public class PublishedChecker {
         return appConfig.getPublisherConfiguration(changeIdentifier);
     }
 
-    protected DmaapProducerHttpClient resolveClient(PublisherConfiguration publisherConfig)
-        throws DatafileTaskException {
-        try {
-            return new DmaapProducerHttpClient(publisherConfig.toDmaap());
-        } catch (MalformedURLException e) {
-            throw new DatafileTaskException("Cannot create published checker client", e);
-        }
+    protected DmaapProducerHttpClient resolveClient(PublisherConfiguration publisherConfig) {
+        return new DmaapProducerHttpClient(publisherConfig);
     }
 }
