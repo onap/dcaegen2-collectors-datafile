@@ -96,8 +96,8 @@ public class JsonMessageParser {
      * @return a <code>Flux</code> containing messages.
      */
 
-    public Flux<FileReadyMessage> getMessagesFromJson(Mono<JsonElement> rawMessage) {
-        return rawMessage.flatMapMany(this::createMessageData);
+    public Flux<FileReadyMessage> getMessagesFromJson(Flux<JsonElement> rawMessage) {
+        return rawMessage.flatMap(this::createMessageData);
     }
 
     Optional<JsonObject> getJsonObjectFromAnArray(JsonElement element) {
@@ -117,9 +117,9 @@ public class JsonMessageParser {
     }
 
     /**
-     * Extract info from string and create a Flux of {@link FileReadyMessage}.
+     * Extract info from jsonElement and create a Flux of {@link FileReadyMessage}.
      *
-     * @param rawMessage - results from DMaaP
+     * @param jsonElement - result from DMaaP
      * @return reactive Flux of FileReadyMessages
      */
     private Flux<FileReadyMessage> createMessageData(JsonElement jsonElement) {

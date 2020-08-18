@@ -21,18 +21,23 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static org.onap.dcaegen2.collectors.datafile.configuration.AppConfigTest.CORRECT_CONSUMER_CONFIG;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
+import org.onap.dcaegen2.collectors.datafile.configuration.ConsumerConfiguration;
+import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
+import org.onap.dcaegen2.collectors.datafile.model.*;
+import org.onap.dcaegen2.collectors.datafile.service.JsonMessageParser;
+import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
+import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.api.MessageRouterSubscriber;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.model.MessageRouterSubscribeRequest;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.model.config.MessageRouterSubscriberConfig;
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,29 +46,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
-import org.onap.dcaegen2.collectors.datafile.configuration.ConsumerConfiguration;
-import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
-import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
-import org.onap.dcaegen2.collectors.datafile.model.FileData;
-import org.onap.dcaegen2.collectors.datafile.model.FilePublishInformation;
-import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
-import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
-import org.onap.dcaegen2.collectors.datafile.model.ImmutableFilePublishInformation;
-import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileReadyMessage;
-import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
-import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
-import org.onap.dcaegen2.collectors.datafile.service.JsonMessageParser;
-import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
-import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.service.consumer.ConsumerReactiveHttpClientFactory;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.service.consumer.DMaaPConsumerReactiveHttpClient;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 public class DMaaPMessageConsumerTest {
     private static final String NR_RADIO_ERICSSON_EVENT_NAME = "Noti_NrRadio-Ericsson_FileReady";
@@ -90,8 +74,6 @@ public class DMaaPMessageConsumerTest {
     private static List<FilePublishInformation> listOfFilePublishInformation = new ArrayList<>();
     private static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
-    private DMaaPConsumerReactiveHttpClient httpClientMock;
-
     private DMaaPMessageConsumer messageConsumer;
     private static String ftpesMessageString;
     private static JsonElement ftpesMessageJson;
@@ -105,6 +87,7 @@ public class DMaaPMessageConsumerTest {
 
     private static AppConfig appConfig;
     private static ConsumerConfiguration dmaapConsumerConfiguration;
+    private static MessageRouterSubscriber messageRouterSubscriber;
 
     /**
      * Sets up data for the test.
@@ -113,7 +96,10 @@ public class DMaaPMessageConsumerTest {
     public static void setUp() {
 
         appConfig = mock(AppConfig.class);
-        dmaapConsumerConfiguration = CORRECT_CONSUMER_CONFIG;
+
+        messageRouterSubscriber = mock(MessageRouterSubscriber.class);
+        dmaapConsumerConfiguration = new ConsumerConfiguration(mock(MessageRouterSubscriberConfig.class),
+                messageRouterSubscriber, mock(MessageRouterSubscribeRequest.class));
 
         JsonParser jsonParser = new JsonParser();
 
@@ -220,46 +206,43 @@ public class DMaaPMessageConsumerTest {
             .expectError(DatafileTaskException.class) //
             .verify();
 
-        verify(httpClientMock, times(1)).getDMaaPConsumerResponse(Optional.empty());
-    }
+        verify(messageRouterSubscriber, times(1))
+                .getElements(dmaapConsumerConfiguration.getMessageRouterSubscribeRequest());    }
 
     @Test
-    public void whenFtpes_ReturnsCorrectResponse() throws DatafileTaskException {
+    public void whenFtpes_ReturnsCorrectResponse() {
         prepareMocksForDmaapConsumer(Optional.of(ftpesMessageJson), expectedFtpesMessage);
 
         StepVerifier.create(messageConsumer.getMessageRouterResponse()) //
             .expectNext(expectedFtpesMessage) //
             .verifyComplete();
 
-        verify(httpClientMock, times(1)).getDMaaPConsumerResponse(Optional.empty());
-        verifyNoMoreInteractions(httpClientMock);
+        verify(messageRouterSubscriber, times(1))
+                .getElements(dmaapConsumerConfiguration.getMessageRouterSubscribeRequest());
+        verifyNoMoreInteractions(messageRouterSubscriber);
     }
 
     @Test
-    public void whenSftp_ReturnsCorrectResponse() throws DatafileTaskException {
+    public void whenSftp_ReturnsCorrectResponse() {
         prepareMocksForDmaapConsumer(Optional.of(sftpMessageJson), expectedSftpMessage);
 
         StepVerifier.create(messageConsumer.getMessageRouterResponse()) //
             .expectNext(expectedSftpMessage) //
             .verifyComplete();
 
-        verify(httpClientMock, times(1)).getDMaaPConsumerResponse(Optional.empty());
-        verifyNoMoreInteractions(httpClientMock);
+        verify(messageRouterSubscriber, times(1))
+                .getElements(dmaapConsumerConfiguration.getMessageRouterSubscribeRequest());
+        verifyNoMoreInteractions(messageRouterSubscriber);
     }
 
     private void prepareMocksForDmaapConsumer(Optional<JsonElement> message,
         FileReadyMessage fileReadyMessageAfterConsume) {
-        Mono<JsonElement> messageAsMono = message.isPresent() ? Mono.just(message.get()) : Mono.empty();
+        Flux<JsonElement> messageAsMono = message.isPresent() ? Flux.just(message.get()) : Flux.empty();
+
         JsonMessageParser jsonMessageParserMock = mock(JsonMessageParser.class);
-        httpClientMock = mock(DMaaPConsumerReactiveHttpClient.class);
-        when(httpClientMock.getDMaaPConsumerResponse(Optional.empty())).thenReturn(messageAsMono);
+        when(messageRouterSubscriber.getElements(dmaapConsumerConfiguration.getMessageRouterSubscribeRequest()))
+                .thenReturn(messageAsMono);
         when(appConfig.getDmaapConsumerConfiguration()).thenReturn(dmaapConsumerConfiguration);
-        ConsumerReactiveHttpClientFactory httpClientFactory = mock(ConsumerReactiveHttpClientFactory.class);
-        try {
-            doReturn(httpClientMock).when(httpClientFactory).create(dmaapConsumerConfiguration.toDmaap());
-        } catch (DatafileTaskException e) {
-            e.printStackTrace();
-        }
 
         if (message.isPresent()) {
             when(jsonMessageParserMock.getMessagesFromJson(any())).thenReturn(Flux.just(fileReadyMessageAfterConsume));
@@ -268,7 +251,7 @@ public class DMaaPMessageConsumerTest {
                 .thenReturn(Flux.error(new DatafileTaskException("problemas")));
         }
 
-        messageConsumer = spy(new DMaaPMessageConsumer(appConfig, jsonMessageParserMock, httpClientFactory));
+        messageConsumer = spy(new DMaaPMessageConsumer(appConfig, jsonMessageParserMock));
     }
 
 }

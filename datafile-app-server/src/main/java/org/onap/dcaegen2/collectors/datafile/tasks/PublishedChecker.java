@@ -21,7 +21,6 @@
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
@@ -113,12 +112,7 @@ public class PublishedChecker {
         return appConfig.getPublisherConfiguration(changeIdentifier);
     }
 
-    protected DmaapProducerHttpClient resolveClient(PublisherConfiguration publisherConfig)
-        throws DatafileTaskException {
-        try {
-            return new DmaapProducerHttpClient(publisherConfig.toDmaap());
-        } catch (MalformedURLException e) {
-            throw new DatafileTaskException("Cannot create published checker client", e);
-        }
+    protected DmaapProducerHttpClient resolveClient(PublisherConfiguration publisherConfig) {
+        return new DmaapProducerHttpClient(publisherConfig);
     }
 }

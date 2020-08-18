@@ -5,11 +5,14 @@
     "dmaap.ftpesConfig.keyPasswordPath": "/src/test/resources/dfc.jks.pass",
     "dmaap.ftpesConfig.trustedCa": "/src/test/resources/ftp.jks",
     "dmaap.ftpesConfig.trustedCaPasswordPath": "/src/test/resources/ftp.jks.pass",
-    "dmaap.security.trustStorePath": "trustStorePath",
-    "dmaap.security.trustStorePasswordPath": "trustStorePasswordPath",
-    "dmaap.security.keyStorePath": "keyStorePath",
-    "dmaap.security.keyStorePasswordPath": "keyStorePasswordPath",
+    "dmaap.security.trustStorePath": "src/test/resources/trust.jks",
+    "dmaap.security.trustStorePasswordPath": "src/test/resources/trust.pass",
+    "dmaap.security.keyStorePath": "src/test/resources/cert.jks",
+    "dmaap.security.keyStorePasswordPath": "src/test/resources/jks.pass",
     "dmaap.security.enableDmaapCertAuth": "true",
+    "dmaap.dmaapConsumerConfiguration.consumerGroup": "OpenDcae-c12",
+    "dmaap.dmaapConsumerConfiguration.consumerId": "C12",
+    "dmaap.dmaapConsumerConfiguration.timeoutMs": 1000,
     "sftp.security.strictHostKeyChecking": "false",
     "streams_publishes": {
       "PM_MEAS_FILES": {
@@ -27,7 +30,7 @@
     "streams_subscribes": {
       "dmaap_subscriber": {
         "dmaap_info": {
-          "topic_url": "http://dradmin:dradmin@localhost:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12"
+          "topic_url": "http://localhost:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT"
         },
         "type": "message_router"
       }

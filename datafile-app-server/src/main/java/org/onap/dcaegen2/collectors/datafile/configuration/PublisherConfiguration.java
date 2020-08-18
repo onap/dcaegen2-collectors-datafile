@@ -16,13 +16,10 @@
 
 package org.onap.dcaegen2.collectors.datafile.configuration;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.ImmutableDmaapPublisherConfiguration;
+
 
 @Value.Immutable
 @Value.Style(redactedMask = "####")
@@ -50,30 +47,4 @@ public interface PublisherConfiguration {
 
     String changeIdentifier();
 
-    /**
-     * Get the publisher configuration in SDK format.
-     *
-     * @return a <code>DmaapPublisherConfiguration</code> contining the publisher configuration.
-     * @throws MalformedURLException if the publish URL is malformed.
-     */
-    default DmaapPublisherConfiguration toDmaap() throws MalformedURLException {
-        URL url = new URL(publishUrl());
-        String urlPath = url.getPath();
-
-        return new ImmutableDmaapPublisherConfiguration.Builder() //
-            .endpointUrl(publishUrl()) //
-            .dmaapContentType("application/octet-stream") //
-            .dmaapPortNumber(url.getPort()) //
-            .dmaapHostName(url.getHost()) //
-            .dmaapTopicName(urlPath) //
-            .dmaapProtocol(url.getProtocol()) //
-            .dmaapUserName(this.userName()) //
-            .dmaapUserPassword(this.passWord()) //
-            .trustStorePath(this.trustStorePath()) //
-            .trustStorePasswordPath(this.trustStorePasswordPath()) //
-            .keyStorePath(this.keyStorePath()) //
-            .keyStorePasswordPath(this.keyStorePasswordPath()) //
-            .enableDmaapCertAuth(this.enableDmaapCertAuth()) //
-            .build();
-    }
 }
