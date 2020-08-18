@@ -1,6 +1,7 @@
 /*-
  * ============LICENSE_START=======================================================
  *  Copyright (C) 2019 Nordix Foundation.
+ *  Copyright (C) 2020 Nokia. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +25,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -42,7 +42,6 @@ import org.onap.dcaegen2.collectors.datafile.model.JsonSerializer;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.collectors.datafile.service.HttpUtils;
 import org.onap.dcaegen2.collectors.datafile.service.producer.DmaapProducerHttpClient;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -155,12 +154,8 @@ public class DataRouterPublisher {
     }
 
     DmaapProducerHttpClient resolveClient(String changeIdentifier) throws DatafileTaskException {
-        try {
-            DmaapPublisherConfiguration cfg = resolveConfiguration(changeIdentifier).toDmaap();
-            return new DmaapProducerHttpClient(cfg);
-        } catch (MalformedURLException e) {
-            throw new DatafileTaskException("Cannot resolve producer client", e);
-        }
+        PublisherConfiguration publisherConfiguration = resolveConfiguration(changeIdentifier);
+        return new DmaapProducerHttpClient(publisherConfiguration);
 
     }
 }

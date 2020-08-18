@@ -1,6 +1,6 @@
 /*-
  * ============LICENSE_START========================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018, 2020 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ==================================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -96,8 +96,8 @@ public class JsonMessageParser {
      * @return a <code>Flux</code> containing messages.
      */
 
-    public Flux<FileReadyMessage> getMessagesFromJson(Mono<JsonElement> rawMessage) {
-        return rawMessage.flatMapMany(this::createMessageData);
+    public Flux<FileReadyMessage> getMessagesFromJson(Flux<JsonElement> rawMessage) {
+        return rawMessage.flatMap(this::createMessageData);
     }
 
     Optional<JsonObject> getJsonObjectFromAnArray(JsonElement element) {
@@ -117,9 +117,9 @@ public class JsonMessageParser {
     }
 
     /**
-     * Extract info from string and create a Flux of {@link FileReadyMessage}.
+     * Extract info from jsonElement and create a Flux of {@link FileReadyMessage}.
      *
-     * @param rawMessage - results from DMaaP
+     * @param jsonElement - result from DMaaP
      * @return reactive Flux of FileReadyMessages
      */
     private Flux<FileReadyMessage> createMessageData(JsonElement jsonElement) {

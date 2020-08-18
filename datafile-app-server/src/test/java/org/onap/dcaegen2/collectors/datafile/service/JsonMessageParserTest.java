@@ -46,6 +46,7 @@ import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage;
 import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
 import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -124,7 +125,7 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
             .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectNext(expectedMessage).verifyComplete();
     }
 
@@ -178,7 +179,7 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
             .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement1)))
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement1)))
             .expectSubscription().expectNext(expectedMessage).expectNext(expectedMessage).verifyComplete();
     }
 
@@ -205,7 +206,7 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectNextCount(0).verifyComplete();
 
         assertTrue(logAppender.list.toString()
@@ -237,7 +238,7 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectNextCount(0).verifyComplete();
 
         assertTrue("Error missing in log",
@@ -295,7 +296,7 @@ class JsonMessageParserTest {
         JsonMessageParser jsonMessageParserUnderTest = new JsonMessageParser();
         JsonElement jsonElement = new JsonParser().parse(messageString);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectNext(expectedMessage).verifyComplete();
     }
 
@@ -322,7 +323,7 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectComplete().verify();
 
         assertTrue("Error missing in log",
@@ -353,7 +354,7 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectNextCount(0).verifyComplete();
 
         assertTrue("Error missing in log",
@@ -379,7 +380,7 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectNextCount(0).verifyComplete();
 
         assertTrue("Error missing in log",
@@ -410,7 +411,7 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectNextCount(0).verifyComplete();
 
         assertTrue("Error missing in log",
@@ -443,7 +444,7 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectNextCount(0).verifyComplete();
 
         assertTrue("Error missing in log",
@@ -508,7 +509,7 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
             .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectNext(expectedMessage).verifyComplete();
     }
 
@@ -525,7 +526,7 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectComplete().verify();
 
         assertTrue("Error missing in log",
@@ -544,7 +545,7 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectComplete().verify();
 
         assertTrue("Error missing in log",
@@ -574,7 +575,7 @@ class JsonMessageParserTest {
             .getJsonObjectFromAnArray(jsonElement);
 
         final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(JsonMessageParser.class);
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectNextCount(0).expectComplete().verify();
 
         assertTrue("Error missing in log",
@@ -605,7 +606,7 @@ class JsonMessageParserTest {
         Mockito.doReturn(Optional.of(jsonElement.getAsJsonObject())).when(jsonMessageParserUnderTest)
             .getJsonObjectFromAnArray(jsonElement);
 
-        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Mono.just(jsonElement))).expectSubscription()
+        StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectComplete().verify();
     }
 }
