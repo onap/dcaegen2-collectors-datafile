@@ -52,7 +52,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.ConsumerConfiguration;
-import org.onap.dcaegen2.collectors.datafile.configuration.ImmutableConsumerConfiguration;
 import org.onap.dcaegen2.collectors.datafile.configuration.ImmutablePublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.configuration.PublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
@@ -66,6 +65,9 @@ import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileReadyMessage;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableMessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.model.MessageMetaData;
 import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.api.MessageRouterSubscriber;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.model.MessageRouterSubscribeRequest;
+import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.model.config.MessageRouterSubscriberConfig;
 import org.onap.dcaegen2.services.sdk.rest.services.model.logging.MdcVariables;
 import org.slf4j.MDC;
 
@@ -110,7 +112,7 @@ public class ScheduledTasksTest {
             .publishUrl(publishUrl) //
             .logUrl("") //
             .userName("userName") //
-            .passWord("passWord") //
+            .password("passWord") //
             .trustStorePath("trustStorePath") //
             .trustStorePasswordPath("trustStorePasswordPath") //
             .keyStorePath("keyStorePath") //
@@ -118,13 +120,10 @@ public class ScheduledTasksTest {
             .enableDmaapCertAuth(true) //
             .changeIdentifier(CHANGE_IDENTIFIER) //
             .build(); //
-        final ConsumerConfiguration dmaapConsumerConfiguration = ImmutableConsumerConfiguration.builder() //
-            .topicUrl("topicUrl").trustStorePath("trustStorePath") //
-            .trustStorePasswordPath("trustStorePasswordPath") //
-            .keyStorePath("keyStorePath") //
-            .keyStorePasswordPath("keyStorePasswordPath") //
-            .enableDmaapCertAuth(true) //
-            .build();
+        final ConsumerConfiguration dmaapConsumerConfiguration =
+            new ConsumerConfiguration(mock(MessageRouterSubscriberConfig.class), mock(MessageRouterSubscriber.class),
+                mock(MessageRouterSubscribeRequest.class));
+
 
         doReturn(dmaapPublisherConfiguration).when(appConfig).getPublisherConfiguration(CHANGE_IDENTIFIER);
         doReturn(dmaapConsumerConfiguration).when(appConfig).getDmaapConsumerConfiguration();
@@ -266,7 +265,7 @@ public class ScheduledTasksTest {
             .publishUrl(publishUrl) //
             .logUrl("") //
             .userName("userName") //
-            .passWord("passWord") //
+            .password("passWord") //
             .trustStorePath("trustStorePath") //
             .trustStorePasswordPath("trustStorePasswordPath") //
             .keyStorePath("keyStorePath") //
@@ -274,13 +273,9 @@ public class ScheduledTasksTest {
             .enableDmaapCertAuth(true) //
             .changeIdentifier("Different changeIdentifier") //
             .build(); //
-        final ConsumerConfiguration dmaapConsumerConfiguration = ImmutableConsumerConfiguration.builder() //
-            .topicUrl("topicUrl").trustStorePath("trustStorePath") //
-            .trustStorePasswordPath("trustStorePasswordPath") //
-            .keyStorePath("keyStorePath") //
-            .keyStorePasswordPath("keyStorePasswordPath") //
-            .enableDmaapCertAuth(true) //
-            .build();
+        final ConsumerConfiguration dmaapConsumerConfiguration =
+            new ConsumerConfiguration(mock(MessageRouterSubscriberConfig.class), mock(MessageRouterSubscriber.class),
+                mock(MessageRouterSubscribeRequest.class));
 
         doReturn(dmaapPublisherConfiguration).when(appConfig).getPublisherConfiguration(CHANGE_IDENTIFIER);
         doReturn(dmaapConsumerConfiguration).when(appConfig).getDmaapConsumerConfiguration();

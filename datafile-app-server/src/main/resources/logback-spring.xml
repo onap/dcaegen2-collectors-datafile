@@ -16,49 +16,28 @@
     |%thread
     |%n"/>
 
-  <springProfile name="dev">
-    <appender name="CONSOLE" target="SYSTEM_OUT" class="ch.qos.logback.core.ConsoleAppender">
-       <encoder>
-         <pattern>${defaultPattern}</pattern>
-       </encoder>
-    </appender>
+  <appender name="CONSOLE" target="SYSTEM_OUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>${defaultPattern}</pattern>
+    </encoder>
+  </appender>
 
-    <appender name="ROLLING-FILE"
-      class="ch.qos.logback.core.rolling.RollingFileAppender">
-      <encoder>
-        <pattern>${defaultPattern}</pattern>
-      </encoder>
-      <file>${logPath}/${outputFilename}.log</file>
-      <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-        <fileNamePattern>${outputFilename}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-        <MaxFileSize>${maxFileSize}</MaxFileSize>
-        <MaxHistory>${maxHistory}</MaxHistory>
-        <TotalSizeCap>${totalSizeCap}</TotalSizeCap>
-      </rollingPolicy>
-    </appender>
-    <root level="ERROR">
-      <appender-ref ref="CONSOLE"/>
-      <appender-ref ref="ROLLING-FILE"/>
-    </root>
-  </springProfile>
+  <appender name="ROLLING-FILE"
+            class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <encoder>
+      <pattern>${defaultPattern}</pattern>
+    </encoder>
+    <file>${logPath}/${outputFilename}.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <fileNamePattern>${outputFilename}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <MaxFileSize>${maxFileSize}</MaxFileSize>
+      <MaxHistory>${maxHistory}</MaxHistory>
+      <TotalSizeCap>${totalSizeCap}</TotalSizeCap>
+    </rollingPolicy>
+  </appender>
+  <root level="ERROR">
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="ROLLING-FILE"/>
+  </root>
 
-  <springProfile name="prod">
-    <appender name="ROLLING-FILE"
-      class="ch.qos.logback.core.rolling.RollingFileAppender">
-      <encoder>
-        <pattern>${defaultPattern}</pattern>
-      </encoder>
-      <file>${logPath}/${outputFilename}.log</file>
-      <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-        <fileNamePattern>${outputFilename}.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
-        <MaxFileSize>${maxFileSize}</MaxFileSize>
-        <MaxHistory>${maxHistory}</MaxHistory>
-        <TotalSizeCap>${totalSizeCap}</TotalSizeCap>
-      </rollingPolicy>
-    </appender>
-
-    <root level="ERROR">
-      <appender-ref ref="ROLLING-FILE"/>
-    </root>
-  </springProfile>
 </configuration>
