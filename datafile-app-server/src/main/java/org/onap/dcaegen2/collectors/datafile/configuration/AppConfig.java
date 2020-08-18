@@ -1,6 +1,6 @@
 /*-
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018, 2020 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -41,8 +41,9 @@ import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticConte
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClient;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClientFactory;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsRequests;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.exceptions.CbsClientConfigurationException;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.model.CbsClientConfiguration;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.model.CbsRequest;
-import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.model.EnvProperties;
 import org.onap.dcaegen2.services.sdk.rest.services.model.logging.RequestDiagnosticContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,12 +72,12 @@ public class AppConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(AppConfig.class);
 
+    @Value("#{systemEnvironment}")
+    Properties systemEnvironment;
     private ConsumerConfiguration dmaapConsumerConfiguration;
     private Map<String, PublisherConfiguration> publishingConfigurations;
     private FtpesConfig ftpesConfiguration;
     private SftpConfig sftpConfiguration;
-    @Value("#{systemEnvironment}")
-    Properties systemEnvironment;
     private Disposable refreshConfigTask = null;
 
     @NotEmpty
@@ -102,8 +103,8 @@ public class AppConfig {
     }
 
     Flux<AppConfig> createRefreshTask(Map<String, String> context) {
-        return getEnvironment(systemEnvironment, context) //
-            .flatMap(this::createCbsClient) //
+        return createCbsClientConfiguration()
+            .flatMap(this::createCbsClient)
             .flatMapMany(this::periodicConfigurationUpdates) //
             .map(this::parseCloudConfig) //
             .onErrorResume(this::onErrorResume);
@@ -175,19 +176,25 @@ public class AppConfig {
         return Mono.empty();
     }
 
-    Mono<EnvProperties> getEnvironment(Properties systemEnvironment, Map<String, String> context) {
-        return EnvironmentProcessor.readEnvironmentVariables(systemEnvironment, context);
+    Mono<CbsClientConfiguration> createCbsClientConfiguration() {
+        try {
+            return Mono.just(CbsClientConfiguration.fromEnvironment());
+        } catch (CbsClientConfigurationException e) {
+            return Mono.error(e);
+        }
     }
 
-    Mono<CbsClient> createCbsClient(EnvProperties env) {
-        return CbsClientFactory.createCbsClient(env);
+    Mono<CbsClient> createCbsClient(CbsClientConfiguration cbsClientConfiguration) {
+        return CbsClientFactory.createCbsClient(cbsClientConfiguration);
     }
 
     private AppConfig parseCloudConfig(JsonObject configurationObject) {
         try {
-            CloudConfigParser parser = new CloudConfigParser(configurationObject, systemEnvironment);
-            setConfiguration(parser.getDmaapConsumerConfig(), parser.getDmaapPublisherConfigurations(),
-                parser.getFtpesConfig(), parser.getSftpConfig());
+            CloudConfigParser parser =
+                new CloudConfigParser(configurationObject, systemEnvironment);
+            setConfiguration(parser.getConsumerConfiguration(),
+                parser.getDmaapPublisherConfigurations(), parser.getFtpesConfig(),
+                parser.getSftpConfig());
             logConfig();
         } catch (DatafileTaskException e) {
             logger.error("Could not parse configuration {}", e.toString(), e);
@@ -207,8 +214,7 @@ public class AppConfig {
         ServiceLoader.load(TypeAdapterFactory.class).forEach(gsonBuilder::registerTypeAdapterFactory);
 
         try (InputStream inputStream = createInputStream(filepath)) {
-            JsonParser parser = new JsonParser();
-            JsonObject rootObject = getJsonElement(parser, inputStream).getAsJsonObject();
+            JsonObject rootObject = getJsonElement(inputStream).getAsJsonObject();
             if (rootObject == null) {
                 throw new JsonSyntaxException("Root is not a json object");
             }
@@ -228,8 +234,8 @@ public class AppConfig {
         this.sftpConfiguration = sftpConfig;
     }
 
-    JsonElement getJsonElement(JsonParser parser, InputStream inputStream) {
-        return parser.parse(new InputStreamReader(inputStream));
+    JsonElement getJsonElement(InputStream inputStream) {
+        return JsonParser.parseReader(new InputStreamReader(inputStream));
     }
 
     InputStream createInputStream(@NotNull String filepath) throws IOException {

@@ -1,6 +1,6 @@
 /*-
  * ============LICENSE_START=======================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018, 2020 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,10 +37,10 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.ssl.SSLContextBuilder;
+import org.onap.dcaegen2.collectors.datafile.configuration.PublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.http.HttpAsyncClientBuilderWrapper;
 import org.onap.dcaegen2.collectors.datafile.web.PublishRedirectStrategy;
-import org.onap.dcaegen2.services.sdk.rest.services.dmaap.client.config.DmaapPublisherConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -61,14 +61,14 @@ public class DmaapProducerHttpClient {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final DmaapPublisherConfiguration configuration;
+    private final PublisherConfiguration configuration;
 
     /**
      * Constructor DmaapProducerReactiveHttpClient.
      *
      * @param dmaapPublisherConfiguration - DMaaP producer configuration object
      */
-    public DmaapProducerHttpClient(DmaapPublisherConfiguration dmaapPublisherConfiguration) {
+    public DmaapProducerHttpClient(PublisherConfiguration dmaapPublisherConfiguration) {
         this.configuration = dmaapPublisherConfiguration;
     }
 
@@ -131,7 +131,7 @@ public class DmaapProducerHttpClient {
      * @param request the request to add credentials to.
      */
     public void addUserCredentialsToHead(HttpUriRequest request) {
-        String plainCreds = configuration.dmaapUserName() + ":" + configuration.dmaapUserPassword();
+        String plainCreds = configuration.userName() + ":" + configuration.passWord();
         byte[] plainCredsBytes = plainCreds.getBytes(StandardCharsets.ISO_8859_1);
         byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
         String base64Creds = new String(base64CredsBytes);
