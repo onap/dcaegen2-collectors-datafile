@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "603eafa7_dd0b4f1f",
+        "filename": "datafile-app-server/config/application.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5597
+      },
+      "writtenOn": "2020-08-25T08:00:45Z",
+      "side": 1,
+      "message": "Are the logs submitted to teh file only, or are they added as well to the stdout?",
+      "range": {
+        "startLine": 25,
+        "startChar": 2,
+        "endLine": 25,
+        "endChar": 37
+      },
+      "revId": "e257d80d0a74ee97bc81b902e36529fb214047d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1130ab8a_f0c040b7",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5597
+      },
+      "writtenOn": "2020-08-25T08:00:45Z",
+      "side": 1,
+      "message": "add \"-2020\"",
+      "range": {
+        "startLine": 4,
+        "startChar": 18,
+        "endLine": 4,
+        "endChar": 22
+      },
+      "revId": "e257d80d0a74ee97bc81b902e36529fb214047d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
