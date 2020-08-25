@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bbf5f662_97d84eed",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 2807
+      },
+      "writtenOn": "2020-08-25T11:11:08Z",
+      "side": 1,
+      "message": "Consider to simplify\n \nreturn config.get(DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH).getAsBoolean();",
+      "range": {
+        "startLine": 151,
+        "startChar": 8,
+        "endLine": 152,
+        "endChar": 25
+      },
+      "revId": "f1c49dab7490b99725e5d755efcca696e8bd9204",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d938f0c1_8f2a5e0c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 2807
+      },
+      "writtenOn": "2020-08-25T11:11:08Z",
+      "side": 1,
+      "message": "Consider to explain this number.",
+      "range": {
+        "startLine": 160,
+        "startChar": 55,
+        "endLine": 160,
+        "endChar": 56
+      },
+      "revId": "f1c49dab7490b99725e5d755efcca696e8bd9204",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9719fa50_d5ff6f9e",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/ConsumerConfiguration.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 2807
+      },
+      "writtenOn": "2020-08-25T11:11:08Z",
+      "side": 1,
+      "message": "Consider to make the following fields final (there are no setters), \u0026\u0026 make an empty line after fields declaration (as below)     \n\n    private final MessageRouterSubscriberConfig messageRouterSubscriberConfig;\n    private final MessageRouterSubscriber messageRouterSubscriber;\n    private final MessageRouterSubscribeRequest messageRouterSubscribeRequest;\n\n    public ConsumerConfiguration(MessageRouterSubscriberConfig messageRouterSubscriberConfig,\n        MessageRouterSubscriber messageRouterSubscriber, MessageRouterSubscribeRequest messageRouterSubscribeRequest) {\n        this.messageRouterSubscriberConfig \u003d messageRouterSubscriberConfig;\n        this.messageRouterSubscriber \u003d messageRouterSubscriber;\n        this.messageRouterSubscribeRequest \u003d messageRouterSubscribeRequest;\n    }",
+      "range": {
+        "startLine": 27,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 72
+      },
+      "revId": "f1c49dab7490b99725e5d755efcca696e8bd9204",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bcfdf574_4553c89b",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerHttpClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 2807
+      },
+      "writtenOn": "2020-08-25T11:11:08Z",
+      "side": 1,
+      "message": "Consider to place it on top of fields declaration",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 75
+      },
+      "revId": "f1c49dab7490b99725e5d755efcca696e8bd9204",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a4877070_b7bd5704",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerHttpClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 2807
+      },
+      "writtenOn": "2020-08-25T11:11:08Z",
+      "side": 1,
+      "message": "If it\u0027s not a \"big deal\" I would recommend to change it to \"password\"",
+      "range": {
+        "startLine": 134,
+        "startChar": 75,
+        "endLine": 134,
+        "endChar": 83
+      },
+      "revId": "f1c49dab7490b99725e5d755efcca696e8bd9204",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f0d0b1d_7d687a98",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfigTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 2807
+      },
+      "writtenOn": "2020-08-25T11:11:08Z",
+      "side": 1,
+      "message": "Consider to place it after test cases.",
+      "range": {
+        "startLine": 128,
+        "startChar": 17,
+        "endLine": 128,
+        "endChar": 50
+      },
+      "revId": "f1c49dab7490b99725e5d755efcca696e8bd9204",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
