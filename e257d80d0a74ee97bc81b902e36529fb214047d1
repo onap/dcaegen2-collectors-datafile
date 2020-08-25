@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "35f4c187_931a1336",
+        "filename": "datafile-app-server/config/application.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-08-25T08:59:06Z",
+      "side": 1,
+      "message": "Updated logback-spring.xml to always log to file and console.",
+      "parentUuid": "603eafa7_dd0b4f1f",
+      "range": {
+        "startLine": 25,
+        "startChar": 2,
+        "endLine": 25,
+        "endChar": 37
+      },
+      "revId": "e257d80d0a74ee97bc81b902e36529fb214047d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1130ab8a_f0c040b7",
         "filename": "datafile-app-server/pom.xml",
         "patchSetId": 3
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "eca49710_98f7641c",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-08-25T08:59:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1130ab8a_f0c040b7",
+      "range": {
+        "startLine": 4,
+        "startChar": 18,
+        "endLine": 4,
+        "endChar": 22
+      },
+      "revId": "e257d80d0a74ee97bc81b902e36529fb214047d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d6c46fff_9a8e9bf9",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
         "patchSetId": 3
@@ -68,6 +116,30 @@
       "revId": "e257d80d0a74ee97bc81b902e36529fb214047d1",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae89c71e_87723869",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-08-25T08:59:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6c46fff_9a8e9bf9",
+      "range": {
+        "startLine": 156,
+        "startChar": 30,
+        "endLine": 156,
+        "endChar": 31
+      },
+      "revId": "e257d80d0a74ee97bc81b902e36529fb214047d1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
