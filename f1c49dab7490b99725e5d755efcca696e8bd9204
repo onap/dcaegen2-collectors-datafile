@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "12b29119_d972d4d3",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-08-25T14:20:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbf5f662_97d84eed",
+      "range": {
+        "startLine": 151,
+        "startChar": 8,
+        "endLine": 152,
+        "endChar": 25
+      },
+      "revId": "f1c49dab7490b99725e5d755efcca696e8bd9204",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d938f0c1_8f2a5e0c",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
         "patchSetId": 4
@@ -45,6 +69,30 @@
       "revId": "f1c49dab7490b99725e5d755efcca696e8bd9204",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e4a7f08_59b37a73",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-08-25T14:20:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d938f0c1_8f2a5e0c",
+      "range": {
+        "startLine": 160,
+        "startChar": 55,
+        "endLine": 160,
+        "endChar": 56
+      },
+      "revId": "f1c49dab7490b99725e5d755efcca696e8bd9204",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "7ddb0a32_76e42ddc",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/ConsumerConfiguration.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-08-25T14:20:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9719fa50_d5ff6f9e",
+      "range": {
+        "startLine": 27,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 72
+      },
+      "revId": "f1c49dab7490b99725e5d755efcca696e8bd9204",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bcfdf574_4553c89b",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerHttpClient.java",
         "patchSetId": 4
@@ -91,6 +163,30 @@
       "revId": "f1c49dab7490b99725e5d755efcca696e8bd9204",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "efe04ccf_323bd193",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerHttpClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-08-25T14:20:09Z",
+      "side": 1,
+      "message": "logger is a member variable here, so it would be an incorrect order for checkstyle",
+      "parentUuid": "bcfdf574_4553c89b",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 75
+      },
+      "revId": "f1c49dab7490b99725e5d755efcca696e8bd9204",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "6d35cfba_0d105911",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/service/producer/DmaapProducerHttpClient.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-08-25T14:20:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4877070_b7bd5704",
+      "range": {
+        "startLine": 134,
+        "startChar": 75,
+        "endLine": 134,
+        "endChar": 83
+      },
+      "revId": "f1c49dab7490b99725e5d755efcca696e8bd9204",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7f0d0b1d_7d687a98",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfigTest.java",
         "patchSetId": 4
@@ -137,6 +257,30 @@
       "revId": "f1c49dab7490b99725e5d755efcca696e8bd9204",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3540da99_427ae498",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfigTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-08-25T14:20:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f0d0b1d_7d687a98",
+      "range": {
+        "startLine": 128,
+        "startChar": 17,
+        "endLine": 128,
+        "endChar": 50
+      },
+      "revId": "f1c49dab7490b99725e5d755efcca696e8bd9204",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
