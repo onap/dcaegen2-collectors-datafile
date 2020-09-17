@@ -1,7 +1,7 @@
 {
   "self": {
     "name": "datafile-collector",
-    "version": "1.0.0",
+    "version": "1.4.3",
     "description": "Docker application to collect log file from PNF",
     "component_type": "docker"
   },
@@ -31,7 +31,12 @@
     "ports": [
       "8100:0",
       "8433:0"
-    ]
+    ],
+    "tls_info": {
+      "cert_directory": "/opt/app/datafile/etc/cert/",
+      "use_tls": true,
+      "use_external_tls": false
+    }
   },
   "artifacts": [
     {
@@ -42,8 +47,13 @@
   "parameters": [
     {
       "name": "streams_subscribes",
-      "value": {"dmaap_subscriber": {"dmaap_info": {"topic_url":
-      "https://message-router.onap.svc.cluster.local:3905/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12"}}},
+      "value": {
+        "dmaap_subscriber": {
+          "dmaap_info": {
+            "topic_url": "https://message-router:3905/events/unauthenticated.VES_NOTIFICATION_OUTPUT/"
+          }
+        }
+      },
       "description": "datafile collector consume VES event to message router topic ",
       "designer_editable": true,
       "sourced_at_deployment": false,
@@ -53,7 +63,7 @@
     },
     {
       "name": "dmaap.ftpesConfig.keyCert",
-      "value": "/opt/app/datafile/config/dfc.jks",
+      "value": "/opt/app/datafile/etc/cert/dfc.jks",
       "description": "",
       "designer_editable": true,
       "sourced_at_deployment": false,
@@ -73,7 +83,7 @@
     },
     {
       "name": "dmaap.ftpesConfig.trustedCa",
-      "value": "/opt/app/datafile/config/cert.jks",
+      "value": "/opt/app/datafile/etc/cert/cert.jks",
       "description": "",
       "designer_editable": true,
       "sourced_at_deployment": false,
@@ -150,7 +160,26 @@
       "policy_editable": false,
       "type": "string",
       "required": true
+    },
+    {
+      "name": "dmaap.dmaapConsumerConfiguration.consumerGroup",
+      "value": "OpenDcae-c12",
+      "description": "",
+      "designer_editable": true,
+      "sourced_at_deployment": true,
+      "policy_editable": false,
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "dmaap.dmaapConsumerConfiguration.consumerId",
+      "value": "C12",
+      "description": "",
+      "designer_editable": true,
+      "sourced_at_deployment": true,
+      "policy_editable": false,
+      "type": "string",
+      "required": true
     }
-
   ]
 }
