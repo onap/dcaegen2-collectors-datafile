@@ -7,6 +7,12 @@
   },
   "streams": {
     "subscribes": [
+      {
+        "type": "message_router",
+        "config_key": "VES_NOTIFICATION_OUTPUT",
+        "format": "VES_specification",
+        "version": "7.30.1"
+      }
     ],
     "publishes": [
       {
@@ -40,17 +46,6 @@
     }
   ],
   "parameters": [
-    {
-      "name": "streams_subscribes",
-      "value": {"dmaap_subscriber": {"dmaap_info": {"topic_url":
-      "https://message-router.onap.svc.cluster.local:3905/events/unauthenticated.VES_NOTIFICATION_OUTPUT/OpenDcae-c12/C12"}}},
-      "description": "datafile collector consume VES event to message router topic ",
-      "designer_editable": true,
-      "sourced_at_deployment": false,
-      "policy_editable": false,
-      "type": "string",
-      "required": true
-    },
     {
       "name": "dmaap.ftpesConfig.keyCert",
       "value": "/opt/app/datafile/config/dfc.jks",
@@ -138,7 +133,7 @@
       "designer_editable": true,
       "sourced_at_deployment": false,
       "policy_editable": false,
-      "type": "string",
+      "type": "boolean",
       "required": true
     },
     {
@@ -148,7 +143,7 @@
       "designer_editable": true,
       "sourced_at_deployment": false,
       "policy_editable": false,
-      "type": "string",
+      "type": "boolean",
       "required": true
     }
 
