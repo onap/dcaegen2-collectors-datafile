@@ -43,7 +43,8 @@
     },
     "tls_info": {
       "cert_directory": "/opt/app/datafile/etc/cert/",
-      "use_tls": true
+      "use_tls": true,
+      "use_external_tls": false
     }
   },
   "artifacts": [
