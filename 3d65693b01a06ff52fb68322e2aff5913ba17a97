@@ -22,6 +22,30 @@
       "revId": "3d65693b01a06ff52fb68322e2aff5913ba17a97",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be71430b_46fb320b",
+        "filename": "datafile-app-server/dpo/blueprints/k8s-datafile.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-11-27T09:39:08Z",
+      "side": 1,
+      "message": "The change is not really required for Guilin. Jerzy made a merge request for docs with updated procedure of acquiring certificates for FTPeS communication ( https://gerrit.onap.org/r/c/dcaegen2/+/115031 we can continue there), and I think cherry-picking those into Guilin and Frankfurt would be enough.\nWe\u0027ll update Honolulu docs for CMPv2 later when we finalize blueprint and component-spec updates.",
+      "parentUuid": "1566692d_df11144f",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 72
+      },
+      "revId": "3d65693b01a06ff52fb68322e2aff5913ba17a97",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
