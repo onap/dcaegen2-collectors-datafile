@@ -1,0 +1,7 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Remigiusz Janeczek <remigiusz.janeczek@nokia.com>
+Submitted-by: Remigiusz Janeczek <remigiusz.janeczek@nokia.com>
+Submitted-at: Fri, 27 Nov 2020 09:39:24 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/dcaegen2/collectors/datafile/+/115033
+Project: dcaegen2/collectors/datafile
+Branch: refs/heads/master
