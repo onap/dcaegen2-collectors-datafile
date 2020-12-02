@@ -50,6 +50,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 /**
  * Publishes a file to the DataRouter.
@@ -85,7 +86,7 @@ public class DataRouterPublisher {
             .cache() //
             .flatMap(this::publishFile) //
             .flatMap(httpStatus -> handleHttpResponse(httpStatus, publishInfo)) //
-            .retryBackoff(numRetries, firstBackoff);
+            .retryWhen(Retry.backoff(numRetries,firstBackoff));
     }
 
     private Mono<HttpStatus> publishFile(FilePublishInformation publishInfo) {

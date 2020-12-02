@@ -1,6 +1,7 @@
 /*-
 * ============LICENSE_START=======================================================
 *  Copyright (C) 2019 Nordix Foundation.
+*  Copyright (C) 2020 Nokia. All rights reserved.
 * ================================================================================
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,7 +21,7 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
