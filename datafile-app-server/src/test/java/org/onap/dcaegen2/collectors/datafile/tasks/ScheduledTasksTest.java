@@ -22,9 +22,9 @@
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -74,6 +74,7 @@ import org.slf4j.MDC;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.test.scheduler.VirtualTimeScheduler;
 
 public class ScheduledTasksTest {
 
@@ -247,7 +248,7 @@ public class ScheduledTasksTest {
 
         testedObject.executeDatafileMainTask();
 
-        await().untilAsserted(() -> assertEquals("currentNumberOfSubscriptions should have been 0", 0,
+        await().untilAsserted(() -> assertEquals(0,
             testedObject.getCurrentNumberOfSubscriptions()));
 
         assertFalse(StringUtils.isBlank(MDC.get(MdcVariables.REQUEST_ID)));
@@ -256,7 +257,7 @@ public class ScheduledTasksTest {
         verify(appConfig).isFeedConfigured(CHANGE_IDENTIFIER);
         verifyNoMoreInteractions(appConfig);
 
-        assertEquals("totalReceivedEvents should have been 1", 1, testedObject.getCounters().getTotalReceivedEvents());
+        assertEquals(1, testedObject.getCounters().getTotalReceivedEvents(),"totalReceivedEvents should have been 1");
     }
 
     @Test
@@ -289,11 +290,10 @@ public class ScheduledTasksTest {
         final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(ScheduledTasks.class);
         testedObject.executeDatafileMainTask();
 
-        await().untilAsserted(() -> assertEquals("currentNumberOfSubscriptions should have been 0", 0,
-            testedObject.getCurrentNumberOfSubscriptions()));
+        await().untilAsserted(() -> assertEquals(0, testedObject.getCurrentNumberOfSubscriptions(),"currentNumberOfSubscriptions should have been 0"));
 
-        assertTrue("Error missing in log", logAppender.list.toString().contains(
-            "[INFO] No feed is configured for: " + CHANGE_IDENTIFIER + ", file ignored: " + PM_FILE_NAME + "1"));
+        assertTrue(logAppender.list.toString().contains(
+            "[INFO] No feed is configured for: " + CHANGE_IDENTIFIER + ", file ignored: " + PM_FILE_NAME + "1"),"Error missing in log");
     }
 
     @Test
@@ -309,8 +309,8 @@ public class ScheduledTasksTest {
             .expectComplete() //
             .verify(); //
 
-        assertTrue("Error missing in log", logAppender.list.toString()
-            .contains("[ERROR] Polling for file ready message failed, " + "exception: java.lang.Exception: Failed"));
+        assertTrue(logAppender.list.toString()
+            .contains("[ERROR] Polling for file ready message failed, " + "exception: java.lang.Exception: Failed"),"Error missing in log");
     }
 
     @Test
@@ -349,8 +349,8 @@ public class ScheduledTasksTest {
         verify(dataRouterMock, times(noOfFiles)).publishFile(notNull(), anyLong(), notNull());
         verifyNoMoreInteractions(dataRouterMock);
 
-        assertEquals("totalReceivedEvents should have been 200", 200,
-            testedObject.getCounters().getTotalReceivedEvents());
+        assertEquals(200,
+            testedObject.getCounters().getTotalReceivedEvents(),"totalReceivedEvents should have been 200");
     }
 
     @Test
@@ -391,8 +391,8 @@ public class ScheduledTasksTest {
         verify(dataRouterMock, times(3)).publishFile(notNull(), anyLong(), notNull());
         verifyNoMoreInteractions(dataRouterMock);
 
-        assertEquals("totalReceivedEvents should have been 2", 2, testedObject.getCounters().getTotalReceivedEvents());
-        assertEquals("failedFtp should have been 1", 1, testedObject.getCounters().getNoOfFailedFtp());
+        assertEquals(2, testedObject.getCounters().getTotalReceivedEvents(),"totalReceivedEvents should have been 2");
+        assertEquals(1, testedObject.getCounters().getNoOfFailedFtp(),"failedFtp should have been 1");
     }
 
     @Test
@@ -421,7 +421,7 @@ public class ScheduledTasksTest {
             .expectComplete() //
             .verify(); //
 
-        assertTrue("Error missing in log", logAppender.list.toString().contains("[ERROR] File publishing failed: "));
+        assertTrue(logAppender.list.toString().contains("[ERROR] File publishing failed: "));
 
         assertEquals(0, testedObject.getCurrentNumberOfTasks());
 
@@ -434,8 +434,8 @@ public class ScheduledTasksTest {
         verify(dataRouterMock, times(4)).publishFile(notNull(), anyLong(), notNull());
         verifyNoMoreInteractions(dataRouterMock);
 
-        assertEquals("totalReceivedEvents should have been 2", 2, testedObject.getCounters().getTotalReceivedEvents());
-        assertEquals("noOfFailedPublish should have been 1", 1, testedObject.getCounters().getNoOfFailedPublish());
+        assertEquals(2, testedObject.getCounters().getTotalReceivedEvents(),"totalReceivedEvents should have been 2");
+        assertEquals(1, testedObject.getCounters().getNoOfFailedPublish(),"noOfFailedPublish should have been 1");
     }
 
     @Test
@@ -475,6 +475,6 @@ public class ScheduledTasksTest {
         verify(publishedCheckerMock, times(1)).isFilePublished(notNull(), anyString(), notNull());
         verifyNoMoreInteractions(publishedCheckerMock);
 
-        assertEquals("totalReceivedEvents should have been 1", 1, testedObject.getCounters().getTotalReceivedEvents());
+        assertEquals(1, testedObject.getCounters().getTotalReceivedEvents(),"totalReceivedEvents should have been 1");
     }
 }

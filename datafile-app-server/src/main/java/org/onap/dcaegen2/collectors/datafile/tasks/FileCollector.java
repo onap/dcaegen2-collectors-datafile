@@ -40,6 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 /**
  * Collects a file from a PNF.
@@ -79,7 +80,7 @@ public class FileCollector {
         return Mono.just(fileData) //
             .cache() //
             .flatMap(fd -> tryCollectFile(fileData, contextMap)) //
-            .retryBackoff(numRetries, firstBackoff) //
+            .retryWhen(Retry.backoff(numRetries,firstBackoff))
             .flatMap(FileCollector::checkCollectedFile);
     }
 

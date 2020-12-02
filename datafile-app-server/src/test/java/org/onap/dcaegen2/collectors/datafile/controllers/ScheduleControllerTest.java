@@ -20,10 +20,10 @@
 
 package org.onap.dcaegen2.collectors.datafile.controllers;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -118,7 +118,7 @@ public class ScheduleControllerTest {
         assertEquals("ENTRY", logAppender.list.get(0).getMarker().getName());
         assertNotNull(logAppender.list.get(0).getMDCPropertyMap().get("InvocationID"));
         assertNotNull(logAppender.list.get(0).getMDCPropertyMap().get("RequestID"));
-        assertTrue("Info missing in log", logAppender.list.toString().contains("[INFO] " + infoMessage));
+        assertTrue(logAppender.list.toString().contains("[INFO] " + infoMessage),"Info missing in log");
         assertEquals("EXIT", logAppender.list.get(1).getMarker().getName());
         logAppender.stop();
     }
