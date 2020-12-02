@@ -30,7 +30,7 @@
 
   <groupId>org.onap.dcaegen2.collectors</groupId>
   <artifactId>datafile</artifactId>
-  <version>1.4.3-SNAPSHOT</version>
+  <version>1.5.0-SNAPSHOT</version>
 
   <name>dcaegen2-collectors.datafile</name>
   <description>datafile collector</description>
@@ -45,12 +45,12 @@
 
   <properties>
     <java.version>11</java.version>
-    <sdk.version>1.4.2</sdk.version>
+    <sdk.version>1.5.0</sdk.version>
     <apache.httpcomponents.version>4.1.4</apache.httpcomponents.version>
     <apache.commons.version>3.6</apache.commons.version>
     <immutable.version>2.7.1</immutable.version>
-    <spring.version>5.2.8.RELEASE</spring.version>
-    <spring-boot.version>2.2.9.RELEASE</spring-boot.version>
+    <spring.version>5.3.1</spring.version>
+    <spring-boot.version>2.4.0</spring-boot.version>
     <commons-io.version>1.3.2</commons-io.version>
     <commons-net.version>3.3</commons-net.version>
 
@@ -316,7 +316,7 @@
           <configuration>
           <configFile>${project.parent.basedir}/onap-java-formatter.xml</configFile>
           </configuration>
-              <!-- https://code.revelc.net/formatter-maven-plugin/ use mvn formatter:format 
+              <!-- https://code.revelc.net/formatter-maven-plugin/ use mvn formatter:format
                     to rewrite source files use mvn formatter:validate to validate source files -->
         </plugin>
         <plugin>

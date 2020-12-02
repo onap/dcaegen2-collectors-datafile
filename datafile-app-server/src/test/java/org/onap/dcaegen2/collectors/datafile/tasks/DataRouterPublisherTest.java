@@ -1,6 +1,6 @@
 /*-
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018-2020 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -16,8 +16,8 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -177,8 +177,8 @@ class DataRouterPublisherTest {
         // This should be 10 unless the API is updated (which is the fields checked above)
         assertEquals(10, metaHash.size());
 
-        assertEquals("totalPublishedFiles should have been 1", 1, counters.getTotalPublishedFiles());
-        assertEquals("noOfFailedPublishAttempts should have been 0", 0, counters.getNoOfFailedPublishAttempts());
+        assertEquals(1, counters.getTotalPublishedFiles(),"totalPublishedFiles should have been 1");
+        assertEquals(0, counters.getNoOfFailedPublishAttempts(),"noOfFailedPublishAttempts should have been 0");
     }
 
     @Test
@@ -190,11 +190,11 @@ class DataRouterPublisherTest {
             .expectNext(filePublishInformation) //
             .verifyComplete();
 
-        assertTrue("Warning missing in log",
-            logAppender.list.toString().contains("[WARN] Publishing file " + PM_FILE_NAME + " to DR unsuccessful."));
+        assertTrue(logAppender.list.toString().contains("[WARN] Publishing file " + PM_FILE_NAME + " to DR unsuccessful.")
+            ,"Warning missing in log");
 
-        assertEquals("totalPublishedFiles should have been 1", 1, counters.getTotalPublishedFiles());
-        assertEquals("noOfFailedPublishAttempts should have been 1", 1, counters.getNoOfFailedPublishAttempts());
+        assertEquals(1, counters.getTotalPublishedFiles(),"totalPublishedFiles should have been 1");
+        assertEquals(1, counters.getNoOfFailedPublishAttempts(),"noOfFailedPublishAttempts should have been 1");
     }
 
     @Test
@@ -211,8 +211,8 @@ class DataRouterPublisherTest {
         verify(httpClientMock, times(2)).getDmaapProducerResponseWithRedirect(any(HttpUriRequest.class), any());
         verifyNoMoreInteractions(httpClientMock);
 
-        assertEquals("totalPublishedFiles should have been 1", 1, counters.getTotalPublishedFiles());
-        assertEquals("noOfFailedPublishAttempts should have been 1", 1, counters.getNoOfFailedPublishAttempts());
+        assertEquals(1, counters.getTotalPublishedFiles(),"totalPublishedFiles should have been 1");
+        assertEquals(1, counters.getNoOfFailedPublishAttempts(),"noOfFailedPublishAttempts should have been 1");
     }
 
     @Test
@@ -225,15 +225,15 @@ class DataRouterPublisherTest {
             .expectErrorMessage("Retries exhausted: 1/1") //
             .verify();
 
-        assertTrue("Warning missing in log", logAppender.list.toString().contains("[WARN] Publishing file "
-            + PM_FILE_NAME + " to DR unsuccessful. Response code: " + HttpStatus.BAD_GATEWAY));
+        assertTrue(logAppender.list.toString().contains("[WARN] Publishing file "
+            + PM_FILE_NAME + " to DR unsuccessful. Response code: " + HttpStatus.BAD_GATEWAY),"Warning missing in log");
 
         verify(httpClientMock, times(2)).addUserCredentialsToHead(any(HttpUriRequest.class));
         verify(httpClientMock, times(2)).getDmaapProducerResponseWithRedirect(any(HttpUriRequest.class), any());
         verifyNoMoreInteractions(httpClientMock);
 
-        assertEquals("totalPublishedFiles should have been 0", 0, counters.getTotalPublishedFiles());
-        assertEquals("noOfFailedPublishAttempts should have been 2", 2, counters.getNoOfFailedPublishAttempts());
+        assertEquals(0, counters.getTotalPublishedFiles(),"totalPublishedFiles should have been 0");
+        assertEquals(2, counters.getNoOfFailedPublishAttempts(),"noOfFailedPublishAttempts should have been 2");
     }
 
     @SafeVarargs

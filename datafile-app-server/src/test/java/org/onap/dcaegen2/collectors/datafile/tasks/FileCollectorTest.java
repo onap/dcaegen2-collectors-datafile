@@ -17,7 +17,7 @@
 
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -176,8 +176,8 @@ public class FileCollectorTest {
         verify(ftpesClientMock, times(1)).close();
         verifyNoMoreInteractions(ftpesClientMock);
 
-        assertEquals("collectedFiles should have been 1", 1, counters.getNoOfCollectedFiles());
-        assertEquals("failedFtpAttempts should have been 0", 0, counters.getNoOfFailedFtpAttempts());
+        assertEquals(1, counters.getNoOfCollectedFiles(),"collectedFiles should have been 1");
+        assertEquals(0, counters.getNoOfFailedFtpAttempts(),"failedFtpAttempts should have been 0");
     }
 
     @Test
@@ -206,7 +206,7 @@ public class FileCollectorTest {
         verify(sftpClientMock, times(2)).close();
         verifyNoMoreInteractions(sftpClientMock);
 
-        assertEquals("collectedFiles should have been 2", 2, counters.getNoOfCollectedFiles());
+        assertEquals(2, counters.getNoOfCollectedFiles(),"collectedFiles should have been 2");
     }
 
     @Test
@@ -224,8 +224,8 @@ public class FileCollectorTest {
 
         verify(ftpesClientMock, times(4)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
-        assertEquals("collectedFiles should have been 0", 0, counters.getNoOfCollectedFiles());
-        assertEquals("failedFtpAttempts should have been 4", 4, counters.getNoOfFailedFtpAttempts());
+        assertEquals(0, counters.getNoOfCollectedFiles(),"collectedFiles should have been 0");
+        assertEquals(4, counters.getNoOfFailedFtpAttempts(),"failedFtpAttempts should have been 4");
     }
 
     @Test
@@ -243,8 +243,8 @@ public class FileCollectorTest {
 
         verify(ftpesClientMock, times(1)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
-        assertEquals("collectedFiles should have been 0", 0, counters.getNoOfCollectedFiles());
-        assertEquals("failedFtpAttempts should have been 1", 1, counters.getNoOfFailedFtpAttempts());
+        assertEquals(0, counters.getNoOfCollectedFiles(),"collectedFiles should have been 0");
+        assertEquals(1, counters.getNoOfFailedFtpAttempts(),"failedFtpAttempts should have been 1");
     }
 
     @Test
@@ -265,7 +265,7 @@ public class FileCollectorTest {
 
         verify(ftpesClientMock, times(2)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
 
-        assertEquals("collectedFiles should have been 1", 1, counters.getNoOfCollectedFiles());
-        assertEquals("failedFtpAttempts should have been 1", 1, counters.getNoOfFailedFtpAttempts());
+        assertEquals(1, counters.getNoOfCollectedFiles(),"collectedFiles should have been 1");
+        assertEquals(1, counters.getNoOfFailedFtpAttempts(),"failedFtpAttempts should have been 1");
     }
 }

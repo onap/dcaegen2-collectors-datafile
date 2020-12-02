@@ -19,7 +19,7 @@
 
 package org.onap.dcaegen2.collectors.datafile.service;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.spy;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -47,7 +47,6 @@ import org.onap.dcaegen2.collectors.datafile.utils.JsonMessage.AdditionalField;
 import org.onap.dcaegen2.collectors.datafile.utils.LoggingUtils;
 
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 /**
@@ -241,12 +240,11 @@ class JsonMessageParserTest {
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectNextCount(0).verifyComplete();
 
-        assertTrue("Error missing in log",
-            logAppender.list.toString()
+        assertTrue(logAppender.list.toString()
                 .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
                     + Scheme.DFC_DOES_NOT_SUPPORT_PROTOCOL_ERROR_MSG + "http" + Scheme.SUPPORTED_PROTOCOLS_ERROR_MESSAGE
-                    + ". Location: http://location.xml"));
-        assertTrue("Missing sourceName in log", logAppender.list.toString().contains("sourceName=5GRAN_DU"));
+                    + ". Location: http://location.xml"),"Error missing in log");
+        assertTrue(logAppender.list.toString().contains("sourceName=5GRAN_DU"),"Missing sourceName in log");
     }
 
     @Test
@@ -326,9 +324,8 @@ class JsonMessageParserTest {
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectComplete().verify();
 
-        assertTrue("Error missing in log",
-            logAppender.list.toString().contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
-                + "Can not get PRODUCT_NAME from eventName, eventName is not in correct format: Faulty event name"));
+        assertTrue(logAppender.list.toString().contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                + "Can not get PRODUCT_NAME from eventName, eventName is not in correct format: Faulty event name"),"Error missing in log");
     }
 
     @Test
@@ -357,11 +354,10 @@ class JsonMessageParserTest {
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectNextCount(0).verifyComplete();
 
-        assertTrue("Error missing in log",
-            logAppender.list.toString()
+        assertTrue(logAppender.list.toString()
                 .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
                     + "File information wrong. Missing data: [name] Data: "
-                    + message.getAdditionalFields().get(0).toString()));
+                    + message.getAdditionalFields().get(0).toString()),"Error missing in log");
     }
 
     @Test
@@ -383,9 +379,8 @@ class JsonMessageParserTest {
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectNextCount(0).verifyComplete();
 
-        assertTrue("Error missing in log",
-            logAppender.list.toString().contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
-                + "Missing arrayOfNamedHashMap in message. " + message.getParsed()));
+        assertTrue(logAppender.list.toString().contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
+                + "Missing arrayOfNamedHashMap in message. " + message.getParsed()),"Error missing in log");
     }
 
     @Test
@@ -414,11 +409,10 @@ class JsonMessageParserTest {
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectNextCount(0).verifyComplete();
 
-        assertTrue("Error missing in log",
-            logAppender.list.toString()
+        assertTrue(logAppender.list.toString()
                 .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
                     + "File information wrong. Missing data: [compression] Data: "
-                    + message.getAdditionalFields().get(0).toString()));
+                    + message.getAdditionalFields().get(0).toString()),"Error missing in log");
     }
 
     @Test
@@ -447,11 +441,10 @@ class JsonMessageParserTest {
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectNextCount(0).verifyComplete();
 
-        assertTrue("Error missing in log",
-            logAppender.list.toString()
+        assertTrue(logAppender.list.toString()
                 .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
                     + "File information wrong. Missing data: [fileFormatType] Data: "
-                    + message.getAdditionalFields().get(0).toString()));
+                    + message.getAdditionalFields().get(0).toString()),"Error missing in log");
     }
 
     @Test
@@ -529,11 +522,10 @@ class JsonMessageParserTest {
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectComplete().verify();
 
-        assertTrue("Error missing in log",
-            logAppender.list.toString()
+        assertTrue(logAppender.list.toString()
                 .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
                     + "Missing data: [changeIdentifier, changeType, notificationFieldsVersion]. "
-                    + "Change type is wrong:  Expected: FileReady Message: " + message.getParsed()));
+                    + "Change type is wrong:  Expected: FileReady Message: " + message.getParsed()),"Error missing in log");
     }
 
     @Test
@@ -548,8 +540,8 @@ class JsonMessageParserTest {
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectComplete().verify();
 
-        assertTrue("Error missing in log",
-            logAppender.list.toString().contains(ERROR_LOG_TAG + "Incorrect JsonObject - missing header. "));
+        assertTrue(logAppender.list.toString().contains(ERROR_LOG_TAG + "Incorrect JsonObject - missing header. ")
+            ,"Error missing in log");
     }
 
     @Test
@@ -578,10 +570,9 @@ class JsonMessageParserTest {
         StepVerifier.create(jsonMessageParserUnderTest.getMessagesFromJson(Flux.just(jsonElement))).expectSubscription()
             .expectNextCount(0).expectComplete().verify();
 
-        assertTrue("Error missing in log",
-            logAppender.list.toString()
+        assertTrue(logAppender.list.toString()
                 .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING + " Change type is wrong: "
-                    + INCORRECT_CHANGE_TYPE + " Expected: FileReady Message: " + message.getParsed()));
+                    + INCORRECT_CHANGE_TYPE + " Expected: FileReady Message: " + message.getParsed()),"Error missing in log");
     }
 
     @Test
