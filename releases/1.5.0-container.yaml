@@ -1,0 +1,9 @@
+distribution_type: 'container'
+version: '1.5.0'
+project: 'dcaegen2-collectors-datafile'
+log_dir: 'dcaegen2-collectors-datafile-maven-docker-stage-master/508/'
+containers:
+  - name: 'org.onap.dcaegen2.collectors.datafile.datafile-app-server'
+    version: '1.5.0-20201208T054143Z'
+container_release_tag: '1.5.0'
+ref: '8ad1127f32d03c25a1d0936638e3bd046a5ef6df'
