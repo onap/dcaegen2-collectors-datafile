@@ -22,6 +22,30 @@
       "revId": "17bb321ffc7fb98704e00aac9543ab57a0890738",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c370994d_177be829",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-12-10T15:07:20Z",
+      "side": 1,
+      "message": "yes only changes/bugfix introduced under new container version was required. The spec updates/info.yaml etc are not container deliverable.",
+      "parentUuid": "6207337e_a3a6b120",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 21
+      },
+      "revId": "17bb321ffc7fb98704e00aac9543ab57a0890738",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
