@@ -17,13 +17,15 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.ftp;
+package org.onap.dcaegen2.collectors.datafile.scheme;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.onap.dcaegen2.collectors.datafile.commons.Scheme;
 
 public class SchemeTest {
 
@@ -31,6 +33,7 @@ public class SchemeTest {
     public void shouldReturnSchemeForSupportedProtocol() throws DatafileTaskException {
         assertEquals(Scheme.FTPES, Scheme.getSchemeFromString("FTPES"));
         assertEquals(Scheme.SFTP, Scheme.getSchemeFromString("SFTP"));
+        assertEquals(Scheme.HTTP, Scheme.getSchemeFromString("HTTP"));
     }
 
     @Test

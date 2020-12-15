@@ -35,7 +35,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
+import org.onap.dcaegen2.collectors.datafile.commons.Scheme;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
 import org.onap.dcaegen2.collectors.datafile.model.ImmutableFileData;
@@ -217,7 +217,7 @@ class JsonMessageParserTest {
     void whenPassingCorrectJsonWrongScheme_noMessage() {
         AdditionalField additionalField = new JsonMessage.AdditionalFieldBuilder() //
             .name(PM_FILE_NAME) //
-            .location("http://location.xml") //
+            .location("unreal://location.xml") //
             .compression(GZIP_COMPRESSION) //
             .fileFormatType(FILE_FORMAT_TYPE) //
             .fileFormatVersion(FILE_FORMAT_VERSION) //
@@ -242,8 +242,8 @@ class JsonMessageParserTest {
 
         assertTrue(logAppender.list.toString()
                 .contains(ERROR_LOG_TAG + JsonMessageParser.ERROR_MSG_VES_EVENT_PARSING
-                    + Scheme.DFC_DOES_NOT_SUPPORT_PROTOCOL_ERROR_MSG + "http" + Scheme.SUPPORTED_PROTOCOLS_ERROR_MESSAGE
-                    + ". Location: http://location.xml"),"Error missing in log");
+                    + Scheme.DFC_DOES_NOT_SUPPORT_PROTOCOL_ERROR_MSG + "unreal" + Scheme.SUPPORTED_PROTOCOLS_ERROR_MESSAGE
+                    + ". Location: unreal://location.xml"),"Error missing in log");
         assertTrue(logAppender.list.toString().contains("sourceName=5GRAN_DU"),"Missing sourceName in log");
     }
 
