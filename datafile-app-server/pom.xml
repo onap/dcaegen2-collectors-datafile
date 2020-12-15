@@ -35,6 +35,7 @@
   <properties>
     <docker.image.name>onap/${project.groupId}.${project.artifactId}</docker.image.name>
     <maven.build.timestamp.format>yyyyMMdd'T'HHmmss</maven.build.timestamp.format>
+    <projectreactor.version>2020.0.2</projectreactor.version>
   </properties>
 
   <dependencies>
@@ -166,6 +167,18 @@
       <artifactId>springfox-swagger-ui</artifactId>
     </dependency>
   </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-bom</artifactId>
+        <version>${projectreactor.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <build>
     <resources>
