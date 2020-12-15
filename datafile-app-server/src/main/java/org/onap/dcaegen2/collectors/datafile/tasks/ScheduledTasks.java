@@ -49,7 +49,7 @@ import reactor.core.scheduler.Schedulers;
 @Component
 public class ScheduledTasks {
 
-    private static final int NUMBER_OF_WORKER_THREADS = 200;
+    public static final int NUMBER_OF_WORKER_THREADS = 200;
     private static final int MAX_TASKS_FOR_POLLING = 50;
     private static final long DATA_ROUTER_MAX_RETRIES = 5;
     private static final Duration DATA_ROUTER_INITIAL_RETRY_TIMEOUT = Duration.ofSeconds(2);
