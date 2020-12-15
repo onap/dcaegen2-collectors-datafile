@@ -17,7 +17,7 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.dcaegen2.collectors.datafile.ftp;
+package org.onap.dcaegen2.collectors.datafile.commons;
 
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 
@@ -28,10 +28,10 @@ import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
  *
  */
 public enum Scheme {
-    FTPES, SFTP;
+    FTPES, SFTP, HTTP;
 
     public static final String DFC_DOES_NOT_SUPPORT_PROTOCOL_ERROR_MSG = "DFC does not support protocol ";
-    public static final String SUPPORTED_PROTOCOLS_ERROR_MESSAGE = ". Supported protocols are FTPeS and sFTP";
+    public static final String SUPPORTED_PROTOCOLS_ERROR_MESSAGE = ". Supported protocols are FTPeS, sFTP and HTTP";
 
     /**
      * Get a <code>Scheme</code> from a string.
@@ -46,6 +46,8 @@ public enum Scheme {
             result = Scheme.FTPES;
         } else if ("SFTP".equalsIgnoreCase(schemeString)) {
             result = Scheme.SFTP;
+        } else if ("HTTP".equalsIgnoreCase(schemeString)) {
+            result = Scheme.HTTP;
         } else {
             throw new DatafileTaskException(
                 DFC_DOES_NOT_SUPPORT_PROTOCOL_ERROR_MSG + schemeString + SUPPORTED_PROTOCOLS_ERROR_MESSAGE);

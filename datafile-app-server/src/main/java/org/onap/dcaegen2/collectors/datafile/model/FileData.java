@@ -27,9 +27,9 @@ import java.util.Optional;
 
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
-import org.onap.dcaegen2.collectors.datafile.ftp.FileServerData;
-import org.onap.dcaegen2.collectors.datafile.ftp.ImmutableFileServerData;
-import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
+import org.onap.dcaegen2.collectors.datafile.commons.FileServerData;
+import org.onap.dcaegen2.collectors.datafile.commons.ImmutableFileServerData;
+import org.onap.dcaegen2.collectors.datafile.commons.Scheme;
 
 /**
  * Contains data, from the fileReady event, about the file to collect from the xNF.

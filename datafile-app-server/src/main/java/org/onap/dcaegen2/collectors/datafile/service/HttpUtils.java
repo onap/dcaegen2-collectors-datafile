@@ -1,6 +1,7 @@
 /*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
+ * Modifications Copyright (C) 2020 Nokia. All rights reserved
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +21,20 @@ package org.onap.dcaegen2.collectors.datafile.service;
 
 import org.apache.http.HttpStatus;
 
+import java.util.Base64;
+
 public final class HttpUtils implements HttpStatus {
+
+    public static final int HTTP_DEFAULT_PORT = 80;
 
     private HttpUtils() {
     }
 
     public static boolean isSuccessfulResponseCode(Integer statusCode) {
         return statusCode >= 200 && statusCode < 300;
+    }
+
+    public static String basicAuth(String username, String password) {
+        return "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
     }
 }
