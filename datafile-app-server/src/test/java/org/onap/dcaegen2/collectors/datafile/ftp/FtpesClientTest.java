@@ -42,6 +42,7 @@ import org.apache.commons.net.ftp.FTPSClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
+import org.onap.dcaegen2.collectors.datafile.commons.ImmutableFileServerData;
 import org.springframework.http.HttpStatus;
 
 public class FtpesClientTest {
