@@ -41,6 +41,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.onap.dcaegen2.collectors.datafile.commons.FileServerData;
+import org.onap.dcaegen2.collectors.datafile.commons.ImmutableFileServerData;
 import org.onap.dcaegen2.collectors.datafile.configuration.ImmutableSftpConfig;
 import org.onap.dcaegen2.collectors.datafile.configuration.SftpConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;

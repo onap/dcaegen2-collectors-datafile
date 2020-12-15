@@ -67,11 +67,12 @@
     <jcraft.version>0.1.54</jcraft.version>
     <springfox.version>2.9.2</springfox.version>
     <awaitility.version>3.1.6</awaitility.version>
+    <projectreactor.version>2020.0.2</projectreactor.version>
 
     <!-- Plugin versions -->
     <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
     <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
-    <docker-maven-plugin.version>1.1.1</docker-maven-plugin.version>
+    <docker-maven-plugin.version>1.2.1</docker-maven-plugin.version>
     <git-commit-id-plugin.version>2.2.4</git-commit-id-plugin.version>
     <sonar.coverage.jacoco.xmlReportPaths>
       ${project.reporting.outputDirectory}/jacoco-ut/jacoco.xml
@@ -216,6 +217,18 @@
         <artifactId>awaitility</artifactId>
         <version>${awaitility.version}</version>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.projectreactor.netty</groupId>
+        <artifactId>reactor-netty</artifactId>
+      </dependency>
+
+      <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-bom</artifactId>
+        <version>${projectreactor.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
 
       <!--REQUIRED TO GENERATE DOCUMENTATION -->

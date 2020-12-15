@@ -55,7 +55,7 @@ import org.onap.dcaegen2.collectors.datafile.configuration.ConsumerConfiguration
 import org.onap.dcaegen2.collectors.datafile.configuration.ImmutablePublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.configuration.PublisherConfiguration;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
-import org.onap.dcaegen2.collectors.datafile.ftp.Scheme;
+import org.onap.dcaegen2.collectors.datafile.commons.Scheme;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FilePublishInformation;
 import org.onap.dcaegen2.collectors.datafile.model.FileReadyMessage;
@@ -74,7 +74,6 @@ import org.slf4j.MDC;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import reactor.test.scheduler.VirtualTimeScheduler;
 
 public class ScheduledTasksTest {
 
