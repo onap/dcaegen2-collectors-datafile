@@ -1,0 +1,291 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c0b2ed98_de408aa9",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-17T21:04:40Z",
+      "side": 1,
+      "message": "Fix formatting 4 spaces instead of 2.",
+      "range": {
+        "startLine": 43,
+        "startChar": 1,
+        "endLine": 43,
+        "endChar": 2
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd968643_47f610e1",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-17T21:04:40Z",
+      "side": 1,
+      "message": "Is this needed? Client is reassigned in the open() method.",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 5
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5038a5fd_69941426",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-17T21:04:40Z",
+      "side": 1,
+      "message": "Is there a benefit to using CountDownLatch instead of using: client.get().response().block() ?",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 5
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03b8a3b0_2c9664a2",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-17T21:04:40Z",
+      "side": 1,
+      "message": "Why pass those values in such a way? For me it\u0027s hard to understand what\u0027s happening.\n\nI would propose solution in lines of:\n\n client.get().response((responseReceiver, byteBufFlux) -\u003e {\n     response \u003d byteBufFlux.aggregate().asInputStream();\n     if(isResponseOk(responseReceiver)){\n         return saveFile(response);\n     } else {\n         retrun Mono.error( createException(response) )\n     }\n }).then().block();\n\n\nfrom the response() lambda you should probably create RuntimeExceptions with correct message/stacktrace, and the whole client.get().response()... could be wrapped by try catch and then DatafileTaskException could be created.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 26
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58f8f449_b827a4c7",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-17T21:04:40Z",
+      "side": 1,
+      "message": "You could just do:\n\n int port \u003d fileServerData.port().isPresent() ? fileserverData.port().get() : HttpUtils.HTTP_DEFAULT_PORT;\n return \"http://\" + fileServerData.serverAddress() + \":\" + port + remoteFile;\n\nor:\n\n return fileServerData.port().orElse(HttpUtils.HTTP_DEFAULT_PORT)\n     .map(port -\u003e \"http://\" + fileServerData.serverAddress() + \":\" + HttpUtils.HTTP_DEFAULT_PORT + remoteFile)\n     .get();",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 104
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e9b8221_e309be83",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/HttpClientResponseHelper.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-17T21:04:40Z",
+      "side": 1,
+      "message": "Fix formatting 4 spaces instead of 2 as indent",
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64cc51c1_512ba85d",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/HttpClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-17T21:04:40Z",
+      "side": 1,
+      "message": "Wildcard imports should be expanded.",
+      "range": {
+        "startLine": 34,
+        "startChar": 47,
+        "endLine": 34,
+        "endChar": 48
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e6dc161_215939b2",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/HttpClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-17T21:04:40Z",
+      "side": 1,
+      "message": "As above",
+      "range": {
+        "startLine": 36,
+        "startChar": 34,
+        "endLine": 36,
+        "endChar": 35
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a9e0f7a_244a6b72",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/HttpClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-17T21:04:40Z",
+      "side": 1,
+      "message": "Fix formatting.",
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7827233_c0f41761",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/HttpClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-17T21:04:40Z",
+      "side": 1,
+      "message": "Unnecessary",
+      "range": {
+        "startLine": 52,
+        "startChar": 45,
+        "endLine": 52,
+        "endChar": 47
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe15aef8_08c2daee",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/scheme/SchemeTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-17T21:04:40Z",
+      "side": 1,
+      "message": "Unnecessary, assertEquals is statically imported.",
+      "range": {
+        "startLine": 34,
+        "startChar": 8,
+        "endLine": 34,
+        "endChar": 19
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "92443625_80b01cdb",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-17T21:04:40Z",
+      "side": 1,
+      "message": "Isn\u0027t it part of reactor-bom?",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 224,
+        "endChar": 19
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1c91e72_8649f584",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-17T21:04:40Z",
+      "side": 1,
+      "message": "From my understanding (as this is dependencyMangement) this dependency is imported implicitly into child POM, because it\u0027s not defined there. Consider adding explicit import to the child POM.",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 19
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
