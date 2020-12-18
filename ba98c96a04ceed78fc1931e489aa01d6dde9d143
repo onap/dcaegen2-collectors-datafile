@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f040d2f5_68be620c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-18T22:45:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0b2ed98_de408aa9",
+      "range": {
+        "startLine": 43,
+        "startChar": 1,
+        "endLine": 43,
+        "endChar": 2
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cd968643_47f610e1",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "534ff447_84ec6c29",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-18T22:45:47Z",
+      "side": 1,
+      "message": "Yes, this can be taken out. Removed",
+      "parentUuid": "cd968643_47f610e1",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 5
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "c7a2ac76_ee727f4b",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-18T22:45:47Z",
+      "side": 1,
+      "message": "Actually, Yes 😊, I agree with you with block() and initially it was in my plans. But now DFC was written in such way, I was unable to use it (please, see small part of my earlier logs):\n\n\"\njava.lang.IllegalStateException: block()/blockFirst()/blockLast() are blocking, which is not supported in thread FileCollectorWorker-2\n\tat reactor.core.publisher.BlockingSingleSubscriber.blockingGet(BlockingSingleSubscriber.java:83)\n\tat reactor.core.publisher.Mono.block(Mono.java:1679)\n\tat org.onap.dcaegen2.collectors.datafile.http.DfcHttpClient.collectFile(DfcHttpClient.java:82)\n\"\n\nThat was the reason of using subscribe() and CountDownLatch.",
+      "parentUuid": "5038a5fd_69941426",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 5
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "03b8a3b0_2c9664a2",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
         "patchSetId": 1
@@ -91,6 +163,30 @@
       "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b23b28b6_193085fb",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-18T22:45:47Z",
+      "side": 1,
+      "message": "I\u0027ve used mostly all your solution. This impede slightly another part of code \n(i.e. checking response code in collecting file). Nevertheless, I was able do remove clientResponse, but no errorMessages. At all, It was possible to use ArrayList, so it is \"better looking\"",
+      "parentUuid": "03b8a3b0_2c9664a2",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 26
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "868cae99_45b64766",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-18T22:45:47Z",
+      "side": 1,
+      "message": "Chosen option no 1. With second it was some error with map.",
+      "parentUuid": "58f8f449_b827a4c7",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 104
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e9b8221_e309be83",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/HttpClientResponseHelper.java",
         "patchSetId": 1
@@ -131,6 +251,24 @@
       "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4399428_38df424b",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/HttpClientResponseHelper.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-18T22:45:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e9b8221_e309be83",
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -157,6 +295,30 @@
     },
     {
       "key": {
+        "uuid": "16ebc02b_e39d6fd5",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/HttpClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-18T22:45:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64cc51c1_512ba85d",
+      "range": {
+        "startLine": 34,
+        "startChar": 47,
+        "endLine": 34,
+        "endChar": 48
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e6dc161_215939b2",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/HttpClientTest.java",
         "patchSetId": 1
@@ -180,6 +342,30 @@
     },
     {
       "key": {
+        "uuid": "e708d833_53c5f991",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/HttpClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-18T22:45:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e6dc161_215939b2",
+      "range": {
+        "startLine": 36,
+        "startChar": 34,
+        "endLine": 36,
+        "endChar": 35
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4a9e0f7a_244a6b72",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/HttpClientTest.java",
         "patchSetId": 1
@@ -194,6 +380,24 @@
       "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96596249_bb804aa4",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/HttpClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-18T22:45:47Z",
+      "side": 1,
+      "message": "Hope all formatting was corrected.",
+      "parentUuid": "4a9e0f7a_244a6b72",
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -220,6 +424,30 @@
     },
     {
       "key": {
+        "uuid": "e5a5439c_113ba241",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/HttpClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-18T22:45:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7827233_c0f41761",
+      "range": {
+        "startLine": 52,
+        "startChar": 45,
+        "endLine": 52,
+        "endChar": 47
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fe15aef8_08c2daee",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/scheme/SchemeTest.java",
         "patchSetId": 1
@@ -240,6 +468,30 @@
       "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "087ca443_c84aa03e",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/scheme/SchemeTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-18T22:45:47Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "fe15aef8_08c2daee",
+      "range": {
+        "startLine": 34,
+        "startChar": 8,
+        "endLine": 34,
+        "endChar": 19
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -266,6 +518,30 @@
     },
     {
       "key": {
+        "uuid": "8f90362c_712a9e5c",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-18T22:45:47Z",
+      "side": 1,
+      "message": "Seems, you\u0027re right. Removed",
+      "parentUuid": "92443625_80b01cdb",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 224,
+        "endChar": 19
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f1c91e72_8649f584",
         "filename": "pom.xml",
         "patchSetId": 1
@@ -286,6 +562,30 @@
       "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dcfbb919_dd53254f",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-18T22:45:47Z",
+      "side": 1,
+      "message": "Agree, moved.",
+      "parentUuid": "f1c91e72_8649f584",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 232,
+        "endChar": 19
+      },
+      "revId": "ba98c96a04ceed78fc1931e489aa01d6dde9d143",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
