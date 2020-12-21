@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4365646d_3cae98a0",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-21T16:16:17Z",
+      "side": 1,
+      "message": "Have some doubts on that hardcode. I wonder if it wouldn\u0027t block other threads when multiple downloads over http are requested.",
+      "range": {
+        "startLine": 43,
+        "startChar": 88,
+        "endLine": 43,
+        "endChar": 89
+      },
+      "revId": "0ed7bc7696f7c465080980540b053fc86791040d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3dd48591_2b445e09",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-21T16:16:17Z",
+      "side": 1,
+      "message": "Is it possible that userId and password are empty? Is it correct in such case?",
+      "range": {
+        "startLine": 57,
+        "startChar": 40,
+        "endLine": 57,
+        "endChar": 121
+      },
+      "revId": "0ed7bc7696f7c465080980540b053fc86791040d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e1ba436_5602b0f6",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-21T16:16:17Z",
+      "side": 1,
+      "message": "Consider AtomicReference - errorMessages cannot have more than one error. Also You can consider wrapping Throwable instead of String.",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 5
+      },
+      "revId": "0ed7bc7696f7c465080980540b053fc86791040d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea9119b4_9c40d7b4",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-21T16:16:17Z",
+      "side": 1,
+      "message": "Pass exception to DatafileTaskException instead of e.toString().\n\n throw new DatafileTaskException(\"Interrupted exception after datafile download\", e);",
+      "range": {
+        "startLine": 75,
+        "startChar": 95,
+        "endLine": 75,
+        "endChar": 109
+      },
+      "revId": "0ed7bc7696f7c465080980540b053fc86791040d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b8bd1bbb_133fd068",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-21T16:16:17Z",
+      "side": 1,
+      "message": "Double logging can occur.",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 64
+      },
+      "revId": "0ed7bc7696f7c465080980540b053fc86791040d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a6d454b_423d9fef",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-21T16:16:17Z",
+      "side": 1,
+      "message": "Consider: Starting http client disposal.",
+      "range": {
+        "startLine": 138,
+        "startChar": 22,
+        "endLine": 138,
+        "endChar": 53
+      },
+      "revId": "0ed7bc7696f7c465080980540b053fc86791040d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
