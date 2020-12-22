@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "205baa00_7492e4d5",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-22T18:41:25Z",
+      "side": 1,
+      "message": "Regarding that, taken constant from ScheduledTask.NUMBER_OF_WORKER_THREADS (made public). This didn\u0027t influenced on our CoS",
+      "parentUuid": "4365646d_3cae98a0",
+      "range": {
+        "startLine": 43,
+        "startChar": 88,
+        "endLine": 43,
+        "endChar": 89
+      },
+      "revId": "0ed7bc7696f7c465080980540b053fc86791040d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3dd48591_2b445e09",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
         "patchSetId": 2
@@ -45,6 +69,30 @@
       "revId": "0ed7bc7696f7c465080980540b053fc86791040d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e192e995_e3ef24a1",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-22T18:41:25Z",
+      "side": 1,
+      "message": "FileServerData allow to contain empty string for login and password, what seem to be incorrect for basicAuth. Suitable verification was done.",
+      "parentUuid": "3dd48591_2b445e09",
+      "range": {
+        "startLine": 57,
+        "startChar": 40,
+        "endLine": 57,
+        "endChar": 121
+      },
+      "revId": "0ed7bc7696f7c465080980540b053fc86791040d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "bbe89ab5_641cb983",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-22T18:41:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e1ba436_5602b0f6",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 5
+      },
+      "revId": "0ed7bc7696f7c465080980540b053fc86791040d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ea9119b4_9c40d7b4",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
         "patchSetId": 2
@@ -91,6 +163,30 @@
       "revId": "0ed7bc7696f7c465080980540b053fc86791040d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f65792bd_49a9f492",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-22T18:41:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea9119b4_9c40d7b4",
+      "range": {
+        "startLine": 75,
+        "startChar": 95,
+        "endLine": 75,
+        "endChar": 109
+      },
+      "revId": "0ed7bc7696f7c465080980540b053fc86791040d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "221e61ed_38ce923f",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-22T18:41:25Z",
+      "side": 1,
+      "message": "Logger was removed. Done",
+      "parentUuid": "b8bd1bbb_133fd068",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 64
+      },
+      "revId": "0ed7bc7696f7c465080980540b053fc86791040d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a6d454b_423d9fef",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
         "patchSetId": 2
@@ -137,6 +257,30 @@
       "revId": "0ed7bc7696f7c465080980540b053fc86791040d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42f8f01b_a5b68907",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpClient.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2020-12-22T18:41:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a6d454b_423d9fef",
+      "range": {
+        "startLine": 138,
+        "startChar": 22,
+        "endLine": 138,
+        "endChar": 53
+      },
+      "revId": "0ed7bc7696f7c465080980540b053fc86791040d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
