@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d520046a_c144048e",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2021-01-02T17:08:23Z",
+      "side": 1,
+      "message": "1.5.0 already released - version bump was required for this enhancement",
+      "range": {
+        "startLine": 28,
+        "startChar": 13,
+        "endLine": 28,
+        "endChar": 27
+      },
+      "revId": "42c23b6bfa5e55c8eb5be890de34b94e907ebe89",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
