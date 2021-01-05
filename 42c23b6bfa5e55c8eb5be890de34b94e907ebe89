@@ -22,6 +22,30 @@
       "revId": "42c23b6bfa5e55c8eb5be890de34b94e907ebe89",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be9cba48_7608451a",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-01-05T13:48:11Z",
+      "side": 1,
+      "message": "Resolved here - https://gerrit.onap.org/r/c/dcaegen2/collectors/datafile/+/116587\nas this patch has status merged. Next, will be created 1.5.1-container.yaml file in \"releases\" folder",
+      "parentUuid": "d520046a_c144048e",
+      "range": {
+        "startLine": 28,
+        "startChar": 13,
+        "endLine": 28,
+        "endChar": 27
+      },
+      "revId": "42c23b6bfa5e55c8eb5be890de34b94e907ebe89",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
