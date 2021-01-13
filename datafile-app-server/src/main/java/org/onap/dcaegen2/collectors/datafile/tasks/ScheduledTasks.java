@@ -23,6 +23,7 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.onap.dcaegen2.collectors.datafile.commons.Scheme;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.model.Counters;
@@ -257,7 +258,11 @@ public class ScheduledTasks {
         deleteFile(localFilePath, fileData.context);
         publishedFilesCache.remove(localFilePath);
         currentNumberOfTasks.decrementAndGet();
-        counters.incNoOfFailedFtp();
+        if (Scheme.isFtpScheme(fileData.fileData.scheme())) {
+            counters.incNoOfFailedFtp();
+        } else {
+            counters.incNoOfFailedHttp();
+        }
         return Mono.empty();
     }
 

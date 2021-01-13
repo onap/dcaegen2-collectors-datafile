@@ -1,6 +1,6 @@
 /*-
  * ============LICENSE_START======================================================================
- * Copyright (C) 2020 Nokia. All rights reserved.
+ * Copyright (C) 2020-2021 Nokia. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -43,7 +43,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class DfcHttpClientTest {
+class DfcHttpClientTest {
 
     private static final String USERNAME = "bob";
     private static final String PASSWORD = "123";
@@ -55,28 +55,20 @@ public class DfcHttpClientTest {
 
     DfcHttpClient dfcHttpClientSpy;
 
-    private ImmutableFileServerData createFileServerData() {
-        return ImmutableFileServerData.builder()
-            .serverAddress(XNF_ADDRESS)
-            .userId(USERNAME).password(PASSWORD)
-            .port(PORT)
-            .build();
-    }
-
     @BeforeEach
     public void setup() {
         dfcHttpClientSpy = spy(new DfcHttpClient(createFileServerData()));
     }
 
     @Test
-    public void openConnection_successAuthSetup() throws DatafileTaskException {
+    void openConnection_successAuthSetup() throws DatafileTaskException {
         dfcHttpClientSpy.open();
         HttpClientConfig config = dfcHttpClientSpy.client.configuration();
         assertEquals(HttpUtils.basicAuth(USERNAME, PASSWORD), config.headers().get("Authorization"));
     }
 
     @Test
-    public void openConnection_failedBasicAuthSetupThrowException() {
+    void openConnection_failedBasicAuthSetupThrowException() {
         ImmutableFileServerData serverData = ImmutableFileServerData.builder()
             .serverAddress(XNF_ADDRESS)
             .userId(USERNAME).password("")
@@ -90,7 +82,7 @@ public class DfcHttpClientTest {
     }
 
     @Test
-    public void prepareUri_UriWithoutPort() {
+    void prepareUri_UriWithoutPort() {
         ImmutableFileServerData serverData = ImmutableFileServerData.builder()
             .serverAddress(XNF_ADDRESS)
             .userId(USERNAME).password(PASSWORD)
@@ -103,7 +95,7 @@ public class DfcHttpClientTest {
     }
 
     @Test
-    public void collectFile_AllOk() throws Exception {
+    void collectFile_AllOk() throws Exception {
         String REMOTE_FILE = "any";
         Flux<InputStream> fis = Flux.just(new ByteArrayInputStream("ReturnedString".getBytes()));
 
@@ -121,7 +113,7 @@ public class DfcHttpClientTest {
     }
 
     @Test
-    public void collectFile_No200ResponseWriteToErrorMessage() throws DatafileTaskException {
+    void collectFile_No200ResponseWriteToErrorMessage() throws DatafileTaskException {
         String ERROR_RESPONSE = "This is unexpected message";
         String REMOTE_FILE = "any";
         Flux<Throwable> fis = Flux.error(new Throwable(ERROR_RESPONSE));
@@ -138,8 +130,16 @@ public class DfcHttpClientTest {
     }
 
     @Test
-    public void isResponseOk_validateResponse() {
-        assertTrue(dfcHttpClientSpy.isResponseOk(HttpClientResponseHelper.RESPONSE_OK));
+    void isResponseOk_validateResponse() {
+        assertTrue(dfcHttpClientSpy.isResponseOk(HttpClientResponseHelper.NETTY_RESPONSE_OK));
         assertFalse(dfcHttpClientSpy.isResponseOk(HttpClientResponseHelper.RESPONSE_ANY_NO_OK));
+    }
+
+    private ImmutableFileServerData createFileServerData() {
+        return ImmutableFileServerData.builder()
+                .serverAddress(XNF_ADDRESS)
+                .userId(USERNAME).password(PASSWORD)
+                .port(PORT)
+                .build();
     }
 }

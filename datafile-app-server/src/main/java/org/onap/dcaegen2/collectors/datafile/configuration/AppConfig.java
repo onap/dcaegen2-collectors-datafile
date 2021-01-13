@@ -1,6 +1,7 @@
 /*-
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018, 2020 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018, 2020-2021 NOKIA Intellectual Property, 2018-2019 Nordix Foundation.
+ * All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -37,6 +38,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
+import org.onap.dcaegen2.collectors.datafile.http.HttpsClientConnectionManagerUtil;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClient;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClientFactory;
@@ -76,7 +78,7 @@ public class AppConfig {
     Properties systemEnvironment;
     private ConsumerConfiguration dmaapConsumerConfiguration;
     private Map<String, PublisherConfiguration> publishingConfigurations;
-    private FtpesConfig ftpesConfiguration;
+    private CertificateConfig certificateConfiguration;
     private SftpConfig sftpConfiguration;
     private Disposable refreshConfigTask = null;
 
@@ -163,8 +165,8 @@ public class AppConfig {
         return cfg;
     }
 
-    public synchronized FtpesConfig getFtpesConfiguration() {
-        return ftpesConfiguration;
+    public synchronized CertificateConfig getCertificateConfiguration() {
+        return certificateConfiguration;
     }
 
     public synchronized SftpConfig getSftpConfiguration() {
@@ -193,7 +195,7 @@ public class AppConfig {
             CloudConfigParser parser =
                 new CloudConfigParser(configurationObject, systemEnvironment);
             setConfiguration(parser.getConsumerConfiguration(),
-                parser.getDmaapPublisherConfigurations(), parser.getFtpesConfig(),
+                parser.getDmaapPublisherConfigurations(), parser.getCertificateConfig(),
                 parser.getSftpConfig());
             logConfig();
         } catch (DatafileTaskException e) {
@@ -204,7 +206,7 @@ public class AppConfig {
 
     private void logConfig() {
         logger.debug("Read and parsed sFTP configuration:      [{}]", sftpConfiguration);
-        logger.debug("Read and parsed FTPes configuration:     [{}]", ftpesConfiguration);
+        logger.debug("Read and parsed FTPes / HTTPS configuration:     [{}]", certificateConfiguration);
         logger.debug("Read and parsed DMaaP configuration:     [{}]", dmaapConsumerConfiguration);
         logger.debug("Read and parsed Publish configuration:   [{}]", publishingConfigurations);
     }
@@ -226,12 +228,14 @@ public class AppConfig {
     }
 
     private synchronized void setConfiguration(@NotNull ConsumerConfiguration consumerConfiguration,
-        @NotNull Map<String, PublisherConfiguration> publisherConfiguration, @NotNull FtpesConfig ftpesConfig,
-        @NotNull SftpConfig sftpConfig) {
+        @NotNull Map<String, PublisherConfiguration> publisherConfiguration, @NotNull CertificateConfig certificateConfig,
+        @NotNull SftpConfig sftpConfig) throws DatafileTaskException {
         this.dmaapConsumerConfiguration = consumerConfiguration;
         this.publishingConfigurations = publisherConfiguration;
-        this.ftpesConfiguration = ftpesConfig;
+        this.certificateConfiguration = certificateConfig;
         this.sftpConfiguration = sftpConfig;
+        HttpsClientConnectionManagerUtil.setupOrUpdate(certificateConfig.keyCert(), certificateConfig.keyPasswordPath(),
+                certificateConfig.trustedCa(), certificateConfig.trustedCaPasswordPath());
     }
 
     JsonElement getJsonElement(InputStream inputStream) {

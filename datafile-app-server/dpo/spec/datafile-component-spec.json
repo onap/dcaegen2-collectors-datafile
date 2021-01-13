@@ -61,7 +61,7 @@
   ],
   "parameters": [
     {
-      "name": "dmaap.ftpesConfig.keyCert",
+      "name": "dmaap.certificateConfig.keyCert",
       "value": "/opt/app/datafile/etc/cert/cert.p12",
       "description": "",
       "designer_editable": true,
@@ -71,7 +71,7 @@
       "required": true
     },
     {
-      "name": "dmaap.ftpesConfig.keyPasswordPath",
+      "name": "dmaap.certificateConfig.keyPasswordPath",
       "value": "/opt/app/datafile/etc/cert/p12.pass",
       "description": "",
       "designer_editable": true,
@@ -81,7 +81,7 @@
       "required": true
     },
     {
-      "name": "dmaap.ftpesConfig.trustedCa",
+      "name": "dmaap.certificateConfig.trustedCa",
       "value": "/opt/app/datafile/etc/cert/trust.jks",
       "description": "",
       "designer_editable": true,
@@ -91,7 +91,7 @@
       "required": true
     },
     {
-      "name": "dmaap.ftpesConfig.trustedCaPasswordPath",
+      "name": "dmaap.certificateConfig.trustedCaPasswordPath",
       "value": "/opt/app/datafile/etc/cert/trust.pass",
       "description": "",
       "designer_editable": true,

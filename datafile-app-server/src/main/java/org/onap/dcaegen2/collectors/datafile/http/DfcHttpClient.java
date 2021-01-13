@@ -1,6 +1,6 @@
 /*-
  * ============LICENSE_START======================================================================
- * Copyright (C) 2020 Nokia. All rights reserved.
+ * Copyright (C) 2020-2021 Nokia. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -37,6 +37,11 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+/**
+ * Gets file from PNF with HTTP protocol.
+ *
+ * @author <a href="mailto:krzysztof.gajewski@nokia.com">Krzysztof Gajewski</a>
+ */
 public class DfcHttpClient implements FileCollectClient {
 
     //Be aware to be less than ScheduledTasks.NUMBER_OF_WORKER_THREADS
@@ -111,7 +116,7 @@ public class DfcHttpClient implements FileCollectClient {
             try {
                 long numBytes = Files.copy(response, localFile);
                 logger.trace("Transmission was successful - {} bytes downloaded.", numBytes);
-                logger.trace("CollectFile fetched: {}", localFile.toString());
+                logger.trace("CollectFile fetched: {}", localFile);
                 response.close();
             } catch (IOException e) {
                 errorMessages.set(new Exception("Error fetching file with", e));
@@ -139,7 +144,7 @@ public class DfcHttpClient implements FileCollectClient {
     }
 
     @NotNull protected String prepareUri(String remoteFile) {
-        int port = fileServerData.port().isPresent() ? fileServerData.port().get() : HttpUtils.HTTP_DEFAULT_PORT;
+        int port = fileServerData.port().orElse(HttpUtils.HTTP_DEFAULT_PORT);
         return "http://" + fileServerData.serverAddress() + ":" + port + remoteFile;
     }
 

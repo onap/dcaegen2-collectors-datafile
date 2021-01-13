@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ ============LICENSE_START=====================================================================
-  ~ Copyright (C) 2018-2020 NOKIA Intellectual Property. All rights reserved.
+  ~ Copyright (C) 2018-2021 NOKIA Intellectual Property. All rights reserved.
   ~ Copyright (C) 2018-2021 Nordix Foundation. All rights reserved.
   ~ ==============================================================================================
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,7 @@
 
     <groupId>org.onap.dcaegen2.collectors</groupId>
     <artifactId>datafile</artifactId>
-    <version>1.5.2-SNAPSHOT</version>
+    <version>1.5.3-SNAPSHOT</version>
 
     <name>dcaegen2-collectors.datafile</name>
     <description>datafile collector</description>
@@ -74,6 +74,7 @@
         <springfox.version>3.0.0</springfox.version>
         <awaitility.version>3.1.6</awaitility.version>
         <jackson-databind.version>2.11.4</jackson-databind.version>
+        <powermock.version>2.0.9</powermock.version>
 
         <!-- Plugin versions -->
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
@@ -233,6 +234,18 @@
                 <groupId>org.awaitility</groupId>
                 <artifactId>awaitility</artifactId>
                 <version>${awaitility.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-module-junit4</artifactId>
+                <version>${powermock.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-api-mockito2</artifactId>
+                <version>${powermock.version}</version>
                 <scope>test</scope>
             </dependency>
 

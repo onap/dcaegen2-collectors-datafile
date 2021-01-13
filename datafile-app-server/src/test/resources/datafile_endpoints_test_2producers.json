@@ -1,10 +1,10 @@
 {
   "config": {
     "//description": "This file is only used for testing purposes",
-    "dmaap.ftpesConfig.keyCert": "/src/test/resources/dfc.jks",
-    "dmaap.ftpesConfig.keyPasswordPath": "/src/test/resources/dfc.jks.pass",
-    "dmaap.ftpesConfig.trustedCa": "/src/test/resources/ftp.jks",
-    "dmaap.ftpesConfig.trustedCaPasswordPath": "/src/test/resources/ftp.jks.pass",
+    "dmaap.certificateConfig.keyCert": "/src/test/resources/dfc.jks",
+    "dmaap.certificateConfig.keyPasswordPath": "/src/test/resources/dfc.jks.pass",
+    "dmaap.certificateConfig.trustedCa": "/src/test/resources/ftp.jks",
+    "dmaap.certificateConfig.trustedCaPasswordPath": "/src/test/resources/ftp.jks.pass",
     "dmaap.security.trustStorePath": "src/test/resources/trust.jks",
     "dmaap.security.trustStorePasswordPath": "src/test/resources/trust.pass",
     "dmaap.security.keyStorePath": "src/test/resources/cert.jks",

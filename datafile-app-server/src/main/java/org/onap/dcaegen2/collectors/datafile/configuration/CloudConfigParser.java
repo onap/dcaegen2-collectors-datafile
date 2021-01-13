@@ -1,6 +1,7 @@
 /*-
  * ============LICENSE_START=======================================================
- * Copyright (C) 2018, 2020 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018, 2020-2021 NOKIA Intellectual Property, 2018-2019 Nordix Foundation.
+ * All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -187,12 +188,12 @@ public class CloudConfigParser {
      * @return the xNF communication security configuration.
      * @throws DatafileTaskException if a member of the configuration is missing.
      */
-    public @NotNull FtpesConfig getFtpesConfig() throws DatafileTaskException {
-        return new ImmutableFtpesConfig.Builder() //
-            .keyCert(getAsString(jsonObject, "dmaap.ftpesConfig.keyCert"))
-            .keyPasswordPath(getAsString(jsonObject, "dmaap.ftpesConfig.keyPasswordPath"))
-            .trustedCa(getAsString(jsonObject, "dmaap.ftpesConfig.trustedCa"))
-            .trustedCaPasswordPath(getAsString(jsonObject, "dmaap.ftpesConfig.trustedCaPasswordPath")) //
+    public @NotNull CertificateConfig getCertificateConfig() throws DatafileTaskException {
+        return new ImmutableCertificateConfig.Builder() //
+            .keyCert(getAsString(jsonObject, "dmaap.certificateConfig.keyCert"))
+            .keyPasswordPath(getAsString(jsonObject, "dmaap.certificateConfig.keyPasswordPath"))
+            .trustedCa(getAsString(jsonObject, "dmaap.certificateConfig.trustedCa"))
+            .trustedCaPasswordPath(getAsString(jsonObject, "dmaap.certificateConfig.trustedCaPasswordPath")) //
             .build();
     }
 

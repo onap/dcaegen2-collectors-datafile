@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 @Value.Immutable
 @Value.Style(builder = "new", redactedMask = "####")
 @Gson.TypeAdapters
-public abstract class FtpesConfig implements Serializable {
+public abstract class CertificateConfig implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

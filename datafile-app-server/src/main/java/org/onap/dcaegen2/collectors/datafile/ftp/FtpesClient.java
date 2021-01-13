@@ -1,7 +1,7 @@
 /*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
- * Copyright (C) 2020 Nokia. All rights reserved.
+ * Copyright (C) 2020-2021 Nokia. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -22,9 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -43,6 +41,7 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPSClient;
 import org.onap.dcaegen2.collectors.datafile.commons.FileCollectClient;
 import org.onap.dcaegen2.collectors.datafile.commons.FileServerData;
+import org.onap.dcaegen2.collectors.datafile.commons.SecurityUtil;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
 import org.slf4j.Logger;
@@ -194,13 +193,7 @@ public class FtpesClient implements FileCollectClient {
 
     protected TrustManager getTrustManager(Path trustedCaPath, String trustedCaPasswordPath)
         throws KeyStoreException, NoSuchAlgorithmException, IOException, CertificateException {
-        String trustedCaPassword = "";
-        try {
-            trustedCaPassword = new String(Files.readAllBytes(Paths.get(trustedCaPasswordPath)));
-        } catch (IOException e) {
-            logger.error("Truststore password file at path: {} cannot be opened ", trustedCaPasswordPath);
-            e.printStackTrace();
-        }
+        String trustedCaPassword = SecurityUtil.getTruststorePasswordFromFile(trustedCaPasswordPath);
         synchronized (FtpesClient.class) {
             if (theTrustManager == null) {
                 theTrustManager = createTrustManager(trustedCaPath, trustedCaPassword);
@@ -211,14 +204,7 @@ public class FtpesClient implements FileCollectClient {
 
     protected KeyManager getKeyManager(Path keyCertPath, String keyCertPasswordPath)
         throws IOException, GeneralSecurityException {
-        String keyCertPassword = "";
-        try {
-            keyCertPassword = new String(Files.readAllBytes(Paths.get(keyCertPasswordPath)));
-        } catch (IOException e) {
-            logger.error("Keystore password file at path: {} cannot be opened ", keyCertPasswordPath);
-            e.printStackTrace();
-        }
-
+        String keyCertPassword = SecurityUtil.getKeystorePasswordFromFile(keyCertPasswordPath);
         synchronized (FtpesClient.class) {
             if (theKeyManager == null) {
                 theKeyManager = createKeyManager(keyCertPath, keyCertPassword);
