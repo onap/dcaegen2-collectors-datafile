@@ -26,6 +26,7 @@ import java.util.Base64;
 public final class HttpUtils implements HttpStatus {
 
     public static final int HTTP_DEFAULT_PORT = 80;
+    public static final int HTTPS_DEFAULT_PORT = 443;
 
     private HttpUtils() {
     }

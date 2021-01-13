@@ -139,7 +139,7 @@ public class DfcHttpClientTest {
 
     @Test
     public void isResponseOk_validateResponse() {
-        assertTrue(dfcHttpClientSpy.isResponseOk(HttpClientResponseHelper.RESPONSE_OK));
+        assertTrue(dfcHttpClientSpy.isResponseOk(HttpClientResponseHelper.NETTY_RESPONSE));
         assertFalse(dfcHttpClientSpy.isResponseOk(HttpClientResponseHelper.RESPONSE_ANY_NO_OK));
     }
 }

@@ -83,8 +83,8 @@ public class AppConfigTest {
             .password("izBJD8nLjawq0HMG") //
             .build();
 
-    private static final ImmutableFtpesConfig CORRECT_FTPES_CONFIGURATION = //
-        new ImmutableFtpesConfig.Builder() //
+    private static final ImmutableCertificateConfig CORRECT_FTPES_CONFIGURATION = //
+        new ImmutableCertificateConfig.Builder() //
             .keyCert("/src/test/resources/dfc.jks") //
             .keyPasswordPath("/src/test/resources/dfc.jks.pass") //
             .trustedCa("/src/test/resources/ftp.jks") //
@@ -120,9 +120,9 @@ public class AppConfigTest {
         Assertions.assertNotNull(publisherCfg);
         assertThat(publisherCfg).isEqualToComparingFieldByField(CORRECT_PUBLISHER_CONFIG);
 
-        FtpesConfig ftpesConfig = appConfigUnderTest.getFtpesConfiguration();
-        assertThat(ftpesConfig).isNotNull();
-        assertThat(ftpesConfig).isEqualToComparingFieldByField(CORRECT_FTPES_CONFIGURATION);
+        CertificateConfig certificateConfig = appConfigUnderTest.getCertificateConfiguration();
+        assertThat(certificateConfig).isNotNull();
+        assertThat(certificateConfig).isEqualToComparingFieldByField(CORRECT_FTPES_CONFIGURATION);
     }
 
     @Test
@@ -157,7 +157,7 @@ public class AppConfigTest {
         assertThatThrownBy(() -> appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER))
             .hasMessageContaining("No PublishingConfiguration loaded, changeIdentifier: PM_MEAS_FILES");
 
-        Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
+        Assertions.assertNull(appConfigUnderTest.getCertificateConfiguration());
     }
 
     @Test
@@ -172,7 +172,7 @@ public class AppConfigTest {
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         assertThatThrownBy(() -> appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER))
             .hasMessageContaining(CHANGE_IDENTIFIER);
-        Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
+        Assertions.assertNull(appConfigUnderTest.getCertificateConfiguration());
     }
 
     @Test
@@ -190,7 +190,7 @@ public class AppConfigTest {
         Assertions.assertNull(appConfigUnderTest.getDmaapConsumerConfiguration());
         assertThatThrownBy(() -> appConfigUnderTest.getPublisherConfiguration(CHANGE_IDENTIFIER))
             .hasMessageContaining(CHANGE_IDENTIFIER);
-        Assertions.assertNull(appConfigUnderTest.getFtpesConfiguration());
+        Assertions.assertNull(appConfigUnderTest.getCertificateConfiguration());
     }
 
     @Test

@@ -187,8 +187,8 @@ public class CloudConfigParser {
      * @return the xNF communication security configuration.
      * @throws DatafileTaskException if a member of the configuration is missing.
      */
-    public @NotNull FtpesConfig getFtpesConfig() throws DatafileTaskException {
-        return new ImmutableFtpesConfig.Builder() //
+    public @NotNull CertificateConfig getFtpesConfig() throws DatafileTaskException {
+        return new ImmutableCertificateConfig.Builder() //
             .keyCert(getAsString(jsonObject, "dmaap.ftpesConfig.keyCert"))
             .keyPasswordPath(getAsString(jsonObject, "dmaap.ftpesConfig.keyPasswordPath"))
             .trustedCa(getAsString(jsonObject, "dmaap.ftpesConfig.trustedCa"))

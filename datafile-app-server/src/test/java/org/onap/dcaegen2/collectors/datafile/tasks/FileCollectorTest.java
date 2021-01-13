@@ -38,7 +38,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
-import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
+import org.onap.dcaegen2.collectors.datafile.configuration.CertificateConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.ftp.FtpesClient;
@@ -90,7 +90,7 @@ public class FileCollectorTest {
     private static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
     private static AppConfig appConfigMock = mock(AppConfig.class);
-    private static FtpesConfig ftpesConfigMock = mock(FtpesConfig.class);
+    private static CertificateConfig certificateConfigMock = mock(CertificateConfig.class);
 
     private FtpesClient ftpesClientMock = mock(FtpesClient.class);
 
@@ -145,11 +145,11 @@ public class FileCollectorTest {
 
     @BeforeAll
     static void setUpConfiguration() {
-        when(appConfigMock.getFtpesConfiguration()).thenReturn(ftpesConfigMock);
-        when(ftpesConfigMock.keyCert()).thenReturn(FTP_KEY_PATH);
-        when(ftpesConfigMock.keyPasswordPath()).thenReturn(FTP_KEY_PASSWORD_PATH);
-        when(ftpesConfigMock.trustedCa()).thenReturn(TRUSTED_CA_PATH);
-        when(ftpesConfigMock.trustedCaPasswordPath()).thenReturn(TRUSTED_CA_PASSWORD_PATH);
+        when(appConfigMock.getCertificateConfiguration()).thenReturn(certificateConfigMock);
+        when(certificateConfigMock.keyCert()).thenReturn(FTP_KEY_PATH);
+        when(certificateConfigMock.keyPasswordPath()).thenReturn(FTP_KEY_PASSWORD_PATH);
+        when(certificateConfigMock.trustedCa()).thenReturn(TRUSTED_CA_PATH);
+        when(certificateConfigMock.trustedCaPasswordPath()).thenReturn(TRUSTED_CA_PASSWORD_PATH);
     }
 
     @BeforeEach

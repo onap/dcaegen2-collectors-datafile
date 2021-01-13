@@ -33,7 +33,9 @@ public class Counters {
     private final AtomicInteger numberOfSubscriptions = new AtomicInteger();
     private int noOfCollectedFiles = 0;
     private int noOfFailedFtpAttempts = 0;
+    private int noOfFailedHttpAttempts = 0;
     private int noOfFailedFtp = 0;
+    private int noOfFailedHttp = 0;
     private int noOfFailedPublishAttempts = 0;
     private int totalPublishedFiles = 0;
     private int noOfFailedPublish = 0;
@@ -62,8 +64,16 @@ public class Counters {
         noOfFailedFtpAttempts++;
     }
 
+    public synchronized void incNoOfFailedHttpAttempts() {
+        noOfFailedHttpAttempts++;
+    }
+
     public synchronized void incNoOfFailedFtp() {
         noOfFailedFtp++;
+    }
+
+    public synchronized void incNoOfFailedHttp() {
+        noOfFailedHttp++;
     }
 
     public synchronized void incNoOfFailedPublishAttempts() {
@@ -89,7 +99,9 @@ public class Counters {
         str.append("\n");
         str.append(format("collectedFiles", noOfCollectedFiles));
         str.append(format("failedFtpAttempts", noOfFailedFtpAttempts));
+        str.append(format("failedHttpAttempts", noOfFailedHttpAttempts));
         str.append(format("failedFtp", noOfFailedFtp));
+        str.append(format("failedHttp", noOfFailedHttp));
         str.append("\n");
         str.append(format("totalPublishedFiles", totalPublishedFiles));
         str.append(format("lastPublishedTime", lastPublishedTime));
@@ -113,8 +125,16 @@ public class Counters {
         return noOfFailedFtpAttempts;
     }
 
+    public int getNoOfFailedHttpAttempts() {
+        return noOfFailedHttpAttempts;
+    }
+
     public int getNoOfFailedFtp() {
         return noOfFailedFtp;
+    }
+
+    public int getNoOfFailedHttp() {
+        return noOfFailedHttp;
     }
 
     public int getNoOfFailedPublishAttempts() {

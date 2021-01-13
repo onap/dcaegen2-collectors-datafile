@@ -28,10 +28,10 @@ import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
  *
  */
 public enum Scheme {
-    FTPES, SFTP, HTTP;
+    FTPES, SFTP, HTTP, HTTPS;
 
     public static final String DFC_DOES_NOT_SUPPORT_PROTOCOL_ERROR_MSG = "DFC does not support protocol ";
-    public static final String SUPPORTED_PROTOCOLS_ERROR_MESSAGE = ". Supported protocols are FTPeS, sFTP and HTTP";
+    public static final String SUPPORTED_PROTOCOLS_ERROR_MESSAGE = ". Supported protocols are FTPeS, sFTP, HTTP and HTTPS";
 
     /**
      * Get a <code>Scheme</code> from a string.
@@ -48,10 +48,16 @@ public enum Scheme {
             result = Scheme.SFTP;
         } else if ("HTTP".equalsIgnoreCase(schemeString)) {
             result = Scheme.HTTP;
+        } else if ("HTTPS".equalsIgnoreCase(schemeString)) {
+            result = Scheme.HTTPS;
         } else {
             throw new DatafileTaskException(
                 DFC_DOES_NOT_SUPPORT_PROTOCOL_ERROR_MSG + schemeString + SUPPORTED_PROTOCOLS_ERROR_MESSAGE);
         }
         return result;
+    }
+
+    public static boolean isFtpScheme(Scheme scheme) {
+        return scheme == SFTP || scheme == FTPES;
     }
 }

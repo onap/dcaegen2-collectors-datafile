@@ -111,7 +111,7 @@ public class DfcHttpClient implements FileCollectClient {
             try {
                 long numBytes = Files.copy(response, localFile);
                 logger.trace("Transmission was successful - {} bytes downloaded.", numBytes);
-                logger.trace("CollectFile fetched: {}", localFile.toString());
+                logger.trace("CollectFile fetched: {}", localFile);
                 response.close();
             } catch (IOException e) {
                 errorMessages.set(new Exception("Error fetching file with", e));
@@ -139,7 +139,7 @@ public class DfcHttpClient implements FileCollectClient {
     }
 
     @NotNull protected String prepareUri(String remoteFile) {
-        int port = fileServerData.port().isPresent() ? fileServerData.port().get() : HttpUtils.HTTP_DEFAULT_PORT;
+        int port = fileServerData.port().orElse(HttpUtils.HTTP_DEFAULT_PORT);
         return "http://" + fileServerData.serverAddress() + ":" + port + remoteFile;
     }
 

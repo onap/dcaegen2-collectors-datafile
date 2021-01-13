@@ -23,8 +23,9 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
 
+import org.onap.dcaegen2.collectors.datafile.commons.Scheme;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
-import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
+import org.onap.dcaegen2.collectors.datafile.configuration.CertificateConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.commons.FileCollectClient;
@@ -32,6 +33,8 @@ import org.onap.dcaegen2.collectors.datafile.ftp.FtpesClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.SftpClient;
 import org.onap.dcaegen2.collectors.datafile.ftp.SftpClientSettings;
 import org.onap.dcaegen2.collectors.datafile.http.DfcHttpClient;
+import org.onap.dcaegen2.collectors.datafile.http.DfcHttpsClient;
+import org.onap.dcaegen2.collectors.datafile.http.HttpsClientConnectionManagerUtil;
 import org.onap.dcaegen2.collectors.datafile.model.Counters;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FilePublishInformation;
@@ -109,16 +112,24 @@ public class FileCollector {
             return Mono.just(Optional.of(getFilePublishInformation(fileData, localFile, context)));
         } catch (NonRetryableDatafileTaskException nre) {
             logger.warn("Failed to download file: {} {}, reason: {}", fileData.sourceName(), fileData.name(), nre);
-            counters.incNoOfFailedFtpAttempts();
+            incFailedAttemptsCounter(fileData);
             return Mono.just(Optional.empty()); // Give up
         } catch (DatafileTaskException e) {
             logger.warn("Failed to download file: {} {}, reason: ", fileData.sourceName(), fileData.name(), e);
-            counters.incNoOfFailedFtpAttempts();
+            incFailedAttemptsCounter(fileData);
             return Mono.error(e);
         } catch (Exception throwable) {
             logger.warn("Failed to close client: {} {}, reason: {}", fileData.sourceName(), fileData.name(),
                 throwable.toString(), throwable);
             return Mono.just(Optional.of(getFilePublishInformation(fileData, localFile, context)));
+        }
+    }
+
+    private void incFailedAttemptsCounter(FileData fileData) {
+        if (Scheme.isFtpScheme(fileData.scheme())) {
+            counters.incNoOfFailedFtpAttempts();
+        } else {
+            counters.incNoOfFailedHttpAttempts();
         }
     }
 
@@ -130,6 +141,8 @@ public class FileCollector {
                 return createFtpesClient(fileData);
             case HTTP:
                 return createHttpClient(fileData);
+            case HTTPS:
+                return createHttpsClient(fileData);
             default:
                 throw new DatafileTaskException("Unhandled protocol: " + fileData.scheme());
         }
@@ -163,12 +176,16 @@ public class FileCollector {
     }
 
     protected FtpesClient createFtpesClient(FileData fileData) {
-        FtpesConfig config = datafileAppConfig.getFtpesConfiguration();
+        CertificateConfig config = datafileAppConfig.getCertificateConfiguration();
         return new FtpesClient(fileData.fileServerData(), Paths.get(config.keyCert()), config.keyPasswordPath(),
             Paths.get(config.trustedCa()), config.trustedCaPasswordPath());
     }
 
     protected FileCollectClient createHttpClient(FileData fileData) {
         return new DfcHttpClient(fileData.fileServerData());
+    }
+
+    private FileCollectClient createHttpsClient(FileData fileData) throws DatafileTaskException {
+        return new DfcHttpsClient(fileData.fileServerData(), HttpsClientConnectionManagerUtil.instance());
     }
 }
