@@ -38,12 +38,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.onap.dcaegen2.collectors.datafile.configuration.AppConfig;
-import org.onap.dcaegen2.collectors.datafile.configuration.FtpesConfig;
+import org.onap.dcaegen2.collectors.datafile.configuration.CertificateConfig;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.ftp.FtpesClient;
 import org.onap.dcaegen2.collectors.datafile.commons.Scheme;
 import org.onap.dcaegen2.collectors.datafile.ftp.SftpClient;
+import org.onap.dcaegen2.collectors.datafile.http.DfcHttpClient;
+import org.onap.dcaegen2.collectors.datafile.http.DfcHttpsClient;
 import org.onap.dcaegen2.collectors.datafile.model.Counters;
 import org.onap.dcaegen2.collectors.datafile.model.FileData;
 import org.onap.dcaegen2.collectors.datafile.model.FilePublishInformation;
@@ -64,6 +66,8 @@ public class FileCollectorTest {
     private static final String FILE_READY_CHANGE_TYPE = "FileReady";
     private static final String FTPES_SCHEME = "ftpes://";
     private static final String SFTP_SCHEME = "sftp://";
+    private static final String HTTP_SCHEME = "http://";
+    private static final String HTTPS_SCHEME = "https://";
     private static final String SERVER_ADDRESS = "192.168.0.101";
     private static final int PORT_22 = 22;
     private static final String PM_FILE_NAME = "A20161224.1030-1045.bin.gz";
@@ -79,23 +83,35 @@ public class FileCollectorTest {
     private static final String SFTP_LOCATION = SFTP_SCHEME + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
     private static final String SFTP_LOCATION_NO_PORT = SFTP_SCHEME + SERVER_ADDRESS + REMOTE_FILE_LOCATION;
 
+    private static final String HTTP_LOCATION =
+            HTTP_SCHEME + USER + ":" + PWD + "@" + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
+    private static final String HTTP_LOCATION_NO_PORT =
+            HTTP_SCHEME + USER + ":" + PWD + "@" + SERVER_ADDRESS + REMOTE_FILE_LOCATION;
+    private static final String HTTPS_LOCATION =
+            HTTP_SCHEME + USER + ":" + PWD + "@" + SERVER_ADDRESS + ":" + PORT_22 + REMOTE_FILE_LOCATION;
+    private static final String HTTPS_LOCATION_NO_PORT =
+            HTTP_SCHEME + USER + ":" + PWD + "@" + SERVER_ADDRESS + REMOTE_FILE_LOCATION;
+
     private static final String GZIP_COMPRESSION = "gzip";
     private static final String MEAS_COLLECT_FILE_FORMAT_TYPE = "org.3GPP.32.435#measCollec";
     private static final String FILE_FORMAT_VERSION = "V10";
 
-    private static final String FTP_KEY_PATH = "ftpKeyPath";
-    private static final String FTP_KEY_PASSWORD_PATH = "ftpKeyPassword";
+    private static final String CERTIFICATE_KEY_PATH = "certificateKeyPath";
+    private static final String CERTIFICATE_KEY_PASSWORD_PATH = "certificateKeyPassword";
     private static final String TRUSTED_CA_PATH = "trustedCAPath";
     private static final String TRUSTED_CA_PASSWORD_PATH = "trustedCAPassword";
     private static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
     private static AppConfig appConfigMock = mock(AppConfig.class);
-    private static FtpesConfig ftpesConfigMock = mock(FtpesConfig.class);
+    private static CertificateConfig certificateConfigMock = mock(CertificateConfig.class);
 
     private FtpesClient ftpesClientMock = mock(FtpesClient.class);
 
     private SftpClient sftpClientMock = mock(SftpClient.class);
     private final Map<String, String> contextMap = new HashMap<>();
+
+    private DfcHttpClient dfcHttpClientMock = mock(DfcHttpClient.class);
+    private DfcHttpsClient dfcHttpsClientMock = mock(DfcHttpsClient.class);
 
     private Counters counters;
 
@@ -145,11 +161,11 @@ public class FileCollectorTest {
 
     @BeforeAll
     static void setUpConfiguration() {
-        when(appConfigMock.getFtpesConfiguration()).thenReturn(ftpesConfigMock);
-        when(ftpesConfigMock.keyCert()).thenReturn(FTP_KEY_PATH);
-        when(ftpesConfigMock.keyPasswordPath()).thenReturn(FTP_KEY_PASSWORD_PATH);
-        when(ftpesConfigMock.trustedCa()).thenReturn(TRUSTED_CA_PATH);
-        when(ftpesConfigMock.trustedCaPasswordPath()).thenReturn(TRUSTED_CA_PASSWORD_PATH);
+        when(appConfigMock.getCertificateConfiguration()).thenReturn(certificateConfigMock);
+        when(certificateConfigMock.keyCert()).thenReturn(CERTIFICATE_KEY_PATH);
+        when(certificateConfigMock.keyPasswordPath()).thenReturn(CERTIFICATE_KEY_PASSWORD_PATH);
+        when(certificateConfigMock.trustedCa()).thenReturn(TRUSTED_CA_PATH);
+        when(certificateConfigMock.trustedCaPasswordPath()).thenReturn(TRUSTED_CA_PASSWORD_PATH);
     }
 
     @BeforeEach
@@ -178,6 +194,7 @@ public class FileCollectorTest {
 
         assertEquals(1, counters.getNoOfCollectedFiles(),"collectedFiles should have been 1");
         assertEquals(0, counters.getNoOfFailedFtpAttempts(),"failedFtpAttempts should have been 0");
+        assertEquals(0, counters.getNoOfFailedHttpAttempts(),"failedHttpAttempts should have been 0");
     }
 
     @Test
@@ -210,6 +227,70 @@ public class FileCollectorTest {
     }
 
     @Test
+    public void whenHttpFile_returnCorrectResponse() throws Exception {
+        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
+        doReturn(dfcHttpClientMock).when(collectorUndetTest).createHttpClient(any());
+
+        FileData fileData = createFileData(HTTP_LOCATION_NO_PORT, Scheme.HTTP);
+
+        FilePublishInformation expectedfilePublishInformation =
+                createExpectedFilePublishInformation(HTTP_LOCATION_NO_PORT);
+
+        StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
+                .expectNext(expectedfilePublishInformation) //
+                .verifyComplete();
+
+        // The same again, but with port
+        fileData = createFileData(HTTP_LOCATION, Scheme.HTTP);
+        expectedfilePublishInformation = createExpectedFilePublishInformation(HTTP_LOCATION);
+
+        StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
+                .expectNext(expectedfilePublishInformation) //
+                .verifyComplete();
+
+        verify(dfcHttpClientMock, times(2)).open();
+        verify(dfcHttpClientMock, times(2)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+        verify(dfcHttpClientMock, times(2)).close();
+        verifyNoMoreInteractions(dfcHttpClientMock);
+
+        assertEquals(2, counters.getNoOfCollectedFiles(),"collectedFiles should have been 1");
+        assertEquals(0, counters.getNoOfFailedFtpAttempts(),"failedFtpAttempts should have been 0");
+        assertEquals(0, counters.getNoOfFailedHttpAttempts(),"failedHttpAttempts should have been 0");
+    }
+
+    @Test
+    public void whenHttpsFile_returnCorrectResponse() throws Exception {
+        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
+        doReturn(dfcHttpsClientMock).when(collectorUndetTest).createHttpsClient(any());
+
+        FileData fileData = createFileData(HTTPS_LOCATION_NO_PORT, Scheme.HTTPS);
+
+        FilePublishInformation expectedfilePublishInformation =
+                createExpectedFilePublishInformation(HTTPS_LOCATION_NO_PORT);
+
+        StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
+                .expectNext(expectedfilePublishInformation) //
+                .verifyComplete();
+
+        // The same again, but with port
+        fileData = createFileData(HTTPS_LOCATION, Scheme.HTTPS);
+        expectedfilePublishInformation = createExpectedFilePublishInformation(HTTPS_LOCATION);
+
+        StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
+                .expectNext(expectedfilePublishInformation) //
+                .verifyComplete();
+
+        verify(dfcHttpsClientMock, times(2)).open();
+        verify(dfcHttpsClientMock, times(2)).collectFile(REMOTE_FILE_LOCATION, LOCAL_FILE_LOCATION);
+        verify(dfcHttpsClientMock, times(2)).close();
+        verifyNoMoreInteractions(dfcHttpsClientMock);
+
+        assertEquals(2, counters.getNoOfCollectedFiles(),"collectedFiles should have been 1");
+        assertEquals(0, counters.getNoOfFailedFtpAttempts(),"failedFtpAttempts should have been 0");
+        assertEquals(0, counters.getNoOfFailedHttpAttempts(),"failedHttpAttempts should have been 0");
+    }
+
+    @Test
     public void whenFtpesFileAlwaysFail_retryAndFail() throws Exception {
         FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
         doReturn(ftpesClientMock).when(collectorUndetTest).createFtpesClient(any());
@@ -226,6 +307,7 @@ public class FileCollectorTest {
 
         assertEquals(0, counters.getNoOfCollectedFiles(),"collectedFiles should have been 0");
         assertEquals(4, counters.getNoOfFailedFtpAttempts(),"failedFtpAttempts should have been 4");
+        assertEquals(0, counters.getNoOfFailedHttpAttempts(),"failedHttpAttempts should have been 0");
     }
 
     @Test
@@ -245,6 +327,7 @@ public class FileCollectorTest {
 
         assertEquals(0, counters.getNoOfCollectedFiles(),"collectedFiles should have been 0");
         assertEquals(1, counters.getNoOfFailedFtpAttempts(),"failedFtpAttempts should have been 1");
+        assertEquals(0, counters.getNoOfFailedHttpAttempts(),"failedHttpAttempts should have been 0");
     }
 
     @Test
@@ -267,5 +350,6 @@ public class FileCollectorTest {
 
         assertEquals(1, counters.getNoOfCollectedFiles(),"collectedFiles should have been 1");
         assertEquals(1, counters.getNoOfFailedFtpAttempts(),"failedFtpAttempts should have been 1");
+        assertEquals(0, counters.getNoOfFailedHttpAttempts(),"failedHttpAttempts should have been 0");
     }
 }

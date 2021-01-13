@@ -392,6 +392,7 @@ public class ScheduledTasksTest {
 
         assertEquals(2, testedObject.getCounters().getTotalReceivedEvents(),"totalReceivedEvents should have been 2");
         assertEquals(1, testedObject.getCounters().getNoOfFailedFtp(),"failedFtp should have been 1");
+        assertEquals(0, testedObject.getCounters().getNoOfFailedHttp(),"failedHttp should have been 0");
     }
 
     @Test

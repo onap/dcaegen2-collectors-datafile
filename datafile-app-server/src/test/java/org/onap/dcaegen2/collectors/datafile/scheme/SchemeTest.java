@@ -34,6 +34,7 @@ public class SchemeTest {
         assertEquals(Scheme.FTPES, Scheme.getSchemeFromString("FTPES"));
         assertEquals(Scheme.SFTP, Scheme.getSchemeFromString("SFTP"));
         assertEquals(Scheme.HTTP, Scheme.getSchemeFromString("HTTP"));
+        assertEquals(Scheme.HTTPS, Scheme.getSchemeFromString("HTTPS"));
     }
 
     @Test
