@@ -32,7 +32,7 @@ import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 3/23/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
-@SpringBootApplication(exclude = {JacksonAutoConfiguration.class})
+@SpringBootApplication()
 @EnableScheduling
 public class MainApp {
 

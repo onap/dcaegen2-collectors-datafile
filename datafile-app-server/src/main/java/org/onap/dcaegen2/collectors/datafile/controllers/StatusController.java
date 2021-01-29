@@ -19,11 +19,10 @@ package org.onap.dcaegen2.collectors.datafile.controllers;
 import static org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext.ENTRY;
 import static org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext.EXIT;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.onap.dcaegen2.collectors.datafile.model.Counters;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.collectors.datafile.tasks.ScheduledTasks;
@@ -42,7 +41,7 @@ import reactor.core.publisher.Mono;
  * REST Controller to check the heart beat and status of the DFC.
  */
 @RestController
-@Api(value = "StatusController")
+@Tag(name = "StatusController")
 public class StatusController {
 
     private static final Logger logger = LoggerFactory.getLogger(StatusController.class);
@@ -60,7 +59,7 @@ public class StatusController {
      * @return the heart beat status of DFC.
      */
     @GetMapping("/heartbeat")
-    @ApiOperation(value = "Returns liveness of DATAFILE service")
+    @Operation(summary = "Returns liveness of DATAFILE service")
     @ApiResponses(
         value = { //
             @ApiResponse(code = 200, message = "DATAFILE service is living"),
@@ -85,7 +84,7 @@ public class StatusController {
      * @return information.
      */
     @GetMapping("/status")
-    @ApiOperation(value = "Returns status and statistics of DATAFILE service")
+    @Operation(summary = "Returns status and statistics of DATAFILE service")
     @ApiResponses(
         value = { //
             @ApiResponse(code = 200, message = "DATAFILE service is living"),
@@ -101,5 +100,4 @@ public class StatusController {
         logger.info(EXIT, "Status request");
         return response;
     }
-
 }
