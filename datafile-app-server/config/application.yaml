@@ -25,3 +25,7 @@ logging:
   file: /var/log/ONAP/application.log
 app:
   filepath: config/datafile_endpoints_test.json
+
+springdoc:
+  show-actuator: true
+  swagger-ui.disable-swagger-default-url: true
