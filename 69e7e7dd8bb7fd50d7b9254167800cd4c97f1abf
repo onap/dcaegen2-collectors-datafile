@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f345b36b_f6f4fe6f",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SwaggerConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-01T08:53:03Z",
+      "side": 1,
+      "message": "1. Previously the /error endpoint was filtered out, so if you want to add it then I think you could remove those lines (use only PathSelectors.any())\n\n2. After the springfox update I can\u0027t access the swagger endpoint, I\u0027m getting 404, maybe the config needs some update?",
+      "revId": "69e7e7dd8bb7fd50d7b9254167800cd4c97f1abf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
