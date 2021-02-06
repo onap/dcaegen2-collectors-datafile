@@ -16,6 +16,24 @@
       "revId": "69e7e7dd8bb7fd50d7b9254167800cd4c97f1abf",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01fa96cb_d994afe1",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SwaggerConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2021-02-06T20:25:55Z",
+      "side": 1,
+      "message": "Hi Remigiusz, Thanks for comments.\nI have updated code could you please verify/review latest patchset.",
+      "parentUuid": "f345b36b_f6f4fe6f",
+      "revId": "69e7e7dd8bb7fd50d7b9254167800cd4c97f1abf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
