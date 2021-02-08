@@ -34,6 +34,12 @@
       "timeout": "1s",
       "endpoint": "/heartbeat"
     },
+    "volumes": [
+      {
+        "container": { "bind": "/home/datafile/.ssh/" },
+        "config_volume": { "name":"onap-dcae-dfc-known-hosts" }
+      }
+    ],
     "ports": [
       "8100:0",
       "8433:0"
@@ -161,7 +167,7 @@
       "designer_editable": true,
       "sourced_at_deployment": true,
       "policy_editable": false,
-      "type": "boolean",
+      "type": "string",
       "required": true
     },
     {
