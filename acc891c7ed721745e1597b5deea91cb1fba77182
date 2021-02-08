@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aea64193_2b29f244",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-02-08T17:50:35Z",
+      "side": 1,
+      "message": "add 2021",
+      "revId": "acc891c7ed721745e1597b5deea91cb1fba77182",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6f44a4b_3ab2e0e9",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/MainApp.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-02-08T17:50:35Z",
+      "side": 1,
+      "message": "add 2021",
+      "revId": "acc891c7ed721745e1597b5deea91cb1fba77182",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f63d33e9_4025eaa6",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SwaggerConfig.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-02-08T17:50:35Z",
+      "side": 1,
+      "message": "add 2021",
+      "revId": "acc891c7ed721745e1597b5deea91cb1fba77182",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75d57e7b_ceb06d65",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/controllers/ScheduleController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-02-08T17:50:35Z",
+      "side": 1,
+      "message": "add 2021",
+      "revId": "acc891c7ed721745e1597b5deea91cb1fba77182",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e9500be0_ac6adc74",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/controllers/StatusController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-02-08T17:50:35Z",
+      "side": 1,
+      "message": "add 2021",
+      "revId": "acc891c7ed721745e1597b5deea91cb1fba77182",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9c6de32_7867ed7a",
+        "filename": "pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-02-08T17:50:35Z",
+      "side": 1,
+      "message": "add 2021",
+      "revId": "acc891c7ed721745e1597b5deea91cb1fba77182",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
