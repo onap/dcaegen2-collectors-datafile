@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d41b355f_3de5a197",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2021-02-08T18:24:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aea64193_2b29f244",
+      "revId": "acc891c7ed721745e1597b5deea91cb1fba77182",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b6f44a4b_3ab2e0e9",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/MainApp.java",
         "patchSetId": 3
@@ -33,6 +51,24 @@
       "revId": "acc891c7ed721745e1597b5deea91cb1fba77182",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e257b54_d5d40b87",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/MainApp.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2021-02-08T18:24:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6f44a4b_3ab2e0e9",
+      "revId": "acc891c7ed721745e1597b5deea91cb1fba77182",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "2dbd9a71_2718d3b9",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SwaggerConfig.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2021-02-08T18:24:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f63d33e9_4025eaa6",
+      "revId": "acc891c7ed721745e1597b5deea91cb1fba77182",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "75d57e7b_ceb06d65",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/controllers/ScheduleController.java",
         "patchSetId": 3
@@ -67,6 +121,24 @@
       "revId": "acc891c7ed721745e1597b5deea91cb1fba77182",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "55ae9869_4caebcc8",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/controllers/ScheduleController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2021-02-08T18:24:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75d57e7b_ceb06d65",
+      "revId": "acc891c7ed721745e1597b5deea91cb1fba77182",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "354be5a0_57e7297c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/controllers/StatusController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2021-02-08T18:24:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9500be0_ac6adc74",
+      "revId": "acc891c7ed721745e1597b5deea91cb1fba77182",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d9c6de32_7867ed7a",
         "filename": "pom.xml",
         "patchSetId": 3
@@ -101,6 +191,24 @@
       "revId": "acc891c7ed721745e1597b5deea91cb1fba77182",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "054248b7_24bb5dac",
+        "filename": "pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2021-02-08T18:24:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9c6de32_7867ed7a",
+      "revId": "acc891c7ed721745e1597b5deea91cb1fba77182",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
