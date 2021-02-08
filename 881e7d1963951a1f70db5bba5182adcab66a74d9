@@ -122,6 +122,23 @@
     },
     {
       "key": {
+        "uuid": "958ff8a9_98934557",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpsClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:40:08Z",
+      "side": 1,
+      "message": "Fix formatting",
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cab2ff5f_ba3ba69c",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/HttpsClientConnectionManagerUtil.java",
         "patchSetId": 1
@@ -229,6 +246,98 @@
         "startChar": 0,
         "endLine": 63,
         "endChar": 1
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3923744_07dd1a8a",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpsClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:40:08Z",
+      "side": 1,
+      "message": "method names should start with lowercase",
+      "range": {
+        "startLine": 109,
+        "startChar": 9,
+        "endLine": 109,
+        "endChar": 10
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb2db52d_4ea5b0e8",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpsClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:40:08Z",
+      "side": 1,
+      "message": "lowercase",
+      "range": {
+        "startLine": 128,
+        "startChar": 9,
+        "endLine": 128,
+        "endChar": 10
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "276eeb11_941de2cf",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpsClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:40:08Z",
+      "side": 1,
+      "message": "lowercase",
+      "range": {
+        "startLine": 140,
+        "startChar": 9,
+        "endLine": 140,
+        "endChar": 10
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8ef1fe4_16099e4b",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpsClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:40:08Z",
+      "side": 1,
+      "message": "lowercase",
+      "range": {
+        "startLine": 151,
+        "startChar": 9,
+        "endLine": 151,
+        "endChar": 10
       },
       "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
