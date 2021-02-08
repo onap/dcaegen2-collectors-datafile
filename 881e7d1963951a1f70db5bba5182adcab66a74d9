@@ -1,0 +1,261 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cda265e8_ec23916e",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/commons/SecurityUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:04:42Z",
+      "side": 1,
+      "message": "Add javadocs\n\nConsider adding tests.",
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca8b4d45_10cd99f0",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/commons/SecurityUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:04:42Z",
+      "side": 1,
+      "message": "Consider marking final",
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "931b2c8f_07b6da45",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/commons/SecurityUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:04:42Z",
+      "side": 1,
+      "message": "Consider adding method getKeystorePasswordFromFile and getTruststorePasswordFromFile instead of passing strings - \"keystore\" and \"truststore\" as arguments from multiple places.",
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "46417c36_0d80d27e",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:04:42Z",
+      "side": 1,
+      "message": "Is Paths.get needed here? Rest of the arguments (representing same data) are passed as strings.",
+      "range": {
+        "startLine": 237,
+        "startChar": 55,
+        "endLine": 237,
+        "endChar": 93
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "096ea648_67e318ee",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:04:42Z",
+      "side": 1,
+      "message": "May get confusing later (or for someone new to the project).",
+      "range": {
+        "startLine": 190,
+        "startChar": 38,
+        "endLine": 190,
+        "endChar": 52
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b93376d_19e765c5",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:04:42Z",
+      "side": 1,
+      "message": "Consider updating that (and names below) as well.",
+      "range": {
+        "startLine": 192,
+        "startChar": 46,
+        "endLine": 192,
+        "endChar": 71
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cab2ff5f_ba3ba69c",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/HttpsClientConnectionManagerUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:04:42Z",
+      "side": 1,
+      "message": "javadocs\n\nand consider adding some tests",
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4a4f58f_951e22ab",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/HttpsClientConnectionManagerUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:04:42Z",
+      "side": 1,
+      "message": "How do You ensure that connectionManager is not closed for files being processed?\n\nSeems to me that there may be a race condition (but I am not 100% certain)\nConsider if calls happen like that:\n1. create https client\n2. update vonfiguration\n3. download file",
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d255ed2a_172096f4",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/HttpsClientConnectionManagerUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:04:42Z",
+      "side": 1,
+      "message": "Fix formatting",
+      "range": {
+        "startLine": 92,
+        "startChar": 8,
+        "endLine": 92,
+        "endChar": 10
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bdb9807e_bff4cc68",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/HttpsClientConnectionManagerUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:04:42Z",
+      "side": 1,
+      "message": "Consider ordering methods according to invocation order.",
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd0a9c23_b4f15ea8",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/Counters.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:04:42Z",
+      "side": 1,
+      "message": "Consider adding tests for new fields. See tests for noOfFailedFtpAttempts for example.",
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "51411809_0b999a33",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpsClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:04:42Z",
+      "side": 1,
+      "message": "Consider moving private methods to bottom.",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 1
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a94700f_8dade832",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/HttpClientResponseHelper.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-08T14:04:42Z",
+      "side": 1,
+      "message": "Keep the info that it\u0027s an OK response (I guess it\u0027s more important from the usage perspective)",
+      "range": {
+        "startLine": 44,
+        "startChar": 43,
+        "endLine": 44,
+        "endChar": 57
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
