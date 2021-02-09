@@ -70,6 +70,24 @@
       "revId": "69e7e7dd8bb7fd50d7b9254167800cd4c97f1abf",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5cd5ac55_d5031b5d",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/SwaggerConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2021-02-09T17:25:50Z",
+      "side": 1,
+      "message": "Thanks Remigiusz for review.",
+      "parentUuid": "147c759d_0540fa4c",
+      "revId": "69e7e7dd8bb7fd50d7b9254167800cd4c97f1abf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
