@@ -1,6 +1,7 @@
 /*-
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
+ * Copyright (C) 2018-2021 Nordix Foundation. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +19,8 @@
 
 package org.onap.dcaegen2.collectors.datafile.controllers;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.onap.dcaegen2.collectors.datafile.configuration.SchedulerConfig;
 import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.slf4j.Logger;
@@ -42,7 +42,7 @@ import reactor.core.publisher.Mono;
  */
 
 @RestController
-@Api(value = "ScheduleController")
+@Tag(name = "ScheduleController")
 public class ScheduleController {
 
     private static final Logger logger = LoggerFactory.getLogger(ScheduleController.class);
@@ -61,7 +61,7 @@ public class ScheduleController {
      * @return the response.
      */
     @GetMapping("/start")
-    @ApiOperation(value = "Start scheduling worker request")
+    @Operation(summary = "Start scheduling worker request")
     public Mono<ResponseEntity<String>> startTasks(@RequestHeader HttpHeaders headers) {
         MappedDiagnosticContext.initializeTraceContext(headers);
         logger.info(MappedDiagnosticContext.ENTRY, "Start request");
@@ -81,7 +81,7 @@ public class ScheduleController {
      * @return the response.
      */
     @GetMapping("/stopDatafile")
-    @ApiOperation(value = "Receiving stop scheduling worker request")
+    @Operation(summary = "Receiving stop scheduling worker request")
     public Mono<ResponseEntity<String>> stopTask(@RequestHeader HttpHeaders headers) {
         MappedDiagnosticContext.initializeTraceContext(headers);
         logger.info(MappedDiagnosticContext.ENTRY, "Stop request");
@@ -90,7 +90,7 @@ public class ScheduleController {
         return response;
     }
 
-    @ApiOperation(value = "Sends success or error response on starting task execution")
+    @Operation(summary = "Sends success or error response on starting task execution")
     private static ResponseEntity<String> createStartTaskResponse(boolean wasScheduled) {
         if (wasScheduled) {
             return new ResponseEntity<>("Datafile Service has been started!", HttpStatus.CREATED);
