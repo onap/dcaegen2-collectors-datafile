@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "12dee1ff_30611aa5",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/commons/SecurityUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cda265e8_ec23916e",
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ca8b4d45_10cd99f0",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/commons/SecurityUtil.java",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "ee3d517c_39963a05",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/commons/SecurityUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca8b4d45_10cd99f0",
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "931b2c8f_07b6da45",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/commons/SecurityUtil.java",
         "patchSetId": 1
@@ -50,6 +86,24 @@
       "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d64383f_6cf41bfe",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/commons/SecurityUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "931b2c8f_07b6da45",
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -76,6 +130,30 @@
     },
     {
       "key": {
+        "uuid": "3551e219_88bbf76f",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "I agree with you. Too much \u0027templating\u0027 from my side. The difference may come from KeyStore is produced in little bit different manner than TrustManager. In KeyStore \u0027Path\u0027 is used, but it can be created elsewhere.\nChanged.",
+      "parentUuid": "46417c36_0d80d27e",
+      "range": {
+        "startLine": 237,
+        "startChar": 55,
+        "endLine": 237,
+        "endChar": 93
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "096ea648_67e318ee",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
         "patchSetId": 1
@@ -96,6 +174,30 @@
       "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd9e20ff_48d5a718",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "096ea648_67e318ee",
+      "range": {
+        "startLine": 190,
+        "startChar": 38,
+        "endLine": 190,
+        "endChar": 52
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -122,6 +224,30 @@
     },
     {
       "key": {
+        "uuid": "433a8510_655c094f",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b93376d_19e765c5",
+      "range": {
+        "startLine": 192,
+        "startChar": 46,
+        "endLine": 192,
+        "endChar": 71
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "958ff8a9_98934557",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpsClient.java",
         "patchSetId": 1
@@ -136,6 +262,24 @@
       "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ac0eba5_9f85231b",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpsClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "958ff8a9_98934557",
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -156,6 +300,24 @@
     },
     {
       "key": {
+        "uuid": "27041824_e259dc04",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/HttpsClientConnectionManagerUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cab2ff5f_ba3ba69c",
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b4a4f58f_951e22ab",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/HttpsClientConnectionManagerUtil.java",
         "patchSetId": 1
@@ -170,6 +332,24 @@
       "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54c6381f_d97f9599",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/HttpsClientConnectionManagerUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "This is very good question. This may be checked, but note the certificate configuration will be changed in following situations:\n1) DFC reinstallation\n2) For some reason EJBCA reinstallation\n3) Need for cert update (invalid certs/private key compromised) - this point from my point of view is most critical but to be supplied in the future.\nThe question is how often given situation may happen and how the system should behave.",
+      "parentUuid": "b4a4f58f_951e22ab",
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -196,6 +376,30 @@
     },
     {
       "key": {
+        "uuid": "bb36fcdd_a1f63eeb",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/HttpsClientConnectionManagerUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d255ed2a_172096f4",
+      "range": {
+        "startLine": 92,
+        "startChar": 8,
+        "endLine": 92,
+        "endChar": 10
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bdb9807e_bff4cc68",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/HttpsClientConnectionManagerUtil.java",
         "patchSetId": 1
@@ -213,6 +417,24 @@
     },
     {
       "key": {
+        "uuid": "670db0d7_4abe6ff9",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/http/HttpsClientConnectionManagerUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdb9807e_bff4cc68",
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dd0a9c23_b4f15ea8",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/Counters.java",
         "patchSetId": 1
@@ -227,6 +449,24 @@
       "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eff83a3a_c52478ee",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/model/Counters.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "Done, related part is included into ScheduledTaskTest and FileCollectorTest.",
+      "parentUuid": "dd0a9c23_b4f15ea8",
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -253,6 +493,30 @@
     },
     {
       "key": {
+        "uuid": "ac31220d_35e64242",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpsClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51411809_0b999a33",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 1
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f3923744_07dd1a8a",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpsClientTest.java",
         "patchSetId": 1
@@ -273,6 +537,30 @@
       "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30f33021_befe741b",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpsClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3923744_07dd1a8a",
+      "range": {
+        "startLine": 109,
+        "startChar": 9,
+        "endLine": 109,
+        "endChar": 10
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -299,6 +587,30 @@
     },
     {
       "key": {
+        "uuid": "9497ffbd_eae9babd",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpsClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb2db52d_4ea5b0e8",
+      "range": {
+        "startLine": 128,
+        "startChar": 9,
+        "endLine": 128,
+        "endChar": 10
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "276eeb11_941de2cf",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpsClientTest.java",
         "patchSetId": 1
@@ -319,6 +631,30 @@
       "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "971fdbe2_20e0bd23",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpsClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "276eeb11_941de2cf",
+      "range": {
+        "startLine": 140,
+        "startChar": 9,
+        "endLine": 140,
+        "endChar": 10
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -345,6 +681,30 @@
     },
     {
       "key": {
+        "uuid": "104a4556_fdc020c4",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/DfcHttpsClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8ef1fe4_16099e4b",
+      "range": {
+        "startLine": 151,
+        "startChar": 9,
+        "endLine": 151,
+        "endChar": 10
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a94700f_8dade832",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/HttpClientResponseHelper.java",
         "patchSetId": 1
@@ -365,6 +725,30 @@
       "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b30c4feb_a96517ac",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/http/HttpClientResponseHelper.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 6675
+      },
+      "writtenOn": "2021-02-11T11:12:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a94700f_8dade832",
+      "range": {
+        "startLine": 44,
+        "startChar": 43,
+        "endLine": 44,
+        "endChar": 57
+      },
+      "revId": "881e7d1963951a1f70db5bba5182adcab66a74d9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
