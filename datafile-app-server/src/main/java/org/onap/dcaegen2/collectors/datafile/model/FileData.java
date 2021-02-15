@@ -1,6 +1,7 @@
 /*-
  * ============LICENSE_START=======================================================
  *  Copyright (C) 2019 Nordix Foundation.
+ *  Copyright (C) 2021 Nokia. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +24,11 @@ package org.onap.dcaegen2.collectors.datafile.model;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.net.URIBuilder;
 import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 import org.onap.dcaegen2.collectors.datafile.commons.FileServerData;
@@ -101,6 +105,7 @@ public abstract class FileData {
 
     /**
      * Get the data about the file server where the file should be collected from.
+     * Query data included as it can contain JWT token
      *
      * @return the data about the file server where the file should be collected from.
      */
@@ -113,6 +118,15 @@ public abstract class FileData {
             .password(userInfo.isPresent() ? userInfo.get()[1] : "");
         if (uri.getPort() > 0) {
             builder.port(uri.getPort());
+        }
+        URIBuilder uriBuilder = new URIBuilder(uri);
+        List<NameValuePair> query = uriBuilder.getQueryParams();
+        if (query != null && !query.isEmpty()) {
+            builder.queryParameters(query);
+        }
+        String fragment = uri.getRawFragment();
+        if (fragment != null && fragment.length() > 0) {
+            builder.uriRawFragment(fragment);
         }
         return builder.build();
     }

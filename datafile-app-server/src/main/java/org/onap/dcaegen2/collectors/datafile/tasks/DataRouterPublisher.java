@@ -1,7 +1,7 @@
 /*-
  * ============LICENSE_START=======================================================
  *  Copyright (C) 2019 Nordix Foundation.
- *  Copyright (C) 2020 Nokia. All rights reserved.
+ *  Copyright (C) 2020-2021 Nokia. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -133,7 +133,7 @@ public class DataRouterPublisher {
 
     private Mono<FilePublishInformation> handleHttpResponse(HttpStatus response, FilePublishInformation publishInfo) {
         MDC.setContextMap(publishInfo.getContext());
-        if (HttpUtils.isSuccessfulResponseCode(response.value())) {
+        if (HttpUtils.isSuccessfulResponseCodeWithDataRouter(response.value())) {
             counters.incTotalPublishedFiles();
             logger.trace("Publishing file {} to DR successful!", publishInfo.getName());
             return Mono.just(publishInfo);

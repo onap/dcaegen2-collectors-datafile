@@ -26,7 +26,7 @@
     <parent>
         <groupId>org.onap.dcaegen2.collectors</groupId>
         <artifactId>datafile</artifactId>
-        <version>1.5.3-SNAPSHOT</version>
+        <version>1.5.4-SNAPSHOT</version>
     </parent>
 
     <groupId>org.onap.dcaegen2.collectors.datafile</groupId>
@@ -115,6 +115,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents.core5</groupId>
+            <artifactId>httpcore5</artifactId>
         </dependency>
 
         <!-- Actuator dependencies -->
