@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.5.3] - 11/02/2020 
+## [1.5.3] - 11/02/2021 
 ### Added
 - HTTPS support for DFC
 - test related to HTTPS support
@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - ftp clients and tests refactoring
 - app config related to certificates unified for ftpes and https
 
-## [1.5.1] - 04/01/2020 
+## [1.5.1] - 04/01/2021 
 ### Added
 - HTTP support for DFC
 - test related to HTTP support
