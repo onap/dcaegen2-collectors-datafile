@@ -133,7 +133,7 @@ public class DataRouterPublisher {
 
     private Mono<FilePublishInformation> handleHttpResponse(HttpStatus response, FilePublishInformation publishInfo) {
         MDC.setContextMap(publishInfo.getContext());
-        if (HttpUtils.isSuccessfulResponseCode(response.value())) {
+        if (HttpUtils.isSuccessfulResponseCodeWithDataRouter(response.value())) {
             counters.incTotalPublishedFiles();
             logger.trace("Publishing file {} to DR successful!", publishInfo.getName());
             return Mono.just(publishInfo);

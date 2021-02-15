@@ -16,6 +16,7 @@
 package org.onap.dcaegen2.collectors.datafile.http;
 
 
+import org.apache.hc.core5.net.URIBuilder;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ConnectTimeoutException;
@@ -25,15 +26,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.onap.dcaegen2.collectors.datafile.commons.FileServerData;
 import org.onap.dcaegen2.collectors.datafile.commons.ImmutableFileServerData;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -50,6 +54,8 @@ class DfcHttpsClientTest {
     private static final String PASSWORD = "123";
     private static final String XNF_ADDRESS = "127.0.0.1";
     private static final int PORT = 443;
+    private static final String JWT_PASSWORD = "thisIsThePassword";
+    private static String ACCESS_TOKEN = "access_token";
     private static String remoteFile = "remoteFile";
 
     @Mock
@@ -105,6 +111,29 @@ class DfcHttpsClientTest {
     }
 
     @Test
+    void dfcHttpsClient_flow_successfulCallWithJWTAndResponseProcessing() throws Exception {
+        FileServerData serverData = jWTTokenInFileServerData();
+        dfcHttpsClientSpy = spy(new DfcHttpsClient(serverData, connectionManager));
+
+        doReturn(HttpClientResponseHelper.APACHE_RESPONSE_OK).when(dfcHttpsClientSpy)
+                .executeHttpClient(any(HttpGet.class));
+        doReturn((long)3).when(dfcHttpsClientSpy).writeFile(eq(localFile), any(InputStream.class));
+
+        dfcHttpsClientSpy.open();
+        dfcHttpsClientSpy.collectFile(remoteFile, localFile);
+        dfcHttpsClientSpy.close();
+        System.out.println(serverData.query().toString());
+        verify(dfcHttpsClientSpy, times(1)).makeCall(any(HttpGet.class));
+        verify(dfcHttpsClientSpy, times(1))
+                .executeHttpClient(any(HttpGet.class));
+        verify(dfcHttpsClientSpy, times(1))
+                .processResponse(HttpClientResponseHelper.APACHE_RESPONSE_OK, localFile);
+        verify(dfcHttpsClientSpy, times(1))
+                .writeFile(eq(localFile), any(InputStream.class));
+        assertFalse(serverData.toString().contains(JWT_PASSWORD));
+    }
+
+    @Test
     void dfcHttpsClient_flow_failedCallUnexpectedResponseCode() throws Exception {
         doReturn(HttpClientResponseHelper.APACHE_RESPONSE_OK).when(dfcHttpsClientSpy)
             .executeHttpClient(any(HttpGet.class));
@@ -112,7 +141,7 @@ class DfcHttpsClientTest {
 
         dfcHttpsClientSpy.open();
 
-        assertThrows(NonRetryableDatafileTaskException.class,
+        assertThrows(DatafileTaskException.class,
                 () -> dfcHttpsClientSpy.collectFile(remoteFile, localFile));
     }
 
@@ -157,8 +186,19 @@ class DfcHttpsClientTest {
     private ImmutableFileServerData invalidUserInFileServerData() {
         return ImmutableFileServerData.builder()
                 .serverAddress(XNF_ADDRESS)
-                .userId("demo").password("")
+                .userId(USERNAME).password("")
                 .port(PORT)
+                .build();
+    }
+
+    private ImmutableFileServerData jWTTokenInFileServerData() throws URISyntaxException {
+        String query = "?" + ACCESS_TOKEN + "=" + JWT_PASSWORD;
+
+        return ImmutableFileServerData.builder()
+                .serverAddress(XNF_ADDRESS)
+                .userId("").password("")
+                .port(PORT)
+                .query(new URIBuilder(query).getQueryParams())
                 .build();
     }
 }

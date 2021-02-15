@@ -111,7 +111,7 @@ public class FileCollector {
             counters.incNoOfCollectedFiles();
             return Mono.just(Optional.of(getFilePublishInformation(fileData, localFile, context)));
         } catch (NonRetryableDatafileTaskException nre) {
-            logger.warn("Failed to download file: {} {}, reason: {}", fileData.sourceName(), fileData.name(), nre);
+            logger.warn("Failed to download file: {} {}, reason: ", fileData.sourceName(), fileData.name(), nre);
             incFailedAttemptsCounter(fileData);
             return Mono.just(Optional.empty()); // Give up
         } catch (DatafileTaskException e) {

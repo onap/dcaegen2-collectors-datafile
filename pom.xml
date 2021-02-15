@@ -59,6 +59,7 @@
         <commons-io.version>2.8.0</commons-io.version>
         <commons-net.version>3.3</commons-net.version>
         <projectreactor.version>2020.0.2</projectreactor.version>
+        <httpcomponents.core5.version>5.0.3</httpcomponents.core5.version>
 
         <!-- LOGGING SETTINGS -->
         <slf4j.version>1.7.25</slf4j.version>
@@ -187,6 +188,11 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents.core5</groupId>
+                <artifactId>httpcore5</artifactId>
+                <version>${httpcomponents.core5.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
