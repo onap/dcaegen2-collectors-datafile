@@ -27,7 +27,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
-import org.jetbrains.annotations.NotNull;
 import org.onap.dcaegen2.collectors.datafile.commons.FileCollectClient;
 import org.onap.dcaegen2.collectors.datafile.commons.FileServerData;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
@@ -85,10 +84,11 @@ public class DfcHttpsClient implements FileCollectClient {
 
     @Override public void collectFile(String remoteFile, Path localFile) throws DatafileTaskException {
         logger.trace("Prepare to collectFile {}", localFile);
-        HttpGet httpGet = new HttpGet(prepareUri(remoteFile));
-        if (basicAuthValidNotPresentOrThrow()) {
-            httpGet.addHeader("Authorization",
-                HttpUtils.basicAuth(this.fileServerData.userId(), this.fileServerData.password()));
+        HttpGet httpGet = new HttpGet(HttpUtils.prepareHttpsUri(fileServerData, remoteFile));
+
+        String authorizationContent = getAuthorizationContent();
+        if (!authorizationContent.isEmpty()) {
+            httpGet.addHeader("Authorization", authorizationContent);
         }
         try {
             HttpResponse httpResponse = makeCall(httpGet);
@@ -99,11 +99,23 @@ public class DfcHttpsClient implements FileCollectClient {
         logger.trace("HTTPS collectFile OK");
     }
 
+    private String getAuthorizationContent() throws DatafileTaskException {
+        String jwtToken = HttpUtils.getJWTToken(fileServerData);
+        if (shouldUseBasicAuth(jwtToken)) {
+            return HttpUtils.basicAuthContent(this.fileServerData.userId(), this.fileServerData.password());
+        }
+        return HttpUtils.jwtAuthContent(jwtToken);
+    }
+
+    private boolean shouldUseBasicAuth(String jwtToken) throws DatafileTaskException {
+        return basicAuthValidNotPresentOrThrow() && jwtToken.isEmpty();
+    }
+
     protected boolean basicAuthValidNotPresentOrThrow() throws DatafileTaskException {
         if (isAuthDataEmpty()) {
             return false;
         }
-        if (isAuthDataFilled()) {
+        if (HttpUtils.isBasicAuthDataFilled(fileServerData)) {
             return true;
         }
         throw new DatafileTaskException("Not sufficient basic auth data for file.");
@@ -111,15 +123,6 @@ public class DfcHttpsClient implements FileCollectClient {
 
     private boolean isAuthDataEmpty() {
         return this.fileServerData.userId().isEmpty() && this.fileServerData.password().isEmpty();
-    }
-
-    private boolean isAuthDataFilled() {
-        return !this.fileServerData.userId().isEmpty() && !this.fileServerData.password().isEmpty();
-    }
-
-    @NotNull protected String prepareUri(String remoteFile) {
-        int port = fileServerData.port().orElse(HttpUtils.HTTPS_DEFAULT_PORT);
-        return "https://" + fileServerData.serverAddress() + ":" + port + remoteFile;
     }
 
     protected HttpResponse makeCall(HttpGet httpGet)
@@ -131,10 +134,10 @@ public class DfcHttpsClient implements FileCollectClient {
             }
 
             EntityUtils.consume(httpResponse.getEntity());
-            throw new NonRetryableDatafileTaskException(
-                "Unexpected response code - " + httpResponse.getStatusLine().getStatusCode()
-                + ". No retry attempts will be done.");
-
+            if (isErrorInConnection(httpResponse)) {
+                throw new NonRetryableDatafileTaskException(HttpUtils.retryableResponse(getResponseCode(httpResponse)));
+            }
+            throw new DatafileTaskException(HttpUtils.nonRetryableResponse(getResponseCode(httpResponse)));
         } catch (ConnectTimeoutException | UnknownHostException | HttpHostConnectException | SSLHandshakeException e) {
             throw new NonRetryableDatafileTaskException(
                     "Unable to get file from xNF. No retry attempts will be done.", e);
@@ -146,8 +149,16 @@ public class DfcHttpsClient implements FileCollectClient {
         return httpsClient.execute(httpGet);
     }
 
-    protected boolean isResponseOk(HttpResponse response) {
-        return response.getStatusLine().getStatusCode() == 200;
+    protected boolean isResponseOk(HttpResponse httpResponse) {
+        return getResponseCode(httpResponse) == 200;
+    }
+
+    private int getResponseCode(HttpResponse httpResponse) {
+        return httpResponse.getStatusLine().getStatusCode();
+    }
+
+    protected boolean isErrorInConnection(HttpResponse httpResponse) {
+        return getResponseCode(httpResponse) >= 400;
     }
 
     protected void processResponse(HttpResponse response, Path localFile) throws IOException {

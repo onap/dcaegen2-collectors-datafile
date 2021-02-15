@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.commons.FileCollectClient;
 import org.onap.dcaegen2.collectors.datafile.commons.FileServerData;
+import org.onap.dcaegen2.collectors.datafile.exceptions.NonRetryableDatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.service.HttpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,17 +62,22 @@ public class DfcHttpClient implements FileCollectClient {
     @Override public void open() throws DatafileTaskException {
         logger.trace("Setting httpClient for file download.");
 
-        basicAuthDataPresentOrThrow();
+        String authorizationContent = getAuthorizationContent();
         this.client = HttpClient.create(pool).keepAlive(true).headers(
-            h -> h.add("Authorization", HttpUtils.basicAuth(this.fileServerData.userId(), this.fileServerData.password())));
+            h -> h.add("Authorization", authorizationContent));
 
         logger.trace("httpClient, auth header was set.");
     }
 
-    private void basicAuthDataPresentOrThrow() throws DatafileTaskException {
-        if ((this.fileServerData.userId().isEmpty()) || (this.fileServerData.password().isEmpty())) {
+    protected String getAuthorizationContent() throws DatafileTaskException {
+        String jwtToken = HttpUtils.getJWTToken(fileServerData);
+        if (!jwtToken.isEmpty()) {
+            return HttpUtils.jwtAuthContent(jwtToken);
+        }
+        if (!HttpUtils.isBasicAuthDataFilled(fileServerData)) {
             throw new DatafileTaskException("Not sufficient basic auth data for file.");
         }
+        return HttpUtils.basicAuthContent(this.fileServerData.userId(), this.fileServerData.password());
     }
 
     @Override public void collectFile(String remoteFile, Path localFile) throws DatafileTaskException {
@@ -92,7 +98,10 @@ public class DfcHttpClient implements FileCollectClient {
         }
 
         if (isDownloadFailed(errorMessage)) {
-            throw new DatafileTaskException("Error occured during datafile download: ", errorMessage.get());
+            if (errorMessage.get() instanceof NonRetryableDatafileTaskException) {
+                throw (NonRetryableDatafileTaskException) errorMessage.get();
+            }
+            throw (DatafileTaskException) errorMessage.get();
         }
 
         logger.trace("HTTP collectFile OK");
@@ -104,7 +113,11 @@ public class DfcHttpClient implements FileCollectClient {
 
     @NotNull protected Consumer<Throwable> processFailedConnectionWithServer(CountDownLatch latch, AtomicReference<Exception> errorMessages) {
         return (Throwable response) -> {
-            errorMessages.set(new Exception("Error in connection has occurred during file download", response));
+            Exception e = new Exception("Error in connection has occurred during file download", response);
+            errorMessages.set(new DatafileTaskException(response.getMessage(), e));
+            if (response instanceof NonRetryableDatafileTaskException) {
+                errorMessages.set(new NonRetryableDatafileTaskException(response.getMessage(), e));
+            }
             latch.countDown();
         };
     }
@@ -119,7 +132,7 @@ public class DfcHttpClient implements FileCollectClient {
                 logger.trace("CollectFile fetched: {}", localFile);
                 response.close();
             } catch (IOException e) {
-                errorMessages.set(new Exception("Error fetching file with", e));
+                errorMessages.set(new DatafileTaskException("Error fetching file with", e));
             } finally {
                 latch.countDown();
             }
@@ -128,24 +141,31 @@ public class DfcHttpClient implements FileCollectClient {
 
     protected Flux<InputStream> getServerResponse(String remoteFile) {
         return client.get()
-            .uri(prepareUri(remoteFile))
+            .uri(HttpUtils.prepareHttpUri(fileServerData, remoteFile))
             .response((responseReceiver, byteBufFlux) -> {
                 logger.trace("HTTP response status - {}", responseReceiver.status());
                 if(isResponseOk(responseReceiver)){
                     return byteBufFlux.aggregate().asInputStream();
                 }
-                return Mono.error(new Throwable("Unexpected server response code - "
-                    + responseReceiver.status().toString()));
+                if (isErrorInConnection(responseReceiver)) {
+                    return Mono.error(new NonRetryableDatafileTaskException(
+                        HttpUtils.nonRetryableResponse(getResponseCode(responseReceiver))));
+                }
+                return Mono.error(new DatafileTaskException(
+                    HttpUtils.retryableResponse(getResponseCode(responseReceiver))));
             });
     }
 
     protected boolean isResponseOk(HttpClientResponse httpClientResponse) {
-        return httpClientResponse.status().code() == 200;
+        return getResponseCode(httpClientResponse) == 200;
     }
 
-    @NotNull protected String prepareUri(String remoteFile) {
-        int port = fileServerData.port().orElse(HttpUtils.HTTP_DEFAULT_PORT);
-        return "http://" + fileServerData.serverAddress() + ":" + port + remoteFile;
+    private int getResponseCode(HttpClientResponse responseReceiver) {
+        return responseReceiver.status().code();
+    }
+
+    protected boolean isErrorInConnection(HttpClientResponse httpClientResponse) {
+        return getResponseCode(httpClientResponse) >= 400;
     }
 
     @Override public void close() {
