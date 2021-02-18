@@ -2,6 +2,7 @@
 # ============LICENSE_START=======================================================
 #  Copyright (C) 2019 Nordix Foundation.
 #  Copyright (C) 2020 Nokia.
+#  Copyright (C) 2021 Samsung Electronics.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,28 +19,25 @@
 # SPDX-License-Identifier: Apache-2.0
 # ============LICENSE_END=========================================================
 #
-FROM openjdk:11.0.8-jre-slim
+FROM nexus3.onap.org:10001/onap/integration-java11:8.0.0
 
 EXPOSE 8100 8433
 
-RUN apt-get update && apt-get install -y \
-  vim \
-  curl
+ARG user=datafile
+ARG group=onap
 
+USER root
 WORKDIR /opt/app/datafile
-RUN mkdir -p /var/log/ONAP
-RUN mkdir -p /opt/app/datafile/etc/cert/
-
-RUN groupadd -r onap && useradd -ms /bin/bash datafile -g onap
-RUN chown -R datafile:onap /var/log/ONAP
 
 ADD /config/application.yaml /opt/app/datafile/config/
-RUN chmod -R 777 /opt/app/datafile/config/
 
-USER datafile
+RUN mkdir -p /var/log/ONAP && \
+    mkdir -p /opt/app/datafile/etc/cert/ && \
+    adduser $user $group && \
+    chown -R $user:$group /var/log/ONAP /opt/app/datafile/config && \
+    chmod -R u+rw /opt/app/datafile/config/
 
-RUN mkdir -p /home/datafile/.ssh
+USER $user
 
 ADD /target/datafile-app-server.jar /opt/app/datafile/
-
 ENTRYPOINT ["/usr/local/openjdk-11/bin/java", "-jar", "/opt/app/datafile/datafile-app-server.jar"]

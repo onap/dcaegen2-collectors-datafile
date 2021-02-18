@@ -3,6 +3,7 @@
   ~ ============LICENSE_START=====================================================================
   ~ Copyright (C) 2018-2021 NOKIA Intellectual Property. All rights reserved.
   ~ Copyright (C) 2018-2021 Nordix Foundation. All rights reserved.
+  ~ Copyright (C) 2021 Samsung Electronics. All rights reserved.
   ~ ==============================================================================================
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -31,7 +32,7 @@
 
     <groupId>org.onap.dcaegen2.collectors</groupId>
     <artifactId>datafile</artifactId>
-    <version>1.5.3-SNAPSHOT</version>
+    <version>1.5.4-SNAPSHOT</version>
 
     <name>dcaegen2-collectors.datafile</name>
     <description>datafile collector</description>
