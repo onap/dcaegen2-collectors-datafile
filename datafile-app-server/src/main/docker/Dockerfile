@@ -18,28 +18,21 @@
 # SPDX-License-Identifier: Apache-2.0
 # ============LICENSE_END=========================================================
 #
-FROM openjdk:11.0.8-jre-slim
+FROM nexus3.onap.org:10001/onap/integration-java11:8.0.0
 
 EXPOSE 8100 8433
 
-RUN apt-get update && apt-get install -y \
-  vim \
-  curl
-
+USER root
 WORKDIR /opt/app/datafile
-RUN mkdir -p /var/log/ONAP
-RUN mkdir -p /opt/app/datafile/etc/cert/
-
-RUN groupadd -r onap && useradd -ms /bin/bash datafile -g onap
-RUN chown -R datafile:onap /var/log/ONAP
 
 ADD /config/application.yaml /opt/app/datafile/config/
-RUN chmod -R 777 /opt/app/datafile/config/
+
+RUN mkdir -p /var/log/ONAP && \
+    mkdir -p /opt/app/datafile/etc/cert/ && \
+    addgroup --system onap && adduser --ingroup onap datafile && \
+    chown -R datafile:onap /var/log/ONAP /opt/app/datafile/config && \
+    chmod -R u+rw /opt/app/datafile/config/ && \
 
 USER datafile
-
-RUN mkdir -p /home/datafile/.ssh
-
 ADD /target/datafile-app-server.jar /opt/app/datafile/
-
 ENTRYPOINT ["/usr/local/openjdk-11/bin/java", "-jar", "/opt/app/datafile/datafile-app-server.jar"]
