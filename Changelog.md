@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.5] - 25/02/2021 
+### Changed
+- docker base image to integration (from debian based to alpine based)
+- java version bump from 11.0.8 to 11.0.9
+- remove exec file permission for config file
+
 ## [1.5.4] - 23/02/2021 
 ### Added
 - JWT token support for HTTP/HTTPS
