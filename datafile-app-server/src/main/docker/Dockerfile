@@ -18,7 +18,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # ============LICENSE_END=========================================================
 #
-FROM openjdk:11.0.8-jre-slim
+FROM nexus3.onap.org:10001/onap/integration-java11:8.0.0
 
 EXPOSE 8100 8433
 
