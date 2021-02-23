@@ -298,6 +298,29 @@
       "revId": "43d06c932008f47c3240e86eecad6c5d15c17177",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "31a7c135_ab41e5ff",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/service/HttpUtilsTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-23T12:09:54Z",
+      "side": 1,
+      "message": "Wildcard imports shouldn\u0027t be used.",
+      "range": {
+        "startLine": 31,
+        "startChar": 47,
+        "endLine": 31,
+        "endChar": 48
+      },
+      "revId": "43d06c932008f47c3240e86eecad6c5d15c17177",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
