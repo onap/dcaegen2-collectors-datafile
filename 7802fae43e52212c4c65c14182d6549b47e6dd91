@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1525eb34_1e3f0918",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-25T06:54:03Z",
+      "side": 1,
+      "message": "Update copyright please",
+      "revId": "7802fae43e52212c4c65c14182d6549b47e6dd91",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "935893d6_07107c94",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-25T06:54:03Z",
+      "side": 1,
+      "message": "Would require password to be supplied from cmdline.\nMaybe --disabled-password should be added?",
+      "range": {
+        "startLine": 32,
+        "startChar": 30,
+        "endLine": 32,
+        "endChar": 61
+      },
+      "revId": "7802fae43e52212c4c65c14182d6549b47e6dd91",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba39aa5c_e6adeaee",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-25T06:54:03Z",
+      "side": 1,
+      "message": "That command is failing I think. Isn\u0027t there onap group already in base image?",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 26
+      },
+      "revId": "7802fae43e52212c4c65c14182d6549b47e6dd91",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c6d7e49_680757e6",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-25T06:54:03Z",
+      "side": 1,
+      "message": "I think that should be removed because it makes \u0027USER datafile\u0027 continuation of shell command instead of a separate docker instruction.",
+      "range": {
+        "startLine": 34,
+        "startChar": 43,
+        "endLine": 34,
+        "endChar": 48
+      },
+      "revId": "7802fae43e52212c4c65c14182d6549b47e6dd91",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
