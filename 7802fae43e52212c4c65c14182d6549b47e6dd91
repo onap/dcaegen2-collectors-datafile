@@ -65,6 +65,54 @@
     },
     {
       "key": {
+        "uuid": "b6d05616_cdce23c8",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 7352
+      },
+      "writtenOn": "2021-02-25T14:40:47Z",
+      "side": 1,
+      "message": "Please note L25, prep stuff is run as root, later user is changed to non-root",
+      "parentUuid": "935893d6_07107c94",
+      "range": {
+        "startLine": 32,
+        "startChar": 30,
+        "endLine": 32,
+        "endChar": 61
+      },
+      "revId": "7802fae43e52212c4c65c14182d6549b47e6dd91",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0a70bd02_1d9ba55f",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 7352
+      },
+      "writtenOn": "2021-02-25T14:40:47Z",
+      "side": 1,
+      "message": "Yeah there is, fixed in next PS",
+      "parentUuid": "ba39aa5c_e6adeaee",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 26
+      },
+      "revId": "7802fae43e52212c4c65c14182d6549b47e6dd91",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7c6d7e49_680757e6",
         "filename": "datafile-app-server/src/main/docker/Dockerfile",
         "patchSetId": 4
@@ -85,6 +133,30 @@
       "revId": "7802fae43e52212c4c65c14182d6549b47e6dd91",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aaa773fa_c04c3f34",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 7352
+      },
+      "writtenOn": "2021-02-25T14:40:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7c6d7e49_680757e6",
+      "range": {
+        "startLine": 34,
+        "startChar": 43,
+        "endLine": 34,
+        "endChar": 48
+      },
+      "revId": "7802fae43e52212c4c65c14182d6549b47e6dd91",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
