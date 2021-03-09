@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.5] - 09/03/2021
+### Fixed
+- make hostname verification configurable
+- small sonar fixes related to affected code
+
 ## [1.5.4] - 23/02/2021 
 ### Added
 - JWT token support for HTTP/HTTPS

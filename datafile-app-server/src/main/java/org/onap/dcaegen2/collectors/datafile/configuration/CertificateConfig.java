@@ -1,6 +1,6 @@
 /*-
  * ============LICENSE_START=======================================================
- * Copyright (C) 2018 NOKIA Intellectual Property, 2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2018-2021 NOKIA Intellectual Property, 2019 Nordix Foundation. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,4 +47,7 @@ public abstract class CertificateConfig implements Serializable {
     @Value.Parameter
     @Value.Redacted
     public abstract String trustedCaPasswordPath();
+
+    @Value.Parameter
+    public abstract Boolean httpsHostnameVerify();
 }

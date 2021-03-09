@@ -5,6 +5,7 @@
     "dmaap.certificateConfig.keyPasswordPath": "/src/test/resources/dfc.jks.pass",
     "dmaap.certificateConfig.trustedCa": "/src/test/resources/cert.jks",
     "dmaap.certificateConfig.trustedCaPasswordPath": "/src/test/resources/cert.jks.pass",
+    "dmaap.certificateConfig.httpsHostnameVerify": true,
     "dmaap.security.trustStorePath": "src/test/resources/trust.jks",
     "dmaap.security.trustStorePasswordPath": "src/test/resources/trust.pass",
     "dmaap.security.keyStorePath": "src/test/resources/cert.jks",
