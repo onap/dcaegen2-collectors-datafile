@@ -47,4 +47,7 @@ public abstract class CertificateConfig implements Serializable {
     @Value.Parameter
     @Value.Redacted
     public abstract String trustedCaPasswordPath();
+
+    @Value.Parameter
+    public abstract Boolean httpsHostnameVerify();
 }

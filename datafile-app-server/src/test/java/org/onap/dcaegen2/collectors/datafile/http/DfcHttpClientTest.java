@@ -99,7 +99,7 @@ class DfcHttpClientTest {
         dfcHttpClientSpy.collectFile(REMOTE_FILE, pathMock);
         dfcHttpClientSpy.close();
 
-        verify(dfcHttpClientSpy, times(1)).getServerResponse(ArgumentMatchers.eq(REMOTE_FILE));
+        verify(dfcHttpClientSpy, times(1)).getServerResponse(REMOTE_FILE);
         verify(dfcHttpClientSpy, times(1)).processDataFromServer(any(), any(), any());
         verify(dfcHttpClientSpy, times(1)).isDownloadFailed(any());
     }

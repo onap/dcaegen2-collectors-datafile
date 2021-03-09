@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import java.io.File;
 import java.io.IOException;
@@ -62,19 +63,19 @@ public class HttpsClientConnectionManagerUtil {
     }
 
     public static void setupOrUpdate(String keyCertPath, String keyCertPasswordPath, String trustedCaPath,
-            String trustedCaPasswordPath) throws DatafileTaskException {
+            String trustedCaPasswordPath, HostnameVerifier hostnameVerifier) throws DatafileTaskException {
         synchronized (HttpsClientConnectionManagerUtil.class) {
             if (connectionManager != null) {
                 connectionManager.close();
                 connectionManager = null;
             }
-            setup(keyCertPath, keyCertPasswordPath, trustedCaPath, trustedCaPasswordPath);
+            setup(keyCertPath, keyCertPasswordPath, trustedCaPath, trustedCaPasswordPath, hostnameVerifier);
         }
         logger.trace("HttpsConnectionManager setup or updated");
     }
 
     private static void setup(String keyCertPath, String keyCertPasswordPath, String trustedCaPath,
-          String trustedCaPasswordPath) throws DatafileTaskException {
+          String trustedCaPasswordPath, HostnameVerifier hostnameVerifier) throws DatafileTaskException {
         try {
             SSLContextBuilder sslBuilder = SSLContexts.custom();
             sslBuilder = supplyKeyInfo(keyCertPath, keyCertPasswordPath, sslBuilder);
@@ -84,7 +85,7 @@ public class HttpsClientConnectionManagerUtil {
 
             SSLConnectionSocketFactory sslConnectionSocketFactory =
                 new SSLConnectionSocketFactory(sslContext, new String[] {"TLSv1.2"}, null,
-                    (hostname, session) -> true);
+                        hostnameVerifier);
 
             Registry<ConnectionSocketFactory> socketFactoryRegistry =
                 RegistryBuilder.<ConnectionSocketFactory>create().register("https", sslConnectionSocketFactory)

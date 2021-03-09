@@ -194,6 +194,7 @@ public class CloudConfigParser {
             .keyPasswordPath(getAsString(jsonObject, "dmaap.certificateConfig.keyPasswordPath"))
             .trustedCa(getAsString(jsonObject, "dmaap.certificateConfig.trustedCa"))
             .trustedCaPasswordPath(getAsString(jsonObject, "dmaap.certificateConfig.trustedCaPasswordPath")) //
+            .httpsHostnameVerify(getAsBooleanOrDefault(jsonObject, "dmaap.certificateConfig.httpsHostnameVerify", Boolean.TRUE))
             .build();
     }
 
@@ -220,6 +221,14 @@ public class CloudConfigParser {
 
     private static @NotNull Boolean getAsBoolean(JsonObject obj, String memberName) throws DatafileTaskException {
         return get(obj, memberName).getAsBoolean();
+    }
+
+    private static @NotNull Boolean getAsBooleanOrDefault(JsonObject obj, String memberName, Boolean def) {
+        try {
+            return get(obj, memberName).getAsBoolean();
+        } catch (DatafileTaskException e) {
+            return def;
+        }
     }
 
     private static @NotNull JsonObject getAsJson(JsonObject obj, String memberName) throws DatafileTaskException {
