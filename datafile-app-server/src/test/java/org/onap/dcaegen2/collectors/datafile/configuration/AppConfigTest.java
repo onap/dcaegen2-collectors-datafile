@@ -66,7 +66,7 @@ import static org.mockito.Mockito.when;
  * @author <a href="mailto:przemyslaw.wasala@nokia.com">Przemysław Wąsala</a> on 4/9/18
  * @author <a href="mailto:henrik.b.andersson@est.tech">Henrik Andersson</a>
  */
-public class AppConfigTest {
+class AppConfigTest {
 
     public static final String CHANGE_IDENTIFIER = "PM_MEAS_FILES";
 
@@ -90,6 +90,7 @@ public class AppConfigTest {
             .keyPasswordPath("/src/test/resources/dfc.jks.pass") //
             .trustedCa("/src/test/resources/cert.jks") //
             .trustedCaPasswordPath("/src/test/resources/cert.jks.pass") //
+            .httpsHostnameVerify(true)
             .build();
 
     private AppConfig appConfigUnderTest;
@@ -105,7 +106,7 @@ public class AppConfigTest {
     }
 
     @Test
-    public void whenTheConfigurationFits() throws IOException, DatafileTaskException {
+    void whenTheConfigurationFits() throws IOException, DatafileTaskException {
         // When
         doReturn(getCorrectJson()).when(appConfigUnderTest).createInputStream(any());
         appConfigUnderTest.initialize();
@@ -122,12 +123,13 @@ public class AppConfigTest {
         assertThat(publisherCfg).isEqualToComparingFieldByField(CORRECT_PUBLISHER_CONFIG);
 
         CertificateConfig certificateConfig = appConfigUnderTest.getCertificateConfiguration();
-        assertThat(certificateConfig).isNotNull();
-        assertThat(certificateConfig).isEqualToComparingFieldByField(CORRECT_CERTIFICATE_CONFIGURATION);
+        assertThat(certificateConfig)
+            .isNotNull()
+            .isEqualToComparingFieldByField(CORRECT_CERTIFICATE_CONFIGURATION);
     }
 
     @Test
-    public void whenTheConfigurationFits_twoProducers() throws IOException, DatafileTaskException {
+    void whenTheConfigurationFits_twoProducers() throws IOException, DatafileTaskException {
         // When
         doReturn(getCorrectJsonTwoProducers()).when(appConfigUnderTest).createInputStream(any());
         appConfigUnderTest.loadConfigurationFromFile();
@@ -146,7 +148,7 @@ public class AppConfigTest {
     }
 
     @Test
-    public void whenFileIsNotExist_ThrowException() throws DatafileTaskException {
+    void whenFileIsNotExist_ThrowException() throws DatafileTaskException {
         // Given
         appConfigUnderTest.setFilepath("/temp.json");
 
@@ -162,7 +164,7 @@ public class AppConfigTest {
     }
 
     @Test
-    public void whenFileIsExistsButJsonIsIncorrect() throws IOException, DatafileTaskException {
+    void whenFileIsExistsButJsonIsIncorrect() throws IOException, DatafileTaskException {
 
         // When
         doReturn(getIncorrectJson()).when(appConfigUnderTest).createInputStream(any());
@@ -177,7 +179,7 @@ public class AppConfigTest {
     }
 
     @Test
-    public void whenTheConfigurationFits_ButRootElementIsNotAJsonObject() throws IOException, DatafileTaskException {
+    void whenTheConfigurationFits_ButRootElementIsNotAJsonObject() throws IOException, DatafileTaskException {
 
         // When
         doReturn(getCorrectJson()).when(appConfigUnderTest).createInputStream(any());
@@ -195,9 +197,9 @@ public class AppConfigTest {
     }
 
     @Test
-    public void whenPeriodicConfigRefreshNoEnvironmentVariables() {
+    void whenPeriodicConfigRefreshNoEnvironmentVariables() {
         final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
-        Flux<AppConfig> task = appConfigUnderTest.createRefreshTask(context);
+        Flux<AppConfig> task = appConfigUnderTest.createRefreshTask();
 
         StepVerifier //
             .create(task) //
@@ -208,14 +210,14 @@ public class AppConfigTest {
     }
 
     @Test
-    public void whenPeriodicConfigRefreshNoConsul() {
+    void whenPeriodicConfigRefreshNoConsul() {
         doReturn(Mono.just(cbsClientConfiguration)).when(appConfigUnderTest).createCbsClientConfiguration();
         doReturn(Mono.just(cbsClient)).when(appConfigUnderTest).createCbsClient(cbsClientConfiguration);
         Flux<JsonObject> err = Flux.error(new IOException());
         doReturn(err).when(cbsClient).updates(any(), any(), any());
 
         final ListAppender<ILoggingEvent> logAppender = LoggingUtils.getLogListAppender(AppConfig.class);
-        Flux<AppConfig> task = appConfigUnderTest.createRefreshTask(context);
+        Flux<AppConfig> task = appConfigUnderTest.createRefreshTask();
 
         StepVerifier //
             .create(task) //
@@ -227,14 +229,14 @@ public class AppConfigTest {
     }
 
     @Test
-    public void whenPeriodicConfigRefreshSuccess() throws JsonIOException, JsonSyntaxException, IOException {
+    void whenPeriodicConfigRefreshSuccess() throws JsonIOException, JsonSyntaxException, IOException {
         doReturn(Mono.just(cbsClientConfiguration)).when(appConfigUnderTest).createCbsClientConfiguration();
         doReturn(Mono.just(cbsClient)).when(appConfigUnderTest).createCbsClient(cbsClientConfiguration);
 
         Flux<JsonObject> json = Flux.just(getJsonRootObject());
         doReturn(json).when(cbsClient).updates(any(), any(), any());
 
-        Flux<AppConfig> task = appConfigUnderTest.createRefreshTask(context);
+        Flux<AppConfig> task = appConfigUnderTest.createRefreshTask();
 
         StepVerifier //
             .create(task) //
@@ -246,7 +248,7 @@ public class AppConfigTest {
     }
 
     @Test
-    public void whenPeriodicConfigRefreshSuccess2() throws JsonIOException, JsonSyntaxException, IOException {
+    void whenPeriodicConfigRefreshSuccess2() throws JsonIOException, JsonSyntaxException, IOException {
         doReturn(Mono.just(cbsClientConfiguration)).when(appConfigUnderTest).createCbsClientConfiguration();
         doReturn(Mono.just(cbsClient)).when(appConfigUnderTest).createCbsClient(cbsClientConfiguration);
 
@@ -256,7 +258,7 @@ public class AppConfigTest {
 
         doReturn(json, err).when(cbsClient).updates(any(), any(), any());
 
-        Flux<AppConfig> task = appConfigUnderTest.createRefreshTask(context);
+        Flux<AppConfig> task = appConfigUnderTest.createRefreshTask();
 
         StepVerifier //
             .create(task) //
@@ -275,8 +277,8 @@ public class AppConfigTest {
         assertThat(messageRouterSubscribeRequest.sourceDefinition().topicUrl())
                 .isEqualTo("http://localhost:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT");
         SecurityKeys securityKeys = consumerConfiguration.getMessageRouterSubscriberConfig().securityKeys();
-        assertThat(securityKeys.keyStore().path().toString()).isEqualTo("src/test/resources/cert.jks");
-        assertThat(securityKeys.trustStore().path().toString()).isEqualTo("src/test/resources/trust.jks");
+        assertThat(securityKeys.keyStore().path().toString()).hasToString("src/test/resources/cert.jks");
+        assertThat(securityKeys.trustStore().path().toString()).hasToString("src/test/resources/trust.jks");
         assertThat(consumerConfiguration.getMessageRouterSubscriber()).isNotNull();
     }
 

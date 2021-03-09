@@ -15,6 +15,7 @@
  */
 package org.onap.dcaegen2.collectors.datafile.http;
 
+import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -39,13 +40,15 @@ public class HttpsClientConnectionManagerUtilTest {
 
     @Test
     public void creatingManager_successfulCase() throws Exception {
-        HttpsClientConnectionManagerUtil.setupOrUpdate(KEY_PATH, KEY_PASSWORD, TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD);
+        HttpsClientConnectionManagerUtil.setupOrUpdate(KEY_PATH, KEY_PASSWORD, TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD, //
+                true);
         assertNotNull(HttpsClientConnectionManagerUtil.instance());
     }
 
     @Test
     public void creatingManager_improperSecretShouldThrowException() {
-        assertThrows(DatafileTaskException.class, () -> HttpsClientConnectionManagerUtil.setupOrUpdate(KEY_PATH, KEY_IMPROPER_PASSWORD, TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD));
+        assertThrows(DatafileTaskException.class, () -> HttpsClientConnectionManagerUtil.setupOrUpdate(KEY_PATH, //
+                KEY_IMPROPER_PASSWORD, TRUSTED_CA_PATH, TRUSTED_CA_PASSWORD, true));
         assertThrows(DatafileTaskException.class, () -> HttpsClientConnectionManagerUtil.instance());
     }
 

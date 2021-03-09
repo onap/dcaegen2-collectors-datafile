@@ -39,7 +39,6 @@ import javax.validation.constraints.NotNull;
 
 import org.onap.dcaegen2.collectors.datafile.exceptions.DatafileTaskException;
 import org.onap.dcaegen2.collectors.datafile.http.HttpsClientConnectionManagerUtil;
-import org.onap.dcaegen2.collectors.datafile.model.logging.MappedDiagnosticContext;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClient;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClientFactory;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsRequests;
@@ -94,17 +93,16 @@ public class AppConfig {
      */
     public void initialize() {
         stop();
-        Map<String, String> context = MappedDiagnosticContext.initializeTraceContext();
 
         loadConfigurationFromFile();
 
-        refreshConfigTask = createRefreshTask(context) //
+        refreshConfigTask = createRefreshTask() //
             .subscribe(e -> logger.info("Refreshed configuration data"),
                 throwable -> logger.error("Configuration refresh terminated due to exception", throwable),
                 () -> logger.error("Configuration refresh terminated"));
     }
 
-    Flux<AppConfig> createRefreshTask(Map<String, String> context) {
+    Flux<AppConfig> createRefreshTask() {
         return createCbsClientConfiguration()
             .flatMap(this::createCbsClient)
             .flatMapMany(this::periodicConfigurationUpdates) //
@@ -173,8 +171,9 @@ public class AppConfig {
         return sftpConfiguration;
     }
 
-    private <R> Mono<R> onErrorResume(Throwable trowable) {
-        logger.error("Could not refresh application configuration {}", trowable.toString());
+    private <R> Mono<R> onErrorResume(Throwable throwable) {
+        String throwableString = throwable.toString();
+        logger.error("Could not refresh application configuration {}", throwableString);
         return Mono.empty();
     }
 
@@ -234,8 +233,10 @@ public class AppConfig {
         this.publishingConfigurations = publisherConfiguration;
         this.certificateConfiguration = certificateConfig;
         this.sftpConfiguration = sftpConfig;
+
         HttpsClientConnectionManagerUtil.setupOrUpdate(certificateConfig.keyCert(), certificateConfig.keyPasswordPath(),
-                certificateConfig.trustedCa(), certificateConfig.trustedCaPasswordPath());
+            certificateConfig.trustedCa(), certificateConfig.trustedCaPasswordPath(),
+            certificateConfig.httpsHostnameVerify());
     }
 
     JsonElement getJsonElement(InputStream inputStream) {
