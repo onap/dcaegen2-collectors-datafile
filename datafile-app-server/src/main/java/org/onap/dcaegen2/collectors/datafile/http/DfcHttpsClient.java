@@ -36,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLHandshakeException;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.UnknownHostException;
@@ -138,7 +139,8 @@ public class DfcHttpsClient implements FileCollectClient {
                 throw new NonRetryableDatafileTaskException(HttpUtils.retryableResponse(getResponseCode(httpResponse)));
             }
             throw new DatafileTaskException(HttpUtils.nonRetryableResponse(getResponseCode(httpResponse)));
-        } catch (ConnectTimeoutException | UnknownHostException | HttpHostConnectException | SSLHandshakeException e) {
+        } catch (ConnectTimeoutException | UnknownHostException | HttpHostConnectException | SSLHandshakeException
+                | SSLPeerUnverifiedException e) {
             throw new NonRetryableDatafileTaskException(
                     "Unable to get file from xNF. No retry attempts will be done.", e);
         }
