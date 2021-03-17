@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "abca289a_b9f0ad7c",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 6
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-03-17T08:54:24Z",
+      "side": 1,
+      "message": "There is still an issue with adding user.\nIf you tried to run the command like that, you would get prompted to enter the password for the user, which is impossible during docker build.\nAlso I\u0027m not sure if the command would add the user to the group correctly.\nI believe it should be:\n adduser -D $user -G $group\n\nIf you want to check if the image builds correctly you can run:\n mvn clean install docker:build",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 24
+      },
+      "revId": "b5d3a21a1dd6599e92f3ff51e4914ed8f5e0faec",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
