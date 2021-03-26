@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b8a7a6f5_c43c607c",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 7
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-03-26T11:33:43Z",
+      "side": 1,
+      "message": "You can use COPY instead of ADD. It looks like some docker issue, but someone else should confirm.",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 3
+      },
+      "revId": "8cc284ce165caba6d2cbd2df3eed60b69f6f2662",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
