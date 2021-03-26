@@ -46,6 +46,30 @@
       "revId": "8cc284ce165caba6d2cbd2df3eed60b69f6f2662",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99eb8417_4b73b843",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 7
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-03-26T14:37:49Z",
+      "side": 1,
+      "message": "When I try build image using this MR i get error: \n\"can\u0027t find uid for user $user: no such user: $user\"\nUsing COPY resolved this issue on my local machine. \nI am Using Docker v19.0.3\n\nDocker (until version 20.10.0 - released 2020-12-08) has issue with ADD --chown - it not allow to use user/group as ENV or ARG - it was resolved here https://github.com/moby/buildkit/pull/1473 (v 20.10.0 )\n\nI am afraid that Jenkins CI don\u0027t use latest version of docker - so we could have problem with building images on Jenkins.",
+      "parentUuid": "3c272110_cf62f944",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 3
+      },
+      "revId": "8cc284ce165caba6d2cbd2df3eed60b69f6f2662",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
