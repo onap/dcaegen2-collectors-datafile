@@ -70,6 +70,30 @@
       "revId": "8cc284ce165caba6d2cbd2df3eed60b69f6f2662",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f90c60fe_4afaa56c",
+        "filename": "datafile-app-server/src/main/docker/Dockerfile",
+        "patchSetId": 7
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 7352
+      },
+      "writtenOn": "2021-04-08T21:14:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99eb8417_4b73b843",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 3
+      },
+      "revId": "8cc284ce165caba6d2cbd2df3eed60b69f6f2662",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
