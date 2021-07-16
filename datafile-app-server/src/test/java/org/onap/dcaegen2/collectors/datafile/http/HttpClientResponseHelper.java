@@ -64,7 +64,17 @@ public class HttpClientResponseHelper {
         }
 
         @Override
+        public String path() {
+            return null;
+        }
+
+        @Override
         public String fullPath() {
+            return null;
+        }
+
+        @Override
+        public String requestId() {
             return null;
         }
 
@@ -138,6 +148,11 @@ public class HttpClientResponseHelper {
 
         @Override
         public String fullPath() {
+            return null;
+        }
+
+        @Override
+        public String requestId() {
             return null;
         }
 
