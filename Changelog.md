@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - docker base image to integration (from debian based to alpine based)
 - java version bump from 11.0.8 to 11.0.9
 - remove exec file permission for config file
+- tomcat-embed-core version bump from 9.0.39 to 9.0.50
+- spring version bump from 5.3.1 to 5.3.6
+- spring-boot version bump from 2.4.0 to 2.4.5
 
 ## [1.5.5] - 09/03/2021
 ### Fixed
