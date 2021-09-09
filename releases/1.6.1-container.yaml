@@ -1,0 +1,9 @@
+distribution_type: 'container'
+version: '1.6.1'
+project: 'dcaegen2-collectors-datafile'
+log_dir: 'dcaegen2-collectors-datafile-maven-docker-stage-master/787/'
+containers:
+  - name: 'org.onap.dcaegen2.collectors.datafile.datafile-app-server'
+    version: '1.6.1-20210907T054240Z'
+container_release_tag: '1.6.1'
+ref: 'c7eab17a68a8a209a1071a00fa0e1ffb0ae3b8b2'
