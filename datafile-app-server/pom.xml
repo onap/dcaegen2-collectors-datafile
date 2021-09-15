@@ -199,7 +199,7 @@
           <imageTags>
             <imageTag>${project.version}-${maven.build.timestamp}Z</imageTag>
             <imageTag>${project.version}</imageTag>
-            <imageTag>latest</imageTag>
+            <imageTag>guilin-latest</imageTag>
           </imageTags>
           <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
           <resources>
