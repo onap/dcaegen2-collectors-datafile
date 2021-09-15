@@ -1,0 +1,7 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Tomasz Wr�bel <tomasz.wrobel@nokia.com>
+Submitted-by: Tomasz Wr�bel <tomasz.wrobel@nokia.com>
+Submitted-at: Wed, 15 Sep 2021 07:41:13 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/dcaegen2/collectors/datafile/+/124212
+Project: dcaegen2/collectors/datafile
+Branch: refs/heads/honolulu
