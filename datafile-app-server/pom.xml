@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ ============LICENSE_START=======================================================
-  ~ Copyright (C) 2018-2021 NOKIA Intellectual Property. All rights reserved.
+  ~ Copyright (C) 2018-2022 NOKIA Intellectual Property. All rights reserved.
   ~ Copyright (C) 2018-2021 Nordix Foundation. All rights reserved.
   ~ Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
   ~ Copyright (c) 2021 Samsung Electronics. All rights reserved.
@@ -27,7 +27,7 @@
     <parent>
         <groupId>org.onap.dcaegen2.collectors</groupId>
         <artifactId>datafile</artifactId>
-        <version>1.6.1-SNAPSHOT</version>
+        <version>1.7.0-SNAPSHOT</version>
     </parent>
 
     <groupId>org.onap.dcaegen2.collectors.datafile</groupId>
@@ -38,7 +38,7 @@
         <docker.image.name>onap/${project.groupId}.${project.artifactId}</docker.image.name>
         <maven.build.timestamp.format>yyyyMMdd'T'HHmmss</maven.build.timestamp.format>
         <docker-client.version>8.7.1</docker-client.version>
-        <tomcat-embed-core.version>9.0.50</tomcat-embed-core.version>
+        <tomcat-embed-core.version>9.0.56</tomcat-embed-core.version>
     </properties>
 
     <dependencies>
