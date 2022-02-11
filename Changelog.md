@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.0] - 2022/02/14
+### Changed
+- [DCAEGEN2-3041] Spring version bump from 5.3.6 to 5.3.14
+- SDK version bump from 1.8.7 to 1.8.8
+
 ## [1.6.1] - 2021/08/24
 ### Changed
 - SDK version bump from 1.5.0 to 1.8.7 in order to enable config file support
