@@ -32,7 +32,7 @@
 
     <groupId>org.onap.dcaegen2.collectors</groupId>
     <artifactId>datafile</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <version>1.6.2-SNAPSHOT</version>
 
     <name>dcaegen2-collectors.datafile</name>
     <description>datafile collector</description>
@@ -51,11 +51,11 @@
 
     <properties>
         <java.version>11</java.version>
-        <sdk.version>1.8.7</sdk.version>
+        <sdk.version>1.8.8</sdk.version>
         <apache.httpcomponents.version>4.1.4</apache.httpcomponents.version>
         <apache.commons.version>3.6</apache.commons.version>
         <immutable.version>2.7.1</immutable.version>
-        <spring.version>5.3.6</spring.version>
+        <spring.version>5.3.14</spring.version>
         <spring-boot.version>2.4.5</spring-boot.version>
         <commons-io.version>2.8.0</commons-io.version>
         <commons-net.version>3.3</commons-net.version>
