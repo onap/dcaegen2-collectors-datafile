@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a372ef87_d11f4673",
+        "filename": "Changelog.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-02-12T01:09:42Z",
+      "side": 1,
+      "message": "need to add [DCAEGEN2-3041]",
+      "revId": "2585a7e3c43189dae809113afdc73dd55e0f9713",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ada9a14_4edf6104",
+        "filename": "datafile-app-server/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-02-12T01:09:42Z",
+      "side": 1,
+      "message": "need to add 2022",
+      "revId": "2585a7e3c43189dae809113afdc73dd55e0f9713",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64e60b0a_6ad3b519",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-02-12T01:09:42Z",
+      "side": 1,
+      "message": "need to add 2022",
+      "revId": "2585a7e3c43189dae809113afdc73dd55e0f9713",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
