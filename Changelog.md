@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.1] - 2022/03/10
+### Changed
+- [DCAEGEN2-3104] Fix application startup
+
 ## [1.7.0] - 2022/02/14
 ### Changed
 - [DCAEGEN2-3041] Spring version bump from 5.3.6 to 5.3.14
