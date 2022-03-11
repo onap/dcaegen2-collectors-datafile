@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d8d71bbe_40e83dbf",
+        "filename": "releases/1.7.1-container.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2022-03-11T14:49:35Z",
+      "side": 1,
+      "message": "missing git tag property - this is an optional property but we are looking to enforce across all DCAE releases; pls add following line\ngit_tag: \u00271.7.1\u0027",
+      "revId": "0d914af75f37fd204e2c4bdb94a4bc59d3be3b4c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
