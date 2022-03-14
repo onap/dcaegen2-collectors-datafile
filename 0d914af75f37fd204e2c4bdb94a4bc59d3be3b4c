@@ -16,6 +16,24 @@
       "revId": "0d914af75f37fd204e2c4bdb94a4bc59d3be3b4c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "075dabb2_2343cb70",
+        "filename": "releases/1.7.1-container.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2022-03-14T14:38:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8d71bbe_40e83dbf",
+      "revId": "0d914af75f37fd204e2c4bdb94a4bc59d3be3b4c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
