@@ -48,6 +48,8 @@ import org.onap.dcaegen2.services.sdk.security.ssl.ImmutableSecurityKeys;
 import org.onap.dcaegen2.services.sdk.security.ssl.ImmutableSecurityKeysStore;
 import org.onap.dcaegen2.services.sdk.security.ssl.Passwords;
 import org.onap.dcaegen2.services.sdk.security.ssl.SecurityKeys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Parses the cloud configuration.
@@ -73,6 +75,8 @@ public class CloudConfigParser {
     private static final String DMAAP_CONSUMER_CONFIGURATION_TIMEOUT_MS = "dmaap.dmaapConsumerConfiguration.timeoutMs";
     private static final int EXPECTED_NUMBER_OF_SOURCE_TOPICS = 1;
     private static final int FIRST_SOURCE_INDEX = 0;
+
+    private static final Logger logger = LoggerFactory.getLogger(CloudConfigParser.class);
 
     private final Properties systemEnvironment;
 
@@ -103,10 +107,10 @@ public class CloudConfigParser {
                 .publishUrl(getAsString(feedConfig, "publish_url")) //
                 .password(getAsString(feedConfig, "password")) //
                 .userName(getAsString(feedConfig, "username")) //
-                .trustStorePath(getAsString(jsonObject, DMAAP_SECURITY_TRUST_STORE_PATH)) //
-                .trustStorePasswordPath(getAsString(jsonObject, DMAAP_SECURITY_TRUST_STORE_PASS_PATH)) //
-                .keyStorePath(getAsString(jsonObject, DMAAP_SECURITY_KEY_STORE_PATH)) //
-                .keyStorePasswordPath(getAsString(jsonObject, DMAAP_SECURITY_KEY_STORE_PASS_PATH)) //
+                .trustStorePath(getAsOptionalStringOrDefault(jsonObject, DMAAP_SECURITY_TRUST_STORE_PATH,"")) //
+                .trustStorePasswordPath(getAsOptionalStringOrDefault(jsonObject, DMAAP_SECURITY_TRUST_STORE_PASS_PATH, "")) //
+                .keyStorePath(getAsOptionalStringOrDefault(jsonObject, DMAAP_SECURITY_KEY_STORE_PATH,"")) //
+                .keyStorePasswordPath(getAsOptionalStringOrDefault(jsonObject, DMAAP_SECURITY_KEY_STORE_PASS_PATH,"")) //
                 .enableDmaapCertAuth(get(jsonObject, DMAAP_SECURITY_ENABLE_DMAAP_CERT_AUTH).getAsBoolean()) //
                 .changeIdentifier(changeIdentifier) //
                 .logUrl(getAsString(feedConfig, "log_url")) //
@@ -189,12 +193,44 @@ public class CloudConfigParser {
      * @throws DatafileTaskException if a member of the configuration is missing.
      */
     public @NotNull CertificateConfig getCertificateConfig() throws DatafileTaskException {
+        //todo add
+        // new properties dmaap.certificateConfig.enabletls -> if true certs are reuired
+        // add exception on wrong configuration ( tls enabled but missing certs)
+        // add excetpion when tls is disabled bud someone exceute tls request
+        // verify and add units
+
+        boolean enableCertAuth = getAsBooleanOrDefault(jsonObject, "dmaap.certificateConfig.enableCertAuth",
+            Boolean.TRUE);
+
+        String keyCert = "";
+        String keyPasswordPath = "";
+        String trustedCa = "";
+        String trustedCaPasswordPath = "";
+        boolean httpsHostnameVerify = true;
+
+        if (enableCertAuth) {
+            logger.debug("TlS enabled, attempt to read certificates property");
+            try {
+                keyCert = getAsString(jsonObject, "dmaap.certificateConfig.keyCert");
+                keyPasswordPath = getAsString(jsonObject, "dmaap.certificateConfig.keyPasswordPath");
+                trustedCa = getAsString(jsonObject, "dmaap.certificateConfig.trustedCa");
+                trustedCaPasswordPath = getAsString(jsonObject, "dmaap.certificateConfig.trustedCaPasswordPath");
+                httpsHostnameVerify = getAsBooleanOrDefault(jsonObject, "dmaap.certificateConfig.httpsHostnameVerify",
+                    Boolean.TRUE);
+            } catch (DatafileTaskException e) {
+                throw new DatafileTaskException(
+                    "Wrong configuration. External certificate enabled but configs are missing: "
+                        + e.getMessage());
+            }
+        }
+
         return new ImmutableCertificateConfig.Builder() //
-            .keyCert(getAsString(jsonObject, "dmaap.certificateConfig.keyCert"))
-            .keyPasswordPath(getAsString(jsonObject, "dmaap.certificateConfig.keyPasswordPath"))
-            .trustedCa(getAsString(jsonObject, "dmaap.certificateConfig.trustedCa"))
-            .trustedCaPasswordPath(getAsString(jsonObject, "dmaap.certificateConfig.trustedCaPasswordPath")) //
-            .httpsHostnameVerify(getAsBooleanOrDefault(jsonObject, "dmaap.certificateConfig.httpsHostnameVerify", Boolean.TRUE))
+            .keyCert(keyCert)
+            .keyPasswordPath(keyPasswordPath)
+            .trustedCa(trustedCa)
+            .trustedCaPasswordPath(trustedCaPasswordPath) //
+            .httpsHostnameVerify(httpsHostnameVerify)
+            .enableCertAuth(enableCertAuth)
             .build();
     }
 
@@ -218,6 +254,15 @@ public class CloudConfigParser {
     private static @NotNull String getAsString(JsonObject obj, String memberName) throws DatafileTaskException {
         return get(obj, memberName).getAsString();
     }
+
+    private static String getAsOptionalStringOrDefault(JsonObject obj, String memberName, String def) {
+        try {
+            return get(obj, memberName).getAsString();
+        } catch (DatafileTaskException e) {
+            return def;
+        }
+    }
+
 
     private static @NotNull Boolean getAsBoolean(JsonObject obj, String memberName) throws DatafileTaskException {
         return get(obj, memberName).getAsBoolean();

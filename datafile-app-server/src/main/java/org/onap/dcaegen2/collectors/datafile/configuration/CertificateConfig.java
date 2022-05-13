@@ -50,4 +50,7 @@ public abstract class CertificateConfig implements Serializable {
 
     @Value.Parameter
     public abstract Boolean httpsHostnameVerify();
+
+    @Value.Parameter
+    public abstract Boolean enableCertAuth();
 }

@@ -1,6 +1,7 @@
 /*-
  * ============LICENSE_START======================================================================
- * Copyright (C) 2018, 2020-2021 NOKIA Intellectual Property, 2018-2019 Nordix Foundation.
+ * Copyright (C) 2018, 2020-2022 NOKIA Intellectual Property. All rights reserved.
+ * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
  * All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
@@ -91,6 +92,7 @@ class AppConfigTest {
             .trustedCa("/src/test/resources/cert.jks") //
             .trustedCaPasswordPath("/src/test/resources/cert.jks.pass") //
             .httpsHostnameVerify(true)
+            .enableCertAuth(true)
             .build();
 
     private AppConfig appConfigUnderTest;
@@ -126,6 +128,19 @@ class AppConfigTest {
         assertThat(certificateConfig)
             .isNotNull()
             .isEqualToComparingFieldByField(CORRECT_CERTIFICATE_CONFIGURATION);
+    }
+
+    @Test
+    void shouldInitializeApplicationWithoutCertificates() throws IOException {
+        // When
+        doReturn(getCorrectConfigWithoutTLS()).when(appConfigUnderTest).createInputStream(any());
+        appConfigUnderTest.initialize();
+
+        // Then
+        verify(appConfigUnderTest, times(1)).loadConfigurationFromFile();
+
+        CertificateConfig certificateConfig = appConfigUnderTest.getCertificateConfiguration();
+        assertThat(certificateConfig).isNotNull();
     }
 
     @Test
@@ -289,6 +304,12 @@ class AppConfigTest {
 
     private static InputStream getCorrectJson() throws IOException {
         URL url = CloudConfigParser.class.getClassLoader().getResource("datafile_endpoints_test.json");
+        String string = Resources.toString(url, Charsets.UTF_8);
+        return new ByteArrayInputStream((string.getBytes(StandardCharsets.UTF_8)));
+    }
+
+    private static InputStream getCorrectConfigWithoutTLS() throws IOException {
+        URL url = CloudConfigParser.class.getClassLoader().getResource("datafile_test_config_no_tls.json");
         String string = Resources.toString(url, Charsets.UTF_8);
         return new ByteArrayInputStream((string.getBytes(StandardCharsets.UTF_8)));
     }
