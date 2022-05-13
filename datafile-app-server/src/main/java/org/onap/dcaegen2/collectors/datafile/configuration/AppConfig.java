@@ -234,6 +234,10 @@ public class AppConfig {
         this.certificateConfiguration = certificateConfig;
         this.sftpConfiguration = sftpConfig;
 
+        if (!certificateConfig.enableCertAuth()) {
+            logger.debug("External TLS certificate disabled, skipping setup HTTPS client");
+            return;
+        }
         HttpsClientConnectionManagerUtil.setupOrUpdate(certificateConfig.keyCert(), certificateConfig.keyPasswordPath(),
             certificateConfig.trustedCa(), certificateConfig.trustedCaPasswordPath(),
             certificateConfig.httpsHostnameVerify());
