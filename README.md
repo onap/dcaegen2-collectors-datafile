@@ -12,6 +12,11 @@ DFC is delivered as one **Docker container** which hosts application server and 
 Whole project (top level of DFC directory) and each module (sub module directory) can be compiled using
 `mvn clean install` command.
 
+## Build image 
+```
+mvn install docker:build
+```
+
 ## Main API Endpoints
 
 Running with dev-mode of DFC
