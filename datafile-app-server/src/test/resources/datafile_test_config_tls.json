@@ -1,0 +1,40 @@
+{
+  "config": {
+    "dmaap.certificateConfig.keyCert": "/src/test/resources/dfc.jks",
+    "dmaap.certificateConfig.keyPasswordPath": "/src/test/resources/dfc.jks.pass",
+    "dmaap.certificateConfig.trustedCa": "/src/test/resources/cert.jks",
+    "dmaap.certificateConfig.trustedCaPasswordPath": "/src/test/resources/cert.jks.pass",
+    "dmaap.certificateConfig.httpsHostnameVerify": true,
+    "dmaap.security.trustStorePath": "src/test/resources/trust.jks",
+    "dmaap.security.trustStorePasswordPath": "src/test/resources/trust.pass",
+    "dmaap.security.keyStorePath": "src/test/resources/cert.jks",
+    "dmaap.security.keyStorePasswordPath": "src/test/resources/jks.pass",
+    "dmaap.security.enableDmaapCertAuth": "true",
+    "dmaap.dmaapConsumerConfiguration.consumerGroup": "OpenDcae-c12",
+    "dmaap.dmaapConsumerConfiguration.consumerId": "C12",
+    "dmaap.dmaapConsumerConfiguration.timeoutMs": 1000,
+    "sftp.security.strictHostKeyChecking": "false",
+    "streams_publishes": {
+      "PM_MEAS_FILES": {
+        "type": "data_router",
+        "dmaap_info": {
+          "username": "CYE9fl40",
+          "location": "loc00",
+          "log_url": "https://localhost:3907/feedlog/1",
+          "publisher_id": "4.307dw",
+          "password": "izBJD8nLjawq0HMG",
+          "publish_url": "https://localhost:3907/publish/1"
+        }
+      }
+    },
+    "streams_subscribes": {
+      "dmaap_subscriber": {
+        "dmaap_info": {
+          "topic_url": "http://localhost:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT"
+        },
+        "type": "message_router"
+      }
+    }
+  }
+}
+
