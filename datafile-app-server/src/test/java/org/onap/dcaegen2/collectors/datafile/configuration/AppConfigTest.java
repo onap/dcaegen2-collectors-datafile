@@ -91,6 +91,7 @@ class AppConfigTest {
             .trustedCa("/src/test/resources/cert.jks") //
             .trustedCaPasswordPath("/src/test/resources/cert.jks.pass") //
             .httpsHostnameVerify(true)
+//            .enableCertAuth(true) //todo verify units and enable
             .build();
 
     private AppConfig appConfigUnderTest;

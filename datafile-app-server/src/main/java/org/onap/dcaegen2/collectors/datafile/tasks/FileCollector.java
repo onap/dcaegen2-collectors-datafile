@@ -176,6 +176,7 @@ public class FileCollector {
     }
 
     protected FtpesClient createFtpesClient(FileData fileData) {
+        //Todo consider throw exception missing certificate
         CertificateConfig config = datafileAppConfig.getCertificateConfiguration();
         return new FtpesClient(fileData.fileServerData(), Paths.get(config.keyCert()), config.keyPasswordPath(),
             Paths.get(config.trustedCa()), config.trustedCaPasswordPath());
@@ -186,6 +187,7 @@ public class FileCollector {
     }
 
     protected FileCollectClient createHttpsClient(FileData fileData) throws DatafileTaskException {
+        //Todo consider throw exception -> missing certificate
         return new DfcHttpsClient(fileData.fileServerData(), HttpsClientConnectionManagerUtil.instance());
     }
 }
