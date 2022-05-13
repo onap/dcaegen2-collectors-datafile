@@ -1,7 +1,7 @@
 /*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
- * Copyright (C) 2020 Nokia. All rights reserved.
+ * Copyright (C) 2020-2022 Nokia. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -18,6 +18,7 @@
 package org.onap.dcaegen2.collectors.datafile.tasks;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -197,6 +198,8 @@ public class FileCollectorTest {
         assertEquals(0, counters.getNoOfFailedHttpAttempts(),"failedHttpAttempts should have been 0");
     }
 
+
+
     @Test
     public void whenSftpFile_returnCorrectResponse() throws Exception {
         FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
@@ -288,6 +291,38 @@ public class FileCollectorTest {
         assertEquals(2, counters.getNoOfCollectedFiles(),"collectedFiles should have been 1");
         assertEquals(0, counters.getNoOfFailedFtpAttempts(),"failedFtpAttempts should have been 0");
         assertEquals(0, counters.getNoOfFailedHttpAttempts(),"failedHttpAttempts should have been 0");
+    }
+
+    @Test
+    public void whenTlsDisabled_ThrowExceptionForHttpsFile() {
+        when(appConfigMock.getCertificateConfiguration().enableCertAuth()).thenReturn(false);
+        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
+        FileData fileData = createFileData(HTTPS_LOCATION, Scheme.HTTPS);
+
+        StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
+            .expectErrorMessage("Retries exhausted: 3/3")
+            .verify();
+
+        StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
+            .consumeErrorWith(throwable ->
+                assertEquals("HTTPS error: TLS connection is disabled", throwable.getCause().getMessage()))
+            .verify();
+    }
+
+    @Test
+    public void whenTlsDisabled_ThrowExceptionForFtpesFile() {
+        when(appConfigMock.getCertificateConfiguration().enableCertAuth()).thenReturn(false);
+        FileCollector collectorUndetTest = spy(new FileCollector(appConfigMock, counters));
+        FileData fileData = createFileData(FTPES_LOCATION, Scheme.FTPES);
+
+        StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
+            .expectErrorMessage("Retries exhausted: 3/3")
+            .verify();
+
+        StepVerifier.create(collectorUndetTest.collectFile(fileData, 3, Duration.ofSeconds(0), contextMap))
+            .consumeErrorWith(throwable ->
+                assertEquals("FTPES error: TLS connection is disabled", throwable.getCause().getMessage()))
+            .verify();
     }
 
     @Test

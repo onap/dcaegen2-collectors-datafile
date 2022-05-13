@@ -1,7 +1,7 @@
 /*-
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
- * Copyright (C) 2020-2021 Nokia. All rights reserved.
+ * Copyright (C) 2020-2022 Nokia. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -175,8 +175,11 @@ public class FileCollector {
             new SftpClientSettings(datafileAppConfig.getSftpConfiguration()));
     }
 
-    protected FtpesClient createFtpesClient(FileData fileData) {
+    protected FtpesClient createFtpesClient(FileData fileData) throws DatafileTaskException {
         CertificateConfig config = datafileAppConfig.getCertificateConfiguration();
+        if (!config.enableCertAuth()) {
+            throw new DatafileTaskException("FTPES error: TLS connection is disabled");
+        }
         return new FtpesClient(fileData.fileServerData(), Paths.get(config.keyCert()), config.keyPasswordPath(),
             Paths.get(config.trustedCa()), config.trustedCaPasswordPath());
     }
@@ -186,6 +189,9 @@ public class FileCollector {
     }
 
     protected FileCollectClient createHttpsClient(FileData fileData) throws DatafileTaskException {
+        if (!datafileAppConfig.getCertificateConfiguration().enableCertAuth()) {
+            throw new DatafileTaskException("HTTPS error: TLS connection is disabled");
+        }
         return new DfcHttpsClient(fileData.fileServerData(), HttpsClientConnectionManagerUtil.instance());
     }
 }
