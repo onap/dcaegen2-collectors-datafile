@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3cd0cb16_e9bda5cb",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-06-24T15:35:32Z",
+      "side": 1,
+      "message": "add 2022 NOKIA Intellectual Property. All rights reserved.\n\nsplit the copyright lines like you did elsewhere",
+      "revId": "8273eb3c154f9f4a7bda04dc0b37b2bfe5418125",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d988f670_0277eaa8",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CertificateConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-06-24T15:35:32Z",
+      "side": 1,
+      "message": "add 2022 NOKIA Intellectual Property. All rights reserved.",
+      "revId": "8273eb3c154f9f4a7bda04dc0b37b2bfe5418125",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62204e42_df335048",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-06-24T15:35:32Z",
+      "side": 1,
+      "message": "add 2022 \nsplit the lines like you did elsewhere",
+      "revId": "8273eb3c154f9f4a7bda04dc0b37b2bfe5418125",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db93ca5d_1e7decf7",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-06-24T15:35:32Z",
+      "side": 1,
+      "message": "Please convince me why the following principle is already taken care of, does not apply here, or fix it.\n\nThis appears to be backwards.\nA \"\" value should ONLY be chosen when TLS is explicitly disabled.\nYou cannot have a \"default off\" situation -- \"off\" MUST be explicitly chosen.\nIf the values are missing and you are not explicitly disabled, then an exception MUST be thrown.",
+      "revId": "8273eb3c154f9f4a7bda04dc0b37b2bfe5418125",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01f71f16_37a2ce6a",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollector.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-06-24T15:35:32Z",
+      "side": 1,
+      "message": "add 2022 NOKIA Intellectual Property. All rights reserved.",
+      "revId": "8273eb3c154f9f4a7bda04dc0b37b2bfe5418125",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4770e013_4139ec26",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParserTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-06-24T15:35:32Z",
+      "side": 1,
+      "message": "shouldn\u0027t this be\nNOKIA Intellectual Property. All rights reserved.\nto match other files?",
+      "revId": "8273eb3c154f9f4a7bda04dc0b37b2bfe5418125",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
