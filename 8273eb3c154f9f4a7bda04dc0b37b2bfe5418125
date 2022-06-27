@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e57f1877_e99fbef3",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2022-06-27T06:22:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3cd0cb16_e9bda5cb",
+      "revId": "8273eb3c154f9f4a7bda04dc0b37b2bfe5418125",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d988f670_0277eaa8",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CertificateConfig.java",
         "patchSetId": 4
@@ -33,6 +51,24 @@
       "revId": "8273eb3c154f9f4a7bda04dc0b37b2bfe5418125",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ca88f27_6b318bb0",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CertificateConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2022-06-27T06:22:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d988f670_0277eaa8",
+      "revId": "8273eb3c154f9f4a7bda04dc0b37b2bfe5418125",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "4628908a_e70ee321",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2022-06-27T06:22:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62204e42_df335048",
+      "revId": "8273eb3c154f9f4a7bda04dc0b37b2bfe5418125",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "db93ca5d_1e7decf7",
         "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
         "patchSetId": 4
@@ -67,6 +121,24 @@
       "revId": "8273eb3c154f9f4a7bda04dc0b37b2bfe5418125",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "380711ac_581b05d7",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2022-06-27T06:22:36Z",
+      "side": 1,
+      "message": "The reason is in PublisherConfiguration which used gson.adepter. The object not allow null values, so all fields are required - it is blocking datafile collector startup when user would like to disable TLS. The exception expected by You is thrown in other place, see methods: org.onap.dcaegen2.collectors.datafile.configuration.CloudConfigParser#getCertificateConfig and org.onap.dcaegen2.collectors.datafile.tasks.FileCollector#createHttpsClient. \nThrowing exceptions is covered by new unit tests.",
+      "parentUuid": "db93ca5d_1e7decf7",
+      "revId": "8273eb3c154f9f4a7bda04dc0b37b2bfe5418125",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "4c77c9b4_0af97c1f",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/FileCollector.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2022-06-27T06:22:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "01f71f16_37a2ce6a",
+      "revId": "8273eb3c154f9f4a7bda04dc0b37b2bfe5418125",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4770e013_4139ec26",
         "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParserTest.java",
         "patchSetId": 4
@@ -101,6 +191,24 @@
       "revId": "8273eb3c154f9f4a7bda04dc0b37b2bfe5418125",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06453eb2_7b11bd10",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/CloudConfigParserTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2022-06-27T06:22:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4770e013_4139ec26",
+      "revId": "8273eb3c154f9f4a7bda04dc0b37b2bfe5418125",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
