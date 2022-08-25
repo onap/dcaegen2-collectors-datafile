@@ -27,6 +27,7 @@ import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.params.HttpParams;
+import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.util.context.Context;
 import reactor.util.context.ContextView;
@@ -122,6 +123,11 @@ public class HttpClientResponseHelper {
         public HttpResponseStatus status() {
             return HttpResponseStatus.OK;
         }
+
+        @Override
+        public Mono<HttpHeaders> trailerHeaders() {
+            return null;
+        }
     };
 
     public static final HttpClientResponse RESPONSE_ANY_NO_OK = new HttpClientResponse() {
@@ -192,6 +198,11 @@ public class HttpClientResponseHelper {
 
         @Override public HttpResponseStatus status() {
             return HttpResponseStatus.NOT_IMPLEMENTED;
+        }
+
+        @Override
+        public Mono<HttpHeaders> trailerHeaders() {
+            return null;
         }
     };
 
