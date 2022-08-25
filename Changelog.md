@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.9.0] - 2022/08/26
+### Changed
+- [DCAEGEN2-3211] Fix vulnerabilities
+  - Update DCAE-SDK to version 1.8.10
+  - Update spring-boot to version 2.7.2
+  - Update spring to version 5.3.22
+  - Update tomcat-embed-core to version 9.0.65
+  - Update classgraph to version 4.8.149
+  - Update jackson-databind to version 2.13.3
+  - Update springdoc-openapi-ui to version 1.6.11
+
 ## [1.8.0] - 2022/06/24
 ### Changed
 - [DCAEGEN2-3039] Make certificate dependencies configurable

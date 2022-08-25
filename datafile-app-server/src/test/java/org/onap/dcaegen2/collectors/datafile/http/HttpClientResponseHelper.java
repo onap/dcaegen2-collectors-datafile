@@ -1,6 +1,6 @@
 /*-
  * ============LICENSE_START======================================================================
- * Copyright (C) 2020-2021 Nokia. All rights reserved.
+ * Copyright (C) 2020-2022 Nokia. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -27,6 +27,7 @@ import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.params.HttpParams;
+import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.util.context.Context;
 import reactor.util.context.ContextView;
@@ -122,6 +123,11 @@ public class HttpClientResponseHelper {
         public HttpResponseStatus status() {
             return HttpResponseStatus.OK;
         }
+
+        @Override
+        public Mono<HttpHeaders> trailerHeaders() {
+            return null;
+        }
     };
 
     public static final HttpClientResponse RESPONSE_ANY_NO_OK = new HttpClientResponse() {
@@ -192,6 +198,11 @@ public class HttpClientResponseHelper {
 
         @Override public HttpResponseStatus status() {
             return HttpResponseStatus.NOT_IMPLEMENTED;
+        }
+
+        @Override
+        public Mono<HttpHeaders> trailerHeaders() {
+            return null;
         }
     };
 
