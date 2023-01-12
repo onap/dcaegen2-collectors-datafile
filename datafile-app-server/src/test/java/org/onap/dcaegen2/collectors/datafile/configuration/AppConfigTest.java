@@ -39,6 +39,7 @@ import org.onap.dcaegen2.services.sdk.security.ssl.SecurityKeys;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import java.nio.file.Path;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -291,8 +292,9 @@ class AppConfigTest {
         assertThat(messageRouterSubscribeRequest.sourceDefinition().topicUrl())
                 .isEqualTo("http://localhost:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT");
         SecurityKeys securityKeys = consumerConfiguration.getMessageRouterSubscriberConfig().securityKeys();
-        assertThat(securityKeys.keyStore().path().toString()).hasToString("src/test/resources/cert.jks");
-        assertThat(securityKeys.trustStore().path().toString()).hasToString("src/test/resources/trust.jks");
+        assertThat(securityKeys.keyStore().path().toString()).hasToString(Path.of("src", "test","resources","cert.jks").toString());  
+        assertThat(securityKeys.trustStore().path().toString()).hasToString(Path.of("src", "test","resources","trust.jks").toString());
+        
         assertThat(consumerConfiguration.getMessageRouterSubscriber()).isNotNull();
     }
 
