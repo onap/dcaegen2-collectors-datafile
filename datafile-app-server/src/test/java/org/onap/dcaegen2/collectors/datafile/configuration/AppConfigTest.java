@@ -2,6 +2,7 @@
  * ============LICENSE_START======================================================================
  * Copyright (C) 2018, 2020-2022 Nokia. All rights reserved.
  * Copyright (C) 2018-2019 Nordix Foundation. All rights reserved.
+ * Copyright (C) 2023 Deutsche Telekom AG. All rights reserved.
  * ===============================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -39,6 +40,7 @@ import org.onap.dcaegen2.services.sdk.security.ssl.SecurityKeys;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import java.nio.file.Path;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -291,8 +293,9 @@ class AppConfigTest {
         assertThat(messageRouterSubscribeRequest.sourceDefinition().topicUrl())
                 .isEqualTo("http://localhost:2222/events/unauthenticated.VES_NOTIFICATION_OUTPUT");
         SecurityKeys securityKeys = consumerConfiguration.getMessageRouterSubscriberConfig().securityKeys();
-        assertThat(securityKeys.keyStore().path().toString()).hasToString("src/test/resources/cert.jks");
-        assertThat(securityKeys.trustStore().path().toString()).hasToString("src/test/resources/trust.jks");
+        assertThat(securityKeys.keyStore().path().toString()).hasToString(Path.of("src", "test","resources","cert.jks").toString());  
+        assertThat(securityKeys.trustStore().path().toString()).hasToString(Path.of("src", "test","resources","trust.jks").toString());
+        
         assertThat(consumerConfiguration.getMessageRouterSubscriber()).isNotNull();
     }
 
