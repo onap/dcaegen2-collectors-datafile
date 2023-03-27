@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.10.0] - 2023/03/27
+### Changed
+- [DCAEGEN2-3322] Fix vulnerabilities
+  - Update jackson-databind to version 2.14.1
+  - Update tomcat-embed-core to version 9.0.72
+  - Update spring to version 5.3.25
+
 ## [1.9.0] - 2022/08/26
 ### Changed
 - [DCAEGEN2-3211] Fix vulnerabilities
