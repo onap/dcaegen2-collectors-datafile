@@ -48,7 +48,7 @@
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
-
+    <!-- properties -->
     <properties>
         <revision>1.10.0-SNAPSHOT</revision>
         <java.version>11</java.version>
