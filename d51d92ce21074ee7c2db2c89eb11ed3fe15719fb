@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94b8775d_b9198beb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2025-01-21T15:41:18Z",
+      "side": 1,
+      "message": "please fix these errors noted in the console log (search for \"error\"):\n\u003c\u003c\u003c ERROR: (changelog-or-release-file-missing) Did not find either a ChangeLog.md or a releases file in the updated files \u003e\u003e\u003e\n\u003c\u003c\u003c ERROR: (copyright-year-not-found-in-file) Copyright 2025 not found in pom.xml \u003e\u003e\u003e",
+      "revId": "d51d92ce21074ee7c2db2c89eb11ed3fe15719fb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a"
+    }
+  ]
+}
