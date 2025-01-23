@@ -52,7 +52,7 @@
     <properties>
         <revision>1.10.0-SNAPSHOT</revision>
         <java.version>11</java.version>
-        <sdk.version>1.8.10</sdk.version>
+        <sdk.version>1.9.5</sdk.version>
         <apache.httpcomponents.version>4.1.4</apache.httpcomponents.version>
         <apache.commons.version>3.6</apache.commons.version>
         <immutable.version>2.7.1</immutable.version>
