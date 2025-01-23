@@ -117,7 +117,10 @@ public class ScheduledTasks {
 
     Flux<FilePublishInformation> createMainTask(Map<String, String> context) {
         return fetchMoreFileReadyMessages() //
-            .doOnNext(fileReadyMessage -> threadPoolQueueSize.incrementAndGet()) //
+            .doOnNext(fileReadyMessage -> {
+            threadPoolQueueSize.incrementAndGet();
+            System.out.println("Fetched file ready message: " + fileReadyMessage);
+        }) //
             .doOnNext(fileReadyMessage -> counters.incNoOfReceivedEvents()) //
             .parallel(NUMBER_OF_WORKER_THREADS) // Each FileReadyMessage in a separate thread
             .runOn(scheduler) //
