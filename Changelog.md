@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.11.0] - 2025/01/23
+### Changed
+- [DCAEGEN2-3416] Removal of MR for DFC
+  - Update sdk version to 1.9.5
+
 ## [1.10.0] - 2023/03/27
 ### Changed
 - [DCAEGEN2-3322] Fix vulnerabilities
