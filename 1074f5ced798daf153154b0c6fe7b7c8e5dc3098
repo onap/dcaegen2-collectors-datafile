@@ -16,6 +16,40 @@
       "message": "Looks good to me.",
       "revId": "1074f5ced798daf153154b0c6fe7b7c8e5dc3098",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0dbc0d8_3e983aa6",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2025-02-03T16:30:54Z",
+      "side": 1,
+      "message": "This should be fed through the logging system like all of the other messages coming out of the datafile collector.",
+      "revId": "1074f5ced798daf153154b0c6fe7b7c8e5dc3098",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2562ff3e_45e90270",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfigTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2025-02-03T16:30:54Z",
+      "side": 1,
+      "message": "please just remove the line instead of commenting it out.",
+      "revId": "1074f5ced798daf153154b0c6fe7b7c8e5dc3098",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a"
     }
   ]
 }
