@@ -35,6 +35,24 @@
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f946051_670940e9",
+        "filename": "datafile-app-server/src/main/java/org/onap/dcaegen2/collectors/datafile/tasks/ScheduledTasks.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 8024
+      },
+      "writtenOn": "2025-02-05T07:16:09Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f0dbc0d8_3e983aa6",
+      "revId": "1074f5ced798daf153154b0c6fe7b7c8e5dc3098",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2562ff3e_45e90270",
@@ -48,6 +66,24 @@
       "writtenOn": "2025-02-03T16:30:54Z",
       "side": 1,
       "message": "please just remove the line instead of commenting it out.",
+      "revId": "1074f5ced798daf153154b0c6fe7b7c8e5dc3098",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb48a283_cb9c965d",
+        "filename": "datafile-app-server/src/test/java/org/onap/dcaegen2/collectors/datafile/configuration/AppConfigTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 8024
+      },
+      "writtenOn": "2025-02-05T07:16:09Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2562ff3e_45e90270",
       "revId": "1074f5ced798daf153154b0c6fe7b7c8e5dc3098",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a"
     }
