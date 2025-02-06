@@ -33,6 +33,24 @@
       "message": "Since you are backing out your change to ScheduledTask.java, you should just revert the file in git to its previous version.\n\nThe rest of the files are fine.\n\nIf you want to leave ScheduledTask.java as changed with the only change being the addition of a blank space, respond to this comment.\n\nEither way, once you decide between reverting the file or keeping the blank space change, I\u0027ll do a +2 on this.",
       "revId": "5df5b2617b4a289d9fa248ad5ac033cc7bcf0169",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b75b7837_5e88c5a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8024
+      },
+      "writtenOn": "2025-02-06T06:21:14Z",
+      "side": 1,
+      "message": "Hi Tony,\nLet it be as is. I have reverted the license line from the file. Reverting file needs rollbacking whole commit as single file is not getting reverted.",
+      "parentUuid": "d206da52_42172fc9",
+      "revId": "5df5b2617b4a289d9fa248ad5ac033cc7bcf0169",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a"
     }
   ]
 }
