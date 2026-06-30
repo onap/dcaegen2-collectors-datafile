@@ -38,8 +38,8 @@
         <docker.image.name>onap/${project.groupId}.${project.artifactId}</docker.image.name>
         <maven.build.timestamp.format>yyyyMMdd'T'HHmmss</maven.build.timestamp.format>
 
-        <!--Skip missing changelog-->
-        <onap-gerrit-review>-changelog-missing</onap-gerrit-review>
+        <!--Skip missing changelog/release file (e.g. for CI-only dependabot changes)-->
+        <onap-gerrit-review>-changelog-missing,-changelog-or-release-file-missing</onap-gerrit-review>
     </properties>
 
     <dependencies>
